@@ -1,0 +1,30 @@
+{% fetchxml data %}
+<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+  <entity name="contact">
+    <attribute name="fullname" />
+    <attribute name="telephone1" />
+    <attribute name="contactid" />
+    <order attribute="fullname" descending="false" />
+  </entity>
+</fetch>
+{% endfetchxml %}
+
+
+{% assign name = "Birl 123" %}
+
+function AojComponent() {
+  return <div>
+    <h1>Hello, {{name}}!</h1>
+  </div>;
+}
+ 
+const root = ReactDOM.createRoot(document.body);
+root.render(
+  <React.StrictMode>
+    <AojComponent />
+  </React.StrictMode>
+);
+
+<h1>
+    
+</h1>
