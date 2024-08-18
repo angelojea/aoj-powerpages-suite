@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as Babel from '@babel/standalone';
-import { liquidEngine } from './liquid-engine';
+import { liquidEngine } from './liquid/liquid-engine';
 import { Console } from 'console';
 import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels';
 import { DefaultButton, Stack } from '@fluentui/react';
