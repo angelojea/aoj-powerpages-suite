@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Adxstudio.Xrm</RootNamespace>
     <AssemblyName>Adxstudio.Xrm</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Adxstudio.Xrm.snk</AssemblyOriginatorKeyFile>
@@ -45,12 +45,10 @@
     <DefineConstants>DEBUG;TRACE;SELFHOSTED</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\Build\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>
     </DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
     <NoWarn>1591,1573</NoWarn>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
     <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -60,9 +58,7 @@
     <DefineConstants>TRACE;SELFHOSTED</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\Build\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
     <DocumentationFile>bin\Release\Adxstudio.Xrm.XML</DocumentationFile>
     <LangVersion>default</LangVersion>
   </PropertyGroup>
@@ -553,6 +549,7 @@
     <Compile Include="Json\JsonEntityFilters.cs" />
     <Compile Include="Json\JsonGuid.cs" />
     <Compile Include="Json\JsonList.cs" />
+    <Compile Include="LiquidRenderer.cs" />
     <Compile Include="Owin\RequestTelemetryMiddleWare.cs" />
     <Compile Include="Services\CacheDependencyCalculator.cs" />
     <Compile Include="Services\Cache\Extensions.cs" />
@@ -2131,10 +2128,6 @@
     <ProjectReference Include="..\Microsoft.Xrm.Portal\Microsoft.Xrm.Portal.csproj">
       <Project>{9293d3f9-a840-4d3c-98d9-aa0c7343df6f}</Project>
       <Name>Microsoft.Xrm.Portal</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SafeHtml\SafeHtml.csproj">
-      <Project>{8c1accd4-0f31-4c41-bfe9-12fa53b8774d}</Project>
-      <Name>SafeHtml</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

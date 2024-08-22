@@ -14,6 +14,7 @@ using System.Web;
 using Microsoft.Xrm.Client.Collections.Generic;
 using Microsoft.Xrm.Client.Configuration;
 using Microsoft.Xrm.Client.Services;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace Microsoft.Xrm.Client
@@ -85,14 +86,20 @@ namespace Microsoft.Xrm.Client
 	/// </example>
 	/// </remarks>
 	public class CrmConnection
-	{
-		private static readonly bool _defaultProxyTypesEnabled = true;
+    {
+        public IOrganizationService Service { get; set; }
+        public CrmConnection(IOrganizationService service)
+        {
+			Service = service;
+        }
+        private static readonly bool _defaultProxyTypesEnabled = true;
 		private static readonly ServiceConfigurationInstanceMode _defaultServiceConfigurationInstanceMode = ServiceConfigurationInstanceMode.PerName;
 
-		/// <summary>
-		/// The organization service URL.
-		/// </summary>
-		public Uri ServiceUri { get; set; }
+
+        /// <summary>
+        /// The organization service URL.
+        /// </summary>
+        public Uri ServiceUri { get; set; }
 
 		/// <summary>
 		/// The uri of the cross realm STS metadata endpoint.

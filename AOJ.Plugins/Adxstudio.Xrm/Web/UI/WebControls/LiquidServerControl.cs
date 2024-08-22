@@ -77,7 +77,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			container.Controls.Add(close);
 		}
 
-		private EntityForm InitEntityForm(Guid guid)
+		public EntityForm InitEntityForm(Guid guid)
 		{
 			var entityForm = new EntityForm
 			{

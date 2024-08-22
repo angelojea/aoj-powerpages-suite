@@ -18,90 +18,125 @@ using Adxstudio.Xrm.Web.Routing;
 
 namespace Adxstudio.Xrm
 {
-	/// <summary>
-	/// Contains the <see cref="Entity"/> instances that are relevant to a single portal page request.
-	/// </summary>
-	public class PortalContext : Microsoft.Xrm.Portal.PortalContext
-	{
-		private readonly Lazy<Entity> _user;
+    /// <summary>
+    /// Contains the <see cref="Entity"/> instances that are relevant to a single portal page request.
+    /// </summary>
+    public class PortalContext : Microsoft.Xrm.Portal.PortalContext
+    {
+        private readonly Entity _user;
+        private readonly OrganizationServiceContext _svc;
 
-		public override Entity User
-		{
-			get { return _user.Value; }
-		}
+        public override Entity User
+        {
+            get { return _user; }
+        }
 
-		private readonly Lazy<Entity> _entity;
+        private readonly Entity _entity;
 
-		public override Entity Entity
-		{
-			get { return _entity.Value; }
-		}
+        public override Entity Entity
+        {
+            get { return _entity; }
+        }
 
-		private readonly Lazy<CrmSiteMapNode> _node;
+        private readonly CrmSiteMapNode _node;
 
-		public override HttpStatusCode StatusCode
-		{
-			get { return _node.Value != null ? _node.Value.StatusCode : HttpStatusCode.OK; }
-		}
+        public override HttpStatusCode StatusCode
+        {
+            get { return _node != null ? _node.StatusCode : HttpStatusCode.OK; }
+        }
 
-		public override string Path
-		{
-			get { return _node.Value != null ? _node.Value.RewriteUrl : null; }
-		}
+        public override string Path
+        {
+            get { return _node != null ? _node.RewriteUrl : null; }
+        }
 
-		private readonly Lazy<Entity> _website;
+        private readonly Entity _website;
 
-		public override Entity Website
-		{
-			get { return _website.Value; }
-		}
+        public override Entity Website
+        {
+            get { return _website; }
+        }
 
-		public PortalContext(string contextName, RequestContext request)
-			: base(contextName, request)
-		{
-			// Lazy-load context information.
-			_user = new Lazy<Entity>(GetUser);
-			_node = new Lazy<CrmSiteMapNode>(() => GetNode(Request));
-			_entity = new Lazy<Entity>(() => GetEntity(ServiceContext, _node.Value));
-			_website = new Lazy<Entity>(GetWebsite);
-		}
+        public PortalContext(string contextName)
+            : base(contextName)
+        {
+            // Lazy-load context information.
+            _user = GetUser();
+            _node = GetNode(Request);
+            _entity = GetEntity(ServiceContext, _node);
+            _website = GetWebsite();
+        }
 
-		private Entity GetWebsite()
-		{
-			var website = Request.HttpContext.GetWebsite();
+        public PortalContext(OrganizationServiceContext request, IOrganizationService svc, Guid portalId, Guid userId)
+            : base(request)
+        {
+            _user = svc.Retrieve("contact", userId, new ColumnSet(true));
+            _node = null;
+            _entity = null;
+            _website = svc.Retrieve("mspp_website", portalId, new ColumnSet(true));
+        }
 
-			var entity = website.Entity.Clone();
-			ServiceContext.ReAttach(entity);
-			return entity;
-		}
+        public PortalContext(string contextName, RequestContext request)
+            : base(contextName, request)
+        {
+            // Lazy-load context information.
+            _user = GetUser();
+            _node = GetNode(Request);
+            _entity = GetEntity(ServiceContext, _node);
+            _website = GetWebsite();
+        }
 
-		private Entity GetUser()
-		{
-			var identity = Request.HttpContext.User.Identity;
+        private Entity GetWebsite()
+        {
+            var website = Request.HttpContext.GetWebsite();
 
-			if (!identity.IsAuthenticated) return null;
+            var entity = website.Entity.Clone();
+            ServiceContext.ReAttach(entity);
+            return entity;
+        }
 
-			var user = Request.HttpContext.GetUser();
+        private Entity GetUser()
+        {
+            var identity = Request.HttpContext.User.Identity;
 
-			if (user == null || user == CrmUser.Anonymous) return null;
+            if (!identity.IsAuthenticated) return null;
 
-			var contact = ServiceContext.RetrieveSingle(user.ContactId, new ColumnSet(true));
+            var user = Request.HttpContext.GetUser();
 
-			return contact;
-		}
+            if (user == null || user == CrmUser.Anonymous) return null;
 
-		private static CrmSiteMapNode GetNode(RequestContext request)
-		{
-			if (request == null) return null;
-			
-			var node = request.HttpContext.GetNode();
+            var contact = ServiceContext.RetrieveSingle(user.ContactId, new ColumnSet(true));
 
-			return node ?? PortalRouteHandler.GetNode(request);
-		}
+            return contact;
+        }
 
-		private static Entity GetEntity(OrganizationServiceContext context, CrmSiteMapNode node)
-		{
-			return node != null ? context.MergeClone(node.Entity) : null;
-		}
-	}
+        private Entity GetUser(Guid userId)
+        {
+            var identity = Request.HttpContext.User.Identity;
+
+            if (!identity.IsAuthenticated) return null;
+
+            var user = Request.HttpContext.GetUser();
+
+            if (user == null || user == CrmUser.Anonymous) return null;
+
+            var contact = ServiceContext.RetrieveSingle(user.ContactId, new ColumnSet(true));
+
+            return contact;
+        }
+
+        private static CrmSiteMapNode GetNode(RequestContext request)
+        {
+            if (request == null) return null;
+
+            var node = request.HttpContext.GetNode();
+
+            return node ?? PortalRouteHandler.GetNode(request);
+        }
+
+        private static Entity GetEntity(OrganizationServiceContext context, CrmSiteMapNode node)
+        {
+            return node != null ? context.MergeClone(node.Entity) : null;
+        }
+    }
 }

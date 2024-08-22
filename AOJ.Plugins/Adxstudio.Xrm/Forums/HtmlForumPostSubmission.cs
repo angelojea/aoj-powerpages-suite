@@ -23,7 +23,7 @@ namespace Adxstudio.Xrm.Forums
 			if (author == null) throw new ArgumentNullException("author");
 
 			Name = name;
-			Content = SafeHtml.SafeHtmSanitizer.GetSafeHtml(htmlContent ?? string.Empty);
+			Content = htmlContent;
 			PostedOn = postedOn;
 			Author = author;
 			Attachments = new List<IForumPostAttachment>();
@@ -147,7 +147,7 @@ namespace Adxstudio.Xrm.Forums
 			_entityReference = entityReference;
 
 			Name = name;
-			Content = htmlContent == null ? null : SafeHtml.SafeHtmSanitizer.GetSafeHtml(htmlContent);
+			Content = htmlContent == null ? null : htmlContent;
 			Attachments = new List<IForumPostAttachment>();
 		}
 

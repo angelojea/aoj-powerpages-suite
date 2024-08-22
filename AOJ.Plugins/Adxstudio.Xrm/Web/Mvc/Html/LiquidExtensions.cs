@@ -105,7 +105,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			_globalVariableFactories[name] = factory;
 		}
 		
-		private class LiquidEnvironment
+		public class LiquidEnvironment
 		{
 			public LiquidEnvironment(Hash globals, Hash registers)
 			{

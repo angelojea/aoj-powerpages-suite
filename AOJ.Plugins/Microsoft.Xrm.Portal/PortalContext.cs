@@ -4,11 +4,15 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Routing;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Client.Configuration;
 using Microsoft.Xrm.Portal.Cms;
@@ -140,12 +144,30 @@ namespace Microsoft.Xrm.Portal
 			_entity = new Lazy<Entity>(() => GetEntity(ServiceContext, _node.Value));
 		}
 
-		private static RequestContext GetRequestContext()
+        private class FakeHttpContext : HttpContextBase
+        {
+            public static explicit operator HttpContext(FakeHttpContext v)
+            {
+				return new HttpContext(new HttpRequest("", "", ""), new HttpResponse(null));
+            }
+        }
+
+        private static RequestContext GetRequestContext()
 		{
-			var http = new HttpContextWrapper(HttpContext.Current);
-			var routeData = RouteTable.Routes.GetRouteData(http) ?? new RouteData();
-			var request = new RequestContext(http, routeData);
-			return request;
+			if (HttpContext.Current == null)
+            {
+                var http = new HttpContextWrapper(new HttpContext(new HttpRequest("", "http://test.com", ""), new HttpResponse(null)));
+                var routeData = RouteTable.Routes.GetRouteData(http) ?? new RouteData();
+                var request = new RequestContext(http, routeData);
+                return request;
+            }
+			else
+            {
+                var http = new HttpContextWrapper(HttpContext.Current);
+                var routeData = RouteTable.Routes.GetRouteData(http) ?? new RouteData();
+                var request = new RequestContext(http, routeData);
+                return request;
+            }
 		}
 
 		/// <summary>

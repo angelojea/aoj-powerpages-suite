@@ -7,6 +7,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Specialized;
 using System.Configuration;
+using System.Data.SqlClient;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security;
@@ -56,11 +57,18 @@ namespace Microsoft.Xrm.Client.Services
 
 		public OrganizationService(CrmConnection connection)
 		{
-			using (var svc = new CrmServiceClient(
-				$@"AuthenticationType=Office365; url=https://orgd53f2c17.crm.dynamics.com/; UserName={connection.ClientCredentials.UserName.UserName}; Password={connection.ClientCredentials.UserName.Password};"))
-			{
-				_service = new InnerOrganizationService(error => svc, null);
-			}
+            if (connection.Service != null)
+            {
+                _service = new InnerOrganizationService(error => connection.Service, null);
+            }
+			else
+            {
+                using (var svc = new CrmServiceClient(
+                    $@"AuthenticationType=Office365; url=https://orgd53f2c17.crm.dynamics.com/; UserName={connection.ClientCredentials.UserName.UserName}; Password={connection.ClientCredentials.UserName.Password};"))
+                {
+                    _service = new InnerOrganizationService(error => svc, null);
+                }
+            }
 		}
 
 		public OrganizationService(IOrganizationService service)

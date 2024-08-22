@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Xrm.Client</RootNamespace>
     <AssemblyName>Microsoft.Xrm.Client</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SccProjectName>SAK</SccProjectName>
@@ -28,7 +28,6 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
-    <CodeAnalysisRuleSet>..\Build\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -38,8 +37,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Microsoft.Xrm.Client.XML</DocumentationFile>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>..\Build\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -182,25 +179,6 @@
     <Compile Include="Threading\LockManager.cs" />
     <Compile Include="Threading\LockProvider.cs" />
     <Compile Include="Threading\MutexLockProvider.cs" />
-    <Compile Include="Windows\Controls\ConnectionDialog\AuthenticationPage.xaml.cs">
-      <DependentUpon>AuthenticationPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Controls\ConnectionDialog\Connection.cs" />
-    <Compile Include="Windows\Controls\ConnectionDialog\ConnectionData.cs" />
-    <Compile Include="Windows\Controls\ConnectionDialog\ConnectionDialog.xaml.cs">
-      <DependentUpon>ConnectionDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Controls\ConnectionDialog\ConnectionLauncher.cs" />
-    <Compile Include="Windows\Controls\ConnectionDialog\ErrorPage.xaml.cs">
-      <DependentUpon>ErrorPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Controls\ConnectionDialog\OrganizationPage.xaml.cs">
-      <DependentUpon>OrganizationPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Controls\ConnectionDialog\PasswordBoxAssistant.cs" />
-    <Compile Include="Windows\Controls\ConnectionDialog\ProgressDialog.xaml.cs">
-      <DependentUpon>ProgressDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Messages\OrganizationServiceContextExtensions.cs" />
     <Compile Include="Messages\OrganizationServiceContextExtensions.generated.cs" />
     <Compile Include="Metadata\RelationshipInfo.cs" />
@@ -240,32 +218,11 @@
     <Compile Include="Threading\HttpSingleton.cs" />
     <Compile Include="Threading\MutexExtensions.cs" />
     <Compile Include="TypeExtensions.cs" />
+    <Compile Include="_AojConfigurationManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Microsoft.Xrm.Client.snk" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Windows\Controls\ConnectionDialog\AuthenticationPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\Controls\ConnectionDialog\ConnectionDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\Controls\ConnectionDialog\ErrorPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\Controls\ConnectionDialog\OrganizationPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\Controls\ConnectionDialog\ProgressDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

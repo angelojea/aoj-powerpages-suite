@@ -102,10 +102,20 @@ namespace Microsoft.Xrm.Client.Configuration
 				throw new ConfigurationErrorsException("A custom context must be specified.");
 			}
 
-			var service = CreateService(contextName, true);
-			var context = contextElement.CreateOrganizationServiceContext(service);
+            if (AojConfigurationManager.Service != null)
+            {
+                var service = CreateService(contextName, true, AojConfigurationManager.Service);
+                var context = contextElement.CreateOrganizationServiceContext(service);
 
-			return context;
+                return context;
+            }
+			else
+            {
+                var service = CreateService(contextName, true);
+                var context = contextElement.CreateOrganizationServiceContext(service);
+
+                return context;
+            }
 		}
 
 		/// <summary>
@@ -114,23 +124,31 @@ namespace Microsoft.Xrm.Client.Configuration
 		/// <param name="contextName"></param>
 		/// <param name="allowDefaultFallback"></param>
 		/// <returns></returns>
-		public virtual IOrganizationService CreateService(string contextName = null, bool allowDefaultFallback = false)
+		public virtual IOrganizationService CreateService(string contextName = null, bool allowDefaultFallback = false, IOrganizationService preSvc = null)
 		{
 			var section = GetCrmSection();
 
-			var contextElement = section.Contexts.GetElementOrDefault(contextName, allowDefaultFallback);
+			IOrganizationService service;
+			if (preSvc == null)
+            {
+                var contextElement = section.Contexts.GetElementOrDefault(contextName, allowDefaultFallback);
 
-			var serviceName = !string.IsNullOrWhiteSpace(contextElement.ServiceName)
-				? contextElement.ServiceName
-				: contextElement.Name;
+                var serviceName = !string.IsNullOrWhiteSpace(contextElement.ServiceName)
+                    ? contextElement.ServiceName
+                    : contextElement.Name;
 
-			var connectionStringName = !string.IsNullOrWhiteSpace(contextElement.ConnectionStringName)
-				? contextElement.ConnectionStringName
-				: contextElement.Name;
+                var connectionStringName = !string.IsNullOrWhiteSpace(contextElement.ConnectionStringName)
+                    ? contextElement.ConnectionStringName
+                    : contextElement.Name;
 
-			var service = CreateService(new CrmConnection(connectionStringName), serviceName, true);
+				service = CreateService(new CrmConnection(connectionStringName), serviceName, true);
+            }
+			else
+            {
+                service = CreateService(new CrmConnection(preSvc), null, true);
+            }
 
-			return service;
+            return service;
 		}
 
 		private IOrganizationService _service;
@@ -143,7 +161,7 @@ namespace Microsoft.Xrm.Client.Configuration
 		/// <param name="serviceName"></param>
 		/// <param name="allowDefaultFallback"></param>
 		/// <returns></returns>
-		public virtual IOrganizationService CreateService(CrmConnection connection, string serviceName = null, bool allowDefaultFallback = false)
+		public virtual IOrganizationService CreateService(CrmConnection connection = null, string serviceName = null, bool allowDefaultFallback = false)
 		{
 			var section = GetCrmSection();
 
@@ -179,28 +197,39 @@ namespace Microsoft.Xrm.Client.Configuration
 
 			var service = CreateService(serviceElement, connection);
 			return service;
-		}
+        }
 
-		private IOrganizationService CreateService(OrganizationServiceElement serviceElement, CrmConnection connection)
-		{
-			var serviceCacheName = !string.IsNullOrWhiteSpace(serviceElement.ServiceCacheName)
-				? serviceElement.ServiceCacheName
-				: serviceElement.Name;
-			var serviceCache = CreateServiceCache(serviceCacheName, connection.GetConnectionId(), true);
+        private IOrganizationService CreateService(OrganizationServiceElement serviceElement, CrmConnection connection)
+        {
+            if (connection.Service != null)
+            {
+                var serviceCache = CreateServiceCache(null, connection.GetConnectionId(), true);
 
-			var service = serviceElement.CreateOrganizationService(connection, serviceCache);
+                var service = serviceElement.CreateOrganizationService(connection, serviceCache);
 
-			return service;
-		}
+                return service;
+            }
+			else
+            {
+                var serviceCacheName = !string.IsNullOrWhiteSpace(serviceElement.ServiceCacheName)
+                    ? serviceElement.ServiceCacheName
+                    : serviceElement.Name;
+                var serviceCache = CreateServiceCache(serviceCacheName, connection.GetConnectionId(), true);
 
-		/// <summary>
-		/// Retrieves the configured <see cref="IOrganizationServiceCache"/>.
-		/// </summary>
-		/// <param name="serviceCacheName"></param>
-		/// <param name="connectionId"></param>
-		/// <param name="allowDefaultFallback"></param>
-		/// <returns></returns>
-		public virtual IOrganizationServiceCache CreateServiceCache(string serviceCacheName = null, string connectionId = null, bool allowDefaultFallback = false)
+                var service = serviceElement.CreateOrganizationService(connection, serviceCache);
+
+                return service;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the configured <see cref="IOrganizationServiceCache"/>.
+        /// </summary>
+        /// <param name="serviceCacheName"></param>
+        /// <param name="connectionId"></param>
+        /// <param name="allowDefaultFallback"></param>
+        /// <returns></returns>
+        public virtual IOrganizationServiceCache CreateServiceCache(string serviceCacheName = null, string connectionId = null, bool allowDefaultFallback = false)
 		{
 			var section = GetCrmSection();
 

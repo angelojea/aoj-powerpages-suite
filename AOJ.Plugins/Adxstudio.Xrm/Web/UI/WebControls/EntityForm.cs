@@ -642,7 +642,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		}
 
 		//
-		protected void RenderForm(OrganizationServiceContext context, Entity entityform, FormViewMode mode, FormEntitySourceDefinition entitySourceDefinition)
+		public CompositeControl RenderForm(OrganizationServiceContext context, Entity entityform, FormViewMode mode, FormEntitySourceDefinition entitySourceDefinition)
 		{
 			var formObject = new EntityFormObject(entityform, LanguageCode, context, PreviousButtonCssClass, NextButtonCssClass, SubmitButtonCssClass, PreviousButtonText, NextButtonText, SubmitButtonText, SubmitButtonBusyText);
 
@@ -925,6 +925,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 
 			OnFormLoad(this, new EntityFormLoadEventArgs(entitySourceDefinition));
+			return this;
 		}
 
 		private WebControl ActionButtonBarAboveForm(EntityFormObject formObject, FormConfiguration formConfiguration, string submitButtonID = "SubmitButton",
@@ -985,7 +986,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			return portalConfig == null ? null : portalConfig.ContextName;
 		}
 
-		protected FormEntitySourceDefinition GetEntitySourceDefinition(OrganizationServiceContext context, Entity entityform)
+		public FormEntitySourceDefinition GetEntitySourceDefinition(OrganizationServiceContext context, Entity entityform)
 		{
 			entityform.AssertEntityName("adx_entityform");
 			AssociateToCurrentPortalUserOnItemInserted = false;
