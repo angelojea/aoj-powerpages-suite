@@ -36,15 +36,24 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 	/// </summary>
 	public class ModalLookupControlTemplate : CellTemplate, ICustomFieldControlTemplate
 	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="field"></param>
-		/// <param name="metadata"></param>
-		/// <param name="validationGroup"></param>
-		/// <param name="bindings"></param>
-		/// <remarks>Localization of lookup display text is provided by retrieving the entity metadata and determine the primary name field and if the language code is not the base language for the organization it appends _ + language code to the primary name field and populates the control with the values from the localized attribute. i.e. if the primary name field is new_name and the language code is 1036 for French, the localized attribute name would be new_name_1036. An attribute would be added to the entity in this manner for each language to be supported and the attribute must be added to the view assigned to the lookup on the form.</remarks>
-		public ModalLookupControlTemplate(CrmEntityFormViewField field, FormXmlCellMetadata metadata, string validationGroup, IDictionary<string, CellBinding> bindings)
+        public bool HasProperty(dynamic obj, string propertyName)
+        {
+            // Cast the dynamic object to an object
+            var objType = (obj as object).GetType();
+
+            // Check if the property exists
+            return objType.GetProperty(propertyName) != null;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="field"></param>
+        /// <param name="metadata"></param>
+        /// <param name="validationGroup"></param>
+        /// <param name="bindings"></param>
+        /// <remarks>Localization of lookup display text is provided by retrieving the entity metadata and determine the primary name field and if the language code is not the base language for the organization it appends _ + language code to the primary name field and populates the control with the values from the localized attribute. i.e. if the primary name field is new_name and the language code is 1036 for French, the localized attribute name would be new_name_1036. An attribute would be added to the entity in this manner for each language to be supported and the attribute must be added to the view assigned to the lookup on the form.</remarks>
+        public ModalLookupControlTemplate(CrmEntityFormViewField field, FormXmlCellMetadata metadata, string validationGroup, IDictionary<string, CellBinding> bindings)
 			: base(metadata, validationGroup, bindings)
 		{
 			Field = field;
@@ -201,113 +210,40 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// </summary>
 		protected virtual IHtmlString BuildLookupModal(Control container)
 		{
-			var html = Mvc.Html.EntityExtensions.GetHtmlHelper(Metadata.FormView.ContextName, container.Page.Request.RequestContext, container.Page.Response); //new HtmlHelper(new ViewContext(), new ViewPage());
+			//var html = Mvc.Html.EntityExtensions.GetHtmlHelper(Metadata.FormView.ContextName, container.Page.Request.RequestContext, container.Page.Response); //new HtmlHelper(new ViewContext(), new ViewPage());
+			var html = AojConfigurationManager.ViewContext;
+
 			var context = CrmConfigurationManager.CreateContext(Metadata.FormView.ContextName);
 			var portal = PortalCrmConfigurationManager.CreatePortalContext(Metadata.FormView.ContextName);
 			var user = portal == null ? null : portal.User;
 			var viewConfigurations = new List<ViewConfiguration>();
 			var defaultViewId = Metadata.LookupViewID;
-			var modalGridSearchPlaceholderText = html.SnippetLiteral("Portal/Lookup/Modal/Grid/Search/PlaceholderText");
-			var modalGridSearchTooltipText = html.SnippetLiteral("Portal/Lookup/Modal/Grid/Search/TooltipText");
-			var modalGridPageSize = html.IntegerSetting("Portal/Lookup/Modal/Grid/PageSize") ?? 10;
-			var modalSizeSetting = html.Setting("Portal/Lookup/Modal/Size");
+			var modalGridSearchPlaceholderText = HasProperty(html,"SnippetLiteral") ? html.SnippetLiteral("Portal/Lookup/Modal/Grid/Search/PlaceholderText") : "";
+			var modalGridSearchTooltipText = HasProperty(html,"SnippetLiteral") ? html.SnippetLiteral("Portal/Lookup/Modal/Grid/Search/TooltipText") : "";
+			var modalGridPageSize = HasProperty(html, "IntegerSetting") ? html.IntegerSetting("Portal /Lookup/Modal/Grid/PageSize") ?? 10 : 0;
+			var modalSizeSetting = HasProperty(html, "Setting") ? html.Setting("Portal /Lookup/Modal/Size") : "";
 			var modalSize = BootstrapExtensions.BootstrapModalSize.Large;
 			if (modalSizeSetting != null && modalSizeSetting.ToLower() == "default") modalSize = BootstrapExtensions.BootstrapModalSize.Default;
 			if (modalSizeSetting != null && modalSizeSetting.ToLower() == "small") modalSize = BootstrapExtensions.BootstrapModalSize.Small;
 
-			var formEntityReferenceInfo = GetFormEntityReferenceInfo(container.Page.Request);
 			
-			if (defaultViewId == Guid.Empty)
-			{
-				// By default a lookup field cell defined in the form XML does not contain view parameters unless the user has specified a view that is not the default for that entity and we must query to find the default view.  Saved Query entity's QueryType code 64 indicates a lookup view.
-
-				viewConfigurations.AddRange(
-					Metadata.LookupTargets.Select(
-						target => new ViewConfiguration(new SavedQueryView(context, target, 64, true, Metadata.LanguageCode), modalGridPageSize)
-						{
-							Search = new ViewSearch(!Metadata.LookupDisableQuickFind) { PlaceholderText = modalGridSearchPlaceholderText, TooltipText = modalGridSearchTooltipText },
-							EnableEntityPermissions = Metadata.FormView.EnableEntityPermissions,
-							PortalName = Metadata.FormView.ContextName,
-							LanguageCode = Metadata.LanguageCode,
-							ModalLookupAttributeLogicalName = Metadata.DataFieldName,
-							ModalLookupEntityLogicalName = Metadata.TargetEntityName,
-							ModalLookupFormReferenceEntityId = formEntityReferenceInfo.Item2,
-							ModalLookupFormReferenceEntityLogicalName = formEntityReferenceInfo.Item1,
-							ModalLookupFormReferenceRelationshipName = formEntityReferenceInfo.Item3,
-							ModalLookupFormReferenceRelationshipRole = formEntityReferenceInfo.Item4
-						}));
-			}
-			else
-			{
-				viewConfigurations.Add(new ViewConfiguration(new SavedQueryView(context, defaultViewId, Metadata.LanguageCode), modalGridPageSize)
-				{
-					Search = new ViewSearch(!Metadata.LookupDisableQuickFind) { PlaceholderText = modalGridSearchPlaceholderText, TooltipText = modalGridSearchTooltipText },
-					EnableEntityPermissions = Metadata.FormView.EnableEntityPermissions,
-					PortalName = Metadata.FormView.ContextName,
-					LanguageCode = Metadata.LanguageCode,
-					ModalLookupAttributeLogicalName = Metadata.DataFieldName,
-					ModalLookupEntityLogicalName = Metadata.TargetEntityName,
-					ModalLookupFormReferenceEntityId = formEntityReferenceInfo.Item2,
-					ModalLookupFormReferenceEntityLogicalName = formEntityReferenceInfo.Item1,
-					ModalLookupFormReferenceRelationshipName = formEntityReferenceInfo.Item3,
-					ModalLookupFormReferenceRelationshipRole = formEntityReferenceInfo.Item4
-				});
-			}
-
-			if (!Metadata.LookupDisableViewPicker && !string.IsNullOrWhiteSpace(Metadata.LookupAvailableViewIds))
-			{
-				var addViewConfigurations = new List<ViewConfiguration>();
-				var viewids = Metadata.LookupAvailableViewIds.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-				if (viewids.Length >= 1)
-				{
-					var viewGuids = Array.ConvertAll(viewids, Guid.Parse).AsEnumerable().OrderBy(o => o != defaultViewId).ThenBy(o => o).ToArray();
-					addViewConfigurations.AddRange(from viewGuid in viewGuids
-						from viewConfiguration in viewConfigurations
-						where viewConfiguration.ViewId != viewGuid
-						select new ViewConfiguration(new SavedQueryView(context, viewGuid, Metadata.LanguageCode), modalGridPageSize)
-						{
-							Search = new ViewSearch(!Metadata.LookupDisableQuickFind) { PlaceholderText = modalGridSearchPlaceholderText, TooltipText = modalGridSearchTooltipText },
-							EnableEntityPermissions = Metadata.FormView.EnableEntityPermissions,
-							PortalName = Metadata.FormView.ContextName,
-							LanguageCode = Metadata.LanguageCode,
-							ModalLookupAttributeLogicalName = Metadata.DataFieldName,
-							ModalLookupEntityLogicalName = Metadata.TargetEntityName,
-							ModalLookupFormReferenceEntityId = formEntityReferenceInfo.Item2,
-							ModalLookupFormReferenceEntityLogicalName = formEntityReferenceInfo.Item1,
-							ModalLookupFormReferenceRelationshipName = formEntityReferenceInfo.Item3,
-							ModalLookupFormReferenceRelationshipRole = formEntityReferenceInfo.Item4
-						});
-				}
-				viewConfigurations.AddRange(addViewConfigurations);
-			}
-			
-			var applyRelatedRecordFilter = !string.IsNullOrWhiteSpace(Metadata.LookupFilterRelationshipName);
-			string filterFieldName = null;
-			if (!string.IsNullOrWhiteSpace(Metadata.LookupDependentAttributeName)) // entity.attribute (i.e. contact.adx_subject)
-			{
-				var pos = Metadata.LookupDependentAttributeName.IndexOf(".", StringComparison.InvariantCulture);
-				filterFieldName = pos >= 0
-					? Metadata.LookupDependentAttributeName.Substring(pos + 1)
-					: Metadata.LookupDependentAttributeName;
-			}
-			
-			var modalTitle = html.SnippetLiteral("Portal/Lookup/Modal/Title");
-			var modalPrimaryButtonText = html.SnippetLiteral("Portal/Lookup/Modal/PrimaryButtonText");
-			var modalCancelButtonText = html.SnippetLiteral("Portal/Lookup/Modal/CancelButtonText");
-			var modalDismissButtonSrText = html.SnippetLiteral("Portal/Lookup/Modal/DismissButtonSrText");
-			var modalRemoveValueButtonText = html.SnippetLiteral("Portal/Lookup/Modal/RemoveValueButtonText");
-			var modalNewValueButtonText = html.SnippetLiteral("Portal/Lookup/Modal/NewValueButtonText");
-			var modalDefaultErrorMessage = html.SnippetLiteral("Portal/Lookup/Modal/DefaultErrorMessage");
-			var modalGridLoadingMessage = html.SnippetLiteral("Portal/Lookup/Modal/Grid/LoadingMessage");
-			var modalGridErrorMessage = html.SnippetLiteral("Portal/Lookup/Modal/Grid/ErrorMessage");
-			var modalGridAccessDeniedMessage = html.SnippetLiteral("Portal/Lookup/Modal/Grid/AccessDeniedMessage");
-			var modalGridEmptyMessage = html.SnippetLiteral("Portal/Lookup/Modal/Grid/EmptyMessage");
-			var modalGridToggleFilterText = html.SnippetLiteral("Portal/Lookup/Modal/Grid/ToggleFilterText");
+			var modalTitle = HasProperty(html,"SnippetLiteral") ? html.SnippetLiteral("Portal/Lookup/Modal/Title") : "";
+			var modalPrimaryButtonText = HasProperty(html,"SnippetLiteral") ? html.SnippetLiteral("Portal/Lookup/Modal/PrimaryButtonText") : "";
+			var modalCancelButtonText = HasProperty(html,"SnippetLiteral") ? html.SnippetLiteral("Portal/Lookup/Modal/CancelButtonText") : "";
+			var modalDismissButtonSrText = HasProperty(html,"SnippetLiteral") ? html.SnippetLiteral("Portal/Lookup/Modal/DismissButtonSrText") : "";
+			var modalRemoveValueButtonText = HasProperty(html,"SnippetLiteral") ? html.SnippetLiteral("Portal/Lookup/Modal/RemoveValueButtonText") : "";
+			var modalNewValueButtonText = HasProperty(html,"SnippetLiteral") ? html.SnippetLiteral("Portal/Lookup/Modal/NewValueButtonText") : "";
+			var modalDefaultErrorMessage = HasProperty(html,"SnippetLiteral") ? html.SnippetLiteral("Portal/Lookup/Modal/DefaultErrorMessage") : "";
+			var modalGridLoadingMessage = HasProperty(html,"SnippetLiteral") ? html.SnippetLiteral("Portal/Lookup/Modal/Grid/LoadingMessage") : "";
+			var modalGridErrorMessage = HasProperty(html,"SnippetLiteral") ? html.SnippetLiteral("Portal/Lookup/Modal/Grid/ErrorMessage") : "";
+			var modalGridAccessDeniedMessage = HasProperty(html,"SnippetLiteral") ? html.SnippetLiteral("Portal/Lookup/Modal/Grid/AccessDeniedMessage") : "";
+			var modalGridEmptyMessage = HasProperty(html,"SnippetLiteral") ? html.SnippetLiteral("Portal/Lookup/Modal/Grid/EmptyMessage") : "";
+			var modalGridToggleFilterText = HasProperty(html,"SnippetLiteral") ? html.SnippetLiteral("Portal/Lookup/Modal/Grid/ToggleFilterText") : "";
 			
 			return html.LookupModal(ControlID, viewConfigurations,
-				BuildControllerActionUrl("GetLookupGridData", "EntityGrid", new { area = "Portal", __portalScopeId__ = portal == null ? Guid.Empty : portal.Website.Id }), user, applyRelatedRecordFilter,
+				BuildControllerActionUrl("GetLookupGridData", "EntityGrid", new { area = "Portal", __portalScopeId__ = portal == null ? Guid.Empty : portal.Website.Id }), user, false,
 				Metadata.LookupAllowFilterOff, Metadata.LookupFilterRelationshipName, Metadata.LookupDependentAttributeType,
-				filterFieldName, null, null, modalTitle, modalPrimaryButtonText, modalCancelButtonText, modalDismissButtonSrText,
+				"", null, null, modalTitle, modalPrimaryButtonText, modalCancelButtonText, modalDismissButtonSrText,
 				modalRemoveValueButtonText, modalNewValueButtonText, null, null, modalGridLoadingMessage, modalGridErrorMessage, modalGridAccessDeniedMessage,
 				modalGridEmptyMessage, modalGridToggleFilterText, modalDefaultErrorMessage, null, null, null, Metadata.FormView.ContextName,
 				Metadata.LanguageCode, null, modalSize, Metadata.LookupReferenceEntityFormId, EvaluateCreatePrivilege(portal.ServiceContext),

@@ -788,7 +788,7 @@ namespace Microsoft.Xrm.Client
             query.Criteria.AddCondition(oneToManyRelationshipMetadata.ReferencingAttribute, ConditionOperator.Equal, entity.Id);
 
             var response = context.Execute(new RetrieveMultipleRequest() { Query = query }) as RetrieveMultipleResponse;
-			var relatedEntities = response.Results.Select((e) =>
+			var relatedEntities = ((EntityCollection)response.Results.FirstOrDefault().Value).Entities.Select((e) =>
 			{
 				return e as T;
 

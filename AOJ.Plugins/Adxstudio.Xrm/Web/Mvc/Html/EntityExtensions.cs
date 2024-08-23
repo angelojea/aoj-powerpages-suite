@@ -14,6 +14,7 @@ using Adxstudio.Xrm.Cms;
 using Adxstudio.Xrm.Collections.Generic;
 using Adxstudio.Xrm.Web.UI.WebControls;
 using Microsoft.Xrm.Client;
+using Microsoft.Xrm.Portal;
 using Microsoft.Xrm.Portal.Configuration;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
@@ -25,12 +26,12 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 	/// </summary>
 	public static class EntityExtensions
 	{
-		/// <summary>
-		/// Gets the current portal context <see cref="IPortalViewEntity"/>.
-		/// </summary>
-		/// <param name="html">Extension method target, provides support for HTML rendering and access to view context/data.</param>
-		/// <returns>The current portal context <see cref="IPortalViewEntity"/>.</returns>
-		public static IPortalViewEntity Entity(this HtmlHelper html)
+        /// <summary>
+        /// Gets the current portal context <see cref="IPortalViewEntity"/>.
+        /// </summary>
+        /// <param name="html">Extension method target, provides support for HTML rendering and access to view context/data.</param>
+        /// <returns>The current portal context <see cref="IPortalViewEntity"/>.</returns>
+        public static IPortalViewEntity Entity(this HtmlHelper html)
 		{
 			return PortalExtensions.GetPortalViewContext(html).Entity;
 		}
@@ -639,9 +640,9 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			}
 
 			return entity.Url.AppendQueryString(queryStringParameters);
-		}
+        }
 
-		internal static HtmlHelper GetHtmlHelper(string portalName, RequestContext requestContext, HttpResponse response)
+        internal static HtmlHelper GetHtmlHelper(string portalName, RequestContext requestContext, HttpResponse response)
 		{
 			var portal = PortalCrmConfigurationManager.CreatePortalContext(portalName, requestContext);
 			var controllerContext = new ControllerContext(requestContext, new MockController());

@@ -222,19 +222,19 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 		protected virtual void RegisterClientSideDependencies(Control control)
 		{
-			foreach (var script in ScriptIncludes)
-			{
-				var scriptManager = ScriptManager.GetCurrent(control.Page);
+			//foreach (var script in ScriptIncludes)
+			//{
+			//	var scriptManager = ScriptManager.GetCurrent(control.Page);
 
-				if (scriptManager == null)
-				{
-					continue;
-				}
+			//	if (scriptManager == null)
+			//	{
+			//		continue;
+			//	}
 
-				var absolutePath = VirtualPathUtility.ToAbsolute(script);
+			//	var absolutePath = VirtualPathUtility.ToAbsolute(script);
 
-				scriptManager.Scripts.Add(new ScriptReference(absolutePath));
-			}
+			//	scriptManager.Scripts.Add(new ScriptReference(absolutePath));
+			//}
 		}
 	}
 }

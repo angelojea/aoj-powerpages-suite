@@ -37,7 +37,7 @@ namespace Adxstudio.Xrm.Cms
 		/// <param name="context"> The context. </param>
 		/// <param name="dependencies"> The dependencies. </param>
 		protected ContentMapDataAdapter(RequestContext context, IDataAdapterDependencies dependencies)
-			: this(context != null ? null : new HttpContextWrapper(HttpContext.Current), dependencies)
+			: this(new HttpContextWrapper(HttpContext.Current), dependencies)
 		{
 		}
 
@@ -56,14 +56,14 @@ namespace Adxstudio.Xrm.Cms
 		/// <param name="dependencies"> The dependencies. </param>
 		protected ContentMapDataAdapter(IContentMapProvider contentMapProvider, ContextLanguageInfo language, IDataAdapterDependencies dependencies)
 		{
-			if (contentMapProvider == null)
-			{
-				throw new ArgumentNullException("contentMapProvider");
-			}
-			if (dependencies == null)
-			{
-				throw new ArgumentNullException("dependencies");
-			}
+			//if (contentMapProvider == null)
+			//{
+			//	throw new ArgumentNullException("contentMapProvider");
+			//}
+			//if (dependencies == null)
+			//{
+			//	throw new ArgumentNullException("dependencies");
+			//}
 
 			this.ContentMapProvider = contentMapProvider;
 			this.Dependencies = dependencies;

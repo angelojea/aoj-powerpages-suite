@@ -711,6 +711,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
             if (string.IsNullOrEmpty(FormName) || !AutoGenerateSteps)
             {
+                this.Page = new Page();
                 GetFormTemplate().InstantiateIn(this);
 
                 switch (Mode)

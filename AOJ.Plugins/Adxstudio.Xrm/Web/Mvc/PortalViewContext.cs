@@ -100,7 +100,7 @@ namespace Adxstudio.Xrm.Web.Mvc
 				throw new ArgumentNullException("polls");
 			}
 			
-			SiteMapProvider = siteMapProvider ?? (SiteMap.Enabled ? SiteMap.Provider : null);
+			//SiteMapProvider = siteMapProvider ?? (SiteMap.Enabled ? SiteMap.Provider : null);
 			PortalName = portalName;
 			RequestContext = requestContext;
 

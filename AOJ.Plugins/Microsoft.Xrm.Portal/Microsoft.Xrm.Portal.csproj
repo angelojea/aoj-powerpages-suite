@@ -335,6 +335,7 @@
     <EmbeddedResource Include="Web\UI\WebControls\EntityRightsView.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Microsoft.Xrm.Portal.snk" />
     <None Include="packages.config" />
   </ItemGroup>

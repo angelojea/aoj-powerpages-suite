@@ -511,6 +511,7 @@
     <Compile Include="Activity\IPortalComment.cs" />
     <Compile Include="Activity\PortalComment.cs" />
     <Compile Include="Activity\PortalTimeline.cs" />
+    <Compile Include="AOJ.cs" />
     <Compile Include="AspNet\Cms\ApplicationRestartPluginMessageMiddleware.cs" />
     <Compile Include="AspNet\Cms\StrictTransportSecurityMiddleware.cs" />
     <Compile Include="AspNet\Cms\StrictTransportSecurityOptions.cs" />

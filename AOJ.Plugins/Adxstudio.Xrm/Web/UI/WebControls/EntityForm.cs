@@ -453,12 +453,19 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				return true;
 			}
 			return false;
-		}
+        }
+        internal class AojFormView : CompositeControl
+        {
 
-        public CompositeControl AOJCreateChildControls()
+        }
+        public Panel AOJCreateChildControls()
 		{
 			CreateChildControls();
-			return this;
+
+			var formPanel = new Panel();
+			formPanel.Attributes.Add("runat", "server");
+			formPanel.Controls.Add(this);
+            return formPanel;
         }
 
 
@@ -730,7 +737,8 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				FormConfiguration = formConfiguration,
 				EnableEntityPermissions = false,
 			};
-			formView.AojInit();
+			this.Page = new Page();
+            formView.AojInit();
 			formView.AojCreateChildControls(this);
 
 

@@ -290,18 +290,18 @@ namespace Adxstudio.Xrm.Web
 
 		public static IContentMapProvider GetContentMapProvider(this HttpContext context)
 		{
-			return GetContentMapProvider(context.GetOwinContext());
+			return null;
 		}
 
 		public static IContentMapProvider GetContentMapProvider(this HttpContextBase context)
-		{
-			return GetContentMapProvider(context.GetOwinContext());
-		}
+        {
+            return null;
+        }
 
 		public static IContentMapProvider GetContentMapProvider(this IOwinContext context)
-		{
-			return context.Get<ContentMapProvider>();
-		}
+        {
+            return null;
+        }
 
 		public static T GetSiteSetting<T>(this HttpContext context, string name)
 		{
@@ -342,7 +342,7 @@ namespace Adxstudio.Xrm.Web
 
 		public static ContextLanguageInfo GetContextLanguageInfo(this HttpContextBase context)
 		{
-			return GetContextLanguageInfo(context.GetOwinContext());
+			return null;
 		}
 
 		public static ContextLanguageInfo GetContextLanguageInfo(this IOwinContext context)
