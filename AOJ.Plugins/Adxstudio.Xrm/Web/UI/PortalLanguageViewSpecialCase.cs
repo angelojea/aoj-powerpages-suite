@@ -27,7 +27,7 @@ namespace Adxstudio.Xrm.Web.UI
 		/// <returns>True if applicable, false otherwise.</returns>
 		public bool IsApplicable(IViewConfiguration configuration)
 		{
-			return string.Equals(configuration.EntityName, "adx_portallanguage", StringComparison.InvariantCulture);
+			return string.Equals(configuration.EntityName, "mspp_portallanguage", StringComparison.InvariantCulture);
 		}
 
 		/// <summary>Try to apply the special case.</summary>
@@ -59,7 +59,7 @@ namespace Adxstudio.Xrm.Web.UI
 
 			var languageCondition = new Condition
 			{
-				Attribute = "adx_systemlanguage",
+				Attribute = "mspp_systemlanguage",
 				Operator = ConditionOperator.In,
 				Values = provisionedLanguages.Cast<object>().ToArray()
 			};

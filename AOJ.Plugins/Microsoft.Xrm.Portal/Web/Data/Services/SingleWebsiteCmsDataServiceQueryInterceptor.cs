@@ -29,9 +29,9 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 				throw new ArgumentException("The specified portal '{0}' does not have a configured website.".FormatWith(portalName), "portalName");
 			}
 
-			website.AssertEntityName("adx_website");
+			website.AssertEntityName("mspp_website");
 
-			var id = website.GetAttributeValue<Guid?>("adx_websiteid");
+			var id = website.GetAttributeValue<Guid?>("mspp_websiteid");
 			_websiteID = id.HasValue ? id.Value : website.Id;
 		}
 
@@ -41,22 +41,22 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 
 			switch (entityName)
 			{
-				case "adx_contentsnippet":
+				case "mspp_contentsnippet":
 					return FilterContentSnippets(context, queryable);
 
-				case "adx_pagetemplate":
+				case "mspp_pagetemplate":
 					return FilterPageTemplates(context, queryable);
 
-				case "adx_webfile":
+				case "mspp_webfile":
 					return FilterWebFiles(context, queryable);
 
-				case "adx_weblink":
+				case "mspp_weblink":
 					return FilterWebLinks(context, queryable);
 
-				case "adx_weblinkset":
+				case "mspp_weblinkset":
 					return FilterWebLinkSets(context, queryable);
 
-				case "adx_webpage":
+				case "mspp_webpage":
 					return FilterWebPages(context, queryable);
 			}
 
@@ -67,7 +67,7 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 		{
 			var query =
 				from e in queryable
-				where e.GetAttributeValue<Guid?>("adx_websiteid") == _websiteID
+				where e.GetAttributeValue<Guid?>("mspp_websiteid") == _websiteID
 				select e;
 
 			return query.ToList().Where(e => HasReadAccess(context, e)).AsQueryable();
@@ -90,12 +90,12 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 
 		private IQueryable<TEntity> FilterWebLinks<TEntity>(OrganizationServiceContext context, IQueryable<TEntity> queryable) where TEntity : Entity
 		{
-			var webLinkSets = FilterByWebsiteAndSecurity(context, context.CreateQuery("adx_weblinkset"))
-				.ToLookup(e => e.GetAttributeValue<Guid>("adx_weblinksetid"));
+			var webLinkSets = FilterByWebsiteAndSecurity(context, context.CreateQuery("mspp_weblinkset"))
+				.ToLookup(e => e.GetAttributeValue<Guid>("mspp_weblinksetid"));
 
 			var webLinks = queryable.ToList().Where(e =>
 			{
-				var webLinkSetID = e.GetAttributeValue<Guid?>("adx_weblinksetid");
+				var webLinkSetID = e.GetAttributeValue<Guid?>("mspp_weblinksetid");
 
 				return webLinkSetID.HasValue && webLinkSets.Contains(webLinkSetID.Value);
 			});

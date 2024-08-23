@@ -33,74 +33,74 @@ namespace Adxstudio.Xrm.Web.UI
 	{
 		private static readonly Dictionary<string, IEnumerable<Relationship>> _childAssociationsByEntityName = new Dictionary<string, IEnumerable<Relationship>>
 		{
-			{ "adx_event",
+			{ "mspp_event",
 				new[]
 				{
-					"adx_event_eventschedule".ToRelationship()
+					"mspp_event_eventschedule".ToRelationship()
 				}
 			},
-			{ "adx_webpage",
+			{ "mspp_webpage",
 				new[]
 				{
-					"adx_webpage_webfile".ToRelationship(),
-					"adx_webpage_webpage".ToRelationship(EntityRole.Referenced),
-					"adx_webpage_communityforum".ToRelationship(),
-					"adx_webpage_event".ToRelationship(),
-					"adx_parentwebpage_shortcut".ToRelationship(),
+					"mspp_webpage_webfile".ToRelationship(),
+					"mspp_webpage_webpage".ToRelationship(EntityRole.Referenced),
+					"mspp_webpage_communityforum".ToRelationship(),
+					"mspp_webpage_event".ToRelationship(),
+					"mspp_parentwebpage_shortcut".ToRelationship(),
 				}
 			},
 		};
 
 		private static readonly Dictionary<string, IEnumerable<string>> _siteMapChildEntitiesByEntityName = new Dictionary<string, IEnumerable<string>>
 		{
-			{ "adx_webpage",
+			{ "mspp_webpage",
 				new[]
 				{
-					"adx_communityforum",
-					"adx_event",
-					"adx_webfile",
-					"adx_webpage",
-					"adx_shortcut",
+					"mspp_communityforum",
+					"mspp_event",
+					"mspp_webfile",
+					"mspp_webpage",
+					"mspp_shortcut",
 				}
 			},
 		};
 
 		private static readonly List<string> _deletableEntityNames = new List<string>
 		{
-			"adx_communityforum",
-			"adx_event",
-			"adx_webfile",
-			"adx_weblink",
-			"adx_webpage",
-			"adx_shortcut",
+			"mspp_communityforum",
+			"mspp_event",
+			"mspp_webfile",
+			"mspp_weblink",
+			"mspp_webpage",
+			"mspp_shortcut",
 		};
 
 		private static readonly List<string> _dependencyEntityNames = new List<string>
 		{
-			"adx_pagetemplate",
-			"adx_publishingstate",
+			"mspp_pagetemplate",
+			"mspp_publishingstate",
 		};
 
 		private static readonly List<string> _fileAttachmentEntityNames = new List<string>
 		{
-			"adx_webfile"
+			"mspp_webfile"
 		};
 
 		private static readonly List<string> _urlEntityNames = new List<string>
 		{
-			"adx_communityforum",
-			"adx_event",
-			"adx_webfile",
-			"adx_webpage",
+			"mspp_communityforum",
+			"mspp_event",
+			"mspp_webfile",
+			"mspp_webpage",
 		};
 
 		private static readonly IDictionary<string, Relationship> _parentalRelationshipsByEntityName = new Dictionary<string, Relationship>
 		{
-			{ "adx_communityforum", "adx_webpage_communityforum".ToRelationship() },
-			{ "adx_event", "adx_webpage_event".ToRelationship() },
-			{ "adx_webfile", "adx_webpage_webfile".ToRelationship() },
-			{ "adx_webpage", "adx_webpage_webpage".ToRelationship(EntityRole.Referencing) },
-			{ "adx_shortcut", "adx_webpage_shortcut".ToRelationship() },
+			{ "mspp_communityforum", "mspp_webpage_communityforum".ToRelationship() },
+			{ "mspp_event", "mspp_webpage_event".ToRelationship() },
+			{ "mspp_webfile", "mspp_webpage_webfile".ToRelationship() },
+			{ "mspp_webpage", "mspp_webpage_webpage".ToRelationship(EntityRole.Referencing) },
+			{ "mspp_shortcut", "mspp_webpage_shortcut".ToRelationship() },
 		};
 
 		public virtual void AddAttributeMetadata(string portalName, IEditableCrmEntityControl control, Control container, Entity entity, string propertyName, string propertyDisplayName)
@@ -265,30 +265,30 @@ namespace Adxstudio.Xrm.Web.UI
 
 				var refetchedEntity = serviceContext.CreateQuery(entity.LogicalName).FirstOrDefault(e => e.GetAttributeValue<Guid>(metadata.PrimaryIdAttribute) == entity.Id);
 
-				if (entity.LogicalName == "adx_weblinkset")
+				if (entity.LogicalName == "mspp_weblinkset")
 				{
 					// Output the service reference for the web link set itself.
-					AddEntityServiceReference(control, entity, entity.GetAttributeValue<string>("adx_name"), container);
+					AddEntityServiceReference(control, entity, entity.GetAttributeValue<string>("mspp_name"), container);
 
 					// Output the service reference for the child web links of the set.
-					AddEntityAssocationSetServiceReferenceForWebLinkSet(control, entity, "adx_weblinkset_weblink".ToRelationship(), container);
-					AddEntityAssocationSetServiceReference(portalName, control, entity, "adx_weblinkset_weblink".ToRelationship(), container, "xrm-entity-{0}-update-ref");
-					AddEntitySetSchemaMap(control, "adx_weblink", container);
+					AddEntityAssocationSetServiceReferenceForWebLinkSet(control, entity, "mspp_weblinkset_weblink".ToRelationship(), container);
+					AddEntityAssocationSetServiceReference(portalName, control, entity, "mspp_weblinkset_weblink".ToRelationship(), container, "xrm-entity-{0}-update-ref");
+					AddEntitySetSchemaMap(control, "mspp_weblink", container);
 
 					// Output the service reference and schema map for site web pages (required to create new web links).
-					AddEntitySetServiceReference(control, "adx_webpage", container);
-					AddEntitySetSchemaMap(control, "adx_webpage", container);
+					AddEntitySetServiceReference(control, "mspp_webpage", container);
+					AddEntitySetSchemaMap(control, "mspp_webpage", container);
 
 					string weblinkDeleteUriTemplate;
 
-					if (TryGetCrmEntityDeleteDataServiceUriTemplate(control, "adx_weblink", out weblinkDeleteUriTemplate))
+					if (TryGetCrmEntityDeleteDataServiceUriTemplate(control, "mspp_weblink", out weblinkDeleteUriTemplate))
 					{
 						AddServiceReference(control, weblinkDeleteUriTemplate, "xrm-uri-template xrm-entity-adx_weblink-delete-ref", container);
 					}
 
 					// Output the service reference and schema map for site publishing states (required to create new web links).
-					AddEntitySetServiceReference(control, "adx_publishingstate", container);
-					AddEntitySetSchemaMap(control, "adx_publishingstate", container);
+					AddEntitySetServiceReference(control, "mspp_publishingstate", container);
+					AddEntitySetSchemaMap(control, "mspp_publishingstate", container);
 				}
 				else
 				{
@@ -393,46 +393,46 @@ namespace Adxstudio.Xrm.Web.UI
 					}
 
 					// Output the sitemarkers of the current web page into the DOM.
-					if (crmEntityName == "adx_webpage")
+					if (crmEntityName == "mspp_webpage")
 					{
-						foreach (var siteMarker in refetchedEntity.GetRelatedEntities(serviceContext, "adx_webpage_sitemarker"))
+						foreach (var siteMarker in refetchedEntity.GetRelatedEntities(serviceContext, "mspp_webpage_sitemarker"))
 						{
 							var siteMarkerRef = new HtmlGenericControl("span");
 
 							siteMarkerRef.Attributes["class"] = "xrm-entity-adx_webpage_sitemarker";
-							siteMarkerRef.Attributes["title"] = siteMarker.GetAttributeValue<string>("adx_name");
+							siteMarkerRef.Attributes["title"] = siteMarker.GetAttributeValue<string>("mspp_name");
 
 							container.Controls.Add(siteMarkerRef);
 						}
 
-						AddEntitySetSchemaMap(control, "adx_webfile", container);
+						AddEntitySetSchemaMap(control, "mspp_webfile", container);
 
 						EntitySetInfo entitySetInfo;
 
-						if (OrganizationServiceContextInfo.TryGet(GetCrmDataContextType(), "adx_communityforum", out entitySetInfo))
+						if (OrganizationServiceContextInfo.TryGet(GetCrmDataContextType(), "mspp_communityforum", out entitySetInfo))
 						{
-							AddEntitySetSchemaMap(control, "adx_communityforum", container);
-							AddEntitySetServiceReference(control, "adx_communityforum", container);
+							AddEntitySetSchemaMap(control, "mspp_communityforum", container);
+							AddEntitySetServiceReference(control, "mspp_communityforum", container);
 						}
 
-						if (OrganizationServiceContextInfo.TryGet(GetCrmDataContextType(), "adx_event", out entitySetInfo))
+						if (OrganizationServiceContextInfo.TryGet(GetCrmDataContextType(), "mspp_event", out entitySetInfo))
 						{
-							AddEntitySetSchemaMap(control, "adx_event", container);
-							AddEntitySetServiceReference(control, "adx_event", container);
+							AddEntitySetSchemaMap(control, "mspp_event", container);
+							AddEntitySetServiceReference(control, "mspp_event", container);
 						}
 
-						AddEntitySetSchemaMap(control, "adx_shortcut", container);
+						AddEntitySetSchemaMap(control, "mspp_shortcut", container);
 
-						AddEntitySetServiceReference(control, "adx_webpage", container);
-						AddEntitySetServiceReference(control, "adx_webfile", container);
+						AddEntitySetServiceReference(control, "mspp_webpage", container);
+						AddEntitySetServiceReference(control, "mspp_webfile", container);
 					
 						AddPublishingTransitionSetServiceReference(control, container);
 					}
 
-					if (entity.LogicalName == "adx_event")
+					if (entity.LogicalName == "mspp_event")
 					{
-						AddEntitySetSchemaMap(control, "adx_eventschedule", container);
-						AddPicklistMetadata(serviceContext, control, "adx_eventschedule", "adx_recurrence", container);
+						AddEntitySetSchemaMap(control, "mspp_eventschedule", container);
+						AddPicklistMetadata(serviceContext, control, "mspp_eventschedule", "mspp_recurrence", container);
 					}
 				}
 
@@ -602,7 +602,7 @@ namespace Adxstudio.Xrm.Web.UI
 				var serviceBaseUri = string.IsNullOrEmpty(control.CmsServiceBaseUri) ? GetCmsServiceBaseUri(PortalName) : control.CmsServiceBaseUri;
 				var context = GetServiceContext(PortalName);
 
-				var uri = GetCrmEntitySetDataServiceUri(context.GetType(), "adx_weblink", serviceBaseUri, "adx_weblinksetid", entity.Id);
+				var uri = GetCrmEntitySetDataServiceUri(context.GetType(), "mspp_weblink", serviceBaseUri, "mspp_weblinksetid", entity.Id);
 				serviceUri = AddWebsitePathToQuerystring(uri);
 
 				return !string.IsNullOrEmpty(serviceUri);
@@ -643,7 +643,7 @@ namespace Adxstudio.Xrm.Web.UI
 
 				if (website != null)
 				{
-					var partialUrl = website.GetAttributeValue<string>("adx_partialurl");
+					var partialUrl = website.GetAttributeValue<string>("mspp_partialurl");
 
 					if (!string.IsNullOrWhiteSpace(partialUrl))
 					{
@@ -676,10 +676,10 @@ namespace Adxstudio.Xrm.Web.UI
 			{
 				string serviceUri;
 
-				if (TryGetDataServiceCrmEntitySetUri(control, "adx_publishingstate", out serviceUri))
+				if (TryGetDataServiceCrmEntitySetUri(control, "mspp_publishingstate", out serviceUri))
 				{
 					serviceUri = serviceUri + "&FromStateID={adx_publishingstateid.Id}";
-					AddServiceReference(control, serviceUri, "xrm-entity-edit{0}-ref".FormatWith("adx_publishingstate"), container);
+					AddServiceReference(control, serviceUri, "xrm-entity-edit{0}-ref".FormatWith("mspp_publishingstate"), container);
 				}
 
 			}

@@ -96,7 +96,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				SetPortalName(entityForm, languageCode);
 			}
 
-			entityForm.EntityFormReference = new EntityReference("adx_entityform", guid);
+			entityForm.EntityFormReference = new EntityReference("mspp_entityform", guid);
 			entityForm.ItemSaved += OnItemSaved;
 			return entityForm;
 		}
@@ -120,7 +120,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				SetPortalName(webForm, languageCode);
 			}
 
-			webForm.WebFormReference = new EntityReference("adx_webform", guid);
+			webForm.WebFormReference = new EntityReference("mspp_webform", guid);
 			webForm.ItemSaved += OnItemSaved;
 			return webForm;
 		}

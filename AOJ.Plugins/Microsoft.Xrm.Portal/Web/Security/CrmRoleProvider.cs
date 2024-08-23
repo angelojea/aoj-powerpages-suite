@@ -202,7 +202,7 @@ namespace Microsoft.Xrm.Portal.Web.Security
 		public string PortalName { get; private set; }
 
 		/// <summary>
-		/// Gets the configured adx_website ID to which the operations of this provider are scoped.
+		/// Gets the configured mspp_website ID to which the operations of this provider are scoped.
 		/// </summary>
 		protected virtual EntityReference WebsiteID
 		{

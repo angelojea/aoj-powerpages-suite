@@ -94,28 +94,36 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		/// </summary>
 		public int OrganizationBaseLanguageCode { get; private set; }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="PortalSolutions" /> class.
-		/// </summary>
-		/// <param name="context">The context.</param>
-		public PortalSolutions(CrmDbContext context)
-		{
-			this.Solutions = LoadSolutions(context);
-			this.CrmVersion = LoadCrmVersion(context);
-			this.OrganizationBaseLanguageCode = LoadOrganizationBaseLanguage(context);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PortalSolutions" /> class.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        public PortalSolutions(CrmDbContext context)
+        {
+            this.Solutions = LoadSolutions(context);
+            this.CrmVersion = LoadCrmVersion(context);
+            this.OrganizationBaseLanguageCode = LoadOrganizationBaseLanguage(context);
 
-			this.baseSolutionCrmVersion = RetrieveSolutionVersion(SolutionNames.BaseSolutionName, this.Solutions);
+            this.baseSolutionCrmVersion = RetrieveSolutionVersion(SolutionNames.BaseSolutionName, this.Solutions);
 
-			this.TraceSolutions();
-		}
+            this.TraceSolutions();
+        }
 
-		/// <summary>
-		/// Loads CRM solutions
-		/// </summary>
-		/// <param name="solutionName">Name of the solution.</param>
-		/// <param name="solutions">All solutions.</param>
-		/// <returns> Returns crm version of the solution.</returns>
-		private static Version RetrieveSolutionVersion(string solutionName, IDictionary<string, SolutionInfo> solutions)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PortalSolutions" /> class.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        public PortalSolutions()
+        {
+        }
+
+        /// <summary>
+        /// Loads CRM solutions
+        /// </summary>
+        /// <param name="solutionName">Name of the solution.</param>
+        /// <param name="solutions">All solutions.</param>
+        /// <returns> Returns crm version of the solution.</returns>
+        private static Version RetrieveSolutionVersion(string solutionName, IDictionary<string, SolutionInfo> solutions)
 		{
 			SolutionInfo solution;
 

@@ -168,7 +168,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 				throw new ArgumentNullException("context");
 			}
 
-			var webFormSession = context.CreateQuery("adx_webformsession").Where(s => s.GetAttributeValue<OptionSetValue>("statecode") != null && s.GetAttributeValue<OptionSetValue>("statecode").Value == 0).OrderByDescending(s => s.GetAttributeValue<DateTime>("modifiedon")).FirstOrDefault(s => s.GetAttributeValue<EntityReference>("adx_webform") == new EntityReference("adx_webform", webFormId) && s.GetAttributeValue<EntityReference>("adx_contact") == new EntityReference("contact", contactId));
+			var webFormSession = context.CreateQuery("mspp_webformsession").Where(s => s.GetAttributeValue<OptionSetValue>("statecode") != null && s.GetAttributeValue<OptionSetValue>("statecode").Value == 0).OrderByDescending(s => s.GetAttributeValue<DateTime>("modifiedon")).FirstOrDefault(s => s.GetAttributeValue<EntityReference>("mspp_webform") == new EntityReference("mspp_webform", webFormId) && s.GetAttributeValue<EntityReference>("mspp_contact") == new EntityReference("contact", contactId));
 
 			return GetSessionHistory(webFormSession);
 		}
@@ -188,7 +188,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 				throw new ArgumentNullException("context");
 			}
 
-			var webFormSession = context.CreateQuery("adx_webformsession").Where(s => s.GetAttributeValue<OptionSetValue>("statecode") != null && s.GetAttributeValue<OptionSetValue>("statecode").Value == 0).OrderByDescending(s => s.GetAttributeValue<DateTime>("modifiedon")).FirstOrDefault(s => s.GetAttributeValue<EntityReference>("adx_webform") == new EntityReference("adx_webform", webFormId) && s.GetAttributeValue<EntityReference>("adx_systemuser") == new EntityReference("systemuser", systemUserId));
+			var webFormSession = context.CreateQuery("mspp_webformsession").Where(s => s.GetAttributeValue<OptionSetValue>("statecode") != null && s.GetAttributeValue<OptionSetValue>("statecode").Value == 0).OrderByDescending(s => s.GetAttributeValue<DateTime>("modifiedon")).FirstOrDefault(s => s.GetAttributeValue<EntityReference>("mspp_webform") == new EntityReference("mspp_webform", webFormId) && s.GetAttributeValue<EntityReference>("mspp_systemuser") == new EntityReference("systemuser", systemUserId));
 
 			return GetSessionHistory(webFormSession);
 		}
@@ -208,7 +208,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 				throw new ArgumentNullException("context");
 			}
 
-			var webFormSession = context.CreateQuery("adx_webformsession").Where(s => s.GetAttributeValue<OptionSetValue>("statecode") != null && s.GetAttributeValue<OptionSetValue>("statecode").Value == 0).OrderByDescending(s => s.GetAttributeValue<DateTime>("modifiedon")).FirstOrDefault(s => s.GetAttributeValue<EntityReference>("adx_webform") == new EntityReference("adx_webform", webFormId) && s.GetAttributeValue<string>("adx_useridentityname") == userIdentityName);
+			var webFormSession = context.CreateQuery("mspp_webformsession").Where(s => s.GetAttributeValue<OptionSetValue>("statecode") != null && s.GetAttributeValue<OptionSetValue>("statecode").Value == 0).OrderByDescending(s => s.GetAttributeValue<DateTime>("modifiedon")).FirstOrDefault(s => s.GetAttributeValue<EntityReference>("mspp_webform") == new EntityReference("mspp_webform", webFormId) && s.GetAttributeValue<string>("mspp_useridentityname") == userIdentityName);
 
 			return GetSessionHistory(webFormSession);
 		}
@@ -228,7 +228,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 				throw new ArgumentNullException("context");
 			}
 
-			var webFormSession = context.CreateQuery("adx_webformsession").Where(s => s.GetAttributeValue<OptionSetValue>("statecode") != null && s.GetAttributeValue<OptionSetValue>("statecode").Value == 0).OrderByDescending(s => s.GetAttributeValue<DateTime>("modifiedon")).FirstOrDefault(s => s.GetAttributeValue<EntityReference>("adx_webform") == new EntityReference("adx_webform", webFormId) && s.GetAttributeValue<string>("adx_anonymousidentification") == anonymousIdentification);
+			var webFormSession = context.CreateQuery("mspp_webformsession").Where(s => s.GetAttributeValue<OptionSetValue>("statecode") != null && s.GetAttributeValue<OptionSetValue>("statecode").Value == 0).OrderByDescending(s => s.GetAttributeValue<DateTime>("modifiedon")).FirstOrDefault(s => s.GetAttributeValue<EntityReference>("mspp_webform") == new EntityReference("mspp_webform", webFormId) && s.GetAttributeValue<string>("mspp_anonymousidentification") == anonymousIdentification);
 
 			return GetSessionHistory(webFormSession);
 		}
@@ -247,7 +247,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 				throw new ArgumentNullException("context");
 			}
 
-			var webFormSession = context.CreateQuery("adx_webformsession").FirstOrDefault(s => s.GetAttributeValue<OptionSetValue>("statecode") != null && s.GetAttributeValue<OptionSetValue>("statecode").Value == 0 && s.GetAttributeValue<EntityReference>("adx_webform") == new EntityReference("adx_webform", webFormId) && s.GetAttributeValue<string>("adx_primaryrecordid") == recordId.ToString());
+			var webFormSession = context.CreateQuery("mspp_webformsession").FirstOrDefault(s => s.GetAttributeValue<OptionSetValue>("statecode") != null && s.GetAttributeValue<OptionSetValue>("statecode").Value == 0 && s.GetAttributeValue<EntityReference>("mspp_webform") == new EntityReference("mspp_webform", webFormId) && s.GetAttributeValue<string>("mspp_primaryrecordid") == recordId.ToString());
 
 			return GetSessionHistory(webFormSession);
 		}
@@ -265,7 +265,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 				throw new ArgumentNullException("context");
 			}
 
-			var webFormSession = context.CreateQuery("adx_webformsession").FirstOrDefault(s => s.GetAttributeValue<OptionSetValue>("statecode") != null && s.GetAttributeValue<OptionSetValue>("statecode").Value == 0 && s.GetAttributeValue<Guid>("adx_webformsessionid") == sessionID);
+			var webFormSession = context.CreateQuery("mspp_webformsession").FirstOrDefault(s => s.GetAttributeValue<OptionSetValue>("statecode") != null && s.GetAttributeValue<OptionSetValue>("statecode").Value == 0 && s.GetAttributeValue<Guid>("mspp_webformsessionid") == sessionID);
 
 			return GetSessionHistory(webFormSession);
 		}
@@ -280,31 +280,31 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 			var sessionHistory = new SessionHistory
 									{
 										Id = webFormSession.Id,
-										WebFormId = webFormSession.GetAttributeValue<EntityReference>("adx_webform") == null ? Guid.Empty : webFormSession.GetAttributeValue<EntityReference>("adx_webform").Id
+										WebFormId = webFormSession.GetAttributeValue<EntityReference>("mspp_webform") == null ? Guid.Empty : webFormSession.GetAttributeValue<EntityReference>("mspp_webform").Id
 									};
 
-			var currentStep = webFormSession.GetAttributeValue<EntityReference>("adx_currentwebformstep");
+			var currentStep = webFormSession.GetAttributeValue<EntityReference>("mspp_currentwebformstep");
 
 			if (currentStep == null)
 			{
-				throw new ApplicationException("adx_webformsession.adx_currentwebformstep is null.");
+				throw new ApplicationException("mspp_webformsession.adx_currentwebformstep is null.");
 			}
 
 			sessionHistory.CurrentStepId = currentStep.Id;
 
-			var currentStepIndex = webFormSession.GetAttributeValue<int?>("adx_currentstepindex");
+			var currentStepIndex = webFormSession.GetAttributeValue<int?>("mspp_currentstepindex");
 
 			var stepIndex = currentStepIndex ?? 0;
 
 			if (currentStepIndex == null)
 			{
-				throw new ApplicationException("adx_webformsession.adx_currentwebformstep is null.");
+				throw new ApplicationException("mspp_webformsession.adx_currentwebformstep is null.");
 			}
 
 			sessionHistory.CurrentStepIndex = stepIndex;
 
 			Guid recordGuid;
-			var recordid = webFormSession.GetAttributeValue<string>("adx_primaryrecordid");
+			var recordid = webFormSession.GetAttributeValue<string>("mspp_primaryrecordid");
 
 			sessionHistory.PrimaryRecord = new SessionHistory.ReferenceEntity();
 
@@ -313,29 +313,29 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 				sessionHistory.PrimaryRecord.ID = recordGuid;
 			}
 
-			sessionHistory.PrimaryRecord.LogicalName = webFormSession.GetAttributeValue<string>("adx_primaryrecordentitylogicalname") ?? string.Empty;
+			sessionHistory.PrimaryRecord.LogicalName = webFormSession.GetAttributeValue<string>("mspp_primaryrecordentitylogicalname") ?? string.Empty;
 
-			sessionHistory.PrimaryRecord.PrimaryKeyLogicalName = webFormSession.GetAttributeValue<string>("adx_primaryrecordentitykeyname") ?? string.Empty;
+			sessionHistory.PrimaryRecord.PrimaryKeyLogicalName = webFormSession.GetAttributeValue<string>("mspp_primaryrecordentitykeyname") ?? string.Empty;
 			
-			var contact = webFormSession.GetAttributeValue<EntityReference>("adx_contact");
+			var contact = webFormSession.GetAttributeValue<EntityReference>("mspp_contact");
 
 			sessionHistory.ContactId = contact != null ? contact.Id : Guid.Empty;
 
-			var quote = webFormSession.GetAttributeValue<EntityReference>("adx_quoteid");
+			var quote = webFormSession.GetAttributeValue<EntityReference>("mspp_quoteid");
 
 			sessionHistory.QuoteId = quote != null ? quote.Id : Guid.Empty;
 
-			var systemUser = webFormSession.GetAttributeValue<EntityReference>("adx_systemuser");
+			var systemUser = webFormSession.GetAttributeValue<EntityReference>("mspp_systemuser");
 
 			sessionHistory.SystemUserId = systemUser != null ? systemUser.Id : Guid.Empty;
 
-			sessionHistory.AnonymousIdentification = webFormSession.GetAttributeValue<string>("adx_anonymousidentification") ?? string.Empty;
+			sessionHistory.AnonymousIdentification = webFormSession.GetAttributeValue<string>("mspp_anonymousidentification") ?? string.Empty;
 
-			sessionHistory.StepHistory = ConvertJsonStringToList(webFormSession.GetAttributeValue<string>("adx_stephistory"));
+			sessionHistory.StepHistory = ConvertJsonStringToList(webFormSession.GetAttributeValue<string>("mspp_stephistory"));
 
-			sessionHistory.UserHostAddress = webFormSession.GetAttributeValue<string>("adx_userhostaddress") ?? string.Empty;
+			sessionHistory.UserHostAddress = webFormSession.GetAttributeValue<string>("mspp_userhostaddress") ?? string.Empty;
 
-			sessionHistory.UserIdentityName = webFormSession.GetAttributeValue<string>("adx_useridentityname") ?? string.Empty;
+			sessionHistory.UserIdentityName = webFormSession.GetAttributeValue<string>("mspp_useridentityname") ?? string.Empty;
 
 			return sessionHistory;
 		}
@@ -352,72 +352,72 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 				return Guid.Empty;
 			}
 
-			var webFormSession = sessionHistory.Id != Guid.Empty ? context.CreateQuery("adx_webformsession").FirstOrDefault(s => s.GetAttributeValue<OptionSetValue>("statecode") != null && s.GetAttributeValue<OptionSetValue>("statecode").Value == 0 && s.GetAttributeValue<Guid>("adx_webformsessionid") == sessionHistory.Id) : null;
+			var webFormSession = sessionHistory.Id != Guid.Empty ? context.CreateQuery("mspp_webformsession").FirstOrDefault(s => s.GetAttributeValue<OptionSetValue>("statecode") != null && s.GetAttributeValue<OptionSetValue>("statecode").Value == 0 && s.GetAttributeValue<Guid>("mspp_webformsessionid") == sessionHistory.Id) : null;
 
 			var addNew = webFormSession == null;
 
 			if (addNew)
 			{
-				webFormSession = new Entity("adx_webformsession");
+				webFormSession = new Entity("mspp_webformsession");
 
 				if (sessionHistory.WebFormId != Guid.Empty)
 				{
-					webFormSession.Attributes["adx_webform"] = new EntityReference("adx_webform", sessionHistory.WebFormId);
+					webFormSession.Attributes["mspp_webform"] = new EntityReference("mspp_webform", sessionHistory.WebFormId);
 				}
 			}
 
 			if (sessionHistory.PrimaryRecord != null && sessionHistory.PrimaryRecord.ID != Guid.Empty)
 			{
-				webFormSession.Attributes["adx_primaryrecordid"] = sessionHistory.PrimaryRecord.ID.ToString();
+				webFormSession.Attributes["mspp_primaryrecordid"] = sessionHistory.PrimaryRecord.ID.ToString();
 			}
 
 			if (sessionHistory.CurrentStepId != Guid.Empty)
 			{
-				webFormSession.Attributes["adx_currentwebformstep"] = new EntityReference("adx_webformstep", sessionHistory.CurrentStepId);
+				webFormSession.Attributes["mspp_currentwebformstep"] = new EntityReference("mspp_webformstep", sessionHistory.CurrentStepId);
 			}
 
 			if (sessionHistory.PrimaryRecord != null && !string.IsNullOrWhiteSpace(sessionHistory.PrimaryRecord.LogicalName))
 			{
-				webFormSession.Attributes["adx_primaryrecordentitylogicalname"] = sessionHistory.PrimaryRecord.LogicalName;
+				webFormSession.Attributes["mspp_primaryrecordentitylogicalname"] = sessionHistory.PrimaryRecord.LogicalName;
 			}
 
 			if (sessionHistory.PrimaryRecord != null && !string.IsNullOrWhiteSpace(sessionHistory.PrimaryRecord.PrimaryKeyLogicalName))
 			{
-				webFormSession.Attributes["adx_primaryrecordentitykeyname"] = sessionHistory.PrimaryRecord.PrimaryKeyLogicalName;
+				webFormSession.Attributes["mspp_primaryrecordentitykeyname"] = sessionHistory.PrimaryRecord.PrimaryKeyLogicalName;
 			}
 
-			webFormSession.Attributes["adx_currentstepindex"] = sessionHistory.CurrentStepIndex;
+			webFormSession.Attributes["mspp_currentstepindex"] = sessionHistory.CurrentStepIndex;
 
 			if (sessionHistory.ContactId != Guid.Empty)
 			{
-				webFormSession.Attributes["adx_contact"] = new EntityReference("contact", sessionHistory.ContactId);
+				webFormSession.Attributes["mspp_contact"] = new EntityReference("contact", sessionHistory.ContactId);
 			}
 
 			if (sessionHistory.QuoteId != Guid.Empty)
 			{
-				webFormSession.Attributes["adx_quoteid"] = new EntityReference("quote", sessionHistory.QuoteId);
+				webFormSession.Attributes["mspp_quoteid"] = new EntityReference("quote", sessionHistory.QuoteId);
 			}
 
 			if (sessionHistory.SystemUserId != Guid.Empty)
 			{
-				webFormSession.Attributes["adx_systemuser"] = new EntityReference("systemuser", sessionHistory.SystemUserId);
+				webFormSession.Attributes["mspp_systemuser"] = new EntityReference("systemuser", sessionHistory.SystemUserId);
 			}
 
 			if (!string.IsNullOrWhiteSpace(sessionHistory.AnonymousIdentification))
 			{
-				webFormSession.Attributes["adx_anonymousidentification"] = sessionHistory.AnonymousIdentification;
+				webFormSession.Attributes["mspp_anonymousidentification"] = sessionHistory.AnonymousIdentification;
 			}
 
-			webFormSession.Attributes["adx_stephistory"] = ConvertListToJsonString(sessionHistory.StepHistory);
+			webFormSession.Attributes["mspp_stephistory"] = ConvertListToJsonString(sessionHistory.StepHistory);
 
 			if (!string.IsNullOrWhiteSpace(sessionHistory.UserHostAddress))
 			{
-				webFormSession.Attributes["adx_userhostaddress"] = sessionHistory.UserHostAddress;
+				webFormSession.Attributes["mspp_userhostaddress"] = sessionHistory.UserHostAddress;
 			}
 
 			if (!string.IsNullOrWhiteSpace(sessionHistory.UserIdentityName))
 			{
-				webFormSession.Attributes["adx_useridentityname"] = sessionHistory.UserIdentityName;
+				webFormSession.Attributes["mspp_useridentityname"] = sessionHistory.UserIdentityName;
 			}
 			
 			if (addNew)
@@ -451,7 +451,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 				throw new ArgumentNullException("id");
 			}
 
-			var webFormSession = context.CreateQuery("adx_webformsession").FirstOrDefault(s => s.GetAttributeValue<Guid>("adx_webformsessionid") == id);
+			var webFormSession = context.CreateQuery("mspp_webformsession").FirstOrDefault(s => s.GetAttributeValue<Guid>("mspp_webformsessionid") == id);
 
 			if (webFormSession == null)
 			{

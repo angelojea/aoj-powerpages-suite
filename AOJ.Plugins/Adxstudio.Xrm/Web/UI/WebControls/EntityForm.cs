@@ -455,7 +455,14 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			return false;
 		}
 
-		protected override void CreateChildControls()
+        public CompositeControl AOJCreateChildControls()
+		{
+			CreateChildControls();
+			return this;
+        }
+
+
+        protected override void CreateChildControls()
 		{
 			Controls.Clear();
 
@@ -721,10 +728,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				//MappingFieldCollection = MappingFieldCollection,
 				ClientIDMode = ClientIDMode.Static,
 				FormConfiguration = formConfiguration,
-				//EnableEntityPermissions = EnableEntityPermissions
+				EnableEntityPermissions = false,
 			};
+			formView.AojInit();
+			formView.AojCreateChildControls(this);
 
-			if (formActionMetadata != null && formActionMetadata.ShowSaveChangesWarningOnExit.GetValueOrDefault(false))
+
+            if (formActionMetadata != null && formActionMetadata.ShowSaveChangesWarningOnExit.GetValueOrDefault(false))
 			{
 				formView.ConfirmOnExit = formActionMetadata.ShowSaveChangesWarningOnExit.GetValueOrDefault(false);
 				if (formView.ConfirmOnExit && formActionMetadata.SaveChangesWarningMessage != null)
@@ -776,21 +786,6 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				formObject.AttachFileRestrictAccept, formObject.AttachFileTypeErrorMessage, maxFileSize,
 				formObject.AttachFileSizeErrorMessage, acceptExtensionTypes);
 
-			// Utilize whitelist of PortalTimeline enabled portals.
-			// This allows fallback to the Notes entity which is CRM OOB entity
-			//if (PortalTimeline.EnabledPortalsByWebsiteGuid.Contains(portalContext.Website.Id))
-			//{
-			//	// Get the value from the field since field if not null or default to Portal Comment if not specified
-			//	_attachmentSaveOption = formObject.AttachFileSaveOption == null
-			//		? AttachFileSaveOption.PortalComment
-			//		: (AttachFileSaveOption)formObject.AttachFileSaveOption.Value;
-			//}
-			//else
-			//{
-			//	// Portal does not contain "AttachFileSaveOption" field since it's not PortalTimeline enabled.
-			//	// Fallback to Notes entity
-			//	_attachmentSaveOption = AttachFileSaveOption.Notes;
-   //         }
             _attachmentSaveOption = AttachFileSaveOption.Notes;
 
             switch (mode)
@@ -840,7 +835,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			formPanel.Controls.Add(formView);
 
-			var lastStep = formView.ActiveStepIndex == (formView.StepCount - 1);
+            var lastStep = formView.ActiveStepIndex == (formView.StepCount - 1);
 
 			var buttonContainer = AddActionBarContainerIfApplicable(formObject, formConfiguration, mode, submitButtonID, submitButtonCommandName, nextButtonID, previousButtonID);
 
@@ -914,18 +909,8 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			ApplyMetadataPrepopulateValues(context, formObject, formView);
 
-			if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.TelemetryFeatureUsage) && (Mode == FormViewMode.Edit || Mode == FormViewMode.Insert))
-			{
-                string action = formView.Mode.ToString();
-
-                if (formView.Mode.ToString() == "Insert")
-                {
-                    action = "create";
-                }
-				PortalFeatureTrace.TraceInstance.LogFeatureUsage(FeatureTraceCategory.Forms, this.Context, action.ToLower() + "_" + entityName, 1, new EntityReference(entitySourceDefinition.LogicalName, entitySourceDefinition.ID), action.ToLower());
-			}
-
 			OnFormLoad(this, new EntityFormLoadEventArgs(entitySourceDefinition));
+			
 			return this;
 		}
 
@@ -1536,6 +1521,8 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected void ApplyMetadataPrepopulateValues(OrganizationServiceContext context, IEntityForm entityform, Control container)
 		{
+			if (entityform.EntityFormMetadata == null) return;
+
 			var metadata = entityform.EntityFormMetadata.Where(m => m.GetAttributeValue<OptionSetValue>("mspp_prepopulatetype") != null).ToList();
 
 			if (!metadata.Any()) return;

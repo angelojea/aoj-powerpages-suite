@@ -40,7 +40,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					{
 						var contentFormatter = PortalCrmConfigurationManager.CreateDependencyProvider(PortalName).GetDependency<ICrmEntityContentFormatter>(GetType().FullName) ?? new PassthroughCrmEntityContentFormatter();
 
-						Text = contentFormatter.Format(target.Entity.GetAttributeValue<string>("adx_name"), target.Entity, this);
+						Text = contentFormatter.Format(target.Entity.GetAttributeValue<string>("mspp_name"), target.Entity, this);
 					}
 				}
 				else if (AutoHiddenIfAbsent ?? true)

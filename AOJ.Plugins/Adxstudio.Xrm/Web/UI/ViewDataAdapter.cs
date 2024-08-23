@@ -1243,7 +1243,7 @@ namespace Adxstudio.Xrm.Web.UI
 				FromAttribute = "activityid",
 				ToAttribute = "activityid",
 				Type = JoinOperator.Inner,
-				Name = "adx_portalcomment"
+				Name = "mspp_portalcomment"
 			});
 		}
 
@@ -1453,7 +1453,7 @@ namespace Adxstudio.Xrm.Web.UI
 
 			var website = Dependencies.GetWebsite();
 
-			foreach (var condition in GetConditions(fetchEntity).Where(condition => condition.UiType == "adx_website"))
+			foreach (var condition in GetConditions(fetchEntity).Where(condition => condition.UiType == "mspp_website"))
 			{
 				condition.Value = website == null ? Guid.Empty : website.Id;
 			}
@@ -2201,7 +2201,7 @@ namespace Adxstudio.Xrm.Web.UI
 		{
 			{ "product", new OpportunityProductExistingProductLookupViewSpecialCase() },
 			{ "uom", new OpportunityProductUnitLookupViewSpecialCase() },
-			{ "adx_portallanguage", new PortalLanguageViewSpecialCase() }
+			{ "mspp_portallanguage", new PortalLanguageViewSpecialCase() }
 		};
 	}
 }

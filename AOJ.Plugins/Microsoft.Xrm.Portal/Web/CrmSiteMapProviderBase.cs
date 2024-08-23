@@ -172,8 +172,8 @@ namespace Microsoft.Xrm.Portal.Web
 		{
 			return GetWebPageNode(context, page, statusCode, p =>
 			{
-				var pageTemplate = p.GetRelatedEntity(context, "adx_pagetemplate_webpage");
-				var webPageID = p.GetAttributeValue<Guid>("adx_webpageid");
+				var pageTemplate = p.GetRelatedEntity(context, "mspp_pagetemplate_webpage");
+				var webPageID = p.GetAttributeValue<Guid>("mspp_webpageid");
 
 				if (pageTemplate == null)
 				{
@@ -181,7 +181,7 @@ namespace Microsoft.Xrm.Portal.Web
 				}
 
 				// MSBug #120133: Can't URL encode--used for URL rewrite.
-				return "{0}?pageid={1}".FormatWith(pageTemplate.GetAttributeValue<string>("adx_rewriteurl"), webPageID);
+				return "{0}?pageid={1}".FormatWith(pageTemplate.GetAttributeValue<string>("mspp_rewriteurl"), webPageID);
 			});
 		}
 
@@ -193,7 +193,7 @@ namespace Microsoft.Xrm.Portal.Web
 
 			var url = context.GetUrl(page);
 
-			var title = page.GetAttributeValue<string>("adx_title");
+			var title = page.GetAttributeValue<string>("mspp_title");
 
 			// apply a detached clone of the entity since the SiteMapNode is out of the scope of the current OrganizationServiceContext
 
@@ -203,8 +203,8 @@ namespace Microsoft.Xrm.Portal.Web
 				this,
 				url,
 				url,
-				contentFormatter.Format(string.IsNullOrEmpty(title) ? page.GetAttributeValue<string>("adx_name") : title, page, this),
-				contentFormatter.Format(page.GetAttributeValue<string>("adx_summary"), page, this),
+				contentFormatter.Format(string.IsNullOrEmpty(title) ? page.GetAttributeValue<string>("mspp_name") : title, page, this),
+				contentFormatter.Format(page.GetAttributeValue<string>("mspp_summary"), page, this),
 				rewriteUrl,
 				page.GetAttributeValue<DateTime?>("modifiedon").GetValueOrDefault(DateTime.UtcNow),
 				pageClone,
@@ -215,8 +215,8 @@ namespace Microsoft.Xrm.Portal.Web
 		{
 			return GetWebPageNode(context, page, statusCode, p =>
 			{
-				var pageTemplate = p.GetRelatedEntity(context, "adx_pagetemplate_webpage");
-				var webPageID = p.GetAttributeValue<Guid>("adx_webpageid");
+				var pageTemplate = p.GetRelatedEntity(context, "mspp_pagetemplate_webpage");
+				var webPageID = p.GetAttributeValue<Guid>("mspp_webpageid");
 
 				if (pageTemplate == null)
 				{
@@ -224,7 +224,7 @@ namespace Microsoft.Xrm.Portal.Web
 				}
 
 				return "{0}?pageid={1}&ReturnUrl={2}".FormatWith(
-					pageTemplate.GetAttributeValue<string>("adx_rewriteurl"),
+					pageTemplate.GetAttributeValue<string>("mspp_rewriteurl"),
 					webPageID,
 					Encoder.UrlEncode(HttpContext.Current.Request.Url.PathAndQuery));
 			});

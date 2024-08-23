@@ -250,7 +250,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 
-			var supportRequest = context.CreateQuery("adx_supportrequest").FirstOrDefault(o => o.GetAttributeValue<Guid>("adx_supportrequestid") == SupportRequestID);
+			var supportRequest = context.CreateQuery("mspp_supportrequest").FirstOrDefault(o => o.GetAttributeValue<Guid>("mspp_supportrequestid") == SupportRequestID);
 
 			if (supportRequest == null)
 			{
@@ -259,7 +259,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				return;
 			}
 
-			var product = supportRequest.GetAttributeValue<EntityReference>("adx_product");
+			var product = supportRequest.GetAttributeValue<EntityReference>("mspp_product");
 
 			ProductID = product == null ? Guid.Empty : product.Id;
 
@@ -316,10 +316,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			{
 				EnableReselectCustomerButton = true;
 				var snippetHelpDeskEntitlementSelectCustomer = new Literal { ID = "SelectCustomer", Text = DefaultSnippetHelpDeskEntitlementSelectCustomer };
-				var snippet = context.CreateQuery("adx_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("adx_name") == "Help Desk Entitlement Select Customer");
+				var snippet = context.CreateQuery("mspp_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("mspp_name") == "Help Desk Entitlement Select Customer");
 				if (snippet != null)
 				{
-					snippetHelpDeskEntitlementSelectCustomer.Text = !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("adx_value")) ? snippet.GetAttributeValue<string>("adx_value") : DefaultSnippetHelpDeskEntitlementSelectCustomer;
+					snippetHelpDeskEntitlementSelectCustomer.Text = !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("mspp_value")) ? snippet.GetAttributeValue<string>("mspp_value") : DefaultSnippetHelpDeskEntitlementSelectCustomer;
 				}
 				var panelHelpDeskEntitlementSelectCustomer = new Panel { ID = "EntitlementSelectCustomerPanel" };
 				panelHelpDeskEntitlementSelectCustomer.Controls.Add(snippetHelpDeskEntitlementSelectCustomer);
@@ -438,15 +438,15 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				SupportPlanID = Guid.Empty;
 				// Multiple plans found so prompt for single plan selection
 				var snippetHelpDeskEntitlementSelectPlan = new Literal { ID = "SelectPlan", Text = DefaultSnippetHelpDeskEntitlementSelectPlan };
-				var snippet = context.CreateQuery("adx_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("adx_name") == "Help Desk Entitlement Select Plan");
+				var snippet = context.CreateQuery("mspp_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("mspp_name") == "Help Desk Entitlement Select Plan");
 				if (snippet != null)
 				{
-					snippetHelpDeskEntitlementSelectPlan.Text = !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("adx_value")) ? snippet.GetAttributeValue<string>("adx_value") : DefaultSnippetHelpDeskEntitlementSelectPlan;
+					snippetHelpDeskEntitlementSelectPlan.Text = !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("mspp_value")) ? snippet.GetAttributeValue<string>("mspp_value") : DefaultSnippetHelpDeskEntitlementSelectPlan;
 				}
 				var panelHelpDeskEntitlementSelectPlan = new Panel { ID = "EntitlementSelectPlanPanel" };
 				panelHelpDeskEntitlementSelectPlan.Controls.Add(snippetHelpDeskEntitlementSelectPlan);
 				var p = new HtmlGenericControl("p");
-				var supportPlans = plans.OrderBy(o => o.GetAttributeValue<string>("adx_name")).Select(o => new { DataValueField = o.GetAttributeValue<Guid>("adx_supportplanid").ToString(), DataTextField = string.Format("{0}: Prepaid Incidents Remaining {1}", o.GetAttributeValue<string>("adx_name"), o.GetAttributeValue<int>("adx_allotmentsremaining")) });
+				var supportPlans = plans.OrderBy(o => o.GetAttributeValue<string>("mspp_name")).Select(o => new { DataValueField = o.GetAttributeValue<Guid>("mspp_supportplanid").ToString(), DataTextField = string.Format("{0}: Prepaid Incidents Remaining {1}", o.GetAttributeValue<string>("mspp_name"), o.GetAttributeValue<int>("mspp_allotmentsremaining")) });
 				var planList = new RadioButtonList
 				{
 					ID = "PlanDropDown",
@@ -487,10 +487,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				// No plan found so display no plan message
 				SupportPlanID = Guid.Empty;
 				var snippetHelpDeskEntitlementNoPlan = new Literal { ID = "NoPlan", Text = DefaultSnippetHelpDeskEntitlementNoPlan };
-				var snippet = context.CreateQuery("adx_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("adx_name") == "Help Desk Entitlement No Plan");
+				var snippet = context.CreateQuery("mspp_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("mspp_name") == "Help Desk Entitlement No Plan");
 				if (snippet != null)
 				{
-					snippetHelpDeskEntitlementNoPlan.Text = !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("adx_value")) ? snippet.GetAttributeValue<string>("adx_value") : DefaultSnippetHelpDeskEntitlementNoPlan;
+					snippetHelpDeskEntitlementNoPlan.Text = !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("mspp_value")) ? snippet.GetAttributeValue<string>("mspp_value") : DefaultSnippetHelpDeskEntitlementNoPlan;
 				}
 				var panelHelpDeskEntitlementNoPlan = new Panel { ID = "EntitlementNoPanel" };
 				panelHelpDeskEntitlementNoPlan.Controls.Add(snippetHelpDeskEntitlementNoPlan);
@@ -506,7 +506,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				return;
 			}
 			var context = new OrganizationServiceContext(new OrganizationService("Xrm"));
-			var plan = context.CreateQuery("adx_supportplan").FirstOrDefault(o => o.GetAttributeValue<Guid>("adx_supportplanid") == planid);
+			var plan = context.CreateQuery("mspp_supportplan").FirstOrDefault(o => o.GetAttributeValue<Guid>("mspp_supportplanid") == planid);
 			if (plan == null)
 			{
 				return;
@@ -519,14 +519,14 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			Controls.Clear();
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 			SupportPlanID = plan.Id;
-			PrepaidIncidentsAvailable = plan.GetAttributeValue<int?>("adx_allotmentsremaining") ?? 0;
-			var supportPlanName = plan.GetAttributeValue<string>("adx_name") ?? DefaultSupportPlanName;
+			PrepaidIncidentsAvailable = plan.GetAttributeValue<int?>("mspp_allotmentsremaining") ?? 0;
+			var supportPlanName = plan.GetAttributeValue<string>("mspp_name") ?? DefaultSupportPlanName;
 			var snippetHelpDeskEntitlementValid = new Literal { ID = "Valid", Text = string.Format(DefaultSnippetHelpDeskEntitlementValid, supportPlanName, PrepaidIncidentsAvailable, PrepaidIncidentsRequired) };
-			var snippet = context.CreateQuery("adx_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("adx_name") == "Help Desk Entitlement Valid");
+			var snippet = context.CreateQuery("mspp_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("mspp_name") == "Help Desk Entitlement Valid");
 			if (snippet != null)
 			{
-				snippetHelpDeskEntitlementValid.Text = !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("adx_value"))
-														? string.Format(snippet.GetAttributeValue<string>("adx_value"), supportPlanName,
+				snippetHelpDeskEntitlementValid.Text = !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("mspp_value"))
+														? string.Format(snippet.GetAttributeValue<string>("mspp_value"), supportPlanName,
 																		PrepaidIncidentsAvailable, PrepaidIncidentsRequired)
 														: string.Format(DefaultSnippetHelpDeskEntitlementValid, supportPlanName,
 																		PrepaidIncidentsAvailable, PrepaidIncidentsRequired);
@@ -541,10 +541,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 			var snippetHelpDeskEntitlementSupportRequestIdError = new Literal { ID = "SupportRequestIdError", Text = DefaultSnippetHelpDeskEntitlementError };
-			var snippet = context.CreateQuery("adx_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("adx_name") == "Help Desk Entitlement Support Request ID Error");
+			var snippet = context.CreateQuery("mspp_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("mspp_name") == "Help Desk Entitlement Support Request ID Error");
 			if (snippet != null)
 			{
-				snippetHelpDeskEntitlementSupportRequestIdError.Text = !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("adx_value")) ? snippet.GetAttributeValue<string>("adx_value") : DefaultSnippetHelpDeskEntitlementError;
+				snippetHelpDeskEntitlementSupportRequestIdError.Text = !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("mspp_value")) ? snippet.GetAttributeValue<string>("mspp_value") : DefaultSnippetHelpDeskEntitlementError;
 			}
 			var panelHelpDeskEntitlementSupportRequestIdError = new Panel { ID = "EntitlementSupportRequestIdErrorPanel" };
 			panelHelpDeskEntitlementSupportRequestIdError.Controls.Add(snippetHelpDeskEntitlementSupportRequestIdError);
@@ -556,10 +556,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 			var snippetHelpDeskEntitlementProductIdError = new Literal { ID = "ProductIdError", Text = DefaultSnippetHelpDeskEntitlementError };
-			var snippet = context.CreateQuery("adx_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("adx_name") == "Help Desk Entitlement Product ID Error");
+			var snippet = context.CreateQuery("mspp_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("mspp_name") == "Help Desk Entitlement Product ID Error");
 			if (snippet != null)
 			{
-				snippetHelpDeskEntitlementProductIdError.Text = !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("adx_value")) ? snippet.GetAttributeValue<string>("adx_value") : DefaultSnippetHelpDeskEntitlementError;
+				snippetHelpDeskEntitlementProductIdError.Text = !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("mspp_value")) ? snippet.GetAttributeValue<string>("mspp_value") : DefaultSnippetHelpDeskEntitlementError;
 			}
 			var panelHelpDeskEntitlementProductIdError = new Panel { ID = "EntitlementProductIdErrorPanel" };
 			panelHelpDeskEntitlementProductIdError.Controls.Add(snippetHelpDeskEntitlementProductIdError);
@@ -571,10 +571,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 			var snippetHelpDeskEntitlementPermissionDenied = new Literal { ID = "EntitlementPermissionDenied", Text = DefaultSnippetHelpDeskEntitlementPermissionDenied };
-			var snippet = context.CreateQuery("adx_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("adx_name") == "Help Desk Entitlement Permission Denied");
+			var snippet = context.CreateQuery("mspp_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("mspp_name") == "Help Desk Entitlement Permission Denied");
 			if (snippet != null)
 			{
-				snippetHelpDeskEntitlementPermissionDenied.Text = !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("adx_value")) ? snippet.GetAttributeValue<string>("adx_value") : DefaultSnippetHelpDeskEntitlementPermissionDenied;
+				snippetHelpDeskEntitlementPermissionDenied.Text = !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("mspp_value")) ? snippet.GetAttributeValue<string>("mspp_value") : DefaultSnippetHelpDeskEntitlementPermissionDenied;
 			}
 			var panelHelpDeskEntitlementPermissionDenied = new Panel { ID = "EntitlementPermissionDeniedPanel" };
 			panelHelpDeskEntitlementPermissionDenied.Controls.Add(snippetHelpDeskEntitlementPermissionDenied);
@@ -586,10 +586,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 			var snippetHelpDeskEntitlementError = new Literal { ID = "Error", Text = DefaultSnippetHelpDeskEntitlementError };
-			var snippet = context.CreateQuery("adx_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("adx_name") == "Help Desk Entitlement Error");
+			var snippet = context.CreateQuery("mspp_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("mspp_name") == "Help Desk Entitlement Error");
 			if (snippet != null)
 			{
-				snippetHelpDeskEntitlementError.Text = !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("adx_value")) ? snippet.GetAttributeValue<string>("adx_value") : DefaultSnippetHelpDeskEntitlementError;
+				snippetHelpDeskEntitlementError.Text = !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("mspp_value")) ? snippet.GetAttributeValue<string>("mspp_value") : DefaultSnippetHelpDeskEntitlementError;
 			}
 			var panelHelpDeskEntitlementError = new Panel { ID = "EntitlementErrorPanel" };
 			panelHelpDeskEntitlementError.Controls.Add(snippetHelpDeskEntitlementError);
@@ -650,10 +650,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			if (EnableReselectCustomerButton)
 			{
 				var text = DefaultReselectCustomerButtonText;
-				var snippet = context.CreateQuery("adx_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("adx_name") == "Help Desk Entitlement Reselect Customer Button Text");
-				if (snippet != null && !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("adx_value")))
+				var snippet = context.CreateQuery("mspp_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("mspp_name") == "Help Desk Entitlement Reselect Customer Button Text");
+				if (snippet != null && !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("mspp_value")))
 				{
-					text = snippet.GetAttributeValue<string>("adx_value");
+					text = snippet.GetAttributeValue<string>("mspp_value");
 				}
 				var reselectCustomerButton = new Button { Text = text, CausesValidation = false, CssClass = "btn btn-default" };
 				reselectCustomerButton.Click += ReselectCustomerButton_Click;
@@ -662,10 +662,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			if (NumberOfPlans > 1 && SupportPlanID != Guid.Empty)
 			{
 				var text = DefaultReselectPlanButtonText;
-				var snippet = context.CreateQuery("adx_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("adx_name") == "Help Desk Entitlement Reselect Plan Button Text");
-				if (snippet != null && !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("adx_value")))
+				var snippet = context.CreateQuery("mspp_contentsnippet").FirstOrDefault(c => c.GetAttributeValue<string>("mspp_name") == "Help Desk Entitlement Reselect Plan Button Text");
+				if (snippet != null && !string.IsNullOrWhiteSpace(snippet.GetAttributeValue<string>("mspp_value")))
 				{
-					text = snippet.GetAttributeValue<string>("adx_value");
+					text = snippet.GetAttributeValue<string>("mspp_value");
 				}
 				var reselectPlanButton = new Button { Text = text, CausesValidation = false, CssClass = "btn btn-default" };
 				reselectPlanButton.Click += ReselectPlanButton_Click;
@@ -706,19 +706,19 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			{
 				// Update existing entity
 				var sourceEntity = new Entity(control.CurrentStepEntityLogicalName) { Id = control.CurrentStepEntityID };
-				sourceEntity["adx_prepaidincidentscurrentlyavailable"] = PrepaidIncidentsAvailable < 0 ? 0 : PrepaidIncidentsAvailable;
-				sourceEntity["adx_prepaidincidentsrequired"] = PrepaidIncidentsRequired < 0 ? 0 : PrepaidIncidentsRequired;
+				sourceEntity["mspp_prepaidincidentscurrentlyavailable"] = PrepaidIncidentsAvailable < 0 ? 0 : PrepaidIncidentsAvailable;
+				sourceEntity["mspp_prepaidincidentsrequired"] = PrepaidIncidentsRequired < 0 ? 0 : PrepaidIncidentsRequired;
 				if (SupportPlanID != Guid.Empty)
 				{
-					sourceEntity["adx_supportplan"] = new EntityReference("adx_supportplan", SupportPlanID);
+					sourceEntity["mspp_supportplan"] = new EntityReference("mspp_supportplan", SupportPlanID);
 				}
 				else
 				{
-					sourceEntity["adx_paymentrequired"] = true;
+					sourceEntity["mspp_paymentrequired"] = true;
 				}
 				if (Customer != null && Customer.LogicalName == "account")
 				{
-					sourceEntity["adx_customer"] = new EntityReference("account", Customer.Id);
+					sourceEntity["mspp_customer"] = new EntityReference("account", Customer.Id);
 				}
 				context.Attach(sourceEntity);
 				context.UpdateObject(sourceEntity);
@@ -727,19 +727,19 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			else
 			{
 				var sourceEntity = new Entity(control.CurrentStepEntityLogicalName);
-				sourceEntity["adx_prepaidincidentscurrentlyavailable"] = PrepaidIncidentsAvailable < 0 ? 0 : PrepaidIncidentsAvailable;
-				sourceEntity["adx_prepaidincidentsrequired"] = PrepaidIncidentsRequired < 0 ? 0 : PrepaidIncidentsRequired;
+				sourceEntity["mspp_prepaidincidentscurrentlyavailable"] = PrepaidIncidentsAvailable < 0 ? 0 : PrepaidIncidentsAvailable;
+				sourceEntity["mspp_prepaidincidentsrequired"] = PrepaidIncidentsRequired < 0 ? 0 : PrepaidIncidentsRequired;
 				if (SupportPlanID != Guid.Empty)
 				{
-					sourceEntity["adx_supportplan"] = new EntityReference("adx_supportplan", SupportPlanID);
+					sourceEntity["mspp_supportplan"] = new EntityReference("mspp_supportplan", SupportPlanID);
 				}
 				else
 				{
-					sourceEntity["adx_paymentrequired"] = true;
+					sourceEntity["mspp_paymentrequired"] = true;
 				}
 				if (Customer != null && Customer.LogicalName == "account")
 				{
-					sourceEntity["adx_customer"] = new EntityReference("account", Customer.Id);
+					sourceEntity["mspp_customer"] = new EntityReference("account", Customer.Id);
 				}
 				context.AddObject(sourceEntity);
 				context.SaveChanges();

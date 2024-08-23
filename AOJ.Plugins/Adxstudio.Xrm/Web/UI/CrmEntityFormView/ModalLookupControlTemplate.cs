@@ -338,18 +338,18 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			if (Metadata.LookupReferenceEntityFormId != null)
 			{
 				var entityForm = serviceContext.RetrieveSingle(
-					"adx_entityform",
-					new[] { "adx_entityname", "adx_mode" },
+					"mspp_entityform",
+					new[] { "mspp_entityname", "mspp_mode" },
 					new[] {
-						new Condition("adx_entityformid", ConditionOperator.Equal, Metadata.LookupReferenceEntityFormId),
+						new Condition("mspp_entityformid", ConditionOperator.Equal, Metadata.LookupReferenceEntityFormId),
 						new Condition("statuscode", ConditionOperator.NotNull),
 						new Condition("statuscode", ConditionOperator.Equal, (int)Enums.EntityFormStatusCode.Active)
 					});
 
 				if (entityForm != null)
 				{
-					var entityLogicalName = entityForm.GetAttributeValue<string>("adx_entityname");
-					var mode = entityForm.GetAttributeValue<OptionSetValue>("adx_mode");
+					var entityLogicalName = entityForm.GetAttributeValue<string>("mspp_entityname");
+					var mode = entityForm.GetAttributeValue<OptionSetValue>("mspp_mode");
 
 					if ((mode.Value == (int)WebFormStepMode.Insert) && (Metadata.LookupTargets.Contains(entityLogicalName))) // Insert
 					{

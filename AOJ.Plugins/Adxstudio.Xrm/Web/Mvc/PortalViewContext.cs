@@ -42,7 +42,10 @@ namespace Adxstudio.Xrm.Web.Mvc
 		private readonly Lazy<IWebsiteAccessPermissionProvider> _websiteAccessPermissionProvider;
 
 		public PortalViewContext(SiteMapProvider siteMapProvider = null, string portalName = null, RequestContext requestContext = null)
-			: this(new PortalConfigurationDataAdapterDependencies(portalName, requestContext), siteMapProvider, portalName, requestContext) { }
+			: this(new PortalConfigurationDataAdapterDependencies(portalName, requestContext), siteMapProvider, portalName, requestContext)
+		{
+
+		}
 
 		public PortalViewContext(IDataAdapterDependencies dependencies, SiteMapProvider siteMapProvider = null, string portalName = null, 
             RequestContext requestContext = null)

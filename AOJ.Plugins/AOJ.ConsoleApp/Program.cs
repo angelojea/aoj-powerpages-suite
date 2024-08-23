@@ -29,84 +29,20 @@ namespace AOJ.ConsoleApp
             var clientId = "af246865-349f-45d9-bedf-018f05fd38a4";
             var clientSecret = "Qka8Q~ZjcDiKiLiKTsVtYaGEXPRCgFq.d3hzDbio";
 
-            // Sample XML Configuration as a string
-            //            string xmlConfig = @"
-            //<configuration>
-
-            // <configSections>
-            //  <section name=""microsoft.xrm.client"" type=""Microsoft.Xrm.Client.Configuration.CrmSection, Microsoft.Xrm.Client""/>
-            //  <section name=""microsoft.xrm.portal"" type=""Microsoft.Xrm.Portal.Configuration.PortalCrmSection, Microsoft.Xrm.Portal""/>
-            // </configSections>
-
-            // <connectionStrings>
-            //  <add name=""Xrm"" connectionString=""ServiceUri=...; Domain=...; Username=...; Password=...""/>
-            // </connectionStrings>
-
-            // <microsoft.xrm.client>
-            //  <contexts>
-            //   <add name=""Xrm"" type=""Xrm.XrmServiceContext, Xrm""/>
-            //  </contexts>
-            // </microsoft.xrm.client>
-
-            // <microsoft.xrm.portal>
-            //  <portals>
-            //   <add name=""Xrm""/>
-            //  </portals>
-            // </microsoft.xrm.portal>
-
-            // <location path=""Services/Cms.svc"">
-            //  <system.web>
-            //   <authorization>
-            //    <allow roles=""My Portal Administrators""/>
-            //    <deny users=""*""/>
-            //   </authorization>
-            //  </system.web>
-            // </location>
-
-            //</configuration>";
-            //            using (var stringReader = new StringReader(xmlConfig))
-            //            using (var xmlReader = XmlReader.Create(stringReader))
-            //            {
-            //                var configMap = new ExeConfigurationFileMap(); // Not mapped to any file
-            //                Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
-
-            //                var appSettingsSection = (AppSettingsSection)config.GetSection("appSettings");
-
-            //                if (appSettingsSection == null)
-            //                {
-            //                    appSettingsSection = new AppSettingsSection();
-            //                    config.Sections.Add("appSettings", appSettingsSection);
-            //                }
-            //                while (xmlReader.Read())
-            //                {
-            //                    if (xmlReader.NodeType == XmlNodeType.Element && xmlReader.Name == "add")
-            //                    {
-            //                        string key = xmlReader.GetAttribute("key");
-            //                        string value = xmlReader.GetAttribute("value");
-
-            //                        if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(value))
-            //                        {
-            //                            appSettingsSection.Settings.Add(key, value);
-            //                        }
-            //                    }
-            //                }
-            //            }
-            
             using (var client = new CrmServiceClient(
                 $@"AuthenticationType=ClientSecret; url={url}; ClientId={clientId}; ClientSecret={clientSecret};"))
             {
                 AojConfigurationManager.Service = client;
+                AojConfigurationManager.Website = client.Retrieve("mspp_website", Guid.Parse("ce496a9b-0b4b-4d8f-8f0e-7e08c21c5715"), new ColumnSet(true));
+                AojConfigurationManager.User = client.Retrieve("contact", Guid.Parse("2ba29921-1b5c-ef11-bfe2-000d3a56777a"), new ColumnSet(true));
                 var name = "Xrm";
                 var portal = PortalCrmConfigurationManager.CreatePortalContext(name);
-
-                var svc = new OrganizationServiceContext(client);
                 var portalLiquidContext = new PortalLiquidContext(client);
 
                 //var blogDependencies = new Adxstudio.Xrm.Blogs.PortalConfigurationDataAdapterDependencies(svc, portalContext);
                 //var knowledgeDependencies = new Adxstudio.Xrm.KnowledgeArticles.PortalConfigurationDataAdapterDependencies();
                 //var contextDrop = new PortalViewContextDrop(portalLiquidContext);
                 //var requestDrop = RequestDrop.FromHtmlHelper(portalLiquidContext, null);
-
 
                 var globals = new Hash
             {
@@ -133,27 +69,19 @@ namespace AOJ.ConsoleApp
 				{ "uniqueId", new UniqueDrop() }
             };
 
-                //foreach (var factory in _globalVariableFactories)
-                //{
-                //	globals[factory.Key] = factory.Value(html);
-                //}
-
                 var environment = new LiquidEnvironment(globals, new Hash
                 {
-                    //{ "file_system", new CompositeFileSystem(
-                    //    new EmbeddedResourceFileSystem(typeof(LiquidExtensions).Assembly, "Adxstudio.Xrm.Liquid")) },
                     { "portalLiquidContext", portalLiquidContext }
                 });
                 var localVariables = Hash.FromDictionary(environment.Globals);
                 var registers = Hash.FromDictionary(environment.Registers);
                 var context = new Context(new List<Hash> { localVariables }, new Hash(), registers, false);
 
-                var entityForm = client.Retrieve("mspp_entityform", Guid.Parse("e0ce2b35-875e-ef11-bfe3-000d3a56777a"), new ColumnSet(true));
                 var control = new LiquidServerControl();
 
-                var form = control.InitEntityForm(entityForm.Id);
-                var sourceDef = form.GetEntitySourceDefinition(svc, entityForm);
-                var view = form.RenderForm(svc, entityForm, System.Web.UI.WebControls.FormViewMode.Insert, sourceDef);
+                var form = control.InitEntityForm(Guid.Parse("e0ce2b35-875e-ef11-bfe3-000d3a56777a"));
+                var view = form.AOJCreateChildControls();
+
 
                 using (StringWriter stringWriter = new StringWriter())
                 {

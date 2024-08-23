@@ -282,7 +282,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			RegisterClientSideDependencies(this);
 
-			var registerStartupScript = entitylist.GetAttributeValue<string>("adx_registerstartupscript");
+			var registerStartupScript = entitylist.GetAttributeValue<string>("mspp_registerstartupscript");
 
 			if (!string.IsNullOrWhiteSpace(registerStartupScript))
 			{
@@ -290,18 +290,18 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				var control = new HtmlGenericControl() { };
 
-				var script = html.ScriptAttribute(serviceContext, entitylist, "adx_registerstartupscript");
+				var script = html.ScriptAttribute(serviceContext, entitylist, "mspp_registerstartupscript");
 
 				control.InnerHtml = script.ToString();
 
 				Controls.Add(control);
 			}
 
-			var entityName = entitylist.GetAttributeValue<string>("adx_entityname");
-			var primaryKeyName = entitylist.GetAttributeValue<string>("adx_primarykeyname");
-			var view = entitylist.GetAttributeValue<string>("adx_view"); // old comma delimited list of views
-			var viewMetadataJson = entitylist.GetAttributeValue<string>("adx_views");
-			EnableEntityPermissions = entitylist.GetAttributeValue<bool?>("adx_entitypermissionsenabled").GetValueOrDefault(false);
+			var entityName = entitylist.GetAttributeValue<string>("mspp_entityname");
+			var primaryKeyName = entitylist.GetAttributeValue<string>("mspp_primarykeyname");
+			var view = entitylist.GetAttributeValue<string>("mspp_view"); // old comma delimited list of views
+			var viewMetadataJson = entitylist.GetAttributeValue<string>("mspp_views");
+			EnableEntityPermissions = entitylist.GetAttributeValue<bool?>("mspp_entitypermissionsenabled").GetValueOrDefault(false);
 
 			if (string.IsNullOrWhiteSpace(entityName))
 			{
@@ -323,7 +323,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				throw new ApplicationException("View selection on Entity List (adx_entitylist) is null or empty. Specify the savedquery views.");
 			}
 
-			var gridMetadataJson = entitylist.GetAttributeValue<string>("adx_settings");
+			var gridMetadataJson = entitylist.GetAttributeValue<string>("mspp_settings");
 			GridMetadata gridMetadata = null;
 			if (!string.IsNullOrWhiteSpace(gridMetadataJson))
 			{
@@ -471,9 +471,9 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			if (EntityListReference != null)
 			{
 				entitylist = serviceContext.RetrieveSingle(
-					"adx_entitylist",
+					"mspp_entitylist",
 					FetchAttribute.All,
-					new Condition("adx_entitylistid", ConditionOperator.Equal, EntityListReference.Id));
+					new Condition("mspp_entitylistid", ConditionOperator.Equal, EntityListReference.Id));
 
 				if (entitylist == null)
 				{
@@ -485,14 +485,14 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var entity = portalContext.Entity;
 
-			if (entity.LogicalName != "adx_webpage")
+			if (entity.LogicalName != "mspp_webpage")
 			{
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "The current entity must be of type adx_webpage. Please select the correct template for this entity type.");
 
 				return false;
 			}
 
-			var entitylistReference = entity.GetAttributeValue<EntityReference>("adx_entitylist");
+			var entitylistReference = entity.GetAttributeValue<EntityReference>("mspp_entitylist");
 
 			if (entitylistReference == null)
 			{
@@ -502,9 +502,9 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 
 			entitylist = serviceContext.RetrieveSingle(
-				"adx_entitylist",
+				"mspp_entitylist",
 				FetchAttribute.All,
-				new Condition("adx_entitylistid", ConditionOperator.Equal, entitylistReference.Id));
+				new Condition("mspp_entitylistid", ConditionOperator.Equal, entitylistReference.Id));
 
 			if (entitylist == null)
 			{

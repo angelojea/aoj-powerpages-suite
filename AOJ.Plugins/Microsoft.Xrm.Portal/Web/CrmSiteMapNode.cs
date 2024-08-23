@@ -18,17 +18,17 @@ namespace Microsoft.Xrm.Portal.Web
 	{
 		private readonly HttpStatusCode? _statusCode;
 
-		/// <summary>
-		/// Constructs a new site map node.
-		/// </summary>
-		/// <param name="provider">Provider used to construct this site map node.</param>
-		/// <param name="key">Unique key.</param>
-		/// <param name="url">Url to render.</param>
-		/// <param name="title">Title of page.</param>
-		/// <param name="description">Description of page.</param>
-		/// <param name="rewriteUrl">Url to use for url rewriting.</param>
-		/// <param name="lastModified">Last modification date.</param>
-		protected CrmSiteMapNode(
+        /// <summary>
+        /// Constructs a new site map node.
+        /// </summary>
+        /// <param name="provider">Provider used to construct this site map node.</param>
+        /// <param name="key">Unique key.</param>
+        /// <param name="url">Url to render.</param>
+        /// <param name="title">Title of page.</param>
+        /// <param name="description">Description of page.</param>
+        /// <param name="rewriteUrl">Url to use for url rewriting.</param>
+        /// <param name="lastModified">Last modification date.</param>
+        protected CrmSiteMapNode(
 			SiteMapProvider provider,
 			string key,
 			string url,

@@ -106,7 +106,7 @@ namespace Microsoft.Xrm.Client.Configuration
             {
                 var service = CreateService(contextName, true, AojConfigurationManager.Service);
                 var context = contextElement.CreateOrganizationServiceContext(service);
-
+				
                 return context;
             }
 			else

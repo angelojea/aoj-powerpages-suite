@@ -131,7 +131,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 				return false;
 			}
 
-			var entityType = IsTimeline ? "adx_portalcomment" : "annotation";
+			var entityType = IsTimeline ? "mspp_portalcomment" : "annotation";
 			var entityMetadata = serviceContext.GetEntityMetadata(regarding.LogicalName, EntityFilters.All);
 			var primaryKeyName = entityMetadata.PrimaryIdAttribute;
 			var entity =
@@ -370,7 +370,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 				getAttachmentsServiceUrl = BuildControllerActionUrl("GetAttachments", "EntityActivity", new { area = "Portal", __portalScopeId__ = portalContext.Website.Id });
 				useScrollingPagination = true;
 				isTimeline = true;
-				entityLogicalName = "adx_portalcomment";
+				entityLogicalName = "mspp_portalcomment";
 				textAttributeName = "description";
 			}
 			else

@@ -31,7 +31,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 				if (page != null)
 				{
-					page.AssertEntityName("adx_webpage");
+					page.AssertEntityName("mspp_webpage");
 
 					NavigateUrl = portal.ServiceContext.GetUrl(page);
 					
@@ -39,7 +39,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 					{
 						var contentFormatter = PortalCrmConfigurationManager.CreateDependencyProvider(PortalName).GetDependency<ICrmEntityContentFormatter>(GetType().FullName) ?? new PassthroughCrmEntityContentFormatter();
 
-						Text = contentFormatter.Format(page.GetAttributeValue<string>("adx_name"), page, this);
+						Text = contentFormatter.Format(page.GetAttributeValue<string>("mspp_name"), page, this);
 					}
 				}
 			}

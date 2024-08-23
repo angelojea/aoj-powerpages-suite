@@ -106,8 +106,8 @@ namespace Adxstudio.Xrm.EntityForm
 			ShowOwnerFields = entityform.GetAttributeValue<bool?>("mspp_showownerfields") ?? false;
 			ShowUnsupportedFields = entityform.GetAttributeValue<bool?>("mspp_showunsupportedfields") ?? false;
 			ToolTipEnabled = entityform.GetAttributeValue<bool?>("mspp_tooltipenabled") ?? false;
-			AutoGenerateStepsFromTabs = entityform.GetAttributeValue<bool?>("mspp_autogeneratesteps") ?? false;
-			ForceAllFieldsRequired = entityform.GetAttributeValue<bool?>("mspp_forceallfieldsrequired") ?? false;
+            AutoGenerateStepsFromTabs = entityform.GetAttributeValue<bool?>("mspp_autogeneratesteps") ?? false;
+            ForceAllFieldsRequired = entityform.GetAttributeValue<bool?>("mspp_forceallfieldsrequired") ?? false;
 			HideFormOnSuccess = entityform.GetAttributeValue<bool?>("mspp_hideformonsuccess") ?? true;
 			ValidationGroup = entityform.GetAttributeValue<string>("mspp_validationgroup") ?? string.Empty;
 			ValidationSummaryLinksEnabled = entityform.GetAttributeValue<bool?>("mspp_validationsummarylinksenabled") ?? true;
@@ -150,7 +150,7 @@ namespace Adxstudio.Xrm.EntityForm
 			SubmitButtonText = string.IsNullOrWhiteSpace(LocalizedSubmitButtonText) ? (string.IsNullOrWhiteSpace(SubmitButtonText) ? EntityFormFunctions.DefaultSubmitButtonText : SubmitButtonText) : LocalizedSubmitButtonText;
 			SubmitButtonBusyText = string.IsNullOrWhiteSpace(LocalizedSubmitButtonBusyText) ? (string.IsNullOrWhiteSpace(SubmitButtonBusyText) ? EntityFormFunctions.DefaultSubmitButtonBusyText : SubmitButtonBusyText) : LocalizedSubmitButtonBusyText;
 
-			//EntityFormMetadata = entityform.GetRelatedEntities(context, "mspp_entityformmetadata_entityform");
+			EntityFormMetadata = entityform.GetRelatedEntities(context, new Relationship("mspp_entityformmetadata_entityform"));
 
 			PopulateReferenceEntityLookupField = entityform.GetAttributeValue<bool?>("mspp_populatereferenceentitylookupfield") ?? false;
 			TargetAttributeName = entityform.GetAttributeValue<string>("mspp_referencetargetlookupattributelogicalname");

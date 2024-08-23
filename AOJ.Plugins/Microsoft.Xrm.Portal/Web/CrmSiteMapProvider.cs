@@ -90,9 +90,9 @@ namespace Microsoft.Xrm.Portal.Web
 
 			if (TryParseGuid(clientUrl.QueryString["pageid"], out pageid))
 			{
-				var webPagesInCurrentWebsite = website.GetRelatedEntities(context, "adx_website_webpage");
+				var webPagesInCurrentWebsite = website.GetRelatedEntities(context, "mspp_website_webpage");
 
-				page = webPagesInCurrentWebsite.Where(wp => wp.GetAttributeValue<Guid>("adx_webpageid") == pageid).FirstOrDefault();
+				page = webPagesInCurrentWebsite.Where(wp => wp.GetAttributeValue<Guid>("mspp_webpageid") == pageid).FirstOrDefault();
 
 				if (page != null)
 				{
@@ -182,7 +182,7 @@ namespace Microsoft.Xrm.Portal.Web
 				return null;
 			}
 
-			var parentPage = page.GetRelatedEntity(context, "adx_webpage_webpage", EntityRole.Referencing);
+			var parentPage = page.GetRelatedEntity(context, "mspp_webpage_webpage", EntityRole.Referencing);
 
 			if (parentPage == null)
 			{
@@ -204,7 +204,7 @@ namespace Microsoft.Xrm.Portal.Web
 
 			if (homePage == null)
 			{
-				throw new InvalidOperationException(@"Website ""{0}"" must have a web page with the site marker ""Home"".".FormatWith(website.GetAttributeValue<string>("adx_name")));
+				throw new InvalidOperationException(@"Website ""{0}"" must have a web page with the site marker ""Home"".".FormatWith(website.GetAttributeValue<string>("mspp_name")));
 			}
 
 			return GetAccessibleNodeOrAccessDeniedNode(context, homePage);
@@ -221,12 +221,12 @@ namespace Microsoft.Xrm.Portal.Web
 
 			var entityName = entity.LogicalName;
 
-			if (entityName == "adx_webfile")
+			if (entityName == "mspp_webfile")
 			{
 				return GetWebFileNode(context, entity, statusCode);
 			}
 
-			if (entityName == "adx_webpage")
+			if (entityName == "mspp_webpage")
 			{
 				return GetWebPageNode(context, entity, statusCode);
 			}
@@ -239,8 +239,8 @@ namespace Microsoft.Xrm.Portal.Web
 			var contentFormatter = PortalCrmConfigurationManager.CreateDependencyProvider(PortalName).GetDependency<ICrmEntityContentFormatter>(GetType().FullName) ?? new PassthroughCrmEntityContentFormatter();
 
 			var url = context.GetUrl(file);
-			var name = contentFormatter.Format(file.GetAttributeValue<string>("adx_name"), file, this);
-			var summary = contentFormatter.Format(file.GetAttributeValue<string>("adx_summary"), file, this);
+			var name = contentFormatter.Format(file.GetAttributeValue<string>("mspp_name"), file, this);
+			var summary = contentFormatter.Format(file.GetAttributeValue<string>("mspp_summary"), file, this);
 
 			var fileAttachmentProvider = PortalCrmConfigurationManager.CreateDependencyProvider(PortalName).GetDependency<ICrmEntityFileAttachmentProvider>();
 
@@ -330,7 +330,7 @@ namespace Microsoft.Xrm.Portal.Web
 				// Try get a display order value for x.
 				try
 				{
-					xDisplayOrder = crmX.Entity.GetAttributeValue<int?>("adx_displayorder");
+					xDisplayOrder = crmX.Entity.GetAttributeValue<int?>("mspp_displayorder");
 				}
 				catch
 				{
@@ -342,7 +342,7 @@ namespace Microsoft.Xrm.Portal.Web
 				// Try get a display order value for y.
 				try
 				{
-					yDisplayOrder = crmY.Entity.GetAttributeValue<int?>("adx_displayorder");
+					yDisplayOrder = crmY.Entity.GetAttributeValue<int?>("mspp_displayorder");
 				}
 				catch
 				{

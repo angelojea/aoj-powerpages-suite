@@ -67,7 +67,7 @@ namespace Microsoft.Xrm.Portal.Web.Compilation
 				if (returnType.IsA(typeof(Entity))) return setting;
 				if (setting == null) return defaultValue;
 
-				return GetEvalData(setting, "adx_value", null, format, returnType);
+				return GetEvalData(setting, "mspp_value", null, format, returnType);
 			}
 		}
 	}

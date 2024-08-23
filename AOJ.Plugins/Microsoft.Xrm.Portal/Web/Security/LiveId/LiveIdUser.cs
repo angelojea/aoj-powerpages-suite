@@ -18,10 +18,10 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 {
 	internal sealed class LiveIdUser
 	{
-		private const string AttributeMapApproved = "adx_logonenabled";
+		private const string AttributeMapApproved = "mspp_logonenabled";
 		private const string AttributeMapCreatedAt = "createdon";
-		private const string AttributeMapLastLogin = "adx_lastsuccessfullogon";
-		private const string AttributeMapUsername = "adx_username";
+		private const string AttributeMapLastLogin = "mspp_lastsuccessfullogon";
+		private const string AttributeMapUsername = "mspp_username";
 		private const string MemberEntityName = "contact";
 
 		private readonly OrganizationServiceContext _context;

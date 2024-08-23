@@ -130,17 +130,17 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var portal = PortalCrmConfigurationManager.CreatePortalContext(PortalName);
 
-			if (portal.Entity.LogicalName == "adx_webpage")
+			if (portal.Entity.LogicalName == "mspp_webpage")
 			{
 				return new WebPageTaggingAdapter(portal.Entity, PortalName);
 			}
 
-			if (portal.Entity.LogicalName == "adx_event")
+			if (portal.Entity.LogicalName == "mspp_event")
 			{
 				return new EventTaggingAdapter(portal.Entity, PortalName);
 			}
 
-			if (portal.Entity.LogicalName == "adx_communityforumthread")
+			if (portal.Entity.LogicalName == "mspp_communityforumthread")
 			{
 				return new ForumThreadTaggingAdapter(portal.Entity, PortalName);
 			}
@@ -495,7 +495,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected void UpdateData()
 		{
-			DataSource = TaggableItem.Tags.ToList().OrderBy(t => t.GetAttributeValue<string>("adx_name"));
+			DataSource = TaggableItem.Tags.ToList().OrderBy(t => t.GetAttributeValue<string>("mspp_name"));
 			
 			DataBind();
 		}

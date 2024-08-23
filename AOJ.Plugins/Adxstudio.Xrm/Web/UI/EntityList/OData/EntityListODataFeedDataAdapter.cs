@@ -129,27 +129,27 @@ namespace Adxstudio.Xrm.Web.UI.EntityList.OData
 
 			if (website != null)
 			{
-				entitylists = (from el in serviceContext.CreateQuery("adx_entitylist")
-							   join wp in serviceContext.CreateQuery("adx_webpage") on el.GetAttributeValue<Guid>("adx_entitylistid") equals
-								   wp.GetAttributeValue<EntityReference>("adx_entitylist").Id
+				entitylists = (from el in serviceContext.CreateQuery("mspp_entitylist")
+							   join wp in serviceContext.CreateQuery("mspp_webpage") on el.GetAttributeValue<Guid>("mspp_entitylistid") equals
+								   wp.GetAttributeValue<EntityReference>("mspp_entitylist").Id
 							   where
 								   el.GetAttributeValue<OptionSetValue>("statecode") != null && el.GetAttributeValue<OptionSetValue>("statecode").Value == (int)StateCode.Active &&
-								   el.GetAttributeValue<bool?>("adx_odata_enabled").GetValueOrDefault(false)
+								   el.GetAttributeValue<bool?>("mspp_odata_enabled").GetValueOrDefault(false)
 							   where
-								   wp.GetAttributeValue<EntityReference>("adx_entitylist") != null &&
-								   wp.GetAttributeValue<EntityReference>("adx_websiteid") == website
-							   orderby el.GetAttributeValue<string>("adx_odata_entitysetname")
+								   wp.GetAttributeValue<EntityReference>("mspp_entitylist") != null &&
+								   wp.GetAttributeValue<EntityReference>("mspp_websiteid") == website
+							   orderby el.GetAttributeValue<string>("mspp_odata_entitysetname")
 							   select el).ToList();
 			}
 			else
 			{
 				entitylists =
-					serviceContext.CreateQuery("adx_entitylist")
+					serviceContext.CreateQuery("mspp_entitylist")
 								.Where(
 									el =>
 									el.GetAttributeValue<OptionSetValue>("statecode") != null && el.GetAttributeValue<OptionSetValue>("statecode").Value == (int)StateCode.Active &&
-									el.GetAttributeValue<bool?>("adx_odata_enabled").GetValueOrDefault(false))
-								.OrderBy(el => el.GetAttributeValue<string>("adx_odata_entitysetname"))
+									el.GetAttributeValue<bool?>("mspp_odata_enabled").GetValueOrDefault(false))
+								.OrderBy(el => el.GetAttributeValue<string>("mspp_odata_entitysetname"))
 								.ToList();
 			}
 			return entitylists;
@@ -170,7 +170,7 @@ namespace Adxstudio.Xrm.Web.UI.EntityList.OData
 			Guid id;
 			Guid.TryParse(entityListIdString, out id);
 			var serviceContext = Dependencies.GetServiceContext();
-			var entityList = serviceContext.CreateQuery("adx_entitylist").FirstOrDefault(el => el.GetAttributeValue<Guid>("adx_entitylistid") == id);
+			var entityList = serviceContext.CreateQuery("mspp_entitylist").FirstOrDefault(el => el.GetAttributeValue<Guid>("mspp_entitylistid") == id);
 			return entityList;
 		}
 
@@ -183,7 +183,7 @@ namespace Adxstudio.Xrm.Web.UI.EntityList.OData
 		public virtual int GetPageSize(IEdmModel model, string entitySetName)
 		{
 			var entityList = GetEntityList(model, entitySetName);
-			return entityList == null ? DefaultPageSize : entityList.GetAttributeValue<int?>("adx_pagesize").GetValueOrDefault(DefaultPageSize);
+			return entityList == null ? DefaultPageSize : entityList.GetAttributeValue<int?>("mspp_pagesize").GetValueOrDefault(DefaultPageSize);
 		}
 
 		/// <summary>
@@ -221,13 +221,13 @@ namespace Adxstudio.Xrm.Web.UI.EntityList.OData
 
 			foreach (var entitylist in entitylists)
 			{
-				var entityListId = entitylist.GetAttributeValue<Guid>("adx_entitylistid");
-				var entityListEntityName = entitylist.GetAttributeValue<string>("adx_entityname");
-				var entityListEntityTypeName = entitylist.GetAttributeValue<string>("adx_odata_entitytypename");
-				var entityListEntitySetName = entitylist.GetAttributeValue<string>("adx_odata_entitysetname");
+				var entityListId = entitylist.GetAttributeValue<Guid>("mspp_entitylistid");
+				var entityListEntityName = entitylist.GetAttributeValue<string>("mspp_entityname");
+				var entityListEntityTypeName = entitylist.GetAttributeValue<string>("mspp_odata_entitytypename");
+				var entityListEntitySetName = entitylist.GetAttributeValue<string>("mspp_odata_entitysetname");
 				var entityTypeName = string.IsNullOrWhiteSpace(entityListEntityTypeName) ? entityListEntityName : entityListEntityTypeName;
 				var entitySetName = string.IsNullOrWhiteSpace(entityListEntitySetName) ? entityListEntityName : entityListEntitySetName;
-				var entityPermissionsEnabled = entitylist.GetAttributeValue<bool>("adx_entitypermissionsenabled");
+				var entityPermissionsEnabled = entitylist.GetAttributeValue<bool>("mspp_entitypermissionsenabled");
 				if (entitySetNames.Contains(entitySetName))
 				{
                     ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(string.Format("An Entity Set has already been defined with the name '{0}'. Entity Set could not added to the model. You must not have multiple Entity List records with OData enabled and the same Entity Name specified, otherwise specifiy a unique Entity Set Name and Entity Type Name in the Entity List's OData Settings in CRM.", entitySetName)));
@@ -235,7 +235,7 @@ namespace Adxstudio.Xrm.Web.UI.EntityList.OData
 				}
 				entitySetNames.Add(entitySetName);
 				var entityType = new EdmEntityType(NamespaceName, entityTypeName);
-				var viewIdString = entitylist.GetAttributeValue<string>("adx_odata_view");
+				var viewIdString = entitylist.GetAttributeValue<string>("mspp_odata_view");
 
 				if (string.IsNullOrWhiteSpace(viewIdString))
 				{

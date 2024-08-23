@@ -25,9 +25,9 @@ namespace Microsoft.Xrm.Portal.Access
 			if (parentCustomerAccount == null) return null;
 
 			var findAccountAccess =
-				from aa in context.CreateQuery("adx_accountaccess").ToList()
-				let c = aa.GetRelatedEntity(context, "adx_contact_accountaccess")
-				let a = aa.GetRelatedEntity(context, "adx_account_accountaccess")
+				from aa in context.CreateQuery("mspp_accountaccess").ToList()
+				let c = aa.GetRelatedEntity(context, "mspp_contact_accountaccess")
+				let a = aa.GetRelatedEntity(context, "mspp_account_accountaccess")
 				where c != null && c.GetAttributeValue<Guid>("contactid") == contact.GetAttributeValue<Guid>("contactid")
 					&& a != null && a.GetAttributeValue<Guid>("accountid") == parentCustomerAccount.GetAttributeValue<Guid>("accountid")
 				select aa;
@@ -48,17 +48,17 @@ namespace Microsoft.Xrm.Portal.Access
 			if (parentCustomerAccount == null) //contact is not associated with a parent account record
 			{
 				findCaseAccess =
-					from aa in context.CreateQuery("adx_caseaccess").ToList()
-					let c = aa.GetRelatedEntity(context, "adx_contact_caseaccess")
+					from aa in context.CreateQuery("mspp_caseaccess").ToList()
+					let c = aa.GetRelatedEntity(context, "mspp_contact_caseaccess")
 					where c != null && c.GetAttributeValue<Guid>("contactid") == contact.GetAttributeValue<Guid>("contactid")
 					select aa;
 			}
 			else
 			{
 				findCaseAccess =
-					 from ca in context.CreateQuery("adx_caseaccess").ToList()
-					 let c = ca.GetRelatedEntity(context, "adx_contact_caseaccess")
-					 let a = ca.GetRelatedEntity(context, "adx_account_caseaccess")
+					 from ca in context.CreateQuery("mspp_caseaccess").ToList()
+					 let c = ca.GetRelatedEntity(context, "mspp_contact_caseaccess")
+					 let a = ca.GetRelatedEntity(context, "mspp_account_caseaccess")
 					 where c != null && c.GetAttributeValue<Guid>("contactid") == contact.GetAttributeValue<Guid>("contactid")
 						 && a != null && a.GetAttributeValue<Guid>("accountid") == parentCustomerAccount.GetAttributeValue<Guid>("accountid")
 					 select ca;
@@ -74,8 +74,8 @@ namespace Microsoft.Xrm.Portal.Access
 			if (contact == null) return null;
 
 			var findContactAccess =
-				from ca in context.CreateQuery("adx_contactaccess").ToList()
-				let c = ca.GetRelatedEntity(context, "adx_contact_contactaccess")
+				from ca in context.CreateQuery("mspp_contactaccess").ToList()
+				let c = ca.GetRelatedEntity(context, "mspp_contact_contactaccess")
 				where c != null && c.GetAttributeValue<Guid>("contactid") == contact.GetAttributeValue<Guid>("contactid")
 				select ca;
 

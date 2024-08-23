@@ -46,11 +46,11 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 			if (entityReference == null) return;
 			switch (entityReference.LogicalName)
 			{
-				case "adx_webpage":
+				case "mspp_webpage":
 					WebPage = entityReference;
 					Target = TargetType.WebPage;
 					break;
-				case "adx_entityform":
+				case "mspp_entityform":
 					EntityForm = entityReference;
 					Target = TargetType.EntityForm;
 					break;
@@ -76,7 +76,7 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 				case TargetType.EntityForm:
 					if (action.EntityFormId != null)
 					{
-						EntityForm = new EntityReference("adx_entityform", action.EntityFormId.GetValueOrDefault());
+						EntityForm = new EntityReference("mspp_entityform", action.EntityFormId.GetValueOrDefault());
 					}
 					return;
 				case TargetType.WebPage:

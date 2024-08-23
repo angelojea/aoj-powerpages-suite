@@ -44,7 +44,7 @@ namespace Microsoft.Xrm.Portal.Web.Providers
 				return null;
 			}
 
-			if (entity.LogicalName == "adx_weblink")
+			if (entity.LogicalName == "mspp_weblink")
 			{
 				return GetWebLinkUrl(context, entity);
 			}
@@ -52,18 +52,18 @@ namespace Microsoft.Xrm.Portal.Web.Providers
 			var lookup = new Dictionary<string, Tuple<string, Relationship, string>>
 			{
 				{
-					"adx_webpage",
+					"mspp_webpage",
 					new Tuple<string, Relationship, string>(
-						"adx_partialurl",
-						"adx_webpage_webpage".ToRelationship(EntityRole.Referencing),
-						"adx_webpage")
+						"mspp_partialurl",
+						"mspp_webpage_webpage".ToRelationship(EntityRole.Referencing),
+						"mspp_webpage")
 				},
 				{
-					"adx_webfile",
+					"mspp_webfile",
 					new Tuple<string, Relationship, string>(
-						"adx_partialurl",
-						"adx_webpage_webfile".ToRelationship(),
-						"adx_webpage")
+						"mspp_partialurl",
+						"mspp_webpage_webfile".ToRelationship(),
+						"mspp_webpage")
 				},
 			};
 
@@ -89,16 +89,16 @@ namespace Microsoft.Xrm.Portal.Web.Providers
 
 		private ApplicationPath GetWebLinkUrl(OrganizationServiceContext context, Entity webLink)
 		{
-			webLink.AssertEntityName("adx_weblink");
+			webLink.AssertEntityName("mspp_weblink");
 
-			var externalUrl = webLink.GetAttributeValue<string>("adx_externalurl");
+			var externalUrl = webLink.GetAttributeValue<string>("mspp_externalurl");
 
 			if (!string.IsNullOrWhiteSpace(externalUrl))
 			{
 				return ApplicationPath.FromExternalUrl(externalUrl);
 			}
 
-			var page = webLink.GetRelatedEntity(context, "adx_webpage_weblink");
+			var page = webLink.GetRelatedEntity(context, "mspp_webpage_weblink");
 
 			return page == null ? null : GetApplicationPath(context, page);
 		}

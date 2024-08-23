@@ -77,7 +77,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			//here we will add hidden input fields containing the values of the MappingFieldsMetadataCollection
 			var latitudeFieldName = new HiddenField()
 										{
-											Value = MappingFieldCollection.LatitudeFieldName ?? "adx_latitude",
+											Value = MappingFieldCollection.LatitudeFieldName ?? "mspp_latitude",
 											ID = "geolocation_latitudefieldname"
 										};
 
@@ -85,7 +85,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var longitudeFieldName = new HiddenField()
 										 {
-											 Value = MappingFieldCollection.LongitudeFieldName ?? "adx_longitude",
+											 Value = MappingFieldCollection.LongitudeFieldName ?? "mspp_longitude",
 											 ID = "geolocation_longitudefieldname"
 										 };
 
@@ -93,7 +93,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var addressLineFieldName = new HiddenField()
 										{
-											Value = MappingFieldCollection.AddressLineFieldName ?? "adx_location_addressline",
+											Value = MappingFieldCollection.AddressLineFieldName ?? "mspp_location_addressline",
 											ID = "geolocation_addresslinefieldname"
 										};
 
@@ -101,7 +101,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var neighbourhoodFieldName = new HiddenField()
 										{
-											Value = MappingFieldCollection.NeightbourhoodFieldName ?? "adx_location_neighorhood",
+											Value = MappingFieldCollection.NeightbourhoodFieldName ?? "mspp_location_neighorhood",
 											ID = "geolocation_neighbourhoodfieldname"
 										};
 
@@ -109,7 +109,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var cityFieldName = new HiddenField()
 										{
-											Value = MappingFieldCollection.CityFieldName ?? "adx_location_city",
+											Value = MappingFieldCollection.CityFieldName ?? "mspp_location_city",
 											ID = "geolocation_cityfieldname"
 										};
 
@@ -117,7 +117,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var countyFieldName = new HiddenField()
 										{
-											Value = MappingFieldCollection.CountyFieldName ?? "adx_location_county",
+											Value = MappingFieldCollection.CountyFieldName ?? "mspp_location_county",
 											ID = "geolocation_countyfieldname"
 										};
 
@@ -125,7 +125,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var stateFieldName = new HiddenField()
 										 {
-											 Value = MappingFieldCollection.StateProvinceFieldName ?? "adx_location_stateorprovince",
+											 Value = MappingFieldCollection.StateProvinceFieldName ?? "mspp_location_stateorprovince",
 											 ID = "geolocation_statefieldname"
 										 };
 
@@ -133,7 +133,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var countryFieldName = new HiddenField()
 										{
-											Value = MappingFieldCollection.CountryFieldName ?? "adx_location_country",
+											Value = MappingFieldCollection.CountryFieldName ?? "mspp_location_country",
 											ID = "geolocation_countryfieldname"
 										};
 
@@ -141,7 +141,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var postalCodeFieldName = new HiddenField()
 										{
-											Value = MappingFieldCollection.PostalCodeFieldName ?? "adx_location_postalcode",
+											Value = MappingFieldCollection.PostalCodeFieldName ?? "mspp_location_postalcode",
 											ID = "geolocation_portalcodefieldname"
 										};
 
@@ -149,7 +149,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var formattedLocationFieldName = new HiddenField()
 										{
-											Value = MappingFieldCollection.FormattedLocationFieldName ?? "adx_location",
+											Value = MappingFieldCollection.FormattedLocationFieldName ?? "mspp_location",
 											ID = "geolocation_formattedlocationfieldname"
 										};
 

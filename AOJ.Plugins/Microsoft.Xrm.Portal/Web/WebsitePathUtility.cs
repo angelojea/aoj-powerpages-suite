@@ -17,11 +17,11 @@ namespace Microsoft.Xrm.Portal.Web
 		/// </summary>
 		public static string ToAbsolute(Entity website, string urlPath)
 		{
-			website.AssertEntityName("adx_website");
+			website.AssertEntityName("mspp_website");
 
 			if (urlPath == null) return null;
 
-			var websitePath = website.GetAttributeValue<string>("adx_partialurl");
+			var websitePath = website.GetAttributeValue<string>("mspp_partialurl");
 
 			websitePath = websitePath == null ? string.Empty : websitePath.TrimStart('/');
 
@@ -43,13 +43,13 @@ namespace Microsoft.Xrm.Portal.Web
 		/// </summary>
 		public static UrlBuilder ToRelative(Entity website, UrlBuilder url)
 		{
-			website.AssertEntityName("adx_website");
+			website.AssertEntityName("mspp_website");
 
 			url.ThrowOnNull("url");
 
 			var clonedUrl = url.Clone();
 
-			var websitePath = website.GetAttributeValue<string>("adx_partialurl");
+			var websitePath = website.GetAttributeValue<string>("mspp_partialurl");
 
 			if (string.IsNullOrEmpty(websitePath))
 			{

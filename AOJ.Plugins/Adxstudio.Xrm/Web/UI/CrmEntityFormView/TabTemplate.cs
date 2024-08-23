@@ -79,18 +79,18 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 				if (_webformMetadata != null)
 				{
-					var tabWebFormMetadata = _webformMetadata.FirstOrDefault(wfm => wfm.GetAttributeValue<string>("adx_tabname") == tabName);
+					var tabWebFormMetadata = _webformMetadata.FirstOrDefault(wfm => wfm.GetAttributeValue<string>("mspp_tabname") == tabName);
 
 					if (tabWebFormMetadata != null)
 					{
-						var label = tabWebFormMetadata.GetAttributeValue<string>("adx_label");
+						var label = tabWebFormMetadata.GetAttributeValue<string>("mspp_label");
 
 						if (!string.IsNullOrWhiteSpace(label))
 						{
 							tabLabel = Localization.GetLocalizedString(label, LanguageCode);
 						}
 
-						tabCssClassName = tabWebFormMetadata.GetAttributeValue<string>("adx_cssclass") ?? string.Empty;
+						tabCssClassName = tabWebFormMetadata.GetAttributeValue<string>("mspp_cssclass") ?? string.Empty;
 					}
 				}
 			}

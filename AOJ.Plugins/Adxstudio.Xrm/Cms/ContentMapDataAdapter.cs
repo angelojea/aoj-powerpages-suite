@@ -37,7 +37,7 @@ namespace Adxstudio.Xrm.Cms
 		/// <param name="context"> The context. </param>
 		/// <param name="dependencies"> The dependencies. </param>
 		protected ContentMapDataAdapter(RequestContext context, IDataAdapterDependencies dependencies)
-			: this(context != null ? context.HttpContext : new HttpContextWrapper(HttpContext.Current), dependencies)
+			: this(context != null ? null : new HttpContextWrapper(HttpContext.Current), dependencies)
 		{
 		}
 

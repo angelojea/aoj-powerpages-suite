@@ -41,115 +41,115 @@ namespace Adxstudio.Xrm.Web.UI
 	{
 		private static readonly Dictionary<string, IEnumerable<Relationship>> ChildRelationshipsByEntityName = new Dictionary<string, IEnumerable<Relationship>>
 		{
-			{ "adx_event",
+			{ "mspp_event",
 				new[]
 				{
-					"adx_event_eventschedule".ToRelationship()
+					"mspp_event_eventschedule".ToRelationship()
 				}
 			},
-			{ "adx_webpage",
+			{ "mspp_webpage",
 				new[]
 				{
-					"adx_webpage_webfile".ToRelationship(),
-					"adx_webpage_webpage".ToRelationship(EntityRole.Referenced),
-					"adx_webpage_communityforum".ToRelationship(),
-					"adx_webpage_event".ToRelationship(),
-					"adx_parentwebpage_shortcut".ToRelationship(),
+					"mspp_webpage_webfile".ToRelationship(),
+					"mspp_webpage_webpage".ToRelationship(EntityRole.Referenced),
+					"mspp_webpage_communityforum".ToRelationship(),
+					"mspp_webpage_event".ToRelationship(),
+					"mspp_parentwebpage_shortcut".ToRelationship(),
 				}
 			},
-			{ "adx_blog",
+			{ "mspp_blog",
 				new[]
 				{
-					"adx_blog_blogpost".ToRelationship(),
+					"mspp_blog_blogpost".ToRelationship(),
 				}
 			},
-			{ "adx_blogpost",
+			{ "mspp_blogpost",
 				new[]
 				{
-					"adx_blogpost_webfile".ToRelationship(),
+					"mspp_blogpost_webfile".ToRelationship(),
 				}
 			}
 		};
 
 		private static readonly Dictionary<string, IEnumerable<string>> SiteMapChildEntitiesByEntityName = new Dictionary<string, IEnumerable<string>>
 		{
-			{ "adx_webpage",
+			{ "mspp_webpage",
 				new[]
 				{
-					"adx_communityforum",
-					"adx_event",
-					"adx_webfile",
-					"adx_webpage",
-					"adx_shortcut",
-					"adx_blog",
+					"mspp_communityforum",
+					"mspp_event",
+					"mspp_webfile",
+					"mspp_webpage",
+					"mspp_shortcut",
+					"mspp_blog",
 				}
 			},
-			{ "adx_blogpost",
+			{ "mspp_blogpost",
 				new[]
 				{
-					"adx_webfile",
+					"mspp_webfile",
 				}
 			},
-			{ "adx_event",
+			{ "mspp_event",
 				new[]
 				{
-					"adx_eventschedule"
+					"mspp_eventschedule"
 				}
 			},
 		};
 
 		private static readonly List<string> DeletableEntityNames = new List<string>
 		{
-			"adx_communityforum",
-			"adx_communityforumthread",
-			"adx_event",
-			"adx_eventschedule",
-			"adx_webfile",
-			"adx_weblink",
-			"adx_webpage",
-			"adx_shortcut",
-			"adx_blog",
-			"adx_blogpost",
+			"mspp_communityforum",
+			"mspp_communityforumthread",
+			"mspp_event",
+			"mspp_eventschedule",
+			"mspp_webfile",
+			"mspp_weblink",
+			"mspp_webpage",
+			"mspp_shortcut",
+			"mspp_blog",
+			"mspp_blogpost",
 		};
 
 		private static readonly List<string> DependencyEntityNames = new List<string>
 		{
-			"adx_pagetemplate",
-			"adx_publishingstate",
+			"mspp_pagetemplate",
+			"mspp_publishingstate",
 		};
 
 		private static readonly List<string> FileAttachmentEntityNames = new List<string>
 		{
-			"adx_webfile"
+			"mspp_webfile"
 		};
 
 		private static readonly List<string> FileBrowserDirectoryEntityNames = new List<string>
 		{
-			"adx_webpage",
-			"adx_blog",
-			"adx_blogpost"
+			"mspp_webpage",
+			"mspp_blog",
+			"mspp_blogpost"
 		};
 
 		private static readonly List<string> UrlEntityNames = new List<string>
 		{
-			"adx_communityforum",
-			"adx_communityforumthread",
-			"adx_event",
-			"adx_webfile",
-			"adx_webpage",
-			"adx_blog",
-			"adx_blogpost"
+			"mspp_communityforum",
+			"mspp_communityforumthread",
+			"mspp_event",
+			"mspp_webfile",
+			"mspp_webpage",
+			"mspp_blog",
+			"mspp_blogpost"
 		};
 
 		private static readonly IDictionary<string, Relationship> ParentalRelationshipsByEntityName = new Dictionary<string, Relationship>
 		{
-			{ "adx_communityforum", "adx_webpage_communityforum".ToRelationship() },
-			{ "adx_communityforumthread", "adx_communityforum_communityforumthread".ToRelationship() },
-			{ "adx_event", "adx_webpage_event".ToRelationship() },
-			{ "adx_webfile", "adx_webpage_webfile".ToRelationship() },
-			{ "adx_webpage", "adx_webpage_webpage".ToRelationship(EntityRole.Referencing) },
-			{ "adx_shortcut", "adx_webpage_shortcut".ToRelationship() },
-			{ "adx_blogpost", "adx_blog_blogpost".ToRelationship() }
+			{ "mspp_communityforum", "mspp_webpage_communityforum".ToRelationship() },
+			{ "mspp_communityforumthread", "mspp_communityforum_communityforumthread".ToRelationship() },
+			{ "mspp_event", "mspp_webpage_event".ToRelationship() },
+			{ "mspp_webfile", "mspp_webpage_webfile".ToRelationship() },
+			{ "mspp_webpage", "mspp_webpage_webpage".ToRelationship(EntityRole.Referencing) },
+			{ "mspp_shortcut", "mspp_webpage_shortcut".ToRelationship() },
+			{ "mspp_blogpost", "mspp_blog_blogpost".ToRelationship() }
 		};
 
 		public CmsEntityEditingMetadataProvider(string portalName)
@@ -221,11 +221,11 @@ namespace Adxstudio.Xrm.Web.UI
 				container.AddAttribute("data-create-initial", initialValues.ToString(Formatting.None));
 			}
 
-			if (entityLogicalName == "adx_contentsnippet")
+			if (entityLogicalName == "mspp_contentsnippet")
 			{
-				container.AddAttribute("data-create-url", VirtualPathUtility.ToAbsolute(CmsEntityRelationshipRouteHandler.GetAppRelativePath(website.Id, website, new Relationship("adx_website_contentsnippet"))));
-				container.AddAttribute("data-create-attribute", "adx_value");
-				container.AddAttribute("data-editable-uritemplate", VirtualPathUtility.ToAbsolute(CmsEntityAttributeRouteHandler.GetAppRelativePathTemplate(website.Id, entityLogicalName, "Id", "adx_value")));
+				container.AddAttribute("data-create-url", VirtualPathUtility.ToAbsolute(CmsEntityRelationshipRouteHandler.GetAppRelativePath(website.Id, website, new Relationship("mspp_website_contentsnippet"))));
+				container.AddAttribute("data-create-attribute", "mspp_value");
+				container.AddAttribute("data-editable-uritemplate", VirtualPathUtility.ToAbsolute(CmsEntityAttributeRouteHandler.GetAppRelativePathTemplate(website.Id, entityLogicalName, "Id", "mspp_value")));
 			}
 		}
 
@@ -266,22 +266,22 @@ namespace Adxstudio.Xrm.Web.UI
 			AddEntityTemplateServiceReference(container, portal, entityReference);
 			AddFileBrowserServiceReference(container, portal, FileBrowserDirectoryEntityNames.Contains(entity.LogicalName));
 
-			if (entityReference.LogicalName == "adx_weblinkset")
+			if (entityReference.LogicalName == "mspp_weblinkset")
 			{
 				// Output the service reference for the web link set itself.
-				AddEntityServiceReference(container, portal, entityReference, entityDisplayName ?? entity.GetAttributeValue<string>("adx_name"));
+				AddEntityServiceReference(container, portal, entityReference, entityDisplayName ?? entity.GetAttributeValue<string>("mspp_name"));
 
 				// Output the service reference for the child web links of the set.
-				AddEntityRelationshipServiceReference(container, portal, entityReference, new Relationship("adx_weblinkset_weblink"));
-				AddEntityRelationshipServiceReference(container, portal, entityReference, new Relationship("adx_weblinkset_weblink"), "xrm-entity-{0}-update-ref");
+				AddEntityRelationshipServiceReference(container, portal, entityReference, new Relationship("mspp_weblinkset_weblink"));
+				AddEntityRelationshipServiceReference(container, portal, entityReference, new Relationship("mspp_weblinkset_weblink"), "xrm-entity-{0}-update-ref");
 
-				AddEntityDeleteServiceReferenceTemplate(container, portal, "adx_weblink");
+				AddEntityDeleteServiceReferenceTemplate(container, portal, "mspp_weblink");
 
 				// Output the service reference and schema map for site web pages (required to create new web links).
-				AddEntitySetServiceReference(container, portal, "adx_webpage");
+				AddEntitySetServiceReference(container, portal, "mspp_webpage");
 
 				// Output the service reference and schema map for site publishing states (required to create new web links).
-				AddEntitySetServiceReference(container, portal, "adx_publishingstate");
+				AddEntitySetServiceReference(container, portal, "mspp_publishingstate");
 
 				return;
 			}
@@ -356,53 +356,53 @@ namespace Adxstudio.Xrm.Web.UI
 			}
 
 			// Output the sitemarkers of the current web page into the DOM.
-			if (entityReference.LogicalName == "adx_webpage")
+			if (entityReference.LogicalName == "mspp_webpage")
 			{
-				foreach (var siteMarker in entity.GetRelatedEntities(serviceContext, "adx_webpage_sitemarker"))
+				foreach (var siteMarker in entity.GetRelatedEntities(serviceContext, "mspp_webpage_sitemarker"))
 				{
-					container.AddSiteMarkerMetadata(entityReference.LogicalName, siteMarker.GetAttributeValue<string>("adx_name"));
+					container.AddSiteMarkerMetadata(entityReference.LogicalName, siteMarker.GetAttributeValue<string>("mspp_name"));
 				}
 
-				if (EntityNameExistsInSchema("adx_communityforum", allEntities))
+				if (EntityNameExistsInSchema("mspp_communityforum", allEntities))
 				{
-					AddEntitySetServiceReference(container, portal, "adx_communityforum");
+					AddEntitySetServiceReference(container, portal, "mspp_communityforum");
 				}
 
-				if (EntityNameExistsInSchema("adx_event", allEntities))
+				if (EntityNameExistsInSchema("mspp_event", allEntities))
 				{
-					AddEntitySetServiceReference(container, portal, "adx_event");
+					AddEntitySetServiceReference(container, portal, "mspp_event");
 				}
 
-				if (EntityNameExistsInSchema("adx_entityform", allEntities))
+				if (EntityNameExistsInSchema("mspp_entityform", allEntities))
 				{
-					AddEntitySetServiceReference(container, portal, "adx_entityform");
+					AddEntitySetServiceReference(container, portal, "mspp_entityform");
 				}
 
-				if (EntityNameExistsInSchema("adx_entitylist", allEntities))
+				if (EntityNameExistsInSchema("mspp_entitylist", allEntities))
 				{
-					AddEntitySetServiceReference(container, portal, "adx_entitylist");
+					AddEntitySetServiceReference(container, portal, "mspp_entitylist");
 				}
 
-				if (EntityNameExistsInSchema("adx_webform", allEntities))
+				if (EntityNameExistsInSchema("mspp_webform", allEntities))
 				{
-					AddEntitySetServiceReference(container, portal, "adx_webform");
+					AddEntitySetServiceReference(container, portal, "mspp_webform");
 				}
 
-				if (EntityNameExistsInSchema("adx_weblinkset", allEntities))
+				if (EntityNameExistsInSchema("mspp_weblinkset", allEntities))
 				{
-					AddEntitySetServiceReference(container, portal, "adx_weblinkset");
+					AddEntitySetServiceReference(container, portal, "mspp_weblinkset");
 				}
 
-				AddEntitySetServiceReference(container, portal, "adx_webpage");
-				AddEntitySetServiceReference(container, portal, "adx_webfile");
+				AddEntitySetServiceReference(container, portal, "mspp_webpage");
+				AddEntitySetServiceReference(container, portal, "mspp_webfile");
 				
 				AddPublishingStateSetServiceReference(container, portal);
 
-				AddPicklistMetadata(container, serviceContext, "adx_webpage", "adx_feedbackpolicy");
+				AddPicklistMetadata(container, serviceContext, "mspp_webpage", "mspp_feedbackpolicy");
 
-				AddEntityRelationshipServiceReferenceTemplate(container, portal, "adx_webpage", "adx_webpage_navigation_weblinkset".ToRelationship());
+				AddEntityRelationshipServiceReferenceTemplate(container, portal, "mspp_webpage", "mspp_webpage_navigation_weblinkset".ToRelationship());
 
-				if (entity.GetAttributeValue<EntityReference>("adx_parentpageid") == null && string.Equals(entity.GetAttributeValue<string>("adx_partialurl"), "/", StringComparison.OrdinalIgnoreCase))
+				if (entity.GetAttributeValue<EntityReference>("mspp_parentpageid") == null && string.Equals(entity.GetAttributeValue<string>("mspp_partialurl"), "/", StringComparison.OrdinalIgnoreCase))
 				{
 					container.AddAttribute("data-root", "true");
 				}
@@ -416,7 +416,7 @@ namespace Adxstudio.Xrm.Web.UI
 					container.AddAttribute("data-languagename", langContext.ContextLanguage.Name);
 					container.AddAttribute("data-languageid", langContext.ContextLanguage.EntityReference.Id.ToString());
 					
-					var rootPageReference = portal.Entity.GetAttributeValue<EntityReference>("adx_rootwebpageid");
+					var rootPageReference = portal.Entity.GetAttributeValue<EntityReference>("mspp_rootwebpageid");
 					
 					if (rootPageReference != null)
 					{
@@ -429,10 +429,10 @@ namespace Adxstudio.Xrm.Web.UI
 				}
 			}
 
-			if (entityReference.LogicalName == "adx_event")
+			if (entityReference.LogicalName == "mspp_event")
 			{
-				AddPicklistMetadata(container, serviceContext, "adx_eventschedule", "adx_recurrence");
-				AddPicklistMetadata(container, serviceContext, "adx_eventschedule", "adx_week");
+				AddPicklistMetadata(container, serviceContext, "mspp_eventschedule", "mspp_recurrence");
+				AddPicklistMetadata(container, serviceContext, "mspp_eventschedule", "mspp_week");
 			}
 
 			if (addSiteMapNodeMetadata && SiteMapChildEntitiesByEntityName.ContainsKey(entityReference.LogicalName))
@@ -444,30 +444,30 @@ namespace Adxstudio.Xrm.Web.UI
 				AddSiteMapNodeMetadata(container, entityReference, portal, portalName);
 			}
 
-			if (entityReference.LogicalName == "adx_blog" || entityReference.LogicalName == "adx_webpage")
+			if (entityReference.LogicalName == "mspp_blog" || entityReference.LogicalName == "mspp_webpage")
 			{
-				AddPicklistMetadata(container, serviceContext, "adx_blog", "adx_commentpolicy");
+				AddPicklistMetadata(container, serviceContext, "mspp_blog", "mspp_commentpolicy");
 			}
 
-			if (entityReference.LogicalName == "adx_blog" || entityReference.LogicalName == "adx_blogpost")
+			if (entityReference.LogicalName == "mspp_blog" || entityReference.LogicalName == "mspp_blogpost")
 			{
-				AddPicklistMetadata(container, serviceContext, "adx_blogpost", "adx_commentpolicy");
+				AddPicklistMetadata(container, serviceContext, "mspp_blogpost", "mspp_commentpolicy");
 
 				var tags = GetWebsiteTags(portal, serviceContext);
 
-				AddTagMetadata(container, "adx_blogpost", tags);
+				AddTagMetadata(container, "mspp_blogpost", tags);
 			}
 
-			if (entityReference.LogicalName == "adx_communityforumthread")
+			if (entityReference.LogicalName == "mspp_communityforumthread")
 			{
-				AddEntitySetServiceReference(container, portal, "adx_forumthreadtype");
+				AddEntitySetServiceReference(container, portal, "mspp_forumthreadtype");
 
 				var tags = GetWebsiteTags(portal, serviceContext);
 
-				AddTagMetadata(container, "adx_communityforumthread", tags);
+				AddTagMetadata(container, "mspp_communityforumthread", tags);
 			}
 
-			AddPicklistMetadata(container, serviceContext, "adx_webfile", "adx_contentdisposition");
+			AddPicklistMetadata(container, serviceContext, "mspp_webfile", "mspp_contentdisposition");
 			AddEntitySetServiceReference(container, portal, "subject");
 		}
 
@@ -704,7 +704,7 @@ namespace Adxstudio.Xrm.Web.UI
 
 		protected virtual void AddPublishingStateSetServiceReference(ICmsEntityEditingMetadataContainer container, IPortalContext portal)
 		{
-			var servicePath = VirtualPathUtility.ToAbsolute(CmsEntitySetRouteHandler.GetAppRelativePath(portal.Website.Id, "adx_publishingstate"));
+			var servicePath = VirtualPathUtility.ToAbsolute(CmsEntitySetRouteHandler.GetAppRelativePath(portal.Website.Id, "mspp_publishingstate"));
 
 			servicePath = "{0}{1}FromStateID={{adx_publishingstateid.Id}}".FormatWith(servicePath, servicePath.Contains("?") ? "&" : "?");
 
@@ -723,9 +723,9 @@ namespace Adxstudio.Xrm.Web.UI
 
 		protected virtual IEnumerable<string> GetWebsiteTags(IPortalContext portal, OrganizationServiceContext serviceContext)
 		{
-			return serviceContext.CreateQuery("adx_tag")
-				.Where(e => e.GetAttributeValue<EntityReference>("adx_websiteid") == portal.Website.ToEntityReference())
-				.Select(e => new { Tag = e.GetAttributeValue<string>("adx_name") })
+			return serviceContext.CreateQuery("mspp_tag")
+				.Where(e => e.GetAttributeValue<EntityReference>("mspp_websiteid") == portal.Website.ToEntityReference())
+				.Select(e => new { Tag = e.GetAttributeValue<string>("mspp_name") })
 				.ToArray()
 				.Select(t => t.Tag);
 		}
@@ -767,14 +767,14 @@ namespace Adxstudio.Xrm.Web.UI
 		/// </summary>
 		private static bool RelationshipExistsInSchema(Relationship relationship, IDictionary<string, EntityMetadata> allEntities)
 		{
-			if (relationship.SchemaName == "adx_webpage_communityforum")
+			if (relationship.SchemaName == "mspp_webpage_communityforum")
 			{
-				return EntityNameExistsInSchema("adx_communityforum", allEntities);
+				return EntityNameExistsInSchema("mspp_communityforum", allEntities);
 			}
 
-			if (relationship.SchemaName == "adx_webpage_event")
+			if (relationship.SchemaName == "mspp_webpage_event")
 			{
-				return EntityNameExistsInSchema("adx_event", allEntities);
+				return EntityNameExistsInSchema("mspp_event", allEntities);
 			}
 
 			return true;
@@ -839,9 +839,9 @@ namespace Adxstudio.Xrm.Web.UI
 				throw new ArgumentNullException("entity");
 			}
 
-			if (entity.Attributes.Contains("adx_name"))
+			if (entity.Attributes.Contains("mspp_name"))
 			{
-				return entity.GetAttributeValue<string>("adx_name");
+				return entity.GetAttributeValue<string>("mspp_name");
 			}
 
 			if (entity.Attributes.Contains("name"))

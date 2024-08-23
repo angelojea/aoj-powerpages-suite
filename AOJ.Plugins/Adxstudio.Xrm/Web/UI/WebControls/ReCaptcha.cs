@@ -51,7 +51,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var context = PortalCrmConfigurationManager.CreateServiceContext();
 
-			var website = context.CreateQuery("adx_website").FirstOrDefault(w => w.GetAttributeValue<Guid>("adx_websiteid") == site.Id);
+			var website = context.CreateQuery("mspp_website").FirstOrDefault(w => w.GetAttributeValue<Guid>("mspp_websiteid") == site.Id);
 
 			if (website == null)
 			{

@@ -24,6 +24,7 @@ using Microsoft.Xrm.Portal.Configuration;
 using Microsoft.Xrm.Portal.Web;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
+using Microsoft.Xrm.Client;
 
 namespace Adxstudio.Xrm.Web
 {
@@ -210,49 +211,64 @@ namespace Adxstudio.Xrm.Web
 		}
 
 		public static CrmWebsite GetWebsite(this HttpContext context)
-		{
-			return GetWebsite(context.GetOwinContext());
-		}
+        {
+            return new CrmWebsite()
+            {
+
+            };
+        }
 
 		public static CrmWebsite GetWebsite(this HttpContextBase context)
-		{
-			return GetWebsite(context.GetOwinContext());
-		}
+        {
+            return new CrmWebsite()
+            {
+
+            };
+        }
 
 		public static CrmWebsite GetWebsite(this IOwinContext context)
 		{
-			return context.Get<CrmWebsite>();
+			return new CrmWebsite()
+			{
+
+			};
 		}
 
 		public static CrmUser GetUser(this HttpContext context)
 		{
-			return GetUser(context.GetOwinContext());
+			return new CrmUser()
+			{
+			};
 		}
 
 		public static CrmUser GetUser(this HttpContextBase context)
-		{
-			return GetUser(context.GetOwinContext());
-		}
+        {
+            return new CrmUser()
+            {
+            };
+        }
 
 		public static CrmUser GetUser(this IOwinContext context)
-		{
-			return context.Get<CrmUser>();
-		}
+        {
+            return new CrmUser()
+            {
+            };
+        }
 
 		public static CrmSiteMapNode GetNode(this HttpContext context)
-		{
-			return GetNode(context.GetOwinContext());
-		}
+        {
+            return null;
+        }
 
 		public static CrmSiteMapNode GetNode(this HttpContextBase context)
-		{
-			return GetNode(context.GetOwinContext());
-		}
+        {
+            return null;
+        }
 
 		public static CrmSiteMapNode GetNode(this IOwinContext context)
-		{
-			return context.Get<CrmSiteMapNode>(typeof(CrmSiteMapNode).FullName);
-		}
+        {
+            return null;
+        }
 
 		public static Entity GetEntity(this HttpContext context)
 		{
@@ -341,7 +357,7 @@ namespace Adxstudio.Xrm.Web
 		/// <returns>LCID of current CRM language.</returns>
 		public static int GetCrmLcid(this HttpContext context)
 		{
-			return GetCrmLcid(context?.GetOwinContext());
+			return AojConfigurationManager.LanguageCode;
 		}
 
 		/// <summary>
@@ -350,9 +366,9 @@ namespace Adxstudio.Xrm.Web
 		/// <param name="context">Current Http context.</param>
 		/// <returns>LCID of current CRM language.</returns>
 		public static int GetCrmLcid(this HttpContextBase context)
-		{
-			return GetCrmLcid(context?.GetOwinContext());
-		}
+        {
+            return AojConfigurationManager.LanguageCode;
+        }
 
 		/// <summary>
 		/// Gets the LCID of current CRM language. Ex: if current language is en-CA (4105), then 1033 (en-US) will be returned because that is the associated CRM language.
@@ -360,9 +376,9 @@ namespace Adxstudio.Xrm.Web
 		/// <param name="context">Current Owin context.</param>
 		/// <returns>LCID of current CRM language.</returns>
 		public static int GetCrmLcid(this IOwinContext context)
-		{
-			return GetCrmLcid(context?.GetContextLanguageInfo());
-		}
+        {
+            return AojConfigurationManager.LanguageCode;
+        }
 
 		/// <summary>
 		/// Gets the LCID of current CRM language. Ex: if current language is en-CA (4105), then 1033 (en-US) will be returned because that is the associated CRM language.
@@ -370,24 +386,24 @@ namespace Adxstudio.Xrm.Web
 		/// <param name="languageInfo">ContextLanguageInfo to extract language info from.</param>
 		/// <returns>LCID of current CRM language.</returns>
 		public static int GetCrmLcid(this ContextLanguageInfo languageInfo)
-		{
-			return languageInfo?.ContextLanguage?.CrmLcid ?? CultureInfo.CurrentCulture.LCID;
-		}
+        {
+            return AojConfigurationManager.LanguageCode;
+        }
 
 		public static PortalSolutions GetPortalSolutionsDetails(this HttpContext context)
 		{
-			return GetPortalSolutionsDetails(context.GetOwinContext());
+			return new PortalSolutions();
 		}
 
 		public static PortalSolutions GetPortalSolutionsDetails(this HttpContextBase context)
-		{
-			return GetPortalSolutionsDetails(context.GetOwinContext());
-		}
+        {
+            return new PortalSolutions();
+        }
 
 		public static PortalSolutions GetPortalSolutionsDetails(this IOwinContext context)
-		{
-			return context.Get<PortalSolutions>();
-		}
+        {
+            return new PortalSolutions();
+        }
 
 		public static string ToFilterLikeString(this string metadataFilter)
 		{

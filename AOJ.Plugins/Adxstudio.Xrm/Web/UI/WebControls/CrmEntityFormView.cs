@@ -34,8 +34,9 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 	using Microsoft.Xrm.Portal.Configuration;
 	using Microsoft.Xrm.Portal.Web.UI.WebControls;
 	using Microsoft.Xrm.Sdk;
-	using Microsoft.Xrm.Sdk.Messages;
-	using Microsoft.Xrm.Sdk.Metadata;
+    using Microsoft.Xrm.Sdk.Client;
+    using Microsoft.Xrm.Sdk.Messages;
+    using Microsoft.Xrm.Sdk.Metadata;
 	using Microsoft.Xrm.Sdk.Query;
 	using Newtonsoft.Json;
 	using CellTemplateFactory = Adxstudio.Xrm.Web.UI.CrmEntityFormView.CellTemplateFactory;
@@ -665,7 +666,110 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			return (ICellTemplateFactory)Activator.CreateInstance(factoryType);
 		}
 
-		protected override void CreateChildControls()
+		public void AojCreateChildControls(Control container)
+        {
+            CssClass = string.Join(" ", new[] { "entity-form", CssClass }).TrimEnd(' ');
+
+            if (string.IsNullOrEmpty(EntityName)) throw new InvalidOperationException("EntityName can't be null or empty.");
+
+            if (Mode == FormViewMode.Insert && !EvaluateEntityPermissions(CrmEntityPermissionRight.Create))
+            {
+                AddAccessDeniedSnippet(CreateAccessDeniedSnippetName);
+
+                var button = Parent.FindControl("InsertButton") ?? Parent.FindControl("NextButton");
+
+                if (button != null) { button.Visible = false; }
+                return;
+            }
+
+            AddConfigFields();
+
+            if (ConfirmOnExit)
+            {
+                var confirmOnExitControl = FindControl("confirmOnExit");
+                if (confirmOnExitControl == null)
+                {
+                    Controls.Add(new HiddenField { ID = "confirmOnExit", ClientIDMode = ClientIDMode.Static, Value = "true" });
+                    Controls.Add(new HiddenField { ID = "confirmOnExitMessage", ClientIDMode = ClientIDMode.Static, Value = ConfirmOnExitMessage });
+                }
+            }
+
+            var validationSummary = new ValidationSummary
+            {
+                ID = string.Format("ValidationSummary{0}", ID),
+                CssClass = ValidationSummaryCssClass,
+                ValidationGroup = ValidationGroup,
+                DisplayMode = ValidationSummaryDisplayMode.BulletList,
+                HeaderText = "<h4 class='validation-header'><span role='presentation' class='fa fa-info-circle'></span> " + ValidationSummaryHeaderText + "</h4>"
+            };
+            validationSummary.Attributes["role"] = "alert";
+            validationSummary.Attributes["tabIndex"] = "0";
+            validationSummary.Attributes["aria-label"] = ValidationSummaryHeaderText;
+
+            Controls.Add(validationSummary);
+
+
+            if (string.IsNullOrEmpty(FormName) || !AutoGenerateSteps)
+            {
+                GetFormTemplate().InstantiateIn(this);
+
+                switch (Mode)
+                {
+                    case FormViewMode.Edit:
+                        UpdateItemTemplate.InstantiateIn(container);
+                        break;
+                    case FormViewMode.Insert:
+                        InsertItemTemplate.InstantiateIn(container);
+                        break;
+                    case FormViewMode.ReadOnly:
+                        CssClass = string.Join(" ", new[] { "form-readonly", CssClass }).TrimEnd(' ');
+                        ReadOnlyItemTemplate.InstantiateIn(container);
+                        MakeControlsReadonly(this);
+                        break;
+                }
+                return;
+            }
+
+            var stepIndex = 0;
+
+            var steps = GetStepTemplates();
+
+            foreach (var template in steps)
+            {
+                var stepContainer = new StepContainer(stepIndex++);
+                Controls.Add(stepContainer);
+                template.InstantiateIn(stepContainer);
+            }
+
+            var previousStepContainer = new StepNavigationContainer(StepNavigationType.Previous);
+            container.Controls.Add(previousStepContainer);
+            PreviousStepTemplate.InstantiateIn(previousStepContainer);
+
+            var nextStepContainer = new StepNavigationContainer(StepNavigationType.Next);
+            container.Controls.Add(nextStepContainer);
+            NextStepTemplate.InstantiateIn(nextStepContainer);
+
+            var submitStepContainer = new StepNavigationContainer(StepNavigationType.Submit);
+            container.Controls.Add(submitStepContainer);
+
+            switch (Mode)
+            {
+                case FormViewMode.Edit:
+                    UpdateItemTemplate.InstantiateIn(submitStepContainer);
+                    break;
+                case FormViewMode.Insert:
+                    InsertItemTemplate.InstantiateIn(submitStepContainer);
+                    break;
+                case FormViewMode.ReadOnly:
+                    CssClass = string.Join(" ", new[] { "form-readonly", CssClass }).TrimEnd(' ');
+                    ReadOnlyItemTemplate.InstantiateIn(submitStepContainer);
+                    MakeControlsReadonly(this);
+                    break;
+            }
+        }
+
+
+        protected override void CreateChildControls()
 		{
 			CssClass = string.Join(" ", new[] { "entity-form", CssClass }).TrimEnd(' ');
 
@@ -1017,7 +1121,15 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected virtual IEnumerable<ITemplate> GetStepTemplates()
 		{
-			var context = CrmConfigurationManager.CreateContext(ContextName, true);
+			OrganizationServiceContext context;
+            if (AojConfigurationManager.Service == null)
+            {
+                context = new OrganizationServiceContext(AojConfigurationManager.Service);
+            }
+			else
+            {
+                context = CrmConfigurationManager.CreateContext(ContextName, true);
+            }
 
 			var filterExpression = new FilterExpression();
 			filterExpression.FilterOperator = LogicalOperator.And;
@@ -1072,13 +1184,25 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			if (!AutoGenerateSteps)
 			{
 				var tab = tabs.FirstOrDefault();
-				var template = new TabTemplate(tab, LanguageCode, EntityMetadata, cellTemplateFactory, WebFormMetadata) { MappingFieldCollection = MappingFieldCollection };
+				var template = new TabTemplate(tab, LanguageCode, EntityMetadata, cellTemplateFactory, WebFormMetadata);
 				return Enumerable.Repeat(template, 1);
 			}
-			return tabs.Select(tab => new TabTemplate(tab, LanguageCode, EntityMetadata, cellTemplateFactory, WebFormMetadata) { MappingFieldCollection = MappingFieldCollection });
-		}
+			return tabs.Select(tab => new TabTemplate(tab, LanguageCode, EntityMetadata, cellTemplateFactory, WebFormMetadata));
+        }
 
-		protected override void OnInit(EventArgs e)
+        public void AojInit()
+        {
+            var context = CrmConfigurationManager.CreateContext(ContextName, true);
+
+            EntityMetadata = context.RetrieveEntity(EntityName, EntityFilters.Attributes);
+
+            // Entity forms only supports CRM languages, so use the CRM Lcid rather than the potentially custom language Lcid.
+            LanguageCode = Context.GetCrmLcid();
+
+            //_portalViewContext = new Lazy<PortalViewContext>(GetPortalViewContext, LazyThreadSafetyMode.None);
+        }
+
+        protected override void OnInit(EventArgs e)
 		{
 			var context = CrmConfigurationManager.CreateContext(ContextName, true);
 

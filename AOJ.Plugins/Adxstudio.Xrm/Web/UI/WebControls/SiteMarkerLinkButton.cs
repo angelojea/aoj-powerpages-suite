@@ -70,7 +70,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (RedirectPage != null)
 			{
-				RedirectPage.AssertEntityName("adx_webpage");
+				RedirectPage.AssertEntityName("mspp_webpage");
 
 				var navigateUrl = new UrlBuilder(Portal.ServiceContext.GetUrl(RedirectPage)) { QueryString = QueryStringCollection };
 

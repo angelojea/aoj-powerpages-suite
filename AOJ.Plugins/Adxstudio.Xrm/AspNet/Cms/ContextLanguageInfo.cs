@@ -294,7 +294,12 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		/// <returns> The lcid </returns>
 		public static int ResolveCultureLcid(int lcid)
 		{
-			var contentMapProvider = AdxstudioCrmConfigurationManager.CreateContentMapProvider() ?? HttpContext.Current.GetContentMapProvider();
+            if (AojConfigurationManager.LanguageCode > 0)
+            {
+				return AojConfigurationManager.LanguageCode;
+            }
+
+            var contentMapProvider = AdxstudioCrmConfigurationManager.CreateContentMapProvider() ?? HttpContext.Current.GetContentMapProvider();
 
 			IDictionary<EntityReference, EntityNode> portalLanguages;
 			PortalLanguageNode matchLanguage = null;

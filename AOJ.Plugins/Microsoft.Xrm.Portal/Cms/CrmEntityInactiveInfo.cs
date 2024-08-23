@@ -13,9 +13,9 @@ namespace Microsoft.Xrm.Portal.Cms
 	{
 		private static readonly IDictionary<string, CrmEntityInactiveInfo> InfoByLogicalName = new Dictionary<string, CrmEntityInactiveInfo>
 		{
-			{ "adx_webfile", new CrmEntityInactiveInfo("adx_webfile", "statecode", 1, "statuscode", 2) },
-			{ "adx_weblink", new CrmEntityInactiveInfo("adx_weblink", "statecode", 1, "statuscode", 2) },
-			{ "adx_webpage", new CrmEntityInactiveInfo("adx_webpage", "statecode", 1, "statuscode", 2) },
+			{ "mspp_webfile", new CrmEntityInactiveInfo("mspp_webfile", "statecode", 1, "statuscode", 2) },
+			{ "mspp_weblink", new CrmEntityInactiveInfo("mspp_weblink", "statecode", 1, "statuscode", 2) },
+			{ "mspp_webpage", new CrmEntityInactiveInfo("mspp_webpage", "statecode", 1, "statuscode", 2) },
 		};
 
 		public CrmEntityInactiveInfo(string entityName, string statePropertyName, int inactiveState, string statusPropertyName, int inactiveStatus)

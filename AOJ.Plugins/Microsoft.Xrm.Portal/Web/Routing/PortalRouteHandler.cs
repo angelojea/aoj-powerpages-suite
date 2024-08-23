@@ -87,7 +87,7 @@ namespace Microsoft.Xrm.Portal.Web.Routing
 
 		protected virtual bool TryCreateHandler(IPortalContext portal, out IHttpHandler handler)
 		{
-			if (string.Equals(portal.Entity.LogicalName, "adx_webfile", StringComparison.InvariantCulture))
+			if (string.Equals(portal.Entity.LogicalName, "mspp_webfile", StringComparison.InvariantCulture))
 			{
 				handler = CreateAnnotationHandler(portal.ServiceContext.GetNote(portal.Entity));
 				return true;

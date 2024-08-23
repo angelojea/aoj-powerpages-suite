@@ -218,11 +218,11 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 				if (webFormMetadata != null)
 				{
-					var timelineWebFormMetadata = webFormMetadata.FirstOrDefault(wfm => wfm.GetAttributeValue<OptionSetValue>("adx_type") != null && wfm.GetAttributeValue<OptionSetValue>("adx_type").Value == 756150000);
+					var timelineWebFormMetadata = webFormMetadata.FirstOrDefault(wfm => wfm.GetAttributeValue<OptionSetValue>("mspp_type") != null && wfm.GetAttributeValue<OptionSetValue>("mspp_type").Value == 756150000);
 
 					if (timelineWebFormMetadata != null)
 					{
-						var timelineSettingsJson = timelineWebFormMetadata.GetAttributeValue<string>("adx_timeline_settings");
+						var timelineSettingsJson = timelineWebFormMetadata.GetAttributeValue<string>("mspp_timeline_settings");
 
 						if (!string.IsNullOrWhiteSpace(timelineSettingsJson))
 						{
@@ -251,11 +251,11 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 				if (webFormMetadata != null)
 				{
-					var notesWebFormMetadata = webFormMetadata.FirstOrDefault(wfm => wfm.GetAttributeValue<OptionSetValue>("adx_type") != null && wfm.GetAttributeValue<OptionSetValue>("adx_type").Value == 100000005);
+					var notesWebFormMetadata = webFormMetadata.FirstOrDefault(wfm => wfm.GetAttributeValue<OptionSetValue>("mspp_type") != null && wfm.GetAttributeValue<OptionSetValue>("mspp_type").Value == 100000005);
 
 					if (notesWebFormMetadata != null)
 					{
-						var notesSettingsJson = notesWebFormMetadata.GetAttributeValue<string>("adx_notes_settings");
+						var notesSettingsJson = notesWebFormMetadata.GetAttributeValue<string>("mspp_notes_settings");
 
 						if (!string.IsNullOrWhiteSpace(notesSettingsJson))
 						{
@@ -326,11 +326,11 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 					string subgridName;
 					if (cellNode.TryGetAttributeValue("control", "id", out subgridName))
 					{
-						var subgridWebFormMetadata = webFormMetadata.FirstOrDefault(wfm => wfm.GetAttributeValue<string>("adx_subgrid_name") == subgridName);
+						var subgridWebFormMetadata = webFormMetadata.FirstOrDefault(wfm => wfm.GetAttributeValue<string>("mspp_subgrid_name") == subgridName);
 
 						if (subgridWebFormMetadata != null)
 						{
-							var subgridSettingsJson = subgridWebFormMetadata.GetAttributeValue<string>("adx_subgrid_settings");
+							var subgridSettingsJson = subgridWebFormMetadata.GetAttributeValue<string>("mspp_subgrid_settings");
 
 							if (!string.IsNullOrWhiteSpace(subgridSettingsJson))
 							{
@@ -423,22 +423,22 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 					webFormMetadata = webFormMetadata.ToList();
 
 					var attributeWebFormMetadata =
-						webFormMetadata.FirstOrDefault(wfm => wfm.GetAttributeValue<string>("adx_attributelogicalname") == _dataFieldName);
+						webFormMetadata.FirstOrDefault(wfm => wfm.GetAttributeValue<string>("mspp_attributelogicalname") == _dataFieldName);
 
 					if (attributeWebFormMetadata != null)
 					{
-						if (attributeWebFormMetadata.GetAttributeValue<OptionSetValue>("adx_type") != null
-							&& attributeWebFormMetadata.GetAttributeValue<OptionSetValue>("adx_type").Value == 100000000
-							&& attributeWebFormMetadata.GetAttributeValue<EntityReference>("adx_entityformforcreate") != null
+						if (attributeWebFormMetadata.GetAttributeValue<OptionSetValue>("mspp_type") != null
+							&& attributeWebFormMetadata.GetAttributeValue<OptionSetValue>("mspp_type").Value == 100000000
+							&& attributeWebFormMetadata.GetAttributeValue<EntityReference>("mspp_entityformforcreate") != null
 							&& attributeWebFormMetadata.GetAttributeValue<OptionSetValue>("statuscode") != null
 							&& attributeWebFormMetadata.GetAttributeValue<OptionSetValue>("statuscode").Value == (int)Enums.EntityFormStatusCode.Active)
-							_lookupReferenceEntityFormId = attributeWebFormMetadata.GetAttributeValue<EntityReference>("adx_entityformforcreate").Id;
+							_lookupReferenceEntityFormId = attributeWebFormMetadata.GetAttributeValue<EntityReference>("mspp_entityformforcreate").Id;
 
-						_groupName = attributeWebFormMetadata.GetAttributeValue<string>("adx_groupname") ?? string.Empty;
+						_groupName = attributeWebFormMetadata.GetAttributeValue<string>("mspp_groupname") ?? string.Empty;
 
-						_cssClass = attributeWebFormMetadata.GetAttributeValue<string>("adx_cssclass") ?? string.Empty;
+						_cssClass = attributeWebFormMetadata.GetAttributeValue<string>("mspp_cssclass") ?? string.Empty;
 
-						var overrideLabel = attributeWebFormMetadata.GetAttributeValue<string>("adx_label");
+						var overrideLabel = attributeWebFormMetadata.GetAttributeValue<string>("mspp_label");
 
 						if (!string.IsNullOrWhiteSpace(overrideLabel))
 						{
@@ -449,7 +449,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 							}
 						}
 
-						var controlStyle = attributeWebFormMetadata.GetAttributeValue<OptionSetValue>("adx_controlstyle");
+						var controlStyle = attributeWebFormMetadata.GetAttributeValue<OptionSetValue>("mspp_controlstyle");
 
 						if (controlStyle != null)
 						{
@@ -465,17 +465,17 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 									_controlStyle = WebFormMetadata.ControlStyle.GeolocationLookupValidator;
 									_geolocationValidatorErrorMessage =
 										Localization.GetLocalizedString(
-											attributeWebFormMetadata.GetAttributeValue<string>("adx_geolocationvalidatorerrormessage"), LanguageCode);
+											attributeWebFormMetadata.GetAttributeValue<string>("mspp_geolocationvalidatorerrormessage"), LanguageCode);
 									break;
 								case (int)WebFormMetadata.ControlStyle.ConstantSum:
 									_controlStyle = WebFormMetadata.ControlStyle.ConstantSum;
 									_constantSumAttributeNames =
 										webFormMetadata.Where(
 											w =>
-												w.GetAttributeValue<OptionSetValue>("adx_controlstyle") != null &&
-												w.GetAttributeValue<OptionSetValue>("adx_controlstyle").Value ==
-												(int)WebFormMetadata.ControlStyle.ConstantSum && w.GetAttributeValue<string>("adx_groupname") == _groupName)
-											.Select(w => w.GetAttributeValue<string>("adx_attributelogicalname"))
+												w.GetAttributeValue<OptionSetValue>("mspp_controlstyle") != null &&
+												w.GetAttributeValue<OptionSetValue>("mspp_controlstyle").Value ==
+												(int)WebFormMetadata.ControlStyle.ConstantSum && w.GetAttributeValue<string>("mspp_groupname") == _groupName)
+											.Select(w => w.GetAttributeValue<string>("mspp_attributelogicalname"))
 											.ToArray();
 									break;
 								case (int)WebFormMetadata.ControlStyle.RankOrderNoTies:
@@ -499,12 +499,12 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 							}
 						}
 
-						_ignoreDefaultValue = attributeWebFormMetadata.GetAttributeValue<bool?>("adx_ignoredefaultvalue") ?? false;
+						_ignoreDefaultValue = attributeWebFormMetadata.GetAttributeValue<bool?>("mspp_ignoredefaultvalue") ?? false;
 
-						_addDescription = attributeWebFormMetadata.GetAttributeValue<bool?>("adx_adddescription") ?? false;
+						_addDescription = attributeWebFormMetadata.GetAttributeValue<bool?>("mspp_adddescription") ?? false;
 
 						var useAttributeDescription =
-							attributeWebFormMetadata.GetAttributeValue<bool?>("adx_useattributedescriptionproperty") ?? false;
+							attributeWebFormMetadata.GetAttributeValue<bool?>("mspp_useattributedescriptionproperty") ?? false;
 
 						if (useAttributeDescription)
 						{
@@ -519,11 +519,11 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 						else
 						{
 							_description =
-								Localization.GetLocalizedString(attributeWebFormMetadata.GetAttributeValue<string>("adx_description"),
+								Localization.GetLocalizedString(attributeWebFormMetadata.GetAttributeValue<string>("mspp_description"),
 									LanguageCode);
 						}
 
-						var descriptionPosition = attributeWebFormMetadata.GetAttributeValue<OptionSetValue>("adx_descriptionposition");
+						var descriptionPosition = attributeWebFormMetadata.GetAttributeValue<OptionSetValue>("mspp_descriptionposition");
 
 						if (descriptionPosition != null)
 						{
@@ -542,50 +542,50 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 						}
 
 						_minMultipleChoiceSelectedCount =
-							attributeWebFormMetadata.GetAttributeValue<int?>("adx_minmultiplechoiceselectedcount") ?? 0;
+							attributeWebFormMetadata.GetAttributeValue<int?>("mspp_minmultiplechoiceselectedcount") ?? 0;
 
 						_maxMultipleChoiceSelectedCount =
-							attributeWebFormMetadata.GetAttributeValue<int?>("adx_maxmultiplechoiceselectedcount") ?? 0;
+							attributeWebFormMetadata.GetAttributeValue<int?>("mspp_maxmultiplechoiceselectedcount") ?? 0;
 
-						_constantSumMinimumTotal = attributeWebFormMetadata.GetAttributeValue<int?>("adx_constantsumminimumtotal") ?? 0;
+						_constantSumMinimumTotal = attributeWebFormMetadata.GetAttributeValue<int?>("mspp_constantsumminimumtotal") ?? 0;
 
-						_constantSumMaximumTotal = attributeWebFormMetadata.GetAttributeValue<int?>("adx_constantsummaximumtotal") ?? 100;
+						_constantSumMaximumTotal = attributeWebFormMetadata.GetAttributeValue<int?>("mspp_constantsummaximumtotal") ?? 100;
 
-						_randomizeOptionSetValues = attributeWebFormMetadata.GetAttributeValue<bool?>("adx_randomizeoptionsetvalues") ??
+						_randomizeOptionSetValues = attributeWebFormMetadata.GetAttributeValue<bool?>("mspp_randomizeoptionsetvalues") ??
 						                            false;
 
-						_webformForcefieldIsRequired = attributeWebFormMetadata.GetAttributeValue<bool?>("adx_fieldisrequired") ?? false;
+						_webformForcefieldIsRequired = attributeWebFormMetadata.GetAttributeValue<bool?>("mspp_fieldisrequired") ?? false;
 
 						_requiredFieldValidationErrorMessage =
 							Localization.GetLocalizedString(
-								attributeWebFormMetadata.GetAttributeValue<string>("adx_requiredfieldvalidationerrormessage"), LanguageCode);
+								attributeWebFormMetadata.GetAttributeValue<string>("mspp_requiredfieldvalidationerrormessage"), LanguageCode);
 
 						_validationRegularExpression =
-							attributeWebFormMetadata.GetAttributeValue<string>("adx_validationregularexpression") ?? string.Empty;
+							attributeWebFormMetadata.GetAttributeValue<string>("mspp_validationregularexpression") ?? string.Empty;
 
 						_validationRegularExpressionErrorMessage =
 							Localization.GetLocalizedString(
-								attributeWebFormMetadata.GetAttributeValue<string>("adx_validationregularexpressionerrormessage"), LanguageCode);
+								attributeWebFormMetadata.GetAttributeValue<string>("mspp_validationregularexpressionerrormessage"), LanguageCode);
 
 						_validationErrorMessage =
 							Localization.GetLocalizedString(
-								attributeWebFormMetadata.GetAttributeValue<string>("adx_validationerrormessage"), LanguageCode);
+								attributeWebFormMetadata.GetAttributeValue<string>("mspp_validationerrormessage"), LanguageCode);
 
 						_rangeValidationErrorMessage =
 							Localization.GetLocalizedString(
-								attributeWebFormMetadata.GetAttributeValue<string>("adx_rangevalidationerrormessage"), LanguageCode);
+								attributeWebFormMetadata.GetAttributeValue<string>("mspp_rangevalidationerrormessage"), LanguageCode);
 
 						_constantSumValidationErrorMessage =
 							Localization.GetLocalizedString(
-								attributeWebFormMetadata.GetAttributeValue<string>("adx_constantsumvalidationerrormessage"), LanguageCode);
+								attributeWebFormMetadata.GetAttributeValue<string>("mspp_constantsumvalidationerrormessage"), LanguageCode);
 
 						_rankOrderNoTiesValidationErrorMessage =
 							Localization.GetLocalizedString(
-								attributeWebFormMetadata.GetAttributeValue<string>("adx_rankordernotiesvalidationerrormessage"), LanguageCode);
+								attributeWebFormMetadata.GetAttributeValue<string>("mspp_rankordernotiesvalidationerrormessage"), LanguageCode);
 
 						_multipleChoiceValidationErrorMessage =
 							Localization.GetLocalizedString(
-								attributeWebFormMetadata.GetAttributeValue<string>("adx_multiplechoicevalidationerrormessage"), LanguageCode);
+								attributeWebFormMetadata.GetAttributeValue<string>("mspp_multiplechoicevalidationerrormessage"), LanguageCode);
 					}
 				}
 

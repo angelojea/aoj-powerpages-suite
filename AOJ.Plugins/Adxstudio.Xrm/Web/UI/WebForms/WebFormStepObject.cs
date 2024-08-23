@@ -97,8 +97,8 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 			string defaultNextButtonCssClass = null, string defaultSubmitButtonCssClass = null, string defaultPreviousButtonText = null,
 			string defaultNextButtonText = null, string defaultSubmitButtonText = null, string defaultSubmitButtonBusyText = null)
 		{
-			EntityName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
-			FormName = step.GetAttributeValue<string>("adx_formname");
+			EntityName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
+			FormName = step.GetAttributeValue<string>("mspp_formname");
 
 			if (string.IsNullOrWhiteSpace(EntityName)) throw new ApplicationException(ResourceManager.GetString("TargetEntity_LogicalName_Null_Exception"));
 			
@@ -111,78 +111,78 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 			SubmitButtonText = defaultSubmitButtonText;
 			SubmitButtonBusyText = defaultSubmitButtonBusyText;
 
-			TabName = step.GetAttributeValue<string>("adx_tabname");
+			TabName = step.GetAttributeValue<string>("mspp_tabname");
 
-			RecommendedFieldsRequired = step.GetAttributeValue<bool?>("adx_recommendedfieldsrequired") ?? false; 
-			RenderWebResourcesInline = step.GetAttributeValue<bool?>("adx_renderwebresourcesinline") ?? false;
-			ShowOwnerFields = step.GetAttributeValue<bool?>("adx_showownerfields") ?? false;
-			ShowUnsupportedFields = step.GetAttributeValue<bool?>("adx_showunsupportedfields") ?? false;
-			ToolTipEnabled = step.GetAttributeValue<bool?>("adx_tooltipenabled") ?? false;
+			RecommendedFieldsRequired = step.GetAttributeValue<bool?>("mspp_recommendedfieldsrequired") ?? false; 
+			RenderWebResourcesInline = step.GetAttributeValue<bool?>("mspp_renderwebresourcesinline") ?? false;
+			ShowOwnerFields = step.GetAttributeValue<bool?>("mspp_showownerfields") ?? false;
+			ShowUnsupportedFields = step.GetAttributeValue<bool?>("mspp_showunsupportedfields") ?? false;
+			ToolTipEnabled = step.GetAttributeValue<bool?>("mspp_tooltipenabled") ?? false;
 
-			AutoGenerateStepsFromTabs = step.GetAttributeValue<bool?>("adx_autogeneratesteps") ?? false;
+			AutoGenerateStepsFromTabs = step.GetAttributeValue<bool?>("mspp_autogeneratesteps") ?? false;
 
-			ForceAllFieldsRequired = step.GetAttributeValue<bool?>("adx_forceallfieldsrequired") ?? false;
+			ForceAllFieldsRequired = step.GetAttributeValue<bool?>("mspp_forceallfieldsrequired") ?? false;
 
-			ValidationGroup = step.GetAttributeValue<string>("adx_validationgroup") ?? string.Empty;
-			ValidationSummaryLinksEnabled = step.GetAttributeValue<bool?>("adx_validationsummarylinksenabled") ?? true;
-			ValidationSummaryCssClass = step.GetAttributeValue<string>("adx_validationsummarycssclass") ?? string.Empty;
+			ValidationGroup = step.GetAttributeValue<string>("mspp_validationgroup") ?? string.Empty;
+			ValidationSummaryLinksEnabled = step.GetAttributeValue<bool?>("mspp_validationsummarylinksenabled") ?? true;
+			ValidationSummaryCssClass = step.GetAttributeValue<string>("mspp_validationsummarycssclass") ?? string.Empty;
 
-			EnableValidationSummaryLinks = step.GetAttributeValue<bool?>("adx_validationsummarylinksenabled") ?? true;
+			EnableValidationSummaryLinks = step.GetAttributeValue<bool?>("mspp_validationsummarylinksenabled") ?? true;
 
-			LocalizedValidationSummaryHeaderText = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_validationsummaryheadertext"), languageCode) ?? string.Empty;
+			LocalizedValidationSummaryHeaderText = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_validationsummaryheadertext"), languageCode) ?? string.Empty;
 			
-			CaptchaRequired = step.GetAttributeValue<bool?>("adx_captcharequired") ?? false;
-			ShowCaptchaForAuthenticatedUsers = step.GetAttributeValue<bool?>("adx_showcaptchaforauthenticatedusers") ?? false;
+			CaptchaRequired = step.GetAttributeValue<bool?>("mspp_captcharequired") ?? false;
+			ShowCaptchaForAuthenticatedUsers = step.GetAttributeValue<bool?>("mspp_showcaptchaforauthenticatedusers") ?? false;
 
 
-			AttachFile = step.GetAttributeValue<bool?>("adx_attachfile") ?? false;
-			AttachFileAllowMultiple = step.GetAttributeValue<bool?>("adx_allowmultiplefiles") ?? false;
-			AttachFileAccept = step.GetAttributeValue<string>("adx_accept");
-			AttachFileRestrictAccept = step.GetAttributeValue<bool?>("adx_attachfilerestrictaccept").GetValueOrDefault(false);
-			AttachFileTypeErrorMessage = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_attachfiletypeerrormessage"), languageCode);
-			AttachFileMaxSize = step.GetAttributeValue<int?>("adx_attachfilemaxsize");
-			AttachFileRestrictSize = step.GetAttributeValue<int?>("adx_attachfilemaxsize").HasValue;
-			AttachFileSizeErrorMessage = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_attachfilesizeerrormessage"), languageCode);
-			AttachFileRequired = step.GetAttributeValue<bool?>("adx_attachfilerequired") ?? false;
-			LocalizedAttachFileLabel = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_attachfilelabel"), languageCode);
+			AttachFile = step.GetAttributeValue<bool?>("mspp_attachfile") ?? false;
+			AttachFileAllowMultiple = step.GetAttributeValue<bool?>("mspp_allowmultiplefiles") ?? false;
+			AttachFileAccept = step.GetAttributeValue<string>("mspp_accept");
+			AttachFileRestrictAccept = step.GetAttributeValue<bool?>("mspp_attachfilerestrictaccept").GetValueOrDefault(false);
+			AttachFileTypeErrorMessage = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_attachfiletypeerrormessage"), languageCode);
+			AttachFileMaxSize = step.GetAttributeValue<int?>("mspp_attachfilemaxsize");
+			AttachFileRestrictSize = step.GetAttributeValue<int?>("mspp_attachfilemaxsize").HasValue;
+			AttachFileSizeErrorMessage = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_attachfilesizeerrormessage"), languageCode);
+			AttachFileRequired = step.GetAttributeValue<bool?>("mspp_attachfilerequired") ?? false;
+			LocalizedAttachFileLabel = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_attachfilelabel"), languageCode);
 			AttachFileLabel = string.IsNullOrWhiteSpace(LocalizedAttachFileLabel) ? WebFormFunctions.DefaultAttachFileLabel : LocalizedAttachFileLabel;
-			AttachFileRequiredErrorMessage = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_attachfilerequirederrormessage"), languageCode);
-			AttachFileStorageLocation = step.GetAttributeValue<OptionSetValue>("adx_attachfilestoragelocation");
+			AttachFileRequiredErrorMessage = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_attachfilerequirederrormessage"), languageCode);
+			AttachFileStorageLocation = step.GetAttributeValue<OptionSetValue>("mspp_attachfilestoragelocation");
 
-			var stepPreviousButtonCssClass = step.GetAttributeValue<string>("adx_previousbuttoncssclass");
-			var stepNextButtonCssClass = step.GetAttributeValue<string>("adx_nextbuttoncssclass");
-			var stepSubmitButtonCssClass = step.GetAttributeValue<string>("adx_submitbuttoncssclass");
+			var stepPreviousButtonCssClass = step.GetAttributeValue<string>("mspp_previousbuttoncssclass");
+			var stepNextButtonCssClass = step.GetAttributeValue<string>("mspp_nextbuttoncssclass");
+			var stepSubmitButtonCssClass = step.GetAttributeValue<string>("mspp_submitbuttoncssclass");
 
-			LocalizedPreviousButtonText = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_previousbuttontext"), languageCode);
-			LocalizedNextButtonText = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_nextbuttontext"), languageCode);
-			LocalizedSubmitButtonText = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_submitbuttontext"), languageCode);
-			LocalizedSubmitButtonBusyText = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_submitbuttonbusytext"), languageCode);
+			LocalizedPreviousButtonText = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_previousbuttontext"), languageCode);
+			LocalizedNextButtonText = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_nextbuttontext"), languageCode);
+			LocalizedSubmitButtonText = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_submitbuttontext"), languageCode);
+			LocalizedSubmitButtonBusyText = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_submitbuttonbusytext"), languageCode);
 
-			SuccessMessage = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_successmessage"), languageCode);
-			Instructions = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_instructions"), languageCode);
+			SuccessMessage = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_successmessage"), languageCode);
+			Instructions = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_instructions"), languageCode);
 
 			PreviousButtonCssClass = string.IsNullOrWhiteSpace(stepPreviousButtonCssClass) ? (string.IsNullOrWhiteSpace(PreviousButtonCssClass) ? WebFormFunctions.DefaultPreviousButtonCssClass : PreviousButtonCssClass) : stepPreviousButtonCssClass;
 			NextButtonCssClass = string.IsNullOrWhiteSpace(stepNextButtonCssClass) ? (string.IsNullOrWhiteSpace(NextButtonCssClass) ? WebFormFunctions.DefaultNextButtonCssClass : NextButtonCssClass) : stepNextButtonCssClass;
 			SubmitButtonCssClass = string.IsNullOrWhiteSpace(stepSubmitButtonCssClass) ? (string.IsNullOrWhiteSpace(SubmitButtonCssClass) ? WebFormFunctions.DefaultSubmitButtonCssClass : SubmitButtonCssClass) : stepSubmitButtonCssClass;
 
-			ConfirmOnExit = webform.GetAttributeValue<bool?>("adx_savechangeswarningonclose") ?? false;
-			ConfirmOnExitMessage = Localization.GetLocalizedString(webform.GetAttributeValue<string>("adx_savechangeswarningmessage"), languageCode);
+			ConfirmOnExit = webform.GetAttributeValue<bool?>("mspp_savechangeswarningonclose") ?? false;
+			ConfirmOnExitMessage = Localization.GetLocalizedString(webform.GetAttributeValue<string>("mspp_savechangeswarningmessage"), languageCode);
 
 			PreviousButtonText = string.IsNullOrWhiteSpace(LocalizedPreviousButtonText) ? (string.IsNullOrWhiteSpace(PreviousButtonText) ? WebFormFunctions.DefaultPreviousButtonText : PreviousButtonText) : LocalizedPreviousButtonText;
 			NextButtonText = string.IsNullOrWhiteSpace(LocalizedNextButtonText) ? (string.IsNullOrWhiteSpace(NextButtonText) ? WebFormFunctions.DefaultNextButtonText : NextButtonText) : LocalizedNextButtonText;
 			SubmitButtonText = string.IsNullOrWhiteSpace(LocalizedSubmitButtonText) ? (string.IsNullOrWhiteSpace(SubmitButtonText) ? WebFormFunctions.DefaultSubmitButtonText : SubmitButtonText) : LocalizedSubmitButtonText;
 			SubmitButtonBusyText = string.IsNullOrWhiteSpace(LocalizedSubmitButtonBusyText) ? (string.IsNullOrWhiteSpace(SubmitButtonBusyText) ? WebFormFunctions.DefaultSubmitButtonBusyText : SubmitButtonBusyText) : LocalizedSubmitButtonBusyText;
 
-			MovePreviousPermitted = step.GetAttributeValue<bool?>("adx_movepreviouspermitted") ?? true;
+			MovePreviousPermitted = step.GetAttributeValue<bool?>("mspp_movepreviouspermitted") ?? true;
 
-			NextStep = step.GetRelatedEntity(context, "adx_webformstep_nextstep", EntityRole.Referencing);
-			WebFormMetadata = step.GetRelatedEntities(context, "adx_webformmetadata_webformstep");
+			NextStep = step.GetRelatedEntity(context, "mspp_webformstep_nextstep", EntityRole.Referencing);
+			WebFormMetadata = step.GetRelatedEntities(context, "mspp_webformmetadata_webformstep");
 
-			UserControlPath = step.GetAttributeValue<string>("adx_usercontrolpath");
-			PostBackUrl = step.GetAttributeValue<string>("adx_postbackurl") ?? string.Empty;
+			UserControlPath = step.GetAttributeValue<string>("mspp_usercontrolpath");
+			PostBackUrl = step.GetAttributeValue<string>("mspp_postbackurl") ?? string.Empty;
 
-			SetEntityReference = step.GetAttributeValue<bool?>("adx_setentityreference") ?? false;
-			RelationshipName = step.GetAttributeValue<string>("adx_referenceentityrelationshipname") ?? string.Empty;
+			SetEntityReference = step.GetAttributeValue<bool?>("mspp_setentityreference") ?? false;
+			RelationshipName = step.GetAttributeValue<string>("mspp_referenceentityrelationshipname") ?? string.Empty;
 		}
 	}
 }

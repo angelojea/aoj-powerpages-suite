@@ -90,11 +90,11 @@ namespace Microsoft.Xrm.Portal.Core
 
 			var access = context.GetCaseAccessByContact(contact);
 
-			if (access == null || !access.GetAttributeValue<bool?>("adx_read").GetValueOrDefault()) return emptyResult;
+			if (access == null || !access.GetAttributeValue<bool?>("mspp_read").GetValueOrDefault()) return emptyResult;
 
 			var parentCustomer = contact.GetAttributeValue<Guid?>("parentcustomerid");
 
-			return ((access.GetAttributeValue<int?>("adx_scope") == scope) && (parentCustomer != null))
+			return ((access.GetAttributeValue<int?>("mspp_scope") == scope) && (parentCustomer != null))
 				? GetCasesByCustomer(context, parentCustomer)
 				: GetCasesByCustomer(context, contact.GetAttributeValue<Guid?>("contactid"));
 		}
@@ -212,7 +212,7 @@ namespace Microsoft.Xrm.Portal.Core
 		{
 			var findContact =
 				from c in context.CreateQuery("contact")
-				where c.GetAttributeValue<string>("adx_username") == username
+				where c.GetAttributeValue<string>("mspp_username") == username
 				select c;
 
 			return findContact.FirstOrDefault();
@@ -224,8 +224,8 @@ namespace Microsoft.Xrm.Portal.Core
 
 			var findContact =
 				from c in context.CreateQuery("contact")
-				where c.GetAttributeValue<string>("adx_invitationcode") == invitationCode // MSBug #119992: No need for better string compare, since query provider won't interpret it anyway.
-					&& (c.GetAttributeValue<DateTime?>("adx_invitationcodeexpirydate") == null || c.GetAttributeValue<DateTime?>("adx_invitationcodeexpirydate") < now)
+				where c.GetAttributeValue<string>("mspp_invitationcode") == invitationCode // MSBug #119992: No need for better string compare, since query provider won't interpret it anyway.
+					&& (c.GetAttributeValue<DateTime?>("mspp_invitationcodeexpirydate") == null || c.GetAttributeValue<DateTime?>("mspp_invitationcodeexpirydate") < now)
 				select c;
 
 			return findContact.FirstOrDefault();

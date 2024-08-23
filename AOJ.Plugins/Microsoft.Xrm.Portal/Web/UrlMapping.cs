@@ -21,7 +21,7 @@ namespace Microsoft.Xrm.Portal.Web
 
 			CrmEntityInactiveInfo inactiveInfo;
 
-			var filter = CrmEntityInactiveInfo.TryGetInfo("adx_webpage", out inactiveInfo)
+			var filter = CrmEntityInactiveInfo.TryGetInfo("mspp_webpage", out inactiveInfo)
 				? entity => !inactiveInfo.IsInactive(entity)
 				: new Func<Entity, bool>(entity => true);
 
@@ -39,16 +39,16 @@ namespace Microsoft.Xrm.Portal.Web
 
 		private static Entity LookupPageByUrlPath(OrganizationServiceContext context, Entity website, string urlPath, Func<Entity, bool> predicate)
 		{
-			website.AssertEntityName("adx_website");
+			website.AssertEntityName("mspp_website");
 
 			if (website.Id == Guid.Empty) throw new NullReferenceException("Unable to retrieve the Id of the website.  Lookup failed.");
 
 			var urlWithoutWebsitePath = WebsitePathUtility.ToRelative(website, urlPath);
 
-			var webPages = website.GetRelatedEntities(context, "adx_website_webpage").Where(predicate);
+			var webPages = website.GetRelatedEntities(context, "mspp_website_webpage").Where(predicate);
 
 			// Check if we can find a page with the exact URL.
-			var page = webPages.Where(wp => string.Compare(wp.GetAttributeValue<string>("adx_partialurl"), urlWithoutWebsitePath, StringComparison.InvariantCultureIgnoreCase) == 0).FirstOrDefault();
+			var page = webPages.Where(wp => string.Compare(wp.GetAttributeValue<string>("mspp_partialurl"), urlWithoutWebsitePath, StringComparison.InvariantCultureIgnoreCase) == 0).FirstOrDefault();
 
 			if (page != null)
 			{
@@ -65,7 +65,7 @@ namespace Microsoft.Xrm.Portal.Web
 
 				if (parentPage != null)
 				{
-					page = context.GetChildPages(parentPage).Where(p => predicate(p) && string.Equals(p.GetAttributeValue<string>("adx_partialurl"), thisPath, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+					page = context.GetChildPages(parentPage).Where(p => predicate(p) && string.Equals(p.GetAttributeValue<string>("mspp_partialurl"), thisPath, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
 
 					if (page != null)
 					{
@@ -81,7 +81,7 @@ namespace Microsoft.Xrm.Portal.Web
 		{
 			CrmEntityInactiveInfo inactiveInfo;
 
-			var filter = CrmEntityInactiveInfo.TryGetInfo("adx_webfile", out inactiveInfo)
+			var filter = CrmEntityInactiveInfo.TryGetInfo("mspp_webfile", out inactiveInfo)
 				? entity => !inactiveInfo.IsInactive(entity)
 				: new Func<Entity, bool>(entity => true);
 
@@ -90,7 +90,7 @@ namespace Microsoft.Xrm.Portal.Web
 
 		private static Entity LookupFileByUrlPath(OrganizationServiceContext context, Entity website, string urlPath, Func<Entity, bool> predicate)
 		{
-			website.AssertEntityName("adx_website");
+			website.AssertEntityName("mspp_website");
 
 			if (website.Id == Guid.Empty) throw new NullReferenceException("Unable to retrieve the Id of the website.  Lookup failed.");
 
@@ -105,7 +105,7 @@ namespace Microsoft.Xrm.Portal.Web
 
 				if (parentPage != null)
 				{
-					var file = context.GetChildFiles(parentPage).Where(f => predicate(f) && string.Equals(f.GetAttributeValue<string>("adx_partialurl"), thisPath, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+					var file = context.GetChildFiles(parentPage).Where(f => predicate(f) && string.Equals(f.GetAttributeValue<string>("mspp_partialurl"), thisPath, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
 
 					if (file != null)
 					{

@@ -27,7 +27,7 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 		public static string GetCrmEntitySetDataServiceUri(this Type crmDataContextType, string crmEntityName, string serviceBaseUri)
 		{
 			var portal = PortalCrmConfigurationManager.CreatePortalContext();
-			return GetCrmEntitySetDataServiceUri(crmDataContextType, crmEntityName, serviceBaseUri, "adx_websiteid", portal.Website.Id);
+			return GetCrmEntitySetDataServiceUri(crmDataContextType, crmEntityName, serviceBaseUri, "mspp_websiteid", portal.Website.Id);
 		}
 
 		public static string GetCrmEntitySetDataServiceUri(

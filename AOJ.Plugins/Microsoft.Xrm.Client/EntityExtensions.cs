@@ -7,11 +7,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Web.Services.Description;
 using Microsoft.Xrm.Client.Reflection;
 using Microsoft.Xrm.Client.Runtime;
 using Microsoft.Xrm.Client.Threading;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
+using Microsoft.Xrm.Sdk.Messages;
+using Microsoft.Xrm.Sdk.Metadata;
+using Microsoft.Xrm.Sdk.Query;
+using System.Linq;
 
 namespace Microsoft.Xrm.Client
 {
@@ -770,17 +775,26 @@ namespace Microsoft.Xrm.Client
 		}
 
 		private static IEnumerable<T> GetRelatedEntities<T>(OrganizationServiceContext context, Entity entity, Relationship relationship) where T : Entity
-		{
-			if (!context.IsAttached(entity) && entity.RelatedEntities.Contains(relationship))
+        {
+            // Step 1: Retrieve the relationship metadata
+            var retrieveRelationshipRequest = new RetrieveRelationshipRequest { Name = relationship.SchemaName };
+
+            var retrieveRelationshipResponse = (RetrieveRelationshipResponse)context.Execute(retrieveRelationshipRequest);
+            var oneToManyRelationshipMetadata = (OneToManyRelationshipMetadata)retrieveRelationshipResponse.RelationshipMetadata;
+
+            // Step 2: Query the related entities
+            var query = new QueryExpression(oneToManyRelationshipMetadata.ReferencingEntity) { ColumnSet = new ColumnSet(true) };
+
+            query.Criteria.AddCondition(oneToManyRelationshipMetadata.ReferencingAttribute, ConditionOperator.Equal, entity.Id);
+
+            var response = context.Execute(new RetrieveMultipleRequest() { Query = query }) as RetrieveMultipleResponse;
+			var relatedEntities = response.Results.Select((e) =>
 			{
-				// clear out the existing related entities
+				return e as T;
 
-				entity.RelatedEntities.Remove(relationship);
-			}
+			}).ToList();
 
-			context.LoadProperty(entity, relationship);
-			var relatedEntities = entity.GetRelatedEntities<T>(relationship.SchemaName, relationship.PrimaryEntityRole);
-			return relatedEntities ?? new T[] { };
+            return relatedEntities;
 		}
 
 		private static T GetRelated<T>(Entity entity, Relationship relationship, Func<T> action)
@@ -789,7 +803,7 @@ namespace Microsoft.Xrm.Client
 
 			// lock to prevent a race condition on the related entities collection
 
-			return LockManager.Lock(key, action);
+			return action();
 		}
 
 		private static TResult ForEntityRelationship<TResult, TEntity>(

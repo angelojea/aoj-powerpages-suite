@@ -658,7 +658,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (WebFormReference != null)
 			{
-				webform = context.RetrieveSingle("adx_webform", "adx_webformid", this.WebFormReference.Id, FetchAttribute.All);
+				webform = context.RetrieveSingle("mspp_webform", "mspp_webformid", this.WebFormReference.Id, FetchAttribute.All);
 
 				if (webform == null)
 				{
@@ -667,14 +667,14 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			else
 			{
-				if (entity.LogicalName != "adx_webpage")
+				if (entity.LogicalName != "mspp_webpage")
 				{
 					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "The current entity must be of type adx_webpage. Please select the correct template for this entity type.");
 					return;
 				}
 
 				// get the web form
-				var webformReference = entity.GetAttributeValue<EntityReference>("adx_webform");
+				var webformReference = entity.GetAttributeValue<EntityReference>("mspp_webform");
 
 				if (webformReference == null)
 				{
@@ -682,7 +682,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					return;
 				}
 
-				webform = context.RetrieveSingle("adx_webform", "adx_webformid", webformReference.Id, FetchAttribute.All);
+				webform = context.RetrieveSingle("mspp_webform", "mspp_webformid", webformReference.Id, FetchAttribute.All);
 
 				if (webform == null)
 				{
@@ -693,24 +693,24 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				WebFormReference = webform.ToEntityReference();
 			}
 
-			if (webform.GetAttributeValue<bool?>("adx_authenticationrequired") ?? false)
+			if (webform.GetAttributeValue<bool?>("mspp_authenticationrequired") ?? false)
 			{
 				RedirectToLoginIfAnonymous();
 			}
 
 			if (LanguageCode <= 0) LanguageCode = this.Context.GetPortalSolutionsDetails().OrganizationBaseLanguageCode;
 
-			var multipleRecordsPerUserPermitted = webform.GetAttributeValue<bool?>("adx_multiplerecordsperuserpermitted") ?? false;
+			var multipleRecordsPerUserPermitted = webform.GetAttributeValue<bool?>("mspp_multiplerecordsperuserpermitted") ?? false;
 			var editExpired = false;
-			var editExpiredStateCode = webform.GetAttributeValue<int?>("adx_editexpiredstatecode");
-			var editExpiredStatusCode = webform.GetAttributeValue<int?>("adx_editexpiredstatuscode");
-			var localizedEditExpiredMessage = Localization.GetLocalizedString(webform.GetAttributeValue<string>("adx_editexpiredmessage"), LanguageCode);
+			var editExpiredStateCode = webform.GetAttributeValue<int?>("mspp_editexpiredstatecode");
+			var editExpiredStatusCode = webform.GetAttributeValue<int?>("mspp_editexpiredstatuscode");
+			var localizedEditExpiredMessage = Localization.GetLocalizedString(webform.GetAttributeValue<string>("mspp_editexpiredmessage"), LanguageCode);
 			var editExpiredMessage = string.IsNullOrWhiteSpace(localizedEditExpiredMessage) ? DefaultEditExpiredMessage : localizedEditExpiredMessage;
-			var startNewSessionOnLoad = webform.GetAttributeValue<bool?>("adx_startnewsessiononload") ?? false;
+			var startNewSessionOnLoad = webform.GetAttributeValue<bool?>("mspp_startnewsessiononload") ?? false;
 			StartNewSessionOnLoad = startNewSessionOnLoad;
 			Guid stepid;
 			var stepIdString = HttpContext.Current.Request["stepid"];
-			var startStep = context.RetrieveRelatedEntity(webform, "adx_webform_startstep");
+			var startStep = context.RetrieveRelatedEntity(webform, "mspp_webform_startstep");
 			if (startStep == null)
 			{
 				DisplayMessage(this, ResourceManager.GetString("Webform_StartStep_Missing_Exception"), "error alert alert-danger");
@@ -722,7 +722,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			var step = startStep;
 			var nextStep = context.RetrieveRelatedEntity(
 				step,
-				new Relationship("adx_webformstep_nextstep") { PrimaryEntityRole = EntityRole.Referencing });
+				new Relationship("mspp_webformstep_nextstep") { PrimaryEntityRole = EntityRole.Referencing });
 
 			switch (HttpContext.Current.Request["msg"])
 			{
@@ -734,25 +734,25 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					var sourceStep = startStep;
 					if (!string.IsNullOrWhiteSpace(stepIdString) && Guid.TryParse(stepIdString, out stepid))
 					{
-						var lastStep = context.RetrieveSingle("adx_webformstep", "adx_webformstepid", stepid, new[] { new FetchAttribute("adx_recordnotfoundmessage"), });
+						var lastStep = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", stepid, new[] { new FetchAttribute("mspp_recordnotfoundmessage"), });
 
 						if (lastStep != null)
 						{
 							sourceStep = lastStep;
 						}
 					}
-					var recordNotFoundMessage = Localization.GetLocalizedString(sourceStep.GetAttributeValue<string>("adx_recordnotfoundmessage"), LanguageCode);
+					var recordNotFoundMessage = Localization.GetLocalizedString(sourceStep.GetAttributeValue<string>("mspp_recordnotfoundmessage"), LanguageCode);
 					RecordNotFoundMessage = !string.IsNullOrWhiteSpace(recordNotFoundMessage) ? recordNotFoundMessage : DefaultRecordNotFoundMessage;
 					DisplayMessage(this, RecordNotFoundMessage, "error alert alert-danger");
 					return;
 				case "success":
 					if (!string.IsNullOrWhiteSpace(stepIdString) && Guid.TryParse(stepIdString, out stepid))
 					{
-						var lastStep = context.RetrieveSingle("adx_webformstep", "adx_webformstepid", stepid, new[] { new FetchAttribute("adx_successmessage"), });
+						var lastStep = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", stepid, new[] { new FetchAttribute("mspp_successmessage"), });
 
 						if (lastStep != null)
 						{
-							var message = Localization.GetLocalizedString(lastStep.GetAttributeValue<string>("adx_successmessage"), LanguageCode);
+							var message = Localization.GetLocalizedString(lastStep.GetAttributeValue<string>("mspp_successmessage"), LanguageCode);
 							if (!string.IsNullOrWhiteSpace(message))
 							{
 								SuccessMessage = message;
@@ -826,7 +826,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				}
 				else
 				{
-					step = context.RetrieveSingle("adx_webformstep", "adx_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All)
+					step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All)
 							?? startStep;
 
 					if (entitySourceDefinition == null || step.Id != startStep.Id)
@@ -841,7 +841,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				}
 			}
 
-			var registerStartupScript = step.GetAttributeValue<string>("adx_registerstartupscript");
+			var registerStartupScript = step.GetAttributeValue<string>("mspp_registerstartupscript");
 
 			if (!string.IsNullOrWhiteSpace(registerStartupScript))
 			{
@@ -849,7 +849,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				var control = new HtmlGenericControl() { };
 
-				var script = html.ScriptAttribute(context, step, "adx_registerstartupscript");
+				var script = html.ScriptAttribute(context, step, "mspp_registerstartupscript");
 
 				control.InnerHtml = script.ToString();
 
@@ -870,8 +870,8 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			if (SessionLoaded && CurrentSessionHistory.CurrentStepId != startStep.Id)
 			{
 				// If entity source is to be from a previous step, we need to get the reference entity details from the step history except if the source is current portal user.
-				var mode = step.GetAttributeValue<OptionSetValue>("adx_mode");
-				var entitySourceType = step.GetAttributeValue<OptionSetValue>("adx_entitysourcetype");
+				var mode = step.GetAttributeValue<OptionSetValue>("mspp_mode");
+				var entitySourceType = step.GetAttributeValue<OptionSetValue>("mspp_entitysourcetype");
 
 				if ((mode != null && entitySourceType != null) && entitySourceType.Value == (int)WebFormStepSourceType.CurrentPortalUser)
 				{
@@ -889,18 +889,18 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						if ((mode.Value == (int)WebFormStepMode.Edit || mode.Value == (int)WebFormStepMode.ReadOnly)
 							&& entitySourceType.Value == (int)WebFormStepSourceType.ResultFromPreviousStep)
 						{
-							var entitySourceStep = step.GetAttributeValue<EntityReference>("adx_entitysourcestep");
+							var entitySourceStep = step.GetAttributeValue<EntityReference>("mspp_entitysourcestep");
 							UpdateStepHistoryReferenceEntityID(entitySourceStep == null ? GetPreviousStepReferenceEntityID() : GetStepReferenceEntityID(entitySourceStep.Id));
 						}
 					}
-					else if (step.GetAttributeValue<OptionSetValue>("adx_type") != null)
+					else if (step.GetAttributeValue<OptionSetValue>("mspp_type") != null)
 					{
-						var stepType = step.GetAttributeValue<OptionSetValue>("adx_type");
+						var stepType = step.GetAttributeValue<OptionSetValue>("mspp_type");
 						if (stepType != null)
 						{
 							if (stepType.Value == (int)WebFormStepType.LoadUserControl) // Load User Control
 							{
-								var entitySourceStep = step.GetAttributeValue<EntityReference>("adx_entitysourcestep");
+								var entitySourceStep = step.GetAttributeValue<EntityReference>("mspp_entitysourcestep");
 								UpdateStepHistoryReferenceEntityID(entitySourceStep == null ? GetPreviousStepReferenceEntityID() : GetStepReferenceEntityID(entitySourceStep.Id));
 							}
 						}
@@ -909,11 +909,11 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					if (GetCurrentStepReferenceEntityID() == Guid.Empty)
 					{
 						// Reflect on relationship name to determine if a related record already exists
-						var relationshipName = step.GetAttributeValue<string>("adx_referenceentityrelationshipname") ?? string.Empty;
+						var relationshipName = step.GetAttributeValue<string>("mspp_referenceentityrelationshipname") ?? string.Empty;
 
 						if (!string.IsNullOrWhiteSpace(relationshipName))
 						{
-							var entitySourceStep = step.GetAttributeValue<EntityReference>("adx_referenceentitystep");
+							var entitySourceStep = step.GetAttributeValue<EntityReference>("mspp_referenceentitystep");
 							var sourceEntityDefinition = (entitySourceStep == null) ? GetPreviousStepReferenceEntityDefinition() : GetStepReferenceEntityDefinition(entitySourceStep.Id);
 
 							if (sourceEntityDefinition != null && !string.IsNullOrWhiteSpace(sourceEntityDefinition.LogicalName) && !string.IsNullOrWhiteSpace(sourceEntityDefinition.PrimaryKeyLogicalName) && sourceEntityDefinition.ID != Guid.Empty)
@@ -952,9 +952,9 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				}
 			}
 
-			EnableEntityPermissions = step.GetAttributeValue<bool?>("adx_entitypermissionsenabled").GetValueOrDefault(false);
+			EnableEntityPermissions = step.GetAttributeValue<bool?>("mspp_entitypermissionsenabled").GetValueOrDefault(false);
 
-			var notFoundMessage = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_recordnotfoundmessage"), LanguageCode);
+			var notFoundMessage = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_recordnotfoundmessage"), LanguageCode);
 			RecordNotFoundMessage = !string.IsNullOrWhiteSpace(notFoundMessage) ? notFoundMessage : DefaultRecordNotFoundMessage;
 
 			ProcessStep(context, webform, step, entitySourceDefinition);
@@ -988,7 +988,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				{
 					if (SessionLoaded)
 					{
-						step = context.RetrieveSingle("adx_webformstep", "adx_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All)
+						step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All)
 							?? startStep;
 					}
 					else
@@ -1032,9 +1032,9 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (step == null) { throw new ArgumentNullException("step"); }
 
-			step.AssertEntityName("adx_webformstep");
+			step.AssertEntityName("mspp_webformstep");
 
-			var mode = step.GetAttributeValue<OptionSetValue>("adx_mode");
+			var mode = step.GetAttributeValue<OptionSetValue>("mspp_mode");
 
 			if (mode != null)
 			{
@@ -1042,7 +1042,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				{
 					case (int)WebFormStepMode.Insert:
 						// Determine if mode must be changed to edit
-						var targetEntityName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
+						var targetEntityName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
 						var referenceEntityLogicalName = string.Empty;
 						var referenceEntityId = Guid.Empty;
 						var referenceEntityDefinition = CurrentSessionHistory == null ? null : CurrentSessionHistory.CurrentStepIndex > 0 ? GetPreviousStepReferenceEntityDefinition() : null;
@@ -1097,7 +1097,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var nextStepIsRedirect = false;
 
-			HideFormOnSuccess = step.GetAttributeValue<bool?>("adx_hideformonsuccess") ?? true;
+			HideFormOnSuccess = step.GetAttributeValue<bool?>("mspp_hideformonsuccess") ?? true;
 
 			SubmitButtonCssClass = stepObject.SubmitButtonCssClass;
 
@@ -1120,7 +1120,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var portalContext = PortalCrmConfigurationManager.CreatePortalContext(PortalName);
 
-			var gridMetadataJson = step.GetAttributeValue<string>("adx_settings");
+			var gridMetadataJson = step.GetAttributeValue<string>("mspp_settings");
 
 			FormActionMetadata formActionMetadata = null;
 			if (!string.IsNullOrWhiteSpace(gridMetadataJson))
@@ -1177,8 +1177,8 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			};
 
 			var formPanel = new Panel { ID = "WebFormPanel" };
-			var showProgress = webform.GetAttributeValue<bool?>("adx_progressindicatorenabled") ?? false;
-			var progressPosition = webform.GetAttributeValue<OptionSetValue>("adx_progressindicatorposition");
+			var showProgress = webform.GetAttributeValue<bool?>("mspp_progressindicatorenabled") ?? false;
+			var progressPosition = webform.GetAttributeValue<OptionSetValue>("mspp_progressindicatorposition");
 			var progressControlPosition = string.Empty;
 
 			if (!string.IsNullOrWhiteSpace(FormCssClass)) formPanel.CssClass = FormCssClass;
@@ -1211,7 +1211,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			messagePanel.Controls.Add(messageLabel);
 			Controls.Add(messagePanel);
 
-			SuccessMessage = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_successmessage"), LanguageCode);
+			SuccessMessage = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_successmessage"), LanguageCode);
 
 			if (stepObject.ConfirmOnExit)
 			{
@@ -1237,12 +1237,12 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (stepObject.NextStep != null)
 			{
-				var type = stepObject.NextStep.GetAttributeValue<OptionSetValue>("adx_type");
+				var type = stepObject.NextStep.GetAttributeValue<OptionSetValue>("mspp_type");
 
 				if (type != null) { if (type.Value == (int)WebFormStepType.Redirect) { nextStepIsRedirect = true; } }
 			}
 
-			if (CurrentSessionHistory.CurrentStepIndex > 0 && !stepObject.AutoGenerateStepsFromTabs && (step.GetAttributeValue<bool?>("adx_movepreviouspermitted") ?? true))
+			if (CurrentSessionHistory.CurrentStepIndex > 0 && !stepObject.AutoGenerateStepsFromTabs && (step.GetAttributeValue<bool?>("mspp_movepreviouspermitted") ?? true))
 			{
 				showMovePreviousButton = true;
 			}
@@ -1513,9 +1513,9 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var stepObject = new WebFormStepObject(webform, step, LanguageCode, context);
 
-			var hideFormOnSuccess = step.GetAttributeValue<bool?>("adx_hideformonsuccess") ?? true;
+			var hideFormOnSuccess = step.GetAttributeValue<bool?>("mspp_hideformonsuccess") ?? true;
 
-			if (string.IsNullOrWhiteSpace(stepObject.UserControlPath)) throw new ApplicationException("adx_webformstep.adx_usercontrolpath must not be null.");
+			if (string.IsNullOrWhiteSpace(stepObject.UserControlPath)) throw new ApplicationException("mspp_webformstep.adx_usercontrolpath must not be null.");
 
 			HideFormOnSuccess = hideFormOnSuccess;
 
@@ -1532,7 +1532,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var showMovePreviousButton = false;
 
-			var localizedUserControlTitle = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_usercontroltitle"), LanguageCode);
+			var localizedUserControlTitle = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_usercontroltitle"), LanguageCode);
 
 			const string nextButtonCommandName = "MoveNext";
 
@@ -1540,7 +1540,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (stepObject.NextStep != null)
 			{
-				var type = stepObject.NextStep.GetAttributeValue<OptionSetValue>("adx_type");
+				var type = stepObject.NextStep.GetAttributeValue<OptionSetValue>("mspp_type");
 
 				if (type != null)
 				{
@@ -1636,8 +1636,8 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			Submit += userControl.OnSubmit;
 
-			var showProgress = webform.GetAttributeValue<bool?>("adx_progressindicatorenabled") ?? false;
-			var progressPosition = webform.GetAttributeValue<OptionSetValue>("adx_progressindicatorposition");
+			var showProgress = webform.GetAttributeValue<bool?>("mspp_progressindicatorenabled") ?? false;
+			var progressPosition = webform.GetAttributeValue<OptionSetValue>("mspp_progressindicatorposition");
 			var progressControlPosition = string.Empty;
 
 			progressControlPosition = GetProgressControlPosition(progressPosition, progressControlPosition);
@@ -1706,18 +1706,18 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (container == null) throw new ArgumentNullException("container");
 
-			var startStep = context.RetrieveRelatedEntity(webform, "adx_webform_startstep");
+			var startStep = context.RetrieveRelatedEntity(webform, "mspp_webform_startstep");
 
 			if (startStep == null) throw new ApplicationException("Web Form must have a Start Step.");
 
-			var showProgress = webform.GetAttributeValue<bool?>("adx_progressindicatorenabled") ?? false;
+			var showProgress = webform.GetAttributeValue<bool?>("mspp_progressindicatorenabled") ?? false;
 
 			if (!showProgress || !PersistSessionHistory) return;
 
-			var prependStepNum = webform.GetAttributeValue<bool?>("adx_progressindicatorprependstepnum") ?? false;
-			var progressPosition = webform.GetAttributeValue<OptionSetValue>("adx_progressindicatorposition");
-			var progressType = webform.GetAttributeValue<OptionSetValue>("adx_progressindicatortype");
-			var progressIgnoreLastStep = webform.GetAttributeValue<bool?>("adx_progressindicatorignorelaststep") ?? false;
+			var prependStepNum = webform.GetAttributeValue<bool?>("mspp_progressindicatorprependstepnum") ?? false;
+			var progressPosition = webform.GetAttributeValue<OptionSetValue>("mspp_progressindicatorposition");
+			var progressType = webform.GetAttributeValue<OptionSetValue>("mspp_progressindicatortype");
+			var progressIgnoreLastStep = webform.GetAttributeValue<bool?>("mspp_progressindicatorignorelaststep") ?? false;
 			var progressControlPosition = string.Empty;
 			var progressControlType = string.Empty;
 
@@ -1772,10 +1772,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (startStep == null) throw new ArgumentNullException("startStep");
 
-			var logicalName = startStep.GetAttributeValue<string>("adx_targetentitylogicalname");
-			var primaryKey = startStep.GetAttributeValue<string>("adx_targetentityprimarykeylogicalname");
+			var logicalName = startStep.GetAttributeValue<string>("mspp_targetentitylogicalname");
+			var primaryKey = startStep.GetAttributeValue<string>("mspp_targetentityprimarykeylogicalname");
 
-			if (string.IsNullOrWhiteSpace(startStep.GetAttributeValue<string>("adx_targetentitylogicalname")))
+			if (string.IsNullOrWhiteSpace(startStep.GetAttributeValue<string>("mspp_targetentitylogicalname")))
 			{
 				throw new ApplicationException(ResourceManager.GetString("TargetEntity_LogicalName_Null_Exception"));
 			}
@@ -1854,10 +1854,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var id = string.Empty;
 
-			step.AssertEntityName("adx_webformstep");
+			step.AssertEntityName("mspp_webformstep");
 
-			var logicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
-			var primaryKey = step.GetAttributeValue<string>("adx_targetentityprimarykeylogicalname");
+			var logicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
+			var primaryKey = step.GetAttributeValue<string>("mspp_targetentityprimarykeylogicalname");
 
 			if (string.IsNullOrWhiteSpace(logicalName))
 			{
@@ -1874,8 +1874,8 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				throw new ApplicationException(ResourceManager.GetString("Failed_To_Determine_Target_Entity_Pk_Logical_Name_Exception"));
 			}
 
-			var mode = step.GetAttributeValue<OptionSetValue>("adx_mode");
-			var entitySourceType = step.GetAttributeValue<OptionSetValue>("adx_entitysourcetype");
+			var mode = step.GetAttributeValue<OptionSetValue>("mspp_mode");
+			var entitySourceType = step.GetAttributeValue<OptionSetValue>("mspp_entitysourcetype");
 
 			if (mode != null)
 			{
@@ -1889,7 +1889,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			{
 				Entity existingRecord;
 
-				var primaryKeyQueryStringParameter = step.GetAttributeValue<string>("adx_primarykeyquerystringparametername");
+				var primaryKeyQueryStringParameter = step.GetAttributeValue<string>("mspp_primarykeyquerystringparametername");
 
 				if (!string.IsNullOrWhiteSpace(primaryKeyQueryStringParameter))
 				{
@@ -1921,16 +1921,16 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			switch (entitySourceType.Value)
 			{
 				case (int)WebFormStepSourceType.QueryString: // Query String
-					if (string.IsNullOrWhiteSpace(step.GetAttributeValue<string>("adx_primarykeyattributelogicalname")))
+					if (string.IsNullOrWhiteSpace(step.GetAttributeValue<string>("mspp_primarykeyattributelogicalname")))
 					{
-						throw new ApplicationException("adx_webformstep.adx_primarykeyattributelogicalname must not be null.");
+						throw new ApplicationException("mspp_webformstep.adx_primarykeyattributelogicalname must not be null.");
 					}
-					primaryKey = step.GetAttributeValue<string>("adx_primarykeyattributelogicalname");
-					if (string.IsNullOrWhiteSpace(step.GetAttributeValue<string>("adx_primarykeyquerystringparametername")))
+					primaryKey = step.GetAttributeValue<string>("mspp_primarykeyattributelogicalname");
+					if (string.IsNullOrWhiteSpace(step.GetAttributeValue<string>("mspp_primarykeyquerystringparametername")))
 					{
-						throw new ApplicationException("adx_webformstep.adx_primarykeyquerystringparametername must not be null.");
+						throw new ApplicationException("mspp_webformstep.adx_primarykeyquerystringparametername must not be null.");
 					}
-					var primaryKeyQueryStringParameter = step.GetAttributeValue<string>("adx_primarykeyquerystringparametername");
+					var primaryKeyQueryStringParameter = step.GetAttributeValue<string>("mspp_primarykeyquerystringparametername");
 					id = HttpContext.Current.Request[primaryKeyQueryStringParameter];
 					Guid guid;
 					if (string.IsNullOrWhiteSpace(id))
@@ -1966,9 +1966,9 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					}
 					break;
 				case (int)WebFormStepSourceType.ResultFromPreviousStep: // Source entity from previous step
-					throw new ApplicationException("adx_webformstep.adx_entitysourcetype is not valid for the start step.");
+					throw new ApplicationException("mspp_webformstep.adx_entitysourcetype is not valid for the start step.");
 				default:
-					throw new ApplicationException("adx_webformstep.adx_entitysourcetype is not valid for the start step.");
+					throw new ApplicationException("mspp_webformstep.adx_entitysourcetype is not valid for the start step.");
 			}
 
 			definition = new WebForms.WebFormEntitySourceDefinition(logicalName, primaryKey, id);
@@ -1994,10 +1994,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			var primaryKey = string.Empty;
 			var id = string.Empty;
 
-			step.AssertEntityName("adx_webformstep");
+			step.AssertEntityName("mspp_webformstep");
 
-			var mode = step.GetAttributeValue<OptionSetValue>("adx_mode");
-			var entitySourceType = step.GetAttributeValue<OptionSetValue>("adx_entitysourcetype");
+			var mode = step.GetAttributeValue<OptionSetValue>("mspp_mode");
+			var entitySourceType = step.GetAttributeValue<OptionSetValue>("mspp_entitysourcetype");
 
 			if (mode != null)
 			{
@@ -2016,21 +2016,21 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				case 100000000: // None
 					return null;
 				case (int)WebFormStepSourceType.QueryString: // Query String
-					if (string.IsNullOrWhiteSpace(step.GetAttributeValue<string>("adx_targetentitylogicalname")))
+					if (string.IsNullOrWhiteSpace(step.GetAttributeValue<string>("mspp_targetentitylogicalname")))
 					{
 						throw new ApplicationException(ResourceManager.GetString("TargetEntity_LogicalName_Null_Exception"));
 					}
-					logicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
-					if (string.IsNullOrWhiteSpace(step.GetAttributeValue<string>("adx_primarykeyattributelogicalname")))
+					logicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
+					if (string.IsNullOrWhiteSpace(step.GetAttributeValue<string>("mspp_primarykeyattributelogicalname")))
 					{
-						throw new ApplicationException("adx_webformstep.adx_primarykeyattributelogicalname must not be null.");
+						throw new ApplicationException("mspp_webformstep.adx_primarykeyattributelogicalname must not be null.");
 					}
-					primaryKey = step.GetAttributeValue<string>("adx_primarykeyattributelogicalname");
-					if (string.IsNullOrWhiteSpace(step.GetAttributeValue<string>("adx_primarykeyquerystringparametername")))
+					primaryKey = step.GetAttributeValue<string>("mspp_primarykeyattributelogicalname");
+					if (string.IsNullOrWhiteSpace(step.GetAttributeValue<string>("mspp_primarykeyquerystringparametername")))
 					{
-						throw new ApplicationException("adx_webformstep.adx_primarykeyquerystringparametername must not be null.");
+						throw new ApplicationException("mspp_webformstep.adx_primarykeyquerystringparametername must not be null.");
 					}
-					var primaryKeyQueryStringParameter = step.GetAttributeValue<string>("adx_primarykeyquerystringparametername");
+					var primaryKeyQueryStringParameter = step.GetAttributeValue<string>("mspp_primarykeyquerystringparametername");
 					id = HttpContext.Current.Request[primaryKeyQueryStringParameter];
 					Guid guid;
 					if (string.IsNullOrWhiteSpace(id))
@@ -2059,14 +2059,14 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						default:
 							throw new ApplicationException(string.Format("The user entity type {0} isn't supported.", portalContext.User.LogicalName));
 					}
-					if (string.IsNullOrWhiteSpace(step.GetAttributeValue<string>("adx_targetentitylogicalname")))
+					if (string.IsNullOrWhiteSpace(step.GetAttributeValue<string>("mspp_targetentitylogicalname")))
 					{
 						throw new ApplicationException(ResourceManager.GetString("TargetEntity_LogicalName_Null_Exception"));
 					}
-					logicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
+					logicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
 					break;
 				case 100000004: // Record Associated to Current Portal User 
-					var relationship = step.GetAttributeValue<string>("adx_recordsourcerelationshipname");
+					var relationship = step.GetAttributeValue<string>("mspp_recordsourcerelationshipname");
 					if (string.IsNullOrWhiteSpace(relationship))
 					{
 						throw new ApplicationException("Required Relationship Name has not been specified for the Record Source Type 'Record Associated to Current Portal User'.");
@@ -2176,9 +2176,9 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				return false;
 			}
 
-			var associatePortalUser = step.GetAttributeValue<bool?>("adx_associatecurrentportaluser") ?? false;
-			var targetEntityLogicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
-			var portalUserLookupAttributeName = step.GetAttributeValue<string>("adx_targetentityportaluserlookupattribute");
+			var associatePortalUser = step.GetAttributeValue<bool?>("mspp_associatecurrentportaluser") ?? false;
+			var targetEntityLogicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
+			var portalUserLookupAttributeName = step.GetAttributeValue<string>("mspp_targetentityportaluserlookupattribute");
 
 			if (!associatePortalUser)
 			{
@@ -2187,14 +2187,14 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (string.IsNullOrWhiteSpace(targetEntityLogicalName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformstep.adx_targetentitylogicalname must not be null.");
+				ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_targetentitylogicalname must not be null.");
 
 				return false;
 			}
 
 			if (string.IsNullOrWhiteSpace(portalUserLookupAttributeName))
 			{
-				ADXTrace.Instance.TraceWarning(TraceCategory.Application, "adx_webformstep.adx_targetentityportaluserlookupattribute is null.");
+				ADXTrace.Instance.TraceWarning(TraceCategory.Application, "mspp_webformstep.adx_targetentityportaluserlookupattribute is null.");
 
 				return false;
 			}
@@ -2234,7 +2234,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 
-			var step = context.RetrieveSingle("adx_webformstep", "adx_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
+			var step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
 
 			if (step == null)
 			{
@@ -2247,7 +2247,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			LogUserInfoOnUpdating(context, step, e);
 
-			var savingEventArgs = new WebFormSavingEventArgs(e.Values, SavingEventKeyName) { EntityLogicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname") };
+			var savingEventArgs = new WebFormSavingEventArgs(e.Values, SavingEventKeyName) { EntityLogicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname") };
 
 			OnItemSaving(sender, savingEventArgs);
 
@@ -2258,7 +2258,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 
-			var step = context.RetrieveSingle("adx_webformstep", "adx_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
+			var step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
 
 			if (step == null)
 			{
@@ -2275,7 +2275,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			LogUserInfoOnInserting(context, step, e);
 
-			var savingEventArgs = new WebFormSavingEventArgs(e.Values, SavingEventKeyName) { EntityLogicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname") };
+			var savingEventArgs = new WebFormSavingEventArgs(e.Values, SavingEventKeyName) { EntityLogicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname") };
 
 			OnItemSaving(sender, savingEventArgs);
 
@@ -2289,9 +2289,9 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			var step = context.RetrieveSingle(
 								new Fetch
 								{
-									Entity = new FetchEntity("adx_webformstep")
+									Entity = new FetchEntity("mspp_webformstep")
 									{
-										Filters = new[] { new Filter { Conditions = new[] { new Condition("adx_webformstepid", ConditionOperator.Equal, this.CurrentSessionHistory.CurrentStepId) } } }
+										Filters = new[] { new Filter { Conditions = new[] { new Condition("mspp_webformstepid", ConditionOperator.Equal, this.CurrentSessionHistory.CurrentStepId) } } }
 									}
 								});
 
@@ -2300,11 +2300,11 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				throw new ApplicationException(string.Format("Error retrieving adx_webformstep where id equals {0}", CurrentSessionHistory.CurrentStepId));
 			}
 
-			var entityLogicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
+			var entityLogicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
 
 			if (string.IsNullOrWhiteSpace(entityLogicalName))
 			{
-				throw new ApplicationException("adx_webformstep.adx_targetentitylogicalname is null.");
+				throw new ApplicationException("mspp_webformstep.adx_targetentitylogicalname is null.");
 			}
 
 			if (e.Exception == null)
@@ -2368,17 +2368,17 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 
-			var step = context.RetrieveSingle("adx_webformstep", "adx_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
+			var step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
 			if (step == null)
 			{
 				throw new ApplicationException(string.Format("Error retrieving adx_webformstep where id equals {0}", CurrentSessionHistory.CurrentStepId));
 			}
 
-			var entityLogicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
+			var entityLogicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
 
 			if (string.IsNullOrWhiteSpace(entityLogicalName))
 			{
-				throw new ApplicationException("adx_webformstep.adx_targetentitylogicalname is null.");
+				throw new ApplicationException("mspp_webformstep.adx_targetentitylogicalname is null.");
 			}
 
 			if (e.Exception == null)
@@ -2495,14 +2495,14 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 
-			var currentStep = context.RetrieveSingle("adx_webformstep", "adx_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
+			var currentStep = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
 
 			if (currentStep == null)
 			{
 				throw new ApplicationException(string.Format("Couldn't retrieve adx_webformstep where ID equals {0}.", CurrentSessionHistory.CurrentStepId));
 			}
 
-			var movePreviousPermitted = currentStep.GetAttributeValue<bool?>("adx_movepreviouspermitted") ?? true;
+			var movePreviousPermitted = currentStep.GetAttributeValue<bool?>("mspp_movepreviouspermitted") ?? true;
 
 			if (!movePreviousPermitted)
 			{
@@ -2513,14 +2513,14 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var previousStepId = GetPreviousStepId();
 
-			var previousStep = context.RetrieveSingle("adx_webformstep", "adx_webformstepid", previousStepId, FetchAttribute.All);
+			var previousStep = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", previousStepId, FetchAttribute.All);
 
 			if (previousStep == null)
 			{
 				throw new ApplicationException(string.Format("Couldn't retrieve adx_webformstep where ID equals {0}.", previousStepId));
 			}
 
-			var type = previousStep.GetAttributeValue<OptionSetValue>("adx_type");
+			var type = previousStep.GetAttributeValue<OptionSetValue>("mspp_type");
 
 			CurrentSessionHistory.CurrentStepIndex--;
 
@@ -2555,7 +2555,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						RedirectToSelf(null);
 						break;
 					default:
-						throw new ApplicationException("adx_webformstep.adx_type is not valid.");
+						throw new ApplicationException("mspp_webformstep.adx_type is not valid.");
 				}
 			}
 		}
@@ -2579,7 +2579,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 
-			var currentStep = context.RetrieveSingle("adx_webformstep", "adx_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
+			var currentStep = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
 
 			if (currentStep == null)
 			{
@@ -2588,7 +2588,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var previousStepId = currentStep.Id;
 
-			var nextStepRelationshipName = (conditionPassed ?? true) ? "adx_webformstep_nextstep" : "adx_webformstep_conditiondefaultnextstep";
+			var nextStepRelationshipName = (conditionPassed ?? true) ? "mspp_webformstep_nextstep" : "mspp_webformstep_conditiondefaultnextstep";
 			var nextStep = context.RetrieveRelatedEntity(currentStep, new Relationship(nextStepRelationshipName) { PrimaryEntityRole = EntityRole.Referencing });
 
 			if (nextStep == null)
@@ -2609,7 +2609,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			else
 			{
-				var type = nextStep.GetAttributeValue<OptionSetValue>("adx_type");
+				var type = nextStep.GetAttributeValue<OptionSetValue>("mspp_type");
 
 				if (type != null)
 				{
@@ -2647,33 +2647,33 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		//optionset instead
 		protected void ProcessStep(OrganizationServiceContext context, Entity webform, Entity step, WebForms.WebFormEntitySourceDefinition entitySourceDefinition)
 		{
-			var type = step.GetAttributeValue<OptionSetValue>("adx_type");
+			var type = step.GetAttributeValue<OptionSetValue>("mspp_type");
 
 			if (type == null)
 			{
 				throw new ApplicationException("Invalid step type.");
 			}
 
-			LoadEventKeyName = step.GetAttributeValue<string>("adx_loadeventkeyname") ?? string.Empty;
-			SubmitEventKeyName = step.GetAttributeValue<string>("adx_submiteventkeyname") ?? string.Empty;
-			MovePreviousEventKeyName = step.GetAttributeValue<string>("adx_movepreviouseventkeyname") ?? string.Empty;
-			SavingEventKeyName = step.GetAttributeValue<string>("adx_savingeventkeyname") ?? string.Empty;
-			SavedEventKeyName = step.GetAttributeValue<string>("adx_savedeventkeyname") ?? string.Empty;
+			LoadEventKeyName = step.GetAttributeValue<string>("mspp_loadeventkeyname") ?? string.Empty;
+			SubmitEventKeyName = step.GetAttributeValue<string>("mspp_submiteventkeyname") ?? string.Empty;
+			MovePreviousEventKeyName = step.GetAttributeValue<string>("mspp_movepreviouseventkeyname") ?? string.Empty;
+			SavingEventKeyName = step.GetAttributeValue<string>("mspp_savingeventkeyname") ?? string.Empty;
+			SavedEventKeyName = step.GetAttributeValue<string>("mspp_savedeventkeyname") ?? string.Empty;
 
 			MappingFieldCollection = new MappingFieldMetadataCollection()
 			{
-				AddressLineFieldName = step.GetAttributeValue<string>("adx_geolocation_addresslinefieldname"),
-				CityFieldName = step.GetAttributeValue<string>("adx_geolocation_cityfieldname"),
-				CountryFieldName = step.GetAttributeValue<string>("adx_geolocation_countryfieldname"),
-				CountyFieldName = step.GetAttributeValue<string>("adx_geolocation_countyfieldname"),
-				FormattedLocationFieldName = step.GetAttributeValue<string>("adx_geolocation_formattedaddressfieldname"),
-				LatitudeFieldName = step.GetAttributeValue<string>("adx_geolocation_latitudefieldname"),
-				LongitudeFieldName = step.GetAttributeValue<string>("adx_geolocation_longitudefieldname"),
-				NeightbourhoodFieldName = step.GetAttributeValue<string>("adx_geolocation_neighborhoodfieldname"),
-				PostalCodeFieldName = step.GetAttributeValue<string>("adx_geolocation_postalcodefieldname"),
-				StateProvinceFieldName = step.GetAttributeValue<string>("adx_geolocation_statefieldname"),
-				Enabled = step.GetAttributeValue<bool>("adx_geolocation_enabled"),
-				DisplayMap = step.GetAttributeValue<bool>("adx_geolocation_displaymap")
+				AddressLineFieldName = step.GetAttributeValue<string>("mspp_geolocation_addresslinefieldname"),
+				CityFieldName = step.GetAttributeValue<string>("mspp_geolocation_cityfieldname"),
+				CountryFieldName = step.GetAttributeValue<string>("mspp_geolocation_countryfieldname"),
+				CountyFieldName = step.GetAttributeValue<string>("mspp_geolocation_countyfieldname"),
+				FormattedLocationFieldName = step.GetAttributeValue<string>("mspp_geolocation_formattedaddressfieldname"),
+				LatitudeFieldName = step.GetAttributeValue<string>("mspp_geolocation_latitudefieldname"),
+				LongitudeFieldName = step.GetAttributeValue<string>("mspp_geolocation_longitudefieldname"),
+				NeightbourhoodFieldName = step.GetAttributeValue<string>("mspp_geolocation_neighborhoodfieldname"),
+				PostalCodeFieldName = step.GetAttributeValue<string>("mspp_geolocation_postalcodefieldname"),
+				StateProvinceFieldName = step.GetAttributeValue<string>("mspp_geolocation_statefieldname"),
+				Enabled = step.GetAttributeValue<bool>("mspp_geolocation_enabled"),
+				DisplayMap = step.GetAttributeValue<bool>("mspp_geolocation_displaymap")
 			};
 
 			switch (type.Value)
@@ -2709,11 +2709,11 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				throw new ArgumentNullException("step");
 			}
 
-			var condition = step.GetAttributeValue<string>("adx_condition");
+			var condition = step.GetAttributeValue<string>("mspp_condition");
 
 			if (string.IsNullOrWhiteSpace(condition))
 			{
-				throw new ApplicationException("adx_webformstep.adx_condition is expected and is null.");
+				throw new ApplicationException("mspp_webformstep.adx_condition is expected and is null.");
 			}
 
 			var referenceEntity = GetPreviousStepReferenceEntityDefinition();
@@ -2752,17 +2752,17 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 
 			var existingQueryString = HttpContext.Current.Request.QueryString;
-			var redirectUrl = step.GetAttributeValue<string>("adx_redirecturl");
-			var appendExistingQueryString = step.GetAttributeValue<bool?>("adx_appendquerystring") ?? false;
+			var redirectUrl = step.GetAttributeValue<string>("mspp_redirecturl");
+			var appendExistingQueryString = step.GetAttributeValue<bool?>("mspp_appendquerystring") ?? false;
 			UrlBuilder url;
 
 			if (string.IsNullOrWhiteSpace(redirectUrl))
 			{
-				var page = context.RetrieveRelatedEntity(step, "adx_webformstep_redirectwebpage");
+				var page = context.RetrieveRelatedEntity(step, "mspp_webformstep_redirectwebpage");
 
 				if (page == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformstep.adx_webformstep_redirectwebpage is null");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_webformstep_redirectwebpage is null");
 					return;
 				}
 
@@ -2770,7 +2770,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (path == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformstep.adx_webformstep_redirectwebpage url is null");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_webformstep_redirectwebpage url is null");
 					return;
 				}
 
@@ -2781,11 +2781,11 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				url = new UrlBuilder(redirectUrl.StartsWith("http") ? redirectUrl : string.Format("https://{0}", redirectUrl));
 			}
 
-			var addquerystring = step.GetAttributeValue<bool?>("adx_redirecturlappendentityidquerystring") ?? false;
+			var addquerystring = step.GetAttributeValue<bool?>("mspp_redirecturlappendentityidquerystring") ?? false;
 
 			if (addquerystring)
 			{
-				var queryStringParameterName = step.GetAttributeValue<string>("adx_redirecturlquerystringname");
+				var queryStringParameterName = step.GetAttributeValue<string>("mspp_redirecturlquerystringname");
 
 				if (!string.IsNullOrWhiteSpace(queryStringParameterName))
 				{
@@ -2806,7 +2806,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				url.QueryString.Add(existingQueryString);
 			}
 
-			var customQueryString = step.GetAttributeValue<string>("adx_redirecturlcustomquerystring");
+			var customQueryString = step.GetAttributeValue<string>("mspp_redirecturlcustomquerystring");
 
 			if (!string.IsNullOrWhiteSpace(customQueryString))
 			{
@@ -2822,11 +2822,11 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				}
 			}
 
-			var queryStringAttributeParameterName = step.GetAttributeValue<string>("adx_redirecturlquerystringattributeparamname");
+			var queryStringAttributeParameterName = step.GetAttributeValue<string>("mspp_redirecturlquerystringattributeparamname");
 
 			if (!string.IsNullOrWhiteSpace(queryStringAttributeParameterName))
 			{
-				var queryStringAttributeLogicalName = step.GetAttributeValue<string>("adx_redirecturlquerystringattribute");
+				var queryStringAttributeLogicalName = step.GetAttributeValue<string>("mspp_redirecturlquerystringattribute");
 
 				if (!string.IsNullOrWhiteSpace(queryStringAttributeLogicalName))
 				{
@@ -2877,19 +2877,19 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var metadata = context.RetrieveRelatedEntities(
 				step,
-				"adx_webformmetadata_webformstep",
-				filters: new[] { new Filter { Conditions = new[] { new Condition("adx_prepopulatetype", ConditionOperator.NotNull) } } }).Entities;
+				"mspp_webformmetadata_webformstep",
+				filters: new[] { new Filter { Conditions = new[] { new Condition("mspp_prepopulatetype", ConditionOperator.NotNull) } } }).Entities;
 
 			if (!metadata.Any())
 			{
 				return;
 			}
 
-			var targetEntityLogicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
+			var targetEntityLogicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
 
 			if (string.IsNullOrWhiteSpace(targetEntityLogicalName))
 			{
-				throw new ApplicationException("adx_webformstep.adx_targetentitylogicalname is null.");
+				throw new ApplicationException("mspp_webformstep.adx_targetentitylogicalname is null.");
 			}
 
 			if (AttributeTypeCodeDictionary == null || !AttributeTypeCodeDictionary.Any())
@@ -2899,12 +2899,12 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			foreach (var item in metadata)
 			{
-				var attributeName = item.GetAttributeValue<string>("adx_attributelogicalname");
+				var attributeName = item.GetAttributeValue<string>("mspp_attributelogicalname");
 				if (string.IsNullOrWhiteSpace(attributeName))
 				{
 					continue;
 				}
-				var type = item.GetAttributeValue<OptionSetValue>("adx_prepopulatetype");
+				var type = item.GetAttributeValue<OptionSetValue>("mspp_prepopulatetype");
 				if (type == null)
 				{
 					continue;
@@ -2913,7 +2913,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				switch (type.Value)
 				{
 					case 100000000: // Value
-						value = item.GetAttributeValue<string>("adx_prepopulatevalue");
+						value = item.GetAttributeValue<string>("mspp_prepopulatevalue");
 						break;
 					case 100000001: // Today's Date
 						value = DateTime.UtcNow;
@@ -2931,7 +2931,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						}
 						try
 						{
-							var fromAttribute = item.GetAttributeValue<string>("adx_prepopulatefromattribute");
+							var fromAttribute = item.GetAttributeValue<string>("mspp_prepopulatefromattribute");
 							if (string.IsNullOrWhiteSpace(fromAttribute))
 							{
 								continue;
@@ -3300,13 +3300,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected void PopulateReferenceEntityField(OrganizationServiceContext context, Entity step, Control container)
 		{
-			var populateReferenceEntityLookupField = step.GetAttributeValue<bool?>("adx_populatereferenceentitylookupfield") ?? false;
+			var populateReferenceEntityLookupField = step.GetAttributeValue<bool?>("mspp_populatereferenceentitylookupfield") ?? false;
 
 			if (!populateReferenceEntityLookupField) return;
 
 			try
 			{
-				var targetAttributeName = step.GetAttributeValue<string>("adx_referencetargetlookupattributelogicalname");
+				var targetAttributeName = step.GetAttributeValue<string>("mspp_referencetargetlookupattributelogicalname");
 				var field = container.FindControl(targetAttributeName);
 
 				if (field == null)
@@ -3333,24 +3333,24 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				var disabled = list != null && list.CssClass.Contains("readonly");
 				var id = Guid.Empty;
 				var text = string.Empty;
-				var referenceEntitySourceType = step.GetAttributeValue<OptionSetValue>("adx_referenceentitysourcetype");
-				var referenceEntityLogicalName = step.GetAttributeValue<string>("adx_referenceentitylogicalname");
-				var referenceQueryStringName = step.GetAttributeValue<string>("adx_referencequerystringname") ?? string.Empty;
+				var referenceEntitySourceType = step.GetAttributeValue<OptionSetValue>("mspp_referenceentitysourcetype");
+				var referenceEntityLogicalName = step.GetAttributeValue<string>("mspp_referenceentitylogicalname");
+				var referenceQueryStringName = step.GetAttributeValue<string>("mspp_referencequerystringname") ?? string.Empty;
 				var referenceQueryStringValue = HttpContext.Current.Request[referenceQueryStringName];
-				var querystringIsPrimaryKey = step.GetAttributeValue<bool?>("adx_referencequerystringisprimarykey") ?? false;
-				var referenceEntityStep = step.GetAttributeValue<EntityReference>("adx_referenceentitystep");
-				var referenceEntityPrimaryKeyLogicalName = step.GetAttributeValue<string>("adx_referenceentityprimarykeylogicalname");
+				var querystringIsPrimaryKey = step.GetAttributeValue<bool?>("mspp_referencequerystringisprimarykey") ?? false;
+				var referenceEntityStep = step.GetAttributeValue<EntityReference>("mspp_referenceentitystep");
+				var referenceEntityPrimaryKeyLogicalName = step.GetAttributeValue<string>("mspp_referenceentityprimarykeylogicalname");
 				var primaryNameAttribute = string.Empty;
 
 				if (string.IsNullOrWhiteSpace(targetAttributeName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformstep.adx_referenctargetlookupattributelogicalname must not be null.");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_referenctargetlookupattributelogicalname must not be null.");
 					return;
 				}
 
 				if (string.IsNullOrWhiteSpace(referenceEntityLogicalName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformstep.adx_referenceentitylogicalname must not be null.");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_referenceentitylogicalname must not be null.");
 					return;
 				}
 
@@ -3367,7 +3367,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						case 100000000: // Query String
 							if (!querystringIsPrimaryKey)
 							{
-								var referenceQueryAttributeName = step.GetAttributeValue<string>("adx_referencequeryattributelogicalname");
+								var referenceQueryAttributeName = step.GetAttributeValue<string>("mspp_referencequeryattributelogicalname");
 								var entity = context.RetrieveSingle(
 											new Fetch
 											{
@@ -3484,38 +3484,38 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected void RenderReferenceEntityForm(OrganizationServiceContext context, Entity step, Control container)
 		{
-			var showReadOnlyForm = step.GetAttributeValue<bool?>("adx_referenceentityshowreadonlyform") ?? false;
+			var showReadOnlyForm = step.GetAttributeValue<bool?>("mspp_referenceentityshowreadonlyform") ?? false;
 
 			if (!showReadOnlyForm) return;
 
 			try
 			{
 				var id = Guid.Empty;
-				var referenceEntitySourceType = step.GetAttributeValue<OptionSetValue>("adx_referenceentitysourcetype");
-				var targetAttributeName = step.GetAttributeValue<string>("adx_referencetargetlookupattributelogicalname");
-				var referenceEntityLogicalName = step.GetAttributeValue<string>("adx_referenceentitylogicalname");
-				var referenceEntityPrimaryKeyLogicalName = step.GetAttributeValue<string>("adx_referenceentityprimarykeylogicalname");
-				var referenceQueryStringName = step.GetAttributeValue<string>("adx_referencequerystringname") ?? string.Empty;
+				var referenceEntitySourceType = step.GetAttributeValue<OptionSetValue>("mspp_referenceentitysourcetype");
+				var targetAttributeName = step.GetAttributeValue<string>("mspp_referencetargetlookupattributelogicalname");
+				var referenceEntityLogicalName = step.GetAttributeValue<string>("mspp_referenceentitylogicalname");
+				var referenceEntityPrimaryKeyLogicalName = step.GetAttributeValue<string>("mspp_referenceentityprimarykeylogicalname");
+				var referenceQueryStringName = step.GetAttributeValue<string>("mspp_referencequerystringname") ?? string.Empty;
 				var referenceQueryStringValue = HttpContext.Current.Request[referenceQueryStringName];
-				var querystringIsPrimaryKey = step.GetAttributeValue<bool?>("adx_referencequerystringisprimarykey") ?? false;
-				var readOnlyFormName = step.GetAttributeValue<string>("adx_referenceentityreadonlyformname");
-				var referenceEntityStep = step.GetAttributeValue<EntityReference>("adx_referenceentitystep");
+				var querystringIsPrimaryKey = step.GetAttributeValue<bool?>("mspp_referencequerystringisprimarykey") ?? false;
+				var readOnlyFormName = step.GetAttributeValue<string>("mspp_referenceentityreadonlyformname");
+				var referenceEntityStep = step.GetAttributeValue<EntityReference>("mspp_referenceentitystep");
 
 				if (string.IsNullOrWhiteSpace(readOnlyFormName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformstep.adx_referenceentityreadonlyformname must not be null.");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_referenceentityreadonlyformname must not be null.");
 					return;
 				}
 
 				if (string.IsNullOrWhiteSpace(targetAttributeName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformstep.adx_referenctargetlookupattributelogicalname must not be null.");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_referenctargetlookupattributelogicalname must not be null.");
 					return;
 				}
 
 				if (string.IsNullOrWhiteSpace(referenceEntityLogicalName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformstep.adx_referenceentitylogicalname must not be null.");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_referenceentitylogicalname must not be null.");
 					return;
 				}
 
@@ -3537,7 +3537,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						case 100000000: // Query String
 							if (!querystringIsPrimaryKey)
 							{
-								var referenceQueryAttributeName = step.GetAttributeValue<string>("adx_referencequeryattributelogicalname");
+								var referenceQueryAttributeName = step.GetAttributeValue<string>("mspp_referencequeryattributelogicalname");
 								var entity = context.RetrieveSingle(
 											new Fetch
 											{
@@ -3617,19 +3617,19 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		private void SetEntityReference(OrganizationServiceContext context, Entity step, IDictionary<string, object> values)
 		{
-			var setEntityReference = step.GetAttributeValue<bool?>("adx_setentityreference") ?? false;
+			var setEntityReference = step.GetAttributeValue<bool?>("mspp_setentityreference") ?? false;
 
 			if (!setEntityReference) return;
 
 			var id = Guid.Empty;
-			var targetAttributeName = step.GetAttributeValue<string>("adx_referencetargetlookupattributelogicalname");
-			var referenceEntityLogicalName = step.GetAttributeValue<string>("adx_referenceentitylogicalname");
-			var referenceEntityRelationshipName = step.GetAttributeValue<string>("adx_referenceentityrelationshipname") ??
+			var targetAttributeName = step.GetAttributeValue<string>("mspp_referencetargetlookupattributelogicalname");
+			var referenceEntityLogicalName = step.GetAttributeValue<string>("mspp_referenceentitylogicalname");
+			var referenceEntityRelationshipName = step.GetAttributeValue<string>("mspp_referenceentityrelationshipname") ??
 				string.Empty;
-			var referenceEntityStep = step.GetAttributeValue<EntityReference>("adx_referenceentitystep");
+			var referenceEntityStep = step.GetAttributeValue<EntityReference>("mspp_referenceentitystep");
 
 			var portalContext = PortalCrmConfigurationManager.CreatePortalContext();
-			var referenceEntitySourceType = step.GetAttributeValue<OptionSetValue>("adx_referenceentitysourcetype");
+			var referenceEntitySourceType = step.GetAttributeValue<OptionSetValue>("mspp_referenceentitysourcetype");
 
 			if (string.IsNullOrWhiteSpace(targetAttributeName))
 			{
@@ -3645,13 +3645,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					switch (referenceEntitySourceType.Value)
 					{
 						case 100000000: // Query String
-							var referenceQueryStringName = step.GetAttributeValue<string>("adx_referencequerystringname") ?? string.Empty;
+							var referenceQueryStringName = step.GetAttributeValue<string>("mspp_referencequerystringname") ?? string.Empty;
 							var referenceQueryStringValue = HttpContext.Current.Request[referenceQueryStringName];
-							var querystringIsPrimaryKey = step.GetAttributeValue<bool?>("adx_referencequerystringisprimarykey") ?? false;
+							var querystringIsPrimaryKey = step.GetAttributeValue<bool?>("mspp_referencequerystringisprimarykey") ?? false;
 
 							if (!querystringIsPrimaryKey)
 							{
-								var referenceQueryAttributeName = step.GetAttributeValue<string>("adx_referencequeryattributelogicalname");
+								var referenceQueryAttributeName = step.GetAttributeValue<string>("mspp_referencequeryattributelogicalname");
 								var entity =
 									context.RetrieveSingle(
 											new Fetch
@@ -3675,7 +3675,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 								: GetPreviousStepReferenceEntityID();
 							break;
 						case 100000002: // Record Associated to current user 
-							var relationship = step.GetAttributeValue<string>("adx_referencerecordsourcerelationshipname");  //Need to add attribute
+							var relationship = step.GetAttributeValue<string>("mspp_referencerecordsourcerelationshipname");  //Need to add attribute
 							if (string.IsNullOrWhiteSpace(relationship))
 							{
 								throw new ApplicationException("Required Relationship Name has not been specified for the Record Source Type 'Record Associated to Current Portal User'.");
@@ -3729,13 +3729,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected WebForms.WebFormEntitySourceDefinition GetUserControlReferenceEntityDefinition(OrganizationServiceContext context, Entity step)
 		{
-			step.AssertEntityName("adx_webformstep");
+			step.AssertEntityName("mspp_webformstep");
 
 			var entityName = string.Empty;
 			var keyName = string.Empty;
 			var id = Guid.Empty;
-			var referenceEntitySourceType = step.GetAttributeValue<OptionSetValue>("adx_referenceentitysourcetype");
-			var referenceEntityStep = step.GetAttributeValue<EntityReference>("adx_referenceentitystep");
+			var referenceEntitySourceType = step.GetAttributeValue<OptionSetValue>("mspp_referenceentitysourcetype");
+			var referenceEntityStep = step.GetAttributeValue<EntityReference>("mspp_referenceentitystep");
 
 			try
 			{
@@ -3744,14 +3744,14 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					switch (referenceEntitySourceType.Value)
 					{
 						case 100000000: // Query String
-							entityName = step.GetAttributeValue<string>("adx_referenceentitylogicalname");
-							var referenceQueryStringName = step.GetAttributeValue<string>("adx_referencequerystringname") ?? string.Empty;
+							entityName = step.GetAttributeValue<string>("mspp_referenceentitylogicalname");
+							var referenceQueryStringName = step.GetAttributeValue<string>("mspp_referencequerystringname") ?? string.Empty;
 							var referenceQueryStringValue = HttpContext.Current.Request[referenceQueryStringName];
-							var querystringIsPrimaryKey = step.GetAttributeValue<bool?>("adx_referencequerystringisprimarykey") ?? false;
+							var querystringIsPrimaryKey = step.GetAttributeValue<bool?>("mspp_referencequerystringisprimarykey") ?? false;
 
 							if (!querystringIsPrimaryKey)
 							{
-								var referenceQueryAttributeName = step.GetAttributeValue<string>("adx_referencequeryattributelogicalname");
+								var referenceQueryAttributeName = step.GetAttributeValue<string>("mspp_referencequeryattributelogicalname");
 								var entity =
 									context.RetrieveSingle(
 											new Fetch
@@ -3843,18 +3843,18 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected void AssociateEntity(OrganizationServiceContext context, Entity step, Guid sourceEntityId)
 		{
-			var setEntityReference = step.GetAttributeValue<bool?>("adx_setentityreference") ?? false;
+			var setEntityReference = step.GetAttributeValue<bool?>("mspp_setentityreference") ?? false;
 
 			if (!setEntityReference) return;
 
 			var targetEntityId = Guid.Empty;
 			var targetEntityPrimaryKey = string.Empty;
-			var sourceEntityName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
-			var sourceEntityPrimaryKey = step.GetAttributeValue<string>("adx_targetentityprimarykeylogicalname");
-			var targetEntityName = step.GetAttributeValue<string>("adx_referenceentitylogicalname");
-			var referenceEntitySourceType = step.GetAttributeValue<OptionSetValue>("adx_referenceentitysourcetype");
-			var relationshipName = step.GetAttributeValue<string>("adx_referenceentityrelationshipname") ?? string.Empty;
-			var referenceEntityStep = step.GetAttributeValue<EntityReference>("adx_referenceentitystep");
+			var sourceEntityName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
+			var sourceEntityPrimaryKey = step.GetAttributeValue<string>("mspp_targetentityprimarykeylogicalname");
+			var targetEntityName = step.GetAttributeValue<string>("mspp_referenceentitylogicalname");
+			var referenceEntitySourceType = step.GetAttributeValue<OptionSetValue>("mspp_referenceentitysourcetype");
+			var relationshipName = step.GetAttributeValue<string>("mspp_referenceentityrelationshipname") ?? string.Empty;
+			var referenceEntityStep = step.GetAttributeValue<EntityReference>("mspp_referenceentitystep");
 
 			if (string.IsNullOrWhiteSpace(relationshipName))
 			{
@@ -3869,13 +3869,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					switch (referenceEntitySourceType.Value)
 					{
 						case 100000000: // Query String
-							var referenceQueryStringName = step.GetAttributeValue<string>("adx_referencequerystringname") ?? string.Empty;
+							var referenceQueryStringName = step.GetAttributeValue<string>("mspp_referencequerystringname") ?? string.Empty;
 							var referenceQueryStringValue = HttpContext.Current.Request[referenceQueryStringName];
-							var querystringIsPrimaryKey = step.GetAttributeValue<bool?>("adx_referencequerystringisprimarykey") ?? false;
+							var querystringIsPrimaryKey = step.GetAttributeValue<bool?>("mspp_referencequerystringisprimarykey") ?? false;
 
 							if (!querystringIsPrimaryKey)
 							{
-								var referenceQueryAttributeName = step.GetAttributeValue<string>("adx_referencequeryattributelogicalname");
+								var referenceQueryAttributeName = step.GetAttributeValue<string>("mspp_referencequeryattributelogicalname");
 								var entity =
 									context.RetrieveSingle(
 											new Fetch
@@ -3936,7 +3936,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (string.IsNullOrWhiteSpace(sourceEntityName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformstep.adx_targetentitylogicalname must not be null.");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_targetentitylogicalname must not be null.");
 					return;
 				}
 
@@ -4104,24 +4104,24 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected void LogUserInfoOnInserting(OrganizationServiceContext context, Entity step, CrmEntityFormViewInsertingEventArgs e)
 		{
-			var logUserInfo = step.GetAttributeValue<bool?>("adx_loguser") ?? false;
+			var logUserInfo = step.GetAttributeValue<bool?>("mspp_loguser") ?? false;
 
 			if (!logUserInfo) return;
 
-			var userHostAddressAttributeName = step.GetAttributeValue<string>("adx_userhostaddressattributelogicalname");
-			var userIdentityNameAttributeName = step.GetAttributeValue<string>("adx_useridentitynameattributelogicalname");
-			var targetEntityLogicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
+			var userHostAddressAttributeName = step.GetAttributeValue<string>("mspp_userhostaddressattributelogicalname");
+			var userIdentityNameAttributeName = step.GetAttributeValue<string>("mspp_useridentitynameattributelogicalname");
+			var targetEntityLogicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
 
 			if (string.IsNullOrWhiteSpace(targetEntityLogicalName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformstep.adx_targetentitylogicalname must not be null.");
+				ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_targetentitylogicalname must not be null.");
 
 				return;
 			}
 
 			if (string.IsNullOrWhiteSpace(userHostAddressAttributeName) && string.IsNullOrWhiteSpace(userIdentityNameAttributeName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "LogUserInfoOnInserting", "adx_webformstep.adx_userhostaddressattributelogicalname is null. adx_webformstep.adx_useridentitynameattributelogicalname is null.");
+				ADXTrace.Instance.TraceError(TraceCategory.Application, "LogUserInfoOnInserting", "mspp_webformstep.adx_userhostaddressattributelogicalname is null. adx_webformstep.adx_useridentitynameattributelogicalname is null.");
 
 				return;
 			}
@@ -4151,24 +4151,24 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected void LogUserInfoOnUpdating(OrganizationServiceContext context, Entity step, CrmEntityFormViewUpdatingEventArgs e)
 		{
-			var logUserInfo = step.GetAttributeValue<bool?>("adx_loguser") ?? false;
+			var logUserInfo = step.GetAttributeValue<bool?>("mspp_loguser") ?? false;
 
 			if (!logUserInfo) return;
 
-			var userHostAddressAttributeName = step.GetAttributeValue<string>("adx_userhostaddressattributelogicalname");
-			var userIdentityNameAttributeName = step.GetAttributeValue<string>("adx_useridentitynameattributelogicalname");
-			var targetEntityLogicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
+			var userHostAddressAttributeName = step.GetAttributeValue<string>("mspp_userhostaddressattributelogicalname");
+			var userIdentityNameAttributeName = step.GetAttributeValue<string>("mspp_useridentitynameattributelogicalname");
+			var targetEntityLogicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
 
 			if (string.IsNullOrWhiteSpace(targetEntityLogicalName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformstep.adx_targetentitylogicalname must not be null.");
+				ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_targetentitylogicalname must not be null.");
 
 				return;
 			}
 
 			if (string.IsNullOrWhiteSpace(userHostAddressAttributeName) && string.IsNullOrWhiteSpace(userIdentityNameAttributeName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformstep.adx_userhostaddressattributelogicalname is null. adx_webformstep.adx_useridentitynameattributelogicalname is null.");
+				ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_userhostaddressattributelogicalname is null. adx_webformstep.adx_useridentitynameattributelogicalname is null.");
 
 				return;
 			}
@@ -4198,10 +4198,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected void SetAutoNumber(OrganizationServiceContext context, Entity step, CrmEntityFormViewInsertingEventArgs e)
 		{
-			var createAutoNumber = step.GetAttributeValue<bool?>("adx_createautonumber") ?? false;
-			var targetEntityLogicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
-			var autoNumberDefinitionName = step.GetAttributeValue<string>("adx_autonumberdefinitionname");
-			var autoNumberAttributeLogicalName = step.GetAttributeValue<string>("adx_autonumberattributelogicalname");
+			var createAutoNumber = step.GetAttributeValue<bool?>("mspp_createautonumber") ?? false;
+			var targetEntityLogicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
+			var autoNumberDefinitionName = step.GetAttributeValue<string>("mspp_autonumberdefinitionname");
+			var autoNumberAttributeLogicalName = step.GetAttributeValue<string>("mspp_autonumberattributelogicalname");
 
 			if (!createAutoNumber)
 			{
@@ -4210,21 +4210,21 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (string.IsNullOrWhiteSpace(targetEntityLogicalName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformstep.adx_targetentitylogicalname must not be null.");
+				ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_targetentitylogicalname must not be null.");
 
 				return;
 			}
 
 			if (string.IsNullOrWhiteSpace(autoNumberDefinitionName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformstep.adx_autonumberdefinitionname is null.");
+				ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_autonumberdefinitionname is null.");
 
 				return;
 			}
 
 			if (string.IsNullOrWhiteSpace(autoNumberAttributeLogicalName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformstep.adx_autonumberattributelogicalname is null.");
+				ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_autonumberattributelogicalname is null.");
 
 				return;
 			}
@@ -4251,15 +4251,15 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				// use command pattern - create an auto-number request
 
 				var service = PortalCrmConfigurationManager.CreateOrganizationService(PortalName);
-				var numberEntity = new Entity("adx_autonumberingrequest");
+				var numberEntity = new Entity("mspp_autonumberingrequest");
 
-				numberEntity.Attributes["adx_name"] = autoNumberDefinitionName;
+				numberEntity.Attributes["mspp_name"] = autoNumberDefinitionName;
 
 				var numberEntityId = service.Create(numberEntity);
 
-				numberEntity = service.Retrieve("adx_autonumberingrequest", numberEntityId, new ColumnSet(new[] { "adx_name", "adx_formattednumber" }));
+				numberEntity = service.Retrieve("mspp_autonumberingrequest", numberEntityId, new ColumnSet(new[] { "mspp_name", "mspp_formattednumber" }));
 
-				var formattedNumber = numberEntity.GetAttributeValue<string>("adx_formattednumber");
+				var formattedNumber = numberEntity.GetAttributeValue<string>("mspp_formattednumber");
 
 				return formattedNumber;
 			}
@@ -4275,10 +4275,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			if (!HttpContext.Current.Request.IsAuthenticated) return;
 
-			var associatePortalUser = step.GetAttributeValue<bool?>("adx_associatecurrentportaluser") ?? false;
-			var targetEntityLogicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
-			var portalUserLookupAttributeName = step.GetAttributeValue<string>("adx_targetentityportaluserlookupattribute");
-			var portalUserLookupAttributeIsActivityParty = step.GetAttributeValue<bool?>("adx_portaluserlookupattributeisactivityparty") ?? false;
+			var associatePortalUser = step.GetAttributeValue<bool?>("mspp_associatecurrentportaluser") ?? false;
+			var targetEntityLogicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
+			var portalUserLookupAttributeName = step.GetAttributeValue<string>("mspp_targetentityportaluserlookupattribute");
+			var portalUserLookupAttributeIsActivityParty = step.GetAttributeValue<bool?>("mspp_portaluserlookupattributeisactivityparty") ?? false;
 
 			if (!associatePortalUser) return;
 
@@ -4291,7 +4291,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (string.IsNullOrWhiteSpace(portalUserLookupAttributeName))
 			{
-				ADXTrace.Instance.TraceWarning(TraceCategory.Application, "adx_webformstep.adx_targetentityportaluserlookupattribute is null.");
+				ADXTrace.Instance.TraceWarning(TraceCategory.Application, "mspp_webformstep.adx_targetentityportaluserlookupattribute is null.");
 
 				return;
 			}
@@ -4362,7 +4362,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected void AttachFileOnSave(OrganizationServiceContext context, Entity step, object sender, Guid? entityid)
 		{
-			var attachFile = step.GetAttributeValue<bool?>("adx_attachfile") ?? false;
+			var attachFile = step.GetAttributeValue<bool?>("mspp_attachfile") ?? false;
 
 			if (!attachFile) return;
 
@@ -4375,12 +4375,12 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			try
 			{
-				var logicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
-				var primaryKey = step.GetAttributeValue<string>("adx_targetentityprimarykeylogicalname");
+				var logicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
+				var primaryKey = step.GetAttributeValue<string>("mspp_targetentityprimarykeylogicalname");
 
 				if (string.IsNullOrWhiteSpace(logicalName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_entityform.adx_entityname must not be null.");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_entityform.adx_entityname must not be null.");
 					return;
 				}
 
@@ -4476,16 +4476,16 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var metadata = context.RetrieveRelatedEntities(
 				step,
-				"adx_webformmetadata_webformstep",
-				filters: new[] { new Filter { Conditions = new[] { new Condition("adx_setvalueonsave", ConditionOperator.Equal, true) } } }).Entities;
+				"mspp_webformmetadata_webformstep",
+				filters: new[] { new Filter { Conditions = new[] { new Condition("mspp_setvalueonsave", ConditionOperator.Equal, true) } } }).Entities;
 
 			if (!metadata.Any()) return;
 
-			var targetEntityLogicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
+			var targetEntityLogicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
 
 			if (string.IsNullOrWhiteSpace(targetEntityLogicalName))
 			{
-				throw new ApplicationException("adx_webformstep.adx_targetentitylogicalname is null.");
+				throw new ApplicationException("mspp_webformstep.adx_targetentitylogicalname is null.");
 			}
 
 			if (AttributeTypeCodeDictionary == null || !AttributeTypeCodeDictionary.Any())
@@ -4495,10 +4495,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			foreach (var item in metadata)
 			{
-				var attributeName = item.GetAttributeValue<string>("adx_attributelogicalname");
+				var attributeName = item.GetAttributeValue<string>("mspp_attributelogicalname");
 				if (string.IsNullOrWhiteSpace(attributeName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformmetadata.adx_attributelogicalname is null.");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformmetadata.adx_attributelogicalname is null.");
 					continue;
 				}
 				var value = GetOnSaveValue(context, item);
@@ -4583,7 +4583,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			if (entity == null) throw new ArgumentNullException("entity");
 
 
-			var step = context.RetrieveSingle("adx_webformstep", "adx_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
+			var step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
 
 			if (step == null)
 			{
@@ -4592,17 +4592,17 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var metadata = context.RetrieveRelatedEntities(
 				step,
-				"adx_webformmetadata_webformstep",
-				filters: new[] { new Filter { Conditions = new[] { new Condition("adx_setvalueonsave", ConditionOperator.Equal, true) } } }).Entities;
+				"mspp_webformmetadata_webformstep",
+				filters: new[] { new Filter { Conditions = new[] { new Condition("mspp_setvalueonsave", ConditionOperator.Equal, true) } } }).Entities;
 
 			if (!metadata.Any()) return;
 
 
-			var targetEntityLogicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
+			var targetEntityLogicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
 
 			if (string.IsNullOrWhiteSpace(targetEntityLogicalName))
 			{
-				throw new ApplicationException("adx_webformstep.adx_targetentitylogicalname is null.");
+				throw new ApplicationException("mspp_webformstep.adx_targetentitylogicalname is null.");
 			}
 
 			if (targetEntityLogicalName != entity.LogicalName)
@@ -4620,10 +4620,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			foreach (var item in metadata)
 			{
-				var attributeName = item.GetAttributeValue<string>("adx_attributelogicalname");
+				var attributeName = item.GetAttributeValue<string>("mspp_attributelogicalname");
 				if (string.IsNullOrWhiteSpace(attributeName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformmetadata.adx_attributelogicalname is null.");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformmetadata.adx_attributelogicalname is null.");
 					continue;
 				}
 				var value = GetOnSaveValue(context, item);
@@ -4686,7 +4686,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				throw new ArgumentNullException("entity");
 			}
 
-			var step = context.RetrieveSingle("adx_webformstep", "adx_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
+			var step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
 
 			if (step == null)
 			{
@@ -4695,19 +4695,19 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var metadata = context.RetrieveRelatedEntities(
 				step,
-				"adx_webformmetadata_webformstep",
-				filters: new[] { new Filter { Conditions = new[] { new Condition("adx_setvalueonsave", ConditionOperator.Equal, true) } } }).Entities;
+				"mspp_webformmetadata_webformstep",
+				filters: new[] { new Filter { Conditions = new[] { new Condition("mspp_setvalueonsave", ConditionOperator.Equal, true) } } }).Entities;
 
 			if (!metadata.Any())
 			{
 				return false;
 			}
 
-			var targetEntityLogicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
+			var targetEntityLogicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
 
 			if (string.IsNullOrWhiteSpace(targetEntityLogicalName))
 			{
-				throw new ApplicationException("adx_webformstep.adx_targetentitylogicalname is null.");
+				throw new ApplicationException("mspp_webformstep.adx_targetentitylogicalname is null.");
 			}
 
 			if (targetEntityLogicalName != entity.LogicalName)
@@ -4724,10 +4724,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			foreach (var item in metadata)
 			{
-				var attributeName = item.GetAttributeValue<string>("adx_attributelogicalname");
+				var attributeName = item.GetAttributeValue<string>("mspp_attributelogicalname");
 				if (string.IsNullOrWhiteSpace(attributeName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_webformmetadata.adx_attributelogicalname is null.");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformmetadata.adx_attributelogicalname is null.");
 					continue;
 				}
 				var value = GetOnSaveValue(context, item);
@@ -4756,7 +4756,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected object GetOnSaveValue(OrganizationServiceContext context, Entity item)
 		{
-			var type = item.GetAttributeValue<OptionSetValue>("adx_onsavetype");
+			var type = item.GetAttributeValue<OptionSetValue>("mspp_onsavetype");
 
 			if (type != null)
 			{
@@ -4777,7 +4777,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						}
 						try
 						{
-							var fromAttribute = item.GetAttributeValue<string>("adx_onsavefromattribute");
+							var fromAttribute = item.GetAttributeValue<string>("mspp_onsavefromattribute");
 							if (string.IsNullOrWhiteSpace(fromAttribute))
 							{
 								return null;
@@ -4798,7 +4798,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 
 			// Value
-			return item.GetAttributeValue<string>("adx_onsavevalue");
+			return item.GetAttributeValue<string>("mspp_onsavevalue");
 		}
 
 		protected void TrySetState(OrganizationServiceContext context, EntityReference entityReference, int state)
@@ -5056,8 +5056,8 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			CurrentSessionHistory.CurrentStepIndex++;
 
-			var entityLogicalName = step.GetAttributeValue<string>("adx_targetentitylogicalname");
-			var entityPrimaryKeyLogicalName = step.GetAttributeValue<string>("adx_targetentityprimarykeylogicalname");
+			var entityLogicalName = step.GetAttributeValue<string>("mspp_targetentitylogicalname");
+			var entityPrimaryKeyLogicalName = step.GetAttributeValue<string>("mspp_targetentityprimarykeylogicalname");
 
 			if (!string.IsNullOrWhiteSpace(entityLogicalName) && string.IsNullOrWhiteSpace(entityPrimaryKeyLogicalName))
 			{
@@ -5353,11 +5353,11 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			var userStepIndex = 0;
 			var hasNextStep = true;
 
-			var localizedTitle = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_title"), languageCode);
+			var localizedTitle = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_title"), languageCode);
 
 			steps.Add(new ProgressStep
 			{
-				Title = string.IsNullOrWhiteSpace(localizedTitle) ? step.GetAttributeValue<string>("adx_name") ?? "Step" : localizedTitle,
+				Title = string.IsNullOrWhiteSpace(localizedTitle) ? step.GetAttributeValue<string>("mspp_name") ?? "Step" : localizedTitle,
 				Index = userStepIndex,
 				IsActive = currentIndex == stepIndex,
 				IsCompleted = currentIndex > stepIndex
@@ -5367,7 +5367,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			{
 				var nextStep = context.RetrieveRelatedEntity(
 					step,
-					new Relationship("adx_webformstep_nextstep") { PrimaryEntityRole = EntityRole.Referencing });
+					new Relationship("mspp_webformstep_nextstep") { PrimaryEntityRole = EntityRole.Referencing });
 
 				if (nextStep != null)
 				{
@@ -5377,7 +5377,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 					if ((item == null || item.IsActive == false) || item.PreviousStepID != step.Id)
 					{
-						var stepType = step.GetAttributeValue<OptionSetValue>("adx_type");
+						var stepType = step.GetAttributeValue<OptionSetValue>("mspp_type");
 
 						if (stepType != null)
 						{
@@ -5385,7 +5385,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 							{
 								var conditionFailedStep = context.RetrieveRelatedEntity(
 															step,
-															new Relationship("adx_webformstep_conditiondefaultnextstep") { PrimaryEntityRole = EntityRole.Referencing });
+															new Relationship("mspp_webformstep_conditiondefaultnextstep") { PrimaryEntityRole = EntityRole.Referencing });
 
 								if (conditionFailedStep != null)
 								{
@@ -5403,7 +5403,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (nextStep != null)
 				{
-					var type = nextStep.GetAttributeValue<OptionSetValue>("adx_type");
+					var type = nextStep.GetAttributeValue<OptionSetValue>("mspp_type");
 
 					if (type == null)
 					{
@@ -5420,10 +5420,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						case 100000001: // Load Form
 							step = nextStep;
 							userStepIndex++;
-							var localizedTitle1 = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_title"), languageCode);
+							var localizedTitle1 = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_title"), languageCode);
 							steps.Add(new ProgressStep
 							{
-								Title = string.IsNullOrWhiteSpace(localizedTitle1) ? step.GetAttributeValue<string>("adx_name") ?? "Step" : localizedTitle1,
+								Title = string.IsNullOrWhiteSpace(localizedTitle1) ? step.GetAttributeValue<string>("mspp_name") ?? "Step" : localizedTitle1,
 								Index = userStepIndex,
 								IsActive = currentIndex == stepIndex,
 								IsCompleted = currentIndex > stepIndex
@@ -5432,10 +5432,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						case 100000002: // Load Tab
 							step = nextStep;
 							userStepIndex++;
-							var localizedTitle2 = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_title"), languageCode);
+							var localizedTitle2 = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_title"), languageCode);
 							steps.Add(new ProgressStep
 							{
-								Title = string.IsNullOrWhiteSpace(localizedTitle2) ? step.GetAttributeValue<string>("adx_name") ?? "Step" : localizedTitle2,
+								Title = string.IsNullOrWhiteSpace(localizedTitle2) ? step.GetAttributeValue<string>("mspp_name") ?? "Step" : localizedTitle2,
 								Index = userStepIndex,
 								IsActive = currentIndex == stepIndex,
 								IsCompleted = currentIndex > stepIndex
@@ -5448,10 +5448,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						case 100000004: // Load User Control
 							step = nextStep;
 							userStepIndex++;
-							var localizedTitle3 = Localization.GetLocalizedString(step.GetAttributeValue<string>("adx_title"), languageCode);
+							var localizedTitle3 = Localization.GetLocalizedString(step.GetAttributeValue<string>("mspp_title"), languageCode);
 							steps.Add(new ProgressStep
 							{
-								Title = string.IsNullOrWhiteSpace(localizedTitle3) ? step.GetAttributeValue<string>("adx_name") ?? "Step" : localizedTitle3,
+								Title = string.IsNullOrWhiteSpace(localizedTitle3) ? step.GetAttributeValue<string>("mspp_name") ?? "Step" : localizedTitle3,
 								Index = userStepIndex,
 								IsActive = currentIndex == stepIndex,
 								IsCompleted = currentIndex > stepIndex

@@ -42,98 +42,98 @@ namespace Microsoft.Xrm.Portal.Cms
 
 		#endregion
 
-		#region adx_website
+		#region mspp_website
 
 		public static IEnumerable<Entity> GetLinkSets(this OrganizationServiceContext context, Entity website)
 		{
-			website.AssertEntityName("adx_website");
+			website.AssertEntityName("mspp_website");
 
-			var webLinkSets = website.GetRelatedEntities(context, "adx_website_weblinkset");
+			var webLinkSets = website.GetRelatedEntities(context, "mspp_website_weblinkset");
 			return webLinkSets;
 		}
 
 		public static Entity GetLinkSetByName(this OrganizationServiceContext context, Entity website, string webLinkSetName)
 		{
 			var webLinkSets = context.GetLinkSets(website);
-			return webLinkSets.Where(wls => wls.GetAttributeValue<string>("adx_name") == webLinkSetName).FirstOrDefault();
+			return webLinkSets.Where(wls => wls.GetAttributeValue<string>("mspp_name") == webLinkSetName).FirstOrDefault();
 		}
 
 		public static IEnumerable<Entity> GetMembershipTypes(this OrganizationServiceContext context, Entity website)
 		{
-			website.AssertEntityName("adx_website");
+			website.AssertEntityName("mspp_website");
 
-			var membershipTypes = website.GetRelatedEntities(context, "adx_website_membershiptype");
+			var membershipTypes = website.GetRelatedEntities(context, "mspp_website_membershiptype");
 			return membershipTypes;
 		}
 
 		public static Entity GetMembershipTypeByName(this OrganizationServiceContext context, Entity website, string membershipTypeName)
 		{
 			var membershipTypes = context.GetMembershipTypes(website);
-			return membershipTypes.Where(mt => mt.GetAttributeValue<string>("adx_name") == membershipTypeName).FirstOrDefault();
+			return membershipTypes.Where(mt => mt.GetAttributeValue<string>("mspp_name") == membershipTypeName).FirstOrDefault();
 		}
 
 		public static Entity GetPageBySiteMarkerName(this OrganizationServiceContext context, Entity website, string siteMarkerName)
 		{
-			website.AssertEntityName("adx_website");
+			website.AssertEntityName("mspp_website");
 
-			var siteMarkers = website.GetRelatedEntities(context, "adx_website_sitemarker");
-			var siteMarker = siteMarkers.Where(sm => sm.GetAttributeValue<string>("adx_name") == siteMarkerName).FirstOrDefault();
-			var webPage = siteMarker == null ? null : siteMarker.GetRelatedEntity(context, "adx_webpage_sitemarker");
+			var siteMarkers = website.GetRelatedEntities(context, "mspp_website_sitemarker");
+			var siteMarker = siteMarkers.Where(sm => sm.GetAttributeValue<string>("mspp_name") == siteMarkerName).FirstOrDefault();
+			var webPage = siteMarker == null ? null : siteMarker.GetRelatedEntity(context, "mspp_webpage_sitemarker");
 			return webPage;
 		}
 
 		public static IEnumerable<Entity> GetSiteSettings(this OrganizationServiceContext context, Entity website)
 		{
-			website.AssertEntityName("adx_website");
+			website.AssertEntityName("mspp_website");
 
-			var siteSettings = website.GetRelatedEntities(context, "adx_website_sitesetting");
+			var siteSettings = website.GetRelatedEntities(context, "mspp_website_sitesetting");
 			return siteSettings;
 		}
 
 		public static Entity GetSiteSettingByName(this OrganizationServiceContext context, Entity website, string siteSettingName)
 		{
 			var siteSettings = context.GetSiteSettings(website);
-			return (from s in siteSettings where s.GetAttributeValue<string>("adx_name") == siteSettingName select s).FirstOrDefault();
+			return (from s in siteSettings where s.GetAttributeValue<string>("mspp_name") == siteSettingName select s).FirstOrDefault();
 		}
 
 		public static string GetSiteSettingValueByName(this OrganizationServiceContext context, Entity website, string siteSettingName)
 		{
 			var siteSetting = context.GetSiteSettingByName(website, siteSettingName);
-			return (siteSetting == null ? null : siteSetting.GetAttributeValue<string>("adx_value"));
+			return (siteSetting == null ? null : siteSetting.GetAttributeValue<string>("mspp_value"));
 		}
 
 		public static IEnumerable<Entity> GetSnippets(this OrganizationServiceContext context, Entity website)
 		{
-			website.AssertEntityName("adx_website");
+			website.AssertEntityName("mspp_website");
 
-			var snippets = website.GetRelatedEntities(context, "adx_website_contentsnippet");
+			var snippets = website.GetRelatedEntities(context, "mspp_website_contentsnippet");
 			return snippets;
 		}
 
 		public static Entity GetSnippetByName(this OrganizationServiceContext context, Entity website, string snippetName)
 		{
 			var snippets = context.GetSnippets(website);
-			return snippets.Where(cs => cs.GetAttributeValue<string>("adx_name") == snippetName).FirstOrDefault();
+			return snippets.Where(cs => cs.GetAttributeValue<string>("mspp_name") == snippetName).FirstOrDefault();
 		}
 
 		public static string GetSnippetValueByName(this OrganizationServiceContext context, Entity website, string snippetName)
 		{
 			var snippet = context.GetSnippetByName(website, snippetName);
-			return snippet != null ? snippet.GetAttributeValue<string>("adx_value") : null;
+			return snippet != null ? snippet.GetAttributeValue<string>("mspp_value") : null;
 		}
 
 		public static IEnumerable<Entity> GetSiteMarkers(this OrganizationServiceContext context, Entity website)
 		{
-			website.AssertEntityName("adx_website");
+			website.AssertEntityName("mspp_website");
 
-			var siteMarkers = website.GetRelatedEntities(context, "adx_website_sitemarker");
+			var siteMarkers = website.GetRelatedEntities(context, "mspp_website_sitemarker");
 			return siteMarkers;
 		}
 
 		public static Entity GetSiteMarkerByName(this OrganizationServiceContext context, Entity website, string siteMarkerName)
 		{
 			var siteMarkers = context.GetSiteMarkers(website);
-			return siteMarkers.Where(sm => sm.GetAttributeValue<string>("adx_name") == siteMarkerName).FirstOrDefault();
+			return siteMarkers.Where(sm => sm.GetAttributeValue<string>("mspp_name") == siteMarkerName).FirstOrDefault();
 		}
 
 		/// <summary>
@@ -141,18 +141,18 @@ namespace Microsoft.Xrm.Portal.Cms
 		/// </summary>
 		public static IEnumerable<Entity> GetVisibleChildPagesBySiteMarker(this OrganizationServiceContext context, Entity website, string siteMarker)
 		{
-			website.AssertEntityName("adx_website");
+			website.AssertEntityName("mspp_website");
 
-			var websiteID = website.GetAttributeValue<Guid>("adx_websiteid");
+			var websiteID = website.GetAttributeValue<Guid>("mspp_websiteid");
 
 			var findPages =
-				from cwp in context.CreateQuery("adx_webpage")
-				join wp in context.CreateQuery("adx_webpage")
-					on cwp.GetAttributeValue<Guid>("adx_parentpageid") equals wp.GetAttributeValue<Guid>("adx_webpageid")
-				join sm in context.CreateQuery("adx_sitemarker")
-					on wp.GetAttributeValue<Guid>("adx_webpageid") equals sm.GetAttributeValue<Guid>("adx_pageid")
+				from cwp in context.CreateQuery("mspp_webpage")
+				join wp in context.CreateQuery("mspp_webpage")
+					on cwp.GetAttributeValue<Guid>("mspp_parentpageid") equals wp.GetAttributeValue<Guid>("mspp_webpageid")
+				join sm in context.CreateQuery("mspp_sitemarker")
+					on wp.GetAttributeValue<Guid>("mspp_webpageid") equals sm.GetAttributeValue<Guid>("mspp_pageid")
 				// filter to current site
-				where sm.GetAttributeValue<Guid?>("adx_websiteid") == websiteID && sm.GetAttributeValue<string>("adx_name") == siteMarker
+				where sm.GetAttributeValue<Guid?>("mspp_websiteid") == websiteID && sm.GetAttributeValue<string>("mspp_name") == siteMarker
 				select cwp;
 
 			return findPages.Cast<Entity>().ToList();
@@ -160,7 +160,7 @@ namespace Microsoft.Xrm.Portal.Cms
 
 		public static TimeZoneInfo GetTimeZone(this OrganizationServiceContext context, Entity website)
 		{
-			website.AssertEntityName("adx_website");
+			website.AssertEntityName("mspp_website");
 
 			var timezoneid = context.GetSiteSettingValueByName(website, "timezone/id");
 
@@ -171,16 +171,16 @@ namespace Microsoft.Xrm.Portal.Cms
 
 		#endregion
 
-		#region adx_webpage
+		#region mspp_webpage
 
 		/// <summary>
 		/// Retrieves the child pages of this page.
 		/// </summary>
 		public static IEnumerable<Entity> GetChildPages(this OrganizationServiceContext context, Entity webPage)
 		{
-			webPage.AssertEntityName("adx_webpage");
+			webPage.AssertEntityName("mspp_webpage");
 
-			var childPages = webPage.GetRelatedEntities(context, "adx_webpage_webpage", EntityRole.Referenced);
+			var childPages = webPage.GetRelatedEntities(context, "mspp_webpage_webpage", EntityRole.Referenced);
 			return childPages;
 		}
 
@@ -189,9 +189,9 @@ namespace Microsoft.Xrm.Portal.Cms
 		/// </summary>
 		public static IEnumerable<Entity> GetChildFiles(this OrganizationServiceContext context, Entity webPage)
 		{
-			webPage.AssertEntityName("adx_webpage");
+			webPage.AssertEntityName("mspp_webpage");
 
-			var childFiles = webPage.GetRelatedEntities(context, "adx_webpage_webfile");
+			var childFiles = webPage.GetRelatedEntities(context, "mspp_webpage_webfile");
 			return childFiles;
 		}
 
@@ -201,49 +201,49 @@ namespace Microsoft.Xrm.Portal.Cms
 		public static IEnumerable<Entity> GetVisibleChildPages(this OrganizationServiceContext context, Entity webPage)
 		{
 			var childPages = context.GetChildPages(webPage);
-			var visibleChildPages = childPages.Where(cp => !cp.GetAttributeValue<bool?>("adx_hiddenfromsitemap").GetValueOrDefault(false));
+			var visibleChildPages = childPages.Where(cp => !cp.GetAttributeValue<bool?>("mspp_hiddenfromsitemap").GetValueOrDefault(false));
 			return visibleChildPages;
 		}
 
 		#endregion
 
-		#region adx_weblinkset
+		#region mspp_weblinkset
 
 		public static IOrderedEnumerable<Entity> GetOrderedWebLinks(this OrganizationServiceContext context, Entity webLinkSet)
 		{
-			webLinkSet.AssertEntityName("adx_weblinkset");
+			webLinkSet.AssertEntityName("mspp_weblinkset");
 
-			var webLinks = webLinkSet.GetRelatedEntities(context, "adx_weblinkset_weblink");
-			return webLinks.OrderBy(wl => wl.GetAttributeValue<int?>("adx_displayorder"));
+			var webLinks = webLinkSet.GetRelatedEntities(context, "mspp_weblinkset_weblink");
+			return webLinks.OrderBy(wl => wl.GetAttributeValue<int?>("mspp_displayorder"));
 		}
 
 		#endregion
 
-		#region adx_weblink
+		#region mspp_weblink
 
 		/// <summary>
 		/// Retrieves a list of visible child pages for this web link.
 		/// </summary>
 		public static IEnumerable<Entity> GetVisibleChildPagesForWebLink(this OrganizationServiceContext context, Entity webLink)
 		{
-			webLink.AssertEntityName("adx_weblink");
+			webLink.AssertEntityName("mspp_weblink");
 
-			var page = webLink.GetRelatedEntity(context, "adx_webpage_weblink");
+			var page = webLink.GetRelatedEntity(context, "mspp_webpage_weblink");
 			return page == null ? null : context.GetVisibleChildPages(page);
 		}
 
 		#endregion
 
-		#region adx_webfile
+		#region mspp_webfile
 
 		/// <summary>
 		/// Retrieves the CRM notes that the file is uploaded to.
 		/// </summary>
 		public static IEnumerable<Entity> GetNotes(this OrganizationServiceContext context, Entity file)
 		{
-			file.AssertEntityName("adx_webfile");
+			file.AssertEntityName("mspp_webfile");
 
-			var notes = file.GetRelatedEntities(context, "adx_webfile_Annotations");
+			var notes = file.GetRelatedEntities(context, "mspp_webfile_Annotations");
 			return notes;
 		}
 
@@ -258,16 +258,18 @@ namespace Microsoft.Xrm.Portal.Cms
 
 		#endregion
 
-		#region adx_sitemarker
+		#region mspp_sitemarker
 
 		public static Entity GetWebPage(this OrganizationServiceContext context, Entity siteMarker)
 		{
-			siteMarker.AssertEntityName("adx_sitemarker");
+			siteMarker.AssertEntityName("mspp_sitemarker");
 
-			var webPage = siteMarker.GetRelatedEntity(context, "adx_webpage_sitemarker");
+			var webPage = siteMarker.GetRelatedEntity(context, "mspp_webpage_sitemarker");
 			return webPage;
 		}
 
 		#endregion
+
+
 	}
 }

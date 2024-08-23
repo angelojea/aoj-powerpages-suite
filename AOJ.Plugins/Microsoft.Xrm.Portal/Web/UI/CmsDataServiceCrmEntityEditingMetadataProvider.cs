@@ -25,36 +25,36 @@ namespace Microsoft.Xrm.Portal.Web.UI
 	{
 		private static readonly Dictionary<string, IEnumerable<Relationship>> _defaultChildAssociationsByEntityName = new Dictionary<string, IEnumerable<Relationship>>
 		{
-			{ "adx_webpage", new[] { "adx_webpage_webfile".ToRelationship(), "adx_webpage_webpage".ToRelationship(EntityRole.Referenced) } },
+			{ "mspp_webpage", new[] { "mspp_webpage_webfile".ToRelationship(), "mspp_webpage_webpage".ToRelationship(EntityRole.Referenced) } },
 		};
 
 		private static readonly List<string> _defaultDeletableEntityNames = new List<string>
 		{
-			"adx_webfile",
-			"adx_weblink",
-			"adx_webpage",
+			"mspp_webfile",
+			"mspp_weblink",
+			"mspp_webpage",
 		};
 
 		private static readonly List<string> _defaultDependencyEntityNames = new List<string>
 		{
-			"adx_pagetemplate",
+			"mspp_pagetemplate",
 		};
 
 		private static readonly List<string> _defaultFileAttachmentEntityNames = new List<string>
 		{
-			"adx_webfile", "adx_webpage"
+			"mspp_webfile", "mspp_webpage"
 		};
 
 		private static readonly List<string> _defaultUrlEntityNames = new List<string>
 		{
-			"adx_webfile",
-			"adx_webpage",
+			"mspp_webfile",
+			"mspp_webpage",
 		};
 
 		private static readonly IDictionary<string, Relationship> _parentalRelationshipsByEntityName = new Dictionary<string, Relationship>
 		{
-			{ "adx_webfile", "adx_webpage_webfile".ToRelationship() },
-			{ "adx_webpage", "adx_webpage_webpage".ToRelationship(EntityRole.Referencing) },
+			{ "mspp_webfile", "mspp_webpage_webfile".ToRelationship() },
+			{ "mspp_webpage", "mspp_webpage_webpage".ToRelationship(EntityRole.Referencing) },
 		};
 
 		public CmsDataServiceCrmEntityEditingMetadataProvider()
@@ -117,25 +117,25 @@ namespace Microsoft.Xrm.Portal.Web.UI
 				return;
 			}
 
-			if (entity.LogicalName == "adx_weblinkset")
+			if (entity.LogicalName == "mspp_weblinkset")
 			{
 				// Output the service reference for the web link set itself.
-				AddEntityServiceReference(control, entity, entity.GetAttributeValue<string>("adx_name"), container);
+				AddEntityServiceReference(control, entity, entity.GetAttributeValue<string>("mspp_name"), container);
 
 				// Output the service reference for the child web links of the set.
-				AddEntityAssocationSetServiceReferenceForWebLinkSet(control, entity, "adx_weblinkset_weblink".ToRelationship(), container);
-				AddEntityAssocationSetServiceReference(portalName, control, entity, "adx_weblinkset_weblink".ToRelationship(), container, "xrm-entity-{0}-update-ref");
-				AddEntitySetSchemaMap(control, "adx_weblink", container);
+				AddEntityAssocationSetServiceReferenceForWebLinkSet(control, entity, "mspp_weblinkset_weblink".ToRelationship(), container);
+				AddEntityAssocationSetServiceReference(portalName, control, entity, "mspp_weblinkset_weblink".ToRelationship(), container, "xrm-entity-{0}-update-ref");
+				AddEntitySetSchemaMap(control, "mspp_weblink", container);
 
 				// Output the service reference and schema map for site web pages (required to create new web links).
-				AddEntitySetServiceReference(control, "adx_webpage", container);
-				AddEntitySetSchemaMap(control, "adx_webpage", container);
+				AddEntitySetServiceReference(control, "mspp_webpage", container);
+				AddEntitySetSchemaMap(control, "mspp_webpage", container);
 
 				string weblinkDeleteUriTemplate;
 
-				if (TryGetCrmEntityDeleteDataServiceUriTemplate(control, "adx_weblink", out weblinkDeleteUriTemplate))
+				if (TryGetCrmEntityDeleteDataServiceUriTemplate(control, "mspp_weblink", out weblinkDeleteUriTemplate))
 				{
-					AddServiceReference(control, weblinkDeleteUriTemplate, "xrm-uri-template xrm-entity-adx_weblink-delete-ref", container);
+					AddServiceReference(control, weblinkDeleteUriTemplate, "xrm-uri-template xrm-entity-mspp_weblink-delete-ref", container);
 				}
 
 				return;
@@ -257,22 +257,22 @@ namespace Microsoft.Xrm.Portal.Web.UI
 			}
 
 			// Output the sitemarkers of the current web page into the DOM.
-			if (crmEntityName == "adx_webpage")
+			if (crmEntityName == "mspp_webpage")
 			{
 				var context = PortalCrmConfigurationManager.GetServiceContext(PortalName);
 				entity = context.MergeClone(entity);
 
-				foreach (var siteMarker in entity.GetRelatedEntities(context, "adx_webpage_sitemarker"))
+				foreach (var siteMarker in entity.GetRelatedEntities(context, "mspp_webpage_sitemarker"))
 				{
 					var siteMarkerRef = new HtmlGenericControl("span");
 
-					siteMarkerRef.Attributes["class"] = "xrm-entity-adx_webpage_sitemarker";
-					siteMarkerRef.Attributes["title"] = siteMarker.GetAttributeValue<string>("adx_name");
+					siteMarkerRef.Attributes["class"] = "xrm-entity-mspp_webpage_sitemarker";
+					siteMarkerRef.Attributes["title"] = siteMarker.GetAttributeValue<string>("mspp_name");
 
 					container.Controls.Add(siteMarkerRef);
 				}
 
-				AddEntitySetSchemaMap(control, "adx_webfile", container);
+				AddEntitySetSchemaMap(control, "mspp_webfile", container);
 			}
 		}
 
@@ -333,7 +333,7 @@ namespace Microsoft.Xrm.Portal.Web.UI
 			var serviceBaseUri = string.IsNullOrEmpty(control.CmsServiceBaseUri) ? PortalCrmConfigurationManager.GetCmsServiceBaseUri(PortalName) : control.CmsServiceBaseUri;
 			var context = PortalCrmConfigurationManager.GetServiceContext(PortalName);
 
-			var serviceUri = context.GetType().GetCrmEntitySetDataServiceUri("adx_weblink", serviceBaseUri, "adx_weblinksetid", entity.Id);
+			var serviceUri = context.GetType().GetCrmEntitySetDataServiceUri("mspp_weblink", serviceBaseUri, "mspp_weblinksetid", entity.Id);
 
 			AddServiceReference(control, serviceUri, "xrm-entity-{0}-ref".FormatWith(relationship.ToSchemaName("_")), container);
 		}

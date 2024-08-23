@@ -18,7 +18,7 @@ namespace Microsoft.Xrm.Portal.Cms.Security
 	{
 		private static readonly string[] _handledEntityNames = new[]
 		{
-			"adx_webfile", "adx_webpage", "adx_contentsnippet", "adx_pagetemplate", "adx_sitemarker", "adx_weblinkset", "adx_weblink"
+			"mspp_webfile", "mspp_webpage", "mspp_contentsnippet", "mspp_pagetemplate", "mspp_sitemarker", "mspp_weblinkset", "mspp_weblink"
 		};
 
 		public string PortalName { get; private set; }

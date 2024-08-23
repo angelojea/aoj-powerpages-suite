@@ -26,12 +26,12 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 	{
 		private static readonly Dictionary<string, EntitySetRights> _entitySetRightsByLogicalName = new Dictionary<string, EntitySetRights>
 		{
-			{ "adx_contentsnippet",  EntitySetRights.AllRead | EntitySetRights.WriteMerge | EntitySetRights.WriteReplace },
-			{ "adx_pagetemplate",    EntitySetRights.AllRead },
-			{ "adx_webfile",         EntitySetRights.AllRead | EntitySetRights.WriteAppend | EntitySetRights.WriteMerge | EntitySetRights.WriteReplace },
-			{ "adx_weblink",         EntitySetRights.AllRead | EntitySetRights.WriteAppend | EntitySetRights.WriteMerge | EntitySetRights.WriteReplace },
-			{ "adx_weblinkset",      EntitySetRights.AllRead | EntitySetRights.WriteMerge | EntitySetRights.WriteReplace },
-			{ "adx_webpage",         EntitySetRights.AllRead | EntitySetRights.WriteAppend | EntitySetRights.WriteMerge | EntitySetRights.WriteReplace },
+			{ "mspp_contentsnippet",  EntitySetRights.AllRead | EntitySetRights.WriteMerge | EntitySetRights.WriteReplace },
+			{ "mspp_pagetemplate",    EntitySetRights.AllRead },
+			{ "mspp_webfile",         EntitySetRights.AllRead | EntitySetRights.WriteAppend | EntitySetRights.WriteMerge | EntitySetRights.WriteReplace },
+			{ "mspp_weblink",         EntitySetRights.AllRead | EntitySetRights.WriteAppend | EntitySetRights.WriteMerge | EntitySetRights.WriteReplace },
+			{ "mspp_weblinkset",      EntitySetRights.AllRead | EntitySetRights.WriteMerge | EntitySetRights.WriteReplace },
+			{ "mspp_webpage",         EntitySetRights.AllRead | EntitySetRights.WriteAppend | EntitySetRights.WriteMerge | EntitySetRights.WriteReplace },
 		};
 
 		public string PortalName { get; private set; }
@@ -154,7 +154,7 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 				AttributeInfo propertyInfo;
 
 				if (!OrganizationServiceContextInfo.TryGet(context, entity, out entitySetInfo)
-					|| !entitySetInfo.Entity.AttributesByLogicalName.TryGetValue("adx_displayorder", out propertyInfo)
+					|| !entitySetInfo.Entity.AttributesByLogicalName.TryGetValue("mspp_displayorder", out propertyInfo)
 						|| propertyInfo.Property.PropertyType != typeof(int?))
 				{
 					continue;
@@ -177,23 +177,23 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 			{
 				switch (entityName)
 				{
-				case "adx_contentsnippet":
+				case "mspp_contentsnippet":
 					InterceptContentSnippetUpdate(context, entity, operations);
 					break;
 
-				case "adx_webfile":
+				case "mspp_webfile":
 					InterceptWebFileUpdate(context, entity, operations);
 					break;
 
-				case "adx_weblink":
+				case "mspp_weblink":
 					InterceptWebLinkUpdate(context, entity, operations);
 					break;
 
-				case "adx_weblinkset":
+				case "mspp_weblinkset":
 					InterceptWebLinkSetUpdate(context, entity, operations);
 					break;
 
-				case "adx_webpage":
+				case "mspp_webpage":
 					InterceptWebPageUpdate(context, entity, operations);
 					break;
 				default:
@@ -236,7 +236,7 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 			if (operations == UpdateOperations.Add)
 			{
 				// Ensure parent page link is being added.
-				var websiteID = GetWebsiteIDFromParentLinkForEntityInPendingChanges(context, entity, "adx_webpage");
+				var websiteID = GetWebsiteIDFromParentLinkForEntityInPendingChanges(context, entity, "mspp_webpage");
 
 				EnsureAssociationWithWebsite(entity, websiteID);
 
@@ -249,7 +249,7 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 
 			SetUpdateTrackingAttributes(entity);
 
-			if (string.IsNullOrEmpty(entity.GetAttributeValue<string>("adx_partialurl")))
+			if (string.IsNullOrEmpty(entity.GetAttributeValue<string>("mspp_partialurl")))
 			{
 				throw new DataServiceException(403, "Web files cannot have an empty partial URL property.");
 			}
@@ -261,9 +261,9 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 			{
 				EntityReference websiteID;
 
-				if (!TryGetWebsiteIDFromParentLinkForEntityInPendingChanges(context, entity, "adx_weblinkset", out websiteID))
+				if (!TryGetWebsiteIDFromParentLinkForEntityInPendingChanges(context, entity, "mspp_weblinkset", out websiteID))
 				{
-					throw new DataServiceException(403, "Change operation on type {0} requires AddLink to entity of type {1} to be present in pending changes.".FormatWith(entity.GetType().FullName, "adx_weblinkset"));
+					throw new DataServiceException(403, "Change operation on type {0} requires AddLink to entity of type {1} to be present in pending changes.".FormatWith(entity.GetType().FullName, "mspp_weblinkset"));
 				}
 
 				SetCreateTrackingAttributes(entity);
@@ -275,7 +275,7 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 
 			SetUpdateTrackingAttributes(entity);
 
-			if (string.IsNullOrEmpty(entity.GetAttributeValue<string>("adx_name")))
+			if (string.IsNullOrEmpty(entity.GetAttributeValue<string>("mspp_name")))
 			{
 				throw new DataServiceException(403, "Web links cannot have an empty name property.");
 			}
@@ -291,18 +291,18 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 			if (operations == UpdateOperations.Add)
 			{
 				// Ensure parent page link is being added.
-				var websiteID = GetWebsiteIDFromParentLinkForEntityInPendingChanges(context, entity, "adx_webpage");
+				var websiteID = GetWebsiteIDFromParentLinkForEntityInPendingChanges(context, entity, "mspp_webpage");
 
 				EnsureAssociationWithWebsite(entity, websiteID);
 
 				// Make the current user the author of the new web page, if the author ID is not yet set.
-				if (entity.GetAttributeValue<Guid?>("adx_authorid") == null)
+				if (entity.GetAttributeValue<Guid?>("mspp_authorid") == null)
 				{
 					var currentContact = GetUser(context);
 
 					if (currentContact != null)
 					{
-						entity.SetAttributeValue("adx_authorid", currentContact.ToEntityReference());
+						entity.SetAttributeValue("mspp_authorid", currentContact.ToEntityReference());
 					}
 				}
 
@@ -315,17 +315,17 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 
 			SetUpdateTrackingAttributes(entity);
 
-			if (string.IsNullOrEmpty(entity.GetAttributeValue<string>("adx_name")))
+			if (string.IsNullOrEmpty(entity.GetAttributeValue<string>("mspp_name")))
 			{
 				throw new DataServiceException(403, "Web pages cannot have an empty name property.");
 			}
 
-			if (string.IsNullOrEmpty(entity.GetAttributeValue<string>("adx_partialurl")))
+			if (string.IsNullOrEmpty(entity.GetAttributeValue<string>("mspp_partialurl")))
 			{
 				throw new DataServiceException(403, "Web pages cannot have an empty partial URL property.");
 			}
 
-			if (entity.GetAttributeValue<Guid?>("adx_pagetemplateid") == null)
+			if (entity.GetAttributeValue<Guid?>("mspp_pagetemplateid") == null)
 			{
 				throw new DataServiceException(403, "Web pages must have a page template ID.");
 			}
@@ -346,9 +346,9 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 		protected static void EnsureAssociationWithWebsite(Entity entity, EntityReference websiteID)
 		{
 			// If we're changing an entity, make sure it is associated with the given website.
-			if (entity.GetAttributeValue<EntityReference>("adx_websiteid") != websiteID)
+			if (entity.GetAttributeValue<EntityReference>("mspp_websiteid") != websiteID)
 			{
-				entity.SetAttributeValue("adx_websiteid", websiteID);
+				entity.SetAttributeValue("mspp_websiteid", websiteID);
 			}
 		}
 
@@ -442,14 +442,14 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 
 		protected static void SetCreateTrackingAttributes(Entity entity)
 		{
-			entity.SetAttributeValue("adx_createdbyusername", GetCurrentIdentity());
-			// entity.SetAttributeValue("adx_createdbyipaddress", HttpContext.Current.Request.UserHostAddress);
+			entity.SetAttributeValue("mspp_createdbyusername", GetCurrentIdentity());
+			// entity.SetAttributeValue("mspp_createdbyipaddress", HttpContext.Current.Request.UserHostAddress);
 		}
 
 		protected static void SetUpdateTrackingAttributes(Entity entity)
 		{
-			entity.SetAttributeValue("adx_modifiedbyusername", GetCurrentIdentity());
-			// entity.SetAttributeValue("adx_modifiedbyipaddress", HttpContext.Current.Request.UserHostAddress);
+			entity.SetAttributeValue("mspp_modifiedbyusername", GetCurrentIdentity());
+			// entity.SetAttributeValue("mspp_modifiedbyipaddress", HttpContext.Current.Request.UserHostAddress);
 		}
 
 		protected static bool TryGetWebsiteIDFromParentLinkForEntityInPendingChanges(OrganizationServiceContext context, Entity entity, string sourceEntityName, out EntityReference websiteID)
@@ -477,7 +477,7 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 			// retrieve the username attribute from the portal configuration
 
 			var portal = PortalCrmConfigurationManager.CreatePortalContext(PortalName) as IUserResolutionSettings;
-			var attributeMapUsername = (portal != null ? portal.AttributeMapUsername : null) ?? "adx_username";
+			var attributeMapUsername = (portal != null ? portal.AttributeMapUsername : null) ?? "mspp_username";
 			var memberEntityName = (portal != null ? portal.MemberEntityName : null) ?? "contact";
 
 			var username = GetCurrentIdentity();

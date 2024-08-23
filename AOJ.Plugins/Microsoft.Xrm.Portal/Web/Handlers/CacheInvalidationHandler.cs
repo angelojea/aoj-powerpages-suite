@@ -115,14 +115,14 @@ namespace Microsoft.Xrm.Portal.Web.Handlers
 		{
 			// {
 			//  "MessageName":"Update",
-			//  "Target":{"LogicalName":"adx_webpageaccesscontrolrule","Id":"40b062c7-1aea-e011-b5b7-001d60c95b1e"}
+			//  "Target":{"LogicalName":"mspp_webpageaccesscontrolrule","Id":"40b062c7-1aea-e011-b5b7-001d60c95b1e"}
 			// }
 
 			// {
 			//  "MessageName":"Associate",
-			//  "Target":{"LogicalName":"adx_webpageaccesscontrolrule","Id":"40b062c7-1aea-e011-b5b7-001d60c95b1e"},
-			//  "Relationship":{"SchemaName":"adx_webpageaccesscontrolrule_webrole","PrimaryEntityRole":"0"},
-			//  "RelatedEntities":[{"LogicalName":"adx_webrole","Id":"bf5420f9-de03-e111-a1a1-00155d03a708"}]
+			//  "Target":{"LogicalName":"mspp_webpageaccesscontrolrule","Id":"40b062c7-1aea-e011-b5b7-001d60c95b1e"},
+			//  "Relationship":{"SchemaName":"mspp_webpageaccesscontrolrule_webrole","PrimaryEntityRole":"0"},
+			//  "RelatedEntities":[{"LogicalName":"mspp_webrole","Id":"bf5420f9-de03-e111-a1a1-00155d03a708"}]
 			// }
 
 			var body = GetRequestBody(context);

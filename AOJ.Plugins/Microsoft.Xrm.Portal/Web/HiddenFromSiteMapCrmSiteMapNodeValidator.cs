@@ -11,7 +11,7 @@ namespace Microsoft.Xrm.Portal.Web
 	{
 		public bool Validate(OrganizationServiceContext context, CrmSiteMapNode node)
 		{
-			var propertyValue = node.Entity.GetAttributeValue<bool?>("adx_hiddenfromsitemap");
+			var propertyValue = node.Entity.GetAttributeValue<bool?>("mspp_hiddenfromsitemap");
 
 			if (propertyValue == null)
 			{

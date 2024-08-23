@@ -186,7 +186,7 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 		{
 			EntityNode page;
 
-			return !contentMap.TryGetValue(new EntityReference("adx_webpage", id), out page) ? null : page;
+			return !contentMap.TryGetValue(new EntityReference("mspp_webpage", id), out page) ? null : page;
 		}
 	}
 

@@ -37,7 +37,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			if (DisplayName == null)
 			{
-				DisplayName = entity.GetAttributeValue<string>("adx_display_name");
+				DisplayName = entity.GetAttributeValue<string>("mspp_display_name");
 			}
 					
 			return DisplayName ?? SnippetName ?? base.GetEditDisplayName(entity, propertyName);
@@ -63,7 +63,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (string.IsNullOrEmpty(PropertyName))
 				{
-					PropertyName = "adx_value";
+					PropertyName = "mspp_value";
 				}
 			}
 

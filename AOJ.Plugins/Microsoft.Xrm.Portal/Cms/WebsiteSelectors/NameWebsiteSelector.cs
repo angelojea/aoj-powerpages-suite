@@ -80,7 +80,11 @@ namespace Microsoft.Xrm.Portal.Cms.WebsiteSelectors
 
 			if (website == null)
 			{
-				throw new ApplicationException(@"Unable to find a Website with the Name == ""{0}""".FormatWith(ConfiguredWebsiteName));
+                if (AojConfigurationManager.Website != null)
+                {
+					return AojConfigurationManager.Website;
+                }
+                throw new ApplicationException(@"Unable to find a Website with the Name == ""{0}""".FormatWith(ConfiguredWebsiteName));
 			}
 
 			return website;
@@ -88,8 +92,8 @@ namespace Microsoft.Xrm.Portal.Cms.WebsiteSelectors
 
 		private static IEnumerable<Entity> GetWebsitesByName(OrganizationServiceContext context, string name)
 		{
-			return context.CreateQuery("adx_website")
-				.Where(website => website.GetAttributeValue<string>("adx_name") == name)
+			return context.CreateQuery("mspp_website")
+				.Where(website => website.GetAttributeValue<string>("mspp_name") == name)
 				.AsEnumerable();
 		}
 	}

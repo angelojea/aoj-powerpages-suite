@@ -13,7 +13,7 @@ using Microsoft.Xrm.Sdk.Client;
 namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 {
 	/// <summary>
-	/// Renders the value (adx_value) property of a content snippet (adx_contentsnippet).
+	/// Renders the value (mspp_value) property of a content snippet (mspp_contentsnippet).
 	/// </summary>
 	public class Snippet : Property // MSBug #120116: Won't seal, Inheritance is expected extension point.
 	{
@@ -42,7 +42,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 					if (OrganizationServiceContextInfo.TryGet(context, snippet, out entitySetInfo))
 					{
-						var attributeInfo = entitySetInfo.Entity.AttributesByLogicalName["adx_value"];
+						var attributeInfo = entitySetInfo.Entity.AttributesByLogicalName["mspp_value"];
 						PropertyName = attributeInfo.Property.Name;
 					}
 				}

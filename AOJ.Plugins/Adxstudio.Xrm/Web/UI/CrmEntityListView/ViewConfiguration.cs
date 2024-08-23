@@ -353,7 +353,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityListView
 			EntityName = entityName;
 			PrimaryKeyName = primaryKeyName;
 			ViewId = Id = viewGuid;
-			PageSize = entitylist.GetAttributeValue<int>("adx_pagesize");
+			PageSize = entitylist.GetAttributeValue<int>("mspp_pagesize");
 			Search = new ViewSearch();
 			DetailsActionLink = new DetailsActionLink();
 			InsertActionLink = new InsertActionLink();
@@ -369,32 +369,32 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityListView
 
 			InitializeSpecialActionsLinks();
 
-			var detailsViewPageReference = entitylist.GetAttributeValue<EntityReference>("adx_webpagefordetailsview");
+			var detailsViewPageReference = entitylist.GetAttributeValue<EntityReference>("mspp_webpagefordetailsview");
 			UrlBuilder detailsUrl = null;
 			if (detailsViewPageReference != null) { detailsUrl = EntityListFunctions.GetUrlForWebPage(serviceContext, detailsViewPageReference, portalName); }
 
-			var localizedDetailsButtonLabel = Localization.GetLocalizedString(entitylist.GetAttributeValue<string>("adx_detailsbuttonlabel"), languageCode);
-			var idQueryStringParameterName = entitylist.GetAttributeValue<string>("adx_idquerystringparametername");
-			var createPageReference = entitylist.GetAttributeValue<EntityReference>("adx_webpageforcreate");
+			var localizedDetailsButtonLabel = Localization.GetLocalizedString(entitylist.GetAttributeValue<string>("mspp_detailsbuttonlabel"), languageCode);
+			var idQueryStringParameterName = entitylist.GetAttributeValue<string>("mspp_idquerystringparametername");
+			var createPageReference = entitylist.GetAttributeValue<EntityReference>("mspp_webpageforcreate");
 			UrlBuilder createUrl = null;
 			if (createPageReference != null) { createUrl = EntityListFunctions.GetUrlForWebPage(serviceContext, createPageReference, portalName); }
 
-			var localizedCreateButtonLabel = Localization.GetLocalizedString(entitylist.GetAttributeValue<string>("adx_createbuttonlabel"), languageCode);
-			var localizedEmptyListText = Localization.GetLocalizedString(entitylist.GetAttributeValue<string>("adx_emptylisttext"), languageCode);
+			var localizedCreateButtonLabel = Localization.GetLocalizedString(entitylist.GetAttributeValue<string>("mspp_createbuttonlabel"), languageCode);
+			var localizedEmptyListText = Localization.GetLocalizedString(entitylist.GetAttributeValue<string>("mspp_emptylisttext"), languageCode);
 
-			var searchEnabled = entitylist.GetAttributeValue<bool?>("adx_searchenabled").GetValueOrDefault(false);
-			var searchLocalizedPlaceholder = Localization.GetLocalizedString(entitylist.GetAttributeValue<string>("adx_searchplaceholdertext"), languageCode);
-			var searchLocalizedTooltip = Localization.GetLocalizedString(entitylist.GetAttributeValue<string>("adx_searchtooltiptext"), languageCode);
+			var searchEnabled = entitylist.GetAttributeValue<bool?>("mspp_searchenabled").GetValueOrDefault(false);
+			var searchLocalizedPlaceholder = Localization.GetLocalizedString(entitylist.GetAttributeValue<string>("mspp_searchplaceholdertext"), languageCode);
+			var searchLocalizedTooltip = Localization.GetLocalizedString(entitylist.GetAttributeValue<string>("mspp_searchtooltiptext"), languageCode);
 
-			var calendarEnabled = entitylist.GetAttributeValue<bool?>("adx_calendar_enabled").GetValueOrDefault(false);
-			var calendarInitialDate = entitylist.GetAttributeValue<DateTime?>("adx_calendar_initialdate");
+			var calendarEnabled = entitylist.GetAttributeValue<bool?>("mspp_calendar_enabled").GetValueOrDefault(false);
+			var calendarInitialDate = entitylist.GetAttributeValue<DateTime?>("mspp_calendar_initialdate");
 			var calendarInitialDateString = calendarInitialDate.HasValue ? calendarInitialDate.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) : string.Empty;
 
-			var mapEnabled = entitylist.GetAttributeAliasedValue<bool?>("adx_map_enabled").GetValueOrDefault(false);
+			var mapEnabled = entitylist.GetAttributeAliasedValue<bool?>("mspp_map_enabled").GetValueOrDefault(false);
 
-			var filterDefinition = entitylist.GetAttributeValue<string>("adx_filter_definition");
-			var filterApplyButtonLabel = Localization.GetLocalizedString(entitylist.GetAttributeValue<string>("adx_filter_applybuttonlabel"), languageCode);
-			var filterOrientation = entitylist.GetAttributeValue<OptionSetValue>("adx_filter_orientation");
+			var filterDefinition = entitylist.GetAttributeValue<string>("mspp_filter_definition");
+			var filterApplyButtonLabel = Localization.GetLocalizedString(entitylist.GetAttributeValue<string>("mspp_filter_applybuttonlabel"), languageCode);
+			var filterOrientation = entitylist.GetAttributeValue<OptionSetValue>("mspp_filter_orientation");
 
 			if (!string.IsNullOrWhiteSpace(pageQueryStringField)) PageQueryStringParameterName = pageQueryStringField;
 			if (!string.IsNullOrWhiteSpace(filterQueryStringField)) FilterQueryStringParameterName = filterQueryStringField;
@@ -445,21 +445,21 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityListView
 				}
 			}
 
-			FilterPortalUserAttributeName = entitylist.GetAttributeValue<string>("adx_filterportaluser");
-			FilterAccountAttributeName = entitylist.GetAttributeValue<string>("adx_filteraccount");
-			FilterWebsiteAttributeName = entitylist.GetAttributeValue<string>("adx_filterwebsite");
+			FilterPortalUserAttributeName = entitylist.GetAttributeValue<string>("mspp_filterportaluser");
+			FilterAccountAttributeName = entitylist.GetAttributeValue<string>("mspp_filteraccount");
+			FilterWebsiteAttributeName = entitylist.GetAttributeValue<string>("mspp_filterwebsite");
 
 			Search = new ViewSearch(searchEnabled, "query", searchLocalizedPlaceholder, searchLocalizedTooltip);
 
 			if (calendarEnabled)
 			{
 				CalendarSettings = new CalendarConfiguration(serviceContext, calendarEnabled, calendarInitialDateString,
-					entitylist.GetAttributeValue<OptionSetValue>("adx_calendar_initialview"), entitylist.GetAttributeValue<OptionSetValue>("adx_calendar_style"),
-					entitylist.GetAttributeValue<OptionSetValue>("adx_calendar_timezonemode"), entitylist.GetAttributeValue<int?>("adx_calendar_timezone"),
-					entitylist.GetAttributeValue<string>("adx_calendar_startdatefieldname"), entitylist.GetAttributeValue<string>("adx_calendar_enddatefieldname"),
-					entitylist.GetAttributeValue<string>("adx_calendar_summaryfieldname"), entitylist.GetAttributeValue<string>("adx_calendar_descriptionfieldname"),
-					entitylist.GetAttributeValue<string>("adx_calendar_organizerfieldname"), entitylist.GetAttributeValue<string>("adx_calendar_locationfieldname"),
-					entitylist.GetAttributeValue<string>("adx_calendar_alldayfieldname"));
+					entitylist.GetAttributeValue<OptionSetValue>("mspp_calendar_initialview"), entitylist.GetAttributeValue<OptionSetValue>("mspp_calendar_style"),
+					entitylist.GetAttributeValue<OptionSetValue>("mspp_calendar_timezonemode"), entitylist.GetAttributeValue<int?>("mspp_calendar_timezone"),
+					entitylist.GetAttributeValue<string>("mspp_calendar_startdatefieldname"), entitylist.GetAttributeValue<string>("mspp_calendar_enddatefieldname"),
+					entitylist.GetAttributeValue<string>("mspp_calendar_summaryfieldname"), entitylist.GetAttributeValue<string>("mspp_calendar_descriptionfieldname"),
+					entitylist.GetAttributeValue<string>("mspp_calendar_organizerfieldname"), entitylist.GetAttributeValue<string>("mspp_calendar_locationfieldname"),
+					entitylist.GetAttributeValue<string>("mspp_calendar_alldayfieldname"));
 			}
 			else
 			{
@@ -468,20 +468,20 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityListView
 
 			if (mapEnabled)
 			{
-				MapSettings = new MapConfiguration(portalContext, mapEnabled, entitylist.GetAttributeValue<OptionSetValue>("adx_map_distanceunits"),
-					entitylist.GetAttributeValue<string>("adx_map_distancevalues"), entitylist.GetAttributeValue<int?>("adx_map_infoboxoffsety"),
-					entitylist.GetAttributeValue<int?>("adx_map_infoboxoffsetx"), entitylist.GetAttributeValue<int?>("adx_map_pushpinwidth"),
-					entitylist.GetAttributeValue<string>("adx_map_pushpinurl"), entitylist.GetAttributeValue<int?>("adx_map_zoom"),
-					entitylist.GetAttributeAliasedValue<double?>("adx_map_longitude"), entitylist.GetAttributeAliasedValue<double?>("adx_map_latitude"),
-					entitylist.GetAttributeAliasedValue<string>("adx_map_resturl"), entitylist.GetAttributeValue<string>("adx_map_credentials"),
-					entitylist.GetAttributeValue<int?>("adx_map_pushpinheight"));
+				MapSettings = new MapConfiguration(portalContext, mapEnabled, entitylist.GetAttributeValue<OptionSetValue>("mspp_map_distanceunits"),
+					entitylist.GetAttributeValue<string>("mspp_map_distancevalues"), entitylist.GetAttributeValue<int?>("mspp_map_infoboxoffsety"),
+					entitylist.GetAttributeValue<int?>("mspp_map_infoboxoffsetx"), entitylist.GetAttributeValue<int?>("mspp_map_pushpinwidth"),
+					entitylist.GetAttributeValue<string>("mspp_map_pushpinurl"), entitylist.GetAttributeValue<int?>("mspp_map_zoom"),
+					entitylist.GetAttributeAliasedValue<double?>("mspp_map_longitude"), entitylist.GetAttributeAliasedValue<double?>("mspp_map_latitude"),
+					entitylist.GetAttributeAliasedValue<string>("mspp_map_resturl"), entitylist.GetAttributeValue<string>("mspp_map_credentials"),
+					entitylist.GetAttributeValue<int?>("mspp_map_pushpinheight"));
 			}
 			else
 			{
 				MapSettings = new MapConfiguration { Enabled = mapEnabled };
 			}
 
-			FilterSettings.Enabled = entitylist.GetAttributeValue<bool?>("adx_filter_enabled").GetValueOrDefault(false);
+			FilterSettings.Enabled = entitylist.GetAttributeValue<bool?>("mspp_filter_enabled").GetValueOrDefault(false);
 
 			if (!string.IsNullOrWhiteSpace(filterDefinition)) { FilterSettings.Definition = filterDefinition; }
 

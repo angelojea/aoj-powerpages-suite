@@ -24,7 +24,7 @@ namespace Microsoft.Xrm.Portal.Web.Providers
 
 			var entitiesWithoutWebsites = new Dictionary<string, Relationship>
 			{
-				{ "adx_weblink", "adx_weblinkset_weblink".ToRelationship() },
+				{ "mspp_weblink", "mspp_weblinkset_weblink".ToRelationship() },
 			};
 
 			Relationship hasWebsiteRelationship;
@@ -36,12 +36,12 @@ namespace Microsoft.Xrm.Portal.Web.Providers
 
 			var lookup = new Dictionary<string, Relationship>
 			{
-				{ "adx_weblinkset", "adx_website_weblinkset".ToRelationship() },
-				{ "adx_webpage", "adx_website_webpage".ToRelationship() },
-				{ "adx_webfile", "adx_website_webfile".ToRelationship() },
-				{ "adx_sitemarker", "adx_website_sitemarker".ToRelationship() },
-				{ "adx_pagetemplate", "adx_website_pagetemplate".ToRelationship() },
-				{ "adx_contentsnippet", "adx_website_contentsnippet".ToRelationship() },
+				{ "mspp_weblinkset", "mspp_website_weblinkset".ToRelationship() },
+				{ "mspp_webpage", "mspp_website_webpage".ToRelationship() },
+				{ "mspp_webfile", "mspp_website_webfile".ToRelationship() },
+				{ "mspp_sitemarker", "mspp_website_sitemarker".ToRelationship() },
+				{ "mspp_pagetemplate", "mspp_website_pagetemplate".ToRelationship() },
+				{ "mspp_contentsnippet", "mspp_website_contentsnippet".ToRelationship() },
 			};
 
 			Relationship websiteRelationship;

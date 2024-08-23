@@ -21,7 +21,7 @@ using Microsoft.Xrm.Sdk.Client;
 namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 {
 	/// <summary>
-	/// Renders a web link set (adx_weblinkset) as a list of links.
+	/// Renders a web link set (mspp_weblinkset) as a list of links.
 	/// </summary>
 	public class WebLinks : EditableCrmEntityDataBoundControl // MSBug #120119: Won't seal, Inheritance is expected extension point.
 	{
@@ -104,7 +104,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 			{
 				Controls.Add(new Property
 				{
-					PropertyName = GetPropertyName(context, entity, "adx_title"),
+					PropertyName = GetPropertyName(context, entity, "mspp_title"),
 					CssClass = "weblinkset-title",
 					EditType = "text",
 					DataItem = entity
@@ -115,7 +115,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 			{
 				Controls.Add(new Property
 				{
-					PropertyName = GetPropertyName(context, entity, "adx_copy"),
+					PropertyName = GetPropertyName(context, entity, "mspp_copy"),
 					CssClass = "weblinkset-copy",
 					EditType = "html",
 					DataItem = entity
@@ -124,9 +124,9 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 			var securityProvider = PortalCrmConfigurationManager.CreateCrmEntitySecurityProvider(PortalName);
 
-			var weblinks = entity.GetRelatedEntities(context, "adx_weblinkset_weblink")
+			var weblinks = entity.GetRelatedEntities(context, "mspp_weblinkset_weblink")
 				.Where(e => securityProvider.TryAssert(context, e, CrmEntityRight.Read))
-				.OrderBy(weblink => weblink.GetAttributeValue<int?>("adx_displayorder"))
+				.OrderBy(weblink => weblink.GetAttributeValue<int?>("mspp_displayorder"))
 				.ToList();
 
 			var weblinkCount = weblinks.Count();
@@ -154,7 +154,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 						description.Controls.Add(new Property
 						{
-							PropertyName = GetPropertyName(context, weblink, "adx_description"),
+							PropertyName = GetPropertyName(context, weblink, "mspp_description"),
 							DataItem = weblink,
 							Literal = true
 						});

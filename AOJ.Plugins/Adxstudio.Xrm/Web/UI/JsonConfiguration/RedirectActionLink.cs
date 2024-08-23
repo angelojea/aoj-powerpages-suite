@@ -42,7 +42,7 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 		public RedirectActionLink(EntityReference page, LinkActionType type, bool enabled, string label, string tooltip)
 			: base(type, enabled, null, label, tooltip, null)
 		{
-			if (page == null || page.LogicalName != "adx_webpage") return;
+			if (page == null || page.LogicalName != "mspp_webpage") return;
 			WebPage = page;
 			OnComplete = JsonConfiguration.OnComplete.RedirectToWebPage;
 		}

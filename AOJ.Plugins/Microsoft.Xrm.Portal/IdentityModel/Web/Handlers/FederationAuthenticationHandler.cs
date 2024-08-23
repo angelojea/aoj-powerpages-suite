@@ -72,7 +72,7 @@ namespace Microsoft.Xrm.Portal.IdentityModel.Web.Handlers
 
 		protected string AttributeMapUsername
 		{
-			get { return SelectUserSetting(setting => setting.AttributeMapUsername, "adx_username"); }
+			get { return SelectUserSetting(setting => setting.AttributeMapUsername, "mspp_username"); }
 		}
 
 		protected string ReturnUrlKey
@@ -117,22 +117,22 @@ namespace Microsoft.Xrm.Portal.IdentityModel.Web.Handlers
 
 		protected string AttributeMapLogonEnabled
 		{
-			get { return SelectRegistrationSetting(setting => setting.AttributeMapLogonEnabled, "adx_logonenabled"); }
+			get { return SelectRegistrationSetting(setting => setting.AttributeMapLogonEnabled, "mspp_logonenabled"); }
 		}
 
 		protected string AttributeMapInvitationCode
 		{
-			get { return SelectRegistrationSetting(setting => setting.AttributeMapInvitationCode, "adx_invitationcode"); }
+			get { return SelectRegistrationSetting(setting => setting.AttributeMapInvitationCode, "mspp_invitationcode"); }
 		}
 
 		protected string AttributeMapInvitationCodeExpiryDate
 		{
-			get { return SelectRegistrationSetting(setting => setting.AttributeMapInvitationCodeExpiryDate, "adx_invitationcodeexpirydate"); }
+			get { return SelectRegistrationSetting(setting => setting.AttributeMapInvitationCodeExpiryDate, "mspp_invitationcodeexpirydate"); }
 		}
 
 		protected string AttributeMapChallengeAnswer
 		{
-			get { return SelectRegistrationSetting(setting => setting.AttributeMapChallengeAnswer, "adx_passwordanswer"); }
+			get { return SelectRegistrationSetting(setting => setting.AttributeMapChallengeAnswer, "mspp_passwordanswer"); }
 		}
 
 		protected string AttributeMapEmail
@@ -147,12 +147,12 @@ namespace Microsoft.Xrm.Portal.IdentityModel.Web.Handlers
 
 		protected string AttributeMapLastSuccessfulLogon
 		{
-			get { return SelectRegistrationSetting(setting => setting.AttributeMapLastSuccessfulLogon, "adx_lastsuccessfullogon"); }
+			get { return SelectRegistrationSetting(setting => setting.AttributeMapLastSuccessfulLogon, "mspp_lastsuccessfullogon"); }
 		}
 
 		protected string AttributeMapIdentityProvider
 		{
-			get { return SelectRegistrationSetting(setting => setting.AttributeMapIdentityProvider, "adx_identityprovidername"); }
+			get { return SelectRegistrationSetting(setting => setting.AttributeMapIdentityProvider, "mspp_identityprovidername"); }
 		}
 
 		protected string EmailClaimType

@@ -10,7 +10,7 @@ using Microsoft.Xrm.Portal.Configuration;
 namespace Microsoft.Xrm.Portal.Web.Security
 {
 	/// <summary>
-	/// A <see cref="CrmRoleProvider"/> that validates 'contact' entities (users) against 'adx_webrole' entitles (roles).
+	/// A <see cref="CrmRoleProvider"/> that validates 'contact' entities (users) against 'mspp_webrole' entitles (roles).
 	/// </summary>
 	/// <remarks>
 	/// Configuration format.
@@ -25,12 +25,12 @@ namespace Microsoft.Xrm.Portal.Web.Security
 	///      name="Xrm"
 	///      type="Microsoft.Xrm.Portal.Web.Security.CrmContactRoleProvider"
 	///      portalName="Xrm" [Microsoft.Xrm.Portal.Configuration.PortalContextElement]
-	///      attributeMapIsAuthenticatedUsersRole="adx_authenticatedusersrole"
-	///      attributeMapRoleName="adx_name"
-	///      attributeMapRoleWebsiteId="adx_websiteid"
-	///      attributeMapUsername="adx_username"
-	///      roleEntityName="adx_webrole"
-	///      roleToUserRelationshipName="adx_webrole_contact"
+	///      attributeMapIsAuthenticatedUsersRole="mspp_authenticatedusersrole"
+	///      attributeMapRoleName="mspp_name"
+	///      attributeMapRoleWebsiteId="mspp_websiteid"
+	///      attributeMapUsername="mspp_username"
+	///      roleEntityName="mspp_webrole"
+	///      roleToUserRelationshipName="mspp_webrole_contact"
 	///      userEntityName="contact"
 	///     />
 	///    </providers>
@@ -48,17 +48,17 @@ namespace Microsoft.Xrm.Portal.Web.Security
 	{
 		public override void Initialize(string name, NameValueCollection config)
 		{
-			config["attributeMapIsAuthenticatedUsersRole"] = config["attributeMapIsAuthenticatedUsersRole"] ?? "adx_authenticatedusersrole";
+			config["attributeMapIsAuthenticatedUsersRole"] = config["attributeMapIsAuthenticatedUsersRole"] ?? "mspp_authenticatedusersrole";
 
-			config["attributeMapRoleName"] = config["attributeMapRoleName"] ?? "adx_name";
+			config["attributeMapRoleName"] = config["attributeMapRoleName"] ?? "mspp_name";
 
-			config["attributeMapRoleWebsiteId"] = config["attributeMapRoleWebsiteId"] ?? "adx_websiteid";
+			config["attributeMapRoleWebsiteId"] = config["attributeMapRoleWebsiteId"] ?? "mspp_websiteid";
 
-			config["attributeMapUsername"] = config["attributeMapUsername"] ?? "adx_username";
+			config["attributeMapUsername"] = config["attributeMapUsername"] ?? "mspp_username";
 
-			config["roleEntityName"] = config["roleEntityName"] ?? "adx_webrole";
+			config["roleEntityName"] = config["roleEntityName"] ?? "mspp_webrole";
 
-			config["roleToUserRelationshipName"] = config["roleToUserRelationshipName"] ?? "adx_webrole_contact";
+			config["roleToUserRelationshipName"] = config["roleToUserRelationshipName"] ?? "mspp_webrole_contact";
 
 			config["userEntityName"] = config["userEntityName"] ?? "contact";
 

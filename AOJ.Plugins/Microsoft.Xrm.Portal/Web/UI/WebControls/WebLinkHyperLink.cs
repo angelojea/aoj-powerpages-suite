@@ -17,7 +17,7 @@ using Microsoft.Xrm.Sdk;
 namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 {
 	/// <summary>
-	/// Renders a hyperlink for a given adx_weblink entity.
+	/// Renders a hyperlink for a given mspp_weblink entity.
 	/// </summary>
 	public class WebLinkHyperLink : HyperLink // MSBug #120118: Won't seal, inheritance is expected extension point.
 	{
@@ -45,7 +45,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 		/// <summary>
 		/// Gets or sets a Boolean indicating whether or not this hyperlink should render an image
-		/// link, if an image is associated with the given adx_weblink.
+		/// link, if an image is associated with the given mspp_weblink.
 		/// </summary>
 		public bool ShowImage
 		{
@@ -54,7 +54,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Gets or sets the adx_weblink entity for which a corresponding hyperlink will be rendered.
+		/// Gets or sets the mspp_weblink entity for which a corresponding hyperlink will be rendered.
 		/// </summary>
 		public Entity WebLink { get; set; }
 
@@ -62,7 +62,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		{
 			if (WebLink != null)
 			{
-				WebLink.AssertEntityName("adx_weblink");
+				WebLink.AssertEntityName("mspp_weblink");
 
 				var portal = PortalCrmConfigurationManager.CreatePortalContext(PortalName);
 				var context = portal.ServiceContext;
@@ -71,7 +71,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 				NavigateUrl = weblinkUrl;
 
-				if (weblinkUrl != null && string.IsNullOrEmpty(WebLink.GetAttributeValue<string>("adx_externalurl")))
+				if (weblinkUrl != null && string.IsNullOrEmpty(WebLink.GetAttributeValue<string>("mspp_externalurl")))
 				{
 					var cssClasses = new List<string>();
 					
@@ -91,43 +91,43 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 					}
 				}
 
-				if (string.IsNullOrEmpty(Target) && WebLink.GetAttributeValue<bool?>("adx_openinnewwindow").GetValueOrDefault(false))
+				if (string.IsNullOrEmpty(Target) && WebLink.GetAttributeValue<bool?>("mspp_openinnewwindow").GetValueOrDefault(false))
 				{
 					Target = "_blank";
 				}
 
-				if (!WebLink.GetAttributeValue<bool?>("adx_robotsfollowlink").GetValueOrDefault(true))
+				if (!WebLink.GetAttributeValue<bool?>("mspp_robotsfollowlink").GetValueOrDefault(true))
 				{
 					Attributes["rel"] = "nofollow";
 				}
 
 				var contentFormatter = PortalCrmConfigurationManager.CreateDependencyProvider(PortalName).GetDependency<ICrmEntityContentFormatter>(GetType().FullName) ?? new PassthroughCrmEntityContentFormatter();
 
-				var name = contentFormatter.Format(WebLink.GetAttributeValue<string>("adx_name"), WebLink, this);
+				var name = contentFormatter.Format(WebLink.GetAttributeValue<string>("mspp_name"), WebLink, this);
 
 				if (string.IsNullOrEmpty(ToolTip))
 				{
 					ToolTip = name;
 				}
 
-				var imageUrl = WebLink.GetAttributeValue<string>("adx_imageurl");
+				var imageUrl = WebLink.GetAttributeValue<string>("mspp_imageurl");
 
 				if (ShowImage && !string.IsNullOrEmpty(imageUrl))
 				{
 					var image = new Image
 					{
 						ImageUrl = imageUrl.StartsWith("~/") ? VirtualPathUtility.ToAppRelative(imageUrl) : imageUrl,
-						AlternateText = contentFormatter.Format(WebLink.GetAttributeValue<string>("adx_imagealttext"), WebLink, this)
+						AlternateText = contentFormatter.Format(WebLink.GetAttributeValue<string>("mspp_imagealttext"), WebLink, this)
 					};
 
-					var weblinkImageHeight = WebLink.GetAttributeValue<int?>("adx_imageheight");
+					var weblinkImageHeight = WebLink.GetAttributeValue<int?>("mspp_imageheight");
 
 					if (weblinkImageHeight.HasValue)
 					{
 						image.Height = weblinkImageHeight.Value;
 					}
 
-					var weblinkImageWidth = WebLink.GetAttributeValue<int?>("adx_imagewidth");
+					var weblinkImageWidth = WebLink.GetAttributeValue<int?>("mspp_imagewidth");
 
 					if (weblinkImageWidth.HasValue)
 					{
