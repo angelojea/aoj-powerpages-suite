@@ -127,7 +127,12 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		private static bool TryGetLanguageCode(out int languageCode)
 		{
-			languageCode = 0;
+            if (HttpContext.Current == null)
+            {
+                languageCode = 1033;
+				return true;
+            }
+            languageCode = 0;
 
 			var languageCodeSetting = HttpContext.Current.Request["languagecode"];
 

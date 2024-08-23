@@ -26,55 +26,23 @@ namespace Microsoft.Xrm.Client.Services
 	/// <summary>
 	/// An <see cref="OrganizationService"/> that utilizes an <see cref="IOrganizationServiceCache"/> for caching service responses.
 	/// </summary>
-	public class CachedOrganizationService : OrganizationService, IOrganizationServiceCacheContainer
+	public class CachedOrganizationService : OrganizationService
 	{
-		/// <summary>
-		/// The caching provider.
-		/// </summary>
-		public IOrganizationServiceCache Cache { get; private set; }
 
 		public CachedOrganizationService(string connectionStringName)
-			: this(new CrmConnection(connectionStringName))
-		{
-		}
-
-		public CachedOrganizationService(CrmConnection connection)
-			: base(connection)
-		{
-			Initialze(connection.GetConnectionId());
+            : this(null, null)
+        {
 		}
 
 		public CachedOrganizationService(IOrganizationService service)
-			: this(service, (string)null)
+			: this(null, null)
 		{
 		}
 
-		public CachedOrganizationService(IOrganizationService service, string connectionId)
-			: base(service)
-		{
-			Initialze(connectionId);
-		}
-
-		public CachedOrganizationService(string connectionStringName, IOrganizationServiceCache cache)
-			: this(new CrmConnection(connectionStringName), cache)
-		{
-		}
 
 		public CachedOrganizationService(CrmConnection connection, IOrganizationServiceCache cache)
 			: base(connection)
 		{
-			Cache = cache;
-		}
-
-		public CachedOrganizationService(IOrganizationService service, IOrganizationServiceCache cache)
-			: base(service)
-		{
-			Cache = cache;
-		}
-
-		private void Initialze(string connectionId)
-		{
-			Cache = new OrganizationServiceCache(null, connectionId);
 		}
 
 		public override Guid Create(Entity entity)
@@ -82,8 +50,6 @@ namespace Microsoft.Xrm.Client.Services
 			var timer = Stopwatch.StartNew();
 
 			var id = base.Create(entity);
-
-			if (Cache != null) Cache.Remove(entity);
 
 			timer.Stop();
 
@@ -98,8 +64,6 @@ namespace Microsoft.Xrm.Client.Services
 
 			base.Delete(entityName, id);
 
-			if (Cache != null) Cache.Remove(entityName, id);
-
 			timer.Stop();
 
 			Tracing.FrameworkInformation("CachedOrganizationService", "Delete", "id={0}: {1} ms", id, timer.ElapsedMilliseconds);
@@ -110,8 +74,6 @@ namespace Microsoft.Xrm.Client.Services
 			var timer = Stopwatch.StartNew();
 
 			base.Update(entity);
-
-			if (Cache != null) Cache.Remove(entity);
 
 			timer.Stop();
 
@@ -146,7 +108,7 @@ namespace Microsoft.Xrm.Client.Services
 
 		public T Execute<T>(OrganizationRequest request, Func<OrganizationResponse, T> selector, string selectorCacheKey)
 		{
-			var execute = Cache != null ? Cache.Execute : null as Func<OrganizationRequest, Func<OrganizationRequest, OrganizationResponse>, Func<OrganizationResponse, T>, string, T>;
+			var execute = null as Func<OrganizationRequest, Func<OrganizationRequest, OrganizationResponse>, Func<OrganizationResponse, T>, string, T>;
 
 			return Execute(request, execute, selector, selectorCacheKey);
 		}

@@ -87,11 +87,11 @@ namespace Adxstudio.Xrm.EntityForm
 			string defaultNextButtonCssClass = null, string defaultSubmitButtonCssClass = null, string defaultPreviousButtonText = null,
 			string defaultNextButtonText = null, string defaultSubmitButtonText = null, string defaultSubmitButtonBusyText = null)
 		{
-			EntityName = entityform.GetAttributeValue<string>("adx_entityname");
-			FormName = entityform.GetAttributeValue<string>("adx_formname");
+			EntityName = entityform.GetAttributeValue<string>("mspp_entityname");
+			FormName = entityform.GetAttributeValue<string>("mspp_formname");
 
-			if (string.IsNullOrWhiteSpace(EntityName)) throw new ApplicationException("adx_entityform.adx_entityname must not be null.");
-			if (string.IsNullOrWhiteSpace(FormName)) throw new ApplicationException("adx_entityform.adx_formname must not be null.");
+			if (string.IsNullOrWhiteSpace(EntityName)) throw new ApplicationException("mspp_entityform.mspp_entityname must not be null.");
+			if (string.IsNullOrWhiteSpace(FormName)) throw new ApplicationException("mspp_entityform.mspp_formname must not be null.");
 
 			PreviousButtonCssClass = defaultPreviousButtonCssClass;
 			NextButtonCssClass = defaultNextButtonCssClass;
@@ -100,47 +100,47 @@ namespace Adxstudio.Xrm.EntityForm
 			NextButtonText = defaultNextButtonText;
 			SubmitButtonText = defaultSubmitButtonText;
 			SubmitButtonBusyText = defaultSubmitButtonBusyText;
-			TabName = entityform.GetAttributeValue<string>("adx_tabname");
-			RecommendedFieldsRequired = entityform.GetAttributeValue<bool?>("adx_recommendedfieldsrequired") ?? false;
-			RenderWebResourcesInline = entityform.GetAttributeValue<bool?>("adx_renderwebresourcesinline") ?? false;
-			ShowOwnerFields = entityform.GetAttributeValue<bool?>("adx_showownerfields") ?? false;
-			ShowUnsupportedFields = entityform.GetAttributeValue<bool?>("adx_showunsupportedfields") ?? false;
-			ToolTipEnabled = entityform.GetAttributeValue<bool?>("adx_tooltipenabled") ?? false;
-			AutoGenerateStepsFromTabs = entityform.GetAttributeValue<bool?>("adx_autogeneratesteps") ?? false;
-			ForceAllFieldsRequired = entityform.GetAttributeValue<bool?>("adx_forceallfieldsrequired") ?? false;
-			HideFormOnSuccess = entityform.GetAttributeValue<bool?>("adx_hideformonsuccess") ?? true;
-			ValidationGroup = entityform.GetAttributeValue<string>("adx_validationgroup") ?? string.Empty;
-			ValidationSummaryLinksEnabled = entityform.GetAttributeValue<bool?>("adx_validationsummarylinksenabled") ?? true;
+			TabName = entityform.GetAttributeValue<string>("mspp_tabname");
+			RecommendedFieldsRequired = entityform.GetAttributeValue<bool?>("mspp_recommendedfieldsrequired") ?? false;
+			RenderWebResourcesInline = entityform.GetAttributeValue<bool?>("mspp_renderwebresourcesinline") ?? false;
+			ShowOwnerFields = entityform.GetAttributeValue<bool?>("mspp_showownerfields") ?? false;
+			ShowUnsupportedFields = entityform.GetAttributeValue<bool?>("mspp_showunsupportedfields") ?? false;
+			ToolTipEnabled = entityform.GetAttributeValue<bool?>("mspp_tooltipenabled") ?? false;
+			AutoGenerateStepsFromTabs = entityform.GetAttributeValue<bool?>("mspp_autogeneratesteps") ?? false;
+			ForceAllFieldsRequired = entityform.GetAttributeValue<bool?>("mspp_forceallfieldsrequired") ?? false;
+			HideFormOnSuccess = entityform.GetAttributeValue<bool?>("mspp_hideformonsuccess") ?? true;
+			ValidationGroup = entityform.GetAttributeValue<string>("mspp_validationgroup") ?? string.Empty;
+			ValidationSummaryLinksEnabled = entityform.GetAttributeValue<bool?>("mspp_validationsummarylinksenabled") ?? true;
 			
-			ValidationSummaryCssClass = entityform.GetAttributeValue<string>("adx_validationsummarycssclass") ?? string.Empty;
-			LocalizedValidationSummaryHeaderText = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("adx_validationsummaryheadertext"), languageCode) ?? string.Empty;
-			CaptchaRequired = entityform.GetAttributeValue<bool?>("adx_captcharequired") ?? false;
-			ShowCaptchaForAuthenticatedUsers = entityform.GetAttributeValue<bool?>("adx_showcaptchaforauthenticatedusers") ?? false;
+			ValidationSummaryCssClass = entityform.GetAttributeValue<string>("mspp_validationsummarycssclass") ?? string.Empty;
+			LocalizedValidationSummaryHeaderText = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("mspp_validationsummaryheadertext"), languageCode) ?? string.Empty;
+			CaptchaRequired = entityform.GetAttributeValue<bool?>("mspp_captcharequired") ?? false;
+			ShowCaptchaForAuthenticatedUsers = entityform.GetAttributeValue<bool?>("mspp_showcaptchaforauthenticatedusers") ?? false;
 
-			AttachFile = entityform.GetAttributeValue<bool?>("adx_attachfile") ?? false;
-			AttachFileAllowMultiple = entityform.GetAttributeValue<bool?>("adx_attachfileallowmultiple") ?? false;
-			AttachFileAccept = entityform.GetAttributeValue<string>("adx_attachfileaccept");
-            AttachFileAcceptExtensions = entityform.GetAttributeValue<string>("adx_attachfileacceptextensions");
-            AttachFileRestrictAccept = entityform.GetAttributeValue<bool?>("adx_attachfilerestrictaccept").GetValueOrDefault(false);
-			AttachFileTypeErrorMessage = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("adx_attachfiletypeerrormessage"), languageCode);
-			AttachFileMaxSize = entityform.GetAttributeValue<int?>("adx_attachfilemaxsize");
-			AttachFileRestrictSize = entityform.GetAttributeValue<int?>("adx_attachfilemaxsize").HasValue;
-			AttachFileSizeErrorMessage = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("adx_attachfilesizeerrormessage"), languageCode);
-			AttachFileRequired = entityform.GetAttributeValue<bool?>("adx_attachfilerequired") ?? false;
-			LocalizedAttachFileLabel = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("adx_attachfilelabel"), languageCode);
+			AttachFile = entityform.GetAttributeValue<bool?>("mspp_attachfile") ?? false;
+			AttachFileAllowMultiple = entityform.GetAttributeValue<bool?>("mspp_attachfileallowmultiple") ?? false;
+			AttachFileAccept = entityform.GetAttributeValue<string>("mspp_attachfileaccept");
+            AttachFileAcceptExtensions = entityform.GetAttributeValue<string>("mspp_attachfileacceptextensions");
+            AttachFileRestrictAccept = entityform.GetAttributeValue<bool?>("mspp_attachfilerestrictaccept").GetValueOrDefault(false);
+			AttachFileTypeErrorMessage = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("mspp_attachfiletypeerrormessage"), languageCode);
+			AttachFileMaxSize = entityform.GetAttributeValue<int?>("mspp_attachfilemaxsize");
+			AttachFileRestrictSize = entityform.GetAttributeValue<int?>("mspp_attachfilemaxsize").HasValue;
+			AttachFileSizeErrorMessage = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("mspp_attachfilesizeerrormessage"), languageCode);
+			AttachFileRequired = entityform.GetAttributeValue<bool?>("mspp_attachfilerequired") ?? false;
+			LocalizedAttachFileLabel = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("mspp_attachfilelabel"), languageCode);
 			AttachFileLabel = string.IsNullOrWhiteSpace(LocalizedAttachFileLabel) ? EntityFormFunctions.DefaultAttachFileLabel : LocalizedAttachFileLabel;
-			AttachFileRequiredErrorMessage = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("adx_attachfilerequirederrormessage"), languageCode);
-			AttachFileStorageLocation = entityform.GetAttributeValue<OptionSetValue>("adx_attachfilestoragelocation");
-            AttachFileSaveOption = entityform.GetAttributeValue<OptionSetValue>("adx_attachfilesaveoption");
-            EntityformPreviousButtonCssClass = entityform.GetAttributeValue<string>("adx_previousbuttoncssclass");
-			EntityformNextButtonCssClass = entityform.GetAttributeValue<string>("adx_nextbuttoncssclass");
-			EntityformSubmitButtonCssClass = entityform.GetAttributeValue<string>("adx_submitbuttoncssclass");
-			LocalizedPreviousButtonText = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("adx_previousbuttontext"), languageCode);
-			LocalizedNextButtonText = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("adx_nextbuttontext"), languageCode);
-			LocalizedSubmitButtonText = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("adx_submitbuttontext"), languageCode);
-			LocalizedSubmitButtonBusyText = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("adx_submitbuttonbusytext"), languageCode);
-			SuccessMessage = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("adx_successmessage"), languageCode);
-			Instructions = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("adx_instructions"), languageCode);
+			AttachFileRequiredErrorMessage = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("mspp_attachfilerequirederrormessage"), languageCode);
+			AttachFileStorageLocation = entityform.GetAttributeValue<OptionSetValue>("mspp_attachfilestoragelocation");
+            AttachFileSaveOption = entityform.GetAttributeValue<OptionSetValue>("mspp_attachfilesaveoption");
+            EntityformPreviousButtonCssClass = entityform.GetAttributeValue<string>("mspp_previousbuttoncssclass");
+			EntityformNextButtonCssClass = entityform.GetAttributeValue<string>("mspp_nextbuttoncssclass");
+			EntityformSubmitButtonCssClass = entityform.GetAttributeValue<string>("mspp_submitbuttoncssclass");
+			LocalizedPreviousButtonText = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("mspp_previousbuttontext"), languageCode);
+			LocalizedNextButtonText = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("mspp_nextbuttontext"), languageCode);
+			LocalizedSubmitButtonText = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("mspp_submitbuttontext"), languageCode);
+			LocalizedSubmitButtonBusyText = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("mspp_submitbuttonbusytext"), languageCode);
+			SuccessMessage = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("mspp_successmessage"), languageCode);
+			Instructions = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("mspp_instructions"), languageCode);
 
 			PreviousButtonCssClass = string.IsNullOrWhiteSpace(EntityformPreviousButtonCssClass) ? (string.IsNullOrWhiteSpace(PreviousButtonCssClass) ? EntityFormFunctions.DefaultPreviousButtonCssClass : PreviousButtonCssClass) : EntityformPreviousButtonCssClass;
 			NextButtonCssClass = string.IsNullOrWhiteSpace(EntityformNextButtonCssClass) ? (string.IsNullOrWhiteSpace(NextButtonCssClass) ? EntityFormFunctions.DefaultNextButtonCssClass : NextButtonCssClass) : EntityformNextButtonCssClass;
@@ -150,15 +150,15 @@ namespace Adxstudio.Xrm.EntityForm
 			SubmitButtonText = string.IsNullOrWhiteSpace(LocalizedSubmitButtonText) ? (string.IsNullOrWhiteSpace(SubmitButtonText) ? EntityFormFunctions.DefaultSubmitButtonText : SubmitButtonText) : LocalizedSubmitButtonText;
 			SubmitButtonBusyText = string.IsNullOrWhiteSpace(LocalizedSubmitButtonBusyText) ? (string.IsNullOrWhiteSpace(SubmitButtonBusyText) ? EntityFormFunctions.DefaultSubmitButtonBusyText : SubmitButtonBusyText) : LocalizedSubmitButtonBusyText;
 
-			EntityFormMetadata = entityform.GetRelatedEntities(context, "adx_entityformmetadata_entityform");
+			//EntityFormMetadata = entityform.GetRelatedEntities(context, "mspp_entityformmetadata_entityform");
 
-			PopulateReferenceEntityLookupField = entityform.GetAttributeValue<bool?>("adx_populatereferenceentitylookupfield") ?? false;
-			TargetAttributeName = entityform.GetAttributeValue<string>("adx_referencetargetlookupattributelogicalname");
-			ReferenceEntityLogicalName = entityform.GetAttributeValue<string>("adx_referenceentitylogicalname");
-			ReferenceQueryStringName = entityform.GetAttributeValue<string>("adx_referencequerystringname") ?? string.Empty;
-			QuerystringIsPrimaryKey = entityform.GetAttributeValue<bool?>("adx_referencequerystringisprimarykey") ?? false;
-			ReferenceEntityPrimaryKeyLogicalName = entityform.GetAttributeValue<string>("adx_referenceentityprimarykeylogicalname");
-			ReferenceQueryAttributeName = entityform.GetAttributeValue<string>("adx_referencequeryattributelogicalname");
+			PopulateReferenceEntityLookupField = entityform.GetAttributeValue<bool?>("mspp_populatereferenceentitylookupfield") ?? false;
+			TargetAttributeName = entityform.GetAttributeValue<string>("mspp_referencetargetlookupattributelogicalname");
+			ReferenceEntityLogicalName = entityform.GetAttributeValue<string>("mspp_referenceentitylogicalname");
+			ReferenceQueryStringName = entityform.GetAttributeValue<string>("mspp_referencequerystringname") ?? string.Empty;
+			QuerystringIsPrimaryKey = entityform.GetAttributeValue<bool?>("mspp_referencequerystringisprimarykey") ?? false;
+			ReferenceEntityPrimaryKeyLogicalName = entityform.GetAttributeValue<string>("mspp_referenceentityprimarykeylogicalname");
+			ReferenceQueryAttributeName = entityform.GetAttributeValue<string>("mspp_referencequeryattributelogicalname");
 		}
 	}
 

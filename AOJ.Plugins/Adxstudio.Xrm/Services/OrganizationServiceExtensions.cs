@@ -3,6 +3,8 @@
   Licensed under the MIT License. See License.txt in the project root for license information.
 */
 
+using Microsoft.Xrm.Sdk.Deployment;
+
 namespace Adxstudio.Xrm.Services
 {
 	using System;
@@ -16,11 +18,17 @@ namespace Adxstudio.Xrm.Services
 	using Adxstudio.Xrm.Services.Query;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Sdk.Metadata;
+    using RetrieveRequest = Microsoft.Xrm.Sdk.Messages.RetrieveRequest;
+    using RetrieveResponse = Microsoft.Xrm.Sdk.Messages.RetrieveResponse;
+    using RetrieveMultipleRequest = Microsoft.Xrm.Sdk.Messages.RetrieveMultipleRequest;
+    using RetrieveMultipleResponse = Microsoft.Xrm.Sdk.Messages.RetrieveMultipleResponse;
+    using Lucene.Net.Search;
+    using Filter = Query.Filter;
 
-	/// <summary>
-	/// Helper functions for the <see cref="IOrganizationService"/> interface.
-	/// </summary>
-	public static class OrganizationServiceExtensions
+    /// <summary>
+    /// Helper functions for the <see cref="IOrganizationService"/> interface.
+    /// </summary>
+    public static class OrganizationServiceExtensions
 	{
 		#region Execute
 
@@ -42,7 +50,7 @@ namespace Adxstudio.Xrm.Services
 			[CallerFilePath] string sourceFilePath = "",
 			[CallerLineNumber] int sourceLineNumber = 0)
 		{
-			return service.Execute(ToCachedOrganizationRequest(request, flag, null, memberName, sourceFilePath, sourceLineNumber));
+			return service.Execute(request);
 		}
 
 		#endregion
@@ -70,7 +78,7 @@ namespace Adxstudio.Xrm.Services
 			[CallerLineNumber] int sourceLineNumber = 0)
 		{
 			var request = new RetrieveRequest { Target = target, ColumnSet = columnSet };
-			var response = service.Execute(ToCachedOrganizationRequest(request, flag, expiration, memberName, sourceFilePath, sourceLineNumber)) as RetrieveResponse;
+			var response = service.Execute(request) as RetrieveResponse;
 
 			return response.Entity;
 		}
@@ -97,10 +105,10 @@ namespace Adxstudio.Xrm.Services
 			[CallerFilePath] string sourceFilePath = "",
 			[CallerLineNumber] int sourceLineNumber = 0)
 		{
-			var request = new RetrieveSingleRequest(query) { EnforceSingle = enforceSingle, EnforceFirst = enforceFirst };
-			var response = service.Execute(ToCachedOrganizationRequest(request, flag, expiration, memberName, sourceFilePath, sourceLineNumber)) as RetrieveSingleResponse;
+			var request = new RetrieveMultipleRequest() { Query = query };
+			var response = service.Execute(request) as RetrieveMultipleResponse;
 
-			return response.Entity;
+			return response.EntityCollection.Entities.FirstOrDefault();
 		}
 
 		/// <summary>Retrieves a single entity or null.</summary>
@@ -124,12 +132,12 @@ namespace Adxstudio.Xrm.Services
 			[CallerMemberName] string memberName = "",
 			[CallerFilePath] string sourceFilePath = "",
 			[CallerLineNumber] int sourceLineNumber = 0)
-		{
-			var request = new RetrieveSingleRequest(fetch) { EnforceSingle = enforceSingle, EnforceFirst = enforceFirst };
-			var response = service.Execute(ToCachedOrganizationRequest(request, flag, expiration, memberName, sourceFilePath, sourceLineNumber)) as RetrieveSingleResponse;
+        {
+            var request = new RetrieveMultipleRequest() { Query = fetch.ToFetchExpression() };
+            var response = service.Execute(request) as RetrieveMultipleResponse;
 
-			return response.Entity;
-		}
+            return response.EntityCollection.Entities.FirstOrDefault();
+        }
 
 		/// <summary>Retrieves a single entity or null.</summary>
 		/// <param name="service">The service.</param>
@@ -553,7 +561,7 @@ namespace Adxstudio.Xrm.Services
 			int sourceLineNumber)
 		{
 			var request = new FetchMultipleRequest(query);
-			var response = service.Execute(ToCachedOrganizationRequest(request, flag, expiration, memberName, sourceFilePath, sourceLineNumber)) as RetrieveMultipleResponse;
+			var response = service.Execute(request) as RetrieveMultipleResponse;
 			var result = response.EntityCollection;
 
 			return result;
@@ -894,7 +902,7 @@ namespace Adxstudio.Xrm.Services
 			};
 
 			var request = new RetrieveRequest { Target = target, ColumnSet = new ColumnSet(), RelatedEntitiesQuery = query };
-			var response = service.Execute(ToCachedOrganizationRequest(request, flag, null, memberName, sourceFilePath, sourceLineNumber)) as RetrieveResponse;
+			var response = service.Execute(request) as RetrieveResponse;
 
 			var related = response.Entity.RelatedEntities;
 			var result = related.Contains(relationship) ? related[relationship] : null;
@@ -995,7 +1003,7 @@ namespace Adxstudio.Xrm.Services
 			[CallerLineNumber] int sourceLineNumber = 0)
 		{
 			var request = new CreateRequest { Target = entity };
-			var response = service.Execute(ToCachedOrganizationRequest(request, flag, null, memberName, sourceFilePath, sourceLineNumber)) as CreateResponse;
+			var response = service.Execute(request) as CreateResponse;
 			return response.id;
 		}
 
@@ -1021,34 +1029,10 @@ namespace Adxstudio.Xrm.Services
 			[CallerLineNumber] int sourceLineNumber = 0)
 		{
 			var request = new UpdateRequest { Target = entity };
-			service.Execute(ToCachedOrganizationRequest(request, flag, null, memberName, sourceFilePath, sourceLineNumber));
+			service.Execute(request);
 		}
 
 		#endregion
 
-		#region Helper Methods
-
-		/// <summary>To the cached organization request object.</summary>
-		/// <param name="request">The request.</param>
-		/// <param name="flag">Request flag to specify request properties - like BypassCacheInvalidation/AllowStaleData.</param>
-		/// <param name="expiration">The timespan from execute time to expire from cache.</param>
-		/// <param name="memberName">The member name.</param>
-		/// <param name="sourceFilePath">The source file path.</param>
-		/// <param name="sourceLineNumber">The source line number.</param>
-		/// <returns>The <see cref="CachedOrganizationRequest"/>.</returns>
-		private static CachedOrganizationRequest ToCachedOrganizationRequest(
-			OrganizationRequest request,
-			RequestFlag flag,
-			TimeSpan? expiration,
-			string memberName,
-			string sourceFilePath,
-			int sourceLineNumber)
-		{
-			var caller = new Caller { MemberName = memberName, SourceFilePath = sourceFilePath, SourceLineNumber = sourceLineNumber };
-			var req = new CachedOrganizationRequest(request, flag, expiration, caller);
-			return req;
-		}
-
-		#endregion
 	}
 }

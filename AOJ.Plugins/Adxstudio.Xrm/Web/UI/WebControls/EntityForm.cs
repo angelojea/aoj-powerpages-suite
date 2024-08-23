@@ -283,32 +283,32 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 					var attributes = new[]
 					{
-						new FetchAttribute("adx_geolocation_addresslinefieldname"), new FetchAttribute("adx_geolocation_cityfieldname"),
-						new FetchAttribute("adx_geolocation_countryfieldname"), new FetchAttribute("adx_geolocation_countyfieldname"),
-						new FetchAttribute("adx_geolocation_formattedaddressfieldname"), new FetchAttribute("adx_geolocation_latitudefieldname"),
-						new FetchAttribute("adx_geolocation_longitudefieldname"), new FetchAttribute("adx_geolocation_neighborhoodfieldname"),
-						new FetchAttribute("adx_geolocation_postalcodefieldname"), new FetchAttribute("adx_geolocation_statefieldname"),
-						new FetchAttribute("adx_geolocation_enabled"), new FetchAttribute("adx_geolocation_displaymap")
+						new FetchAttribute("mspp_geolocation_addresslinefieldname"), new FetchAttribute("mspp_geolocation_cityfieldname"),
+						new FetchAttribute("mspp_geolocation_countryfieldname"), new FetchAttribute("mspp_geolocation_countyfieldname"),
+						new FetchAttribute("mspp_geolocation_formattedaddressfieldname"), new FetchAttribute("mspp_geolocation_latitudefieldname"),
+						new FetchAttribute("mspp_geolocation_longitudefieldname"), new FetchAttribute("mspp_geolocation_neighborhoodfieldname"),
+						new FetchAttribute("mspp_geolocation_postalcodefieldname"), new FetchAttribute("mspp_geolocation_statefieldname"),
+						new FetchAttribute("mspp_geolocation_enabled"), new FetchAttribute("mspp_geolocation_displaymap")
 					};
 
-					context.RetrieveSingle("adx_entityform", "adx_entityformid", this.EntityFormReference.Id, attributes);
+					context.RetrieveSingle("mspp_entityform", "mspp_entityformid", this.EntityFormReference.Id, attributes);
 
-					var entityform = context.RetrieveSingle("adx_entityform", "adx_entityformid", this.EntityFormReference.Id, attributes);
+					var entityform = context.RetrieveSingle("mspp_entityform", "mspp_entityformid", this.EntityFormReference.Id, attributes);
 
 					var mappingFieldCollection = new MappingFieldMetadataCollection()
 					{
-						AddressLineFieldName = entityform.GetAttributeValue<string>("adx_geolocation_addresslinefieldname"),
-						CityFieldName = entityform.GetAttributeValue<string>("adx_geolocation_cityfieldname"),
-						CountryFieldName = entityform.GetAttributeValue<string>("adx_geolocation_countryfieldname"),
-						CountyFieldName = entityform.GetAttributeValue<string>("adx_geolocation_countyfieldname"),
-						FormattedLocationFieldName = entityform.GetAttributeValue<string>("adx_geolocation_formattedaddressfieldname"),
-						LatitudeFieldName = entityform.GetAttributeValue<string>("adx_geolocation_latitudefieldname"),
-						LongitudeFieldName = entityform.GetAttributeValue<string>("adx_geolocation_longitudefieldname"),
-						NeightbourhoodFieldName = entityform.GetAttributeValue<string>("adx_geolocation_neighborhoodfieldname"),
-						PostalCodeFieldName = entityform.GetAttributeValue<string>("adx_geolocation_postalcodefieldname"),
-						StateProvinceFieldName = entityform.GetAttributeValue<string>("adx_geolocation_statefieldname"),
-						Enabled = entityform.GetAttributeValue<bool>("adx_geolocation_enabled"),
-						DisplayMap = entityform.GetAttributeValue<bool>("adx_geolocation_displaymap")
+						AddressLineFieldName = entityform.GetAttributeValue<string>("mspp_geolocation_addresslinefieldname"),
+						CityFieldName = entityform.GetAttributeValue<string>("mspp_geolocation_cityfieldname"),
+						CountryFieldName = entityform.GetAttributeValue<string>("mspp_geolocation_countryfieldname"),
+						CountyFieldName = entityform.GetAttributeValue<string>("mspp_geolocation_countyfieldname"),
+						FormattedLocationFieldName = entityform.GetAttributeValue<string>("mspp_geolocation_formattedaddressfieldname"),
+						LatitudeFieldName = entityform.GetAttributeValue<string>("mspp_geolocation_latitudefieldname"),
+						LongitudeFieldName = entityform.GetAttributeValue<string>("mspp_geolocation_longitudefieldname"),
+						NeightbourhoodFieldName = entityform.GetAttributeValue<string>("mspp_geolocation_neighborhoodfieldname"),
+						PostalCodeFieldName = entityform.GetAttributeValue<string>("mspp_geolocation_postalcodefieldname"),
+						StateProvinceFieldName = entityform.GetAttributeValue<string>("mspp_geolocation_statefieldname"),
+						Enabled = entityform.GetAttributeValue<bool>("mspp_geolocation_enabled"),
+						DisplayMap = entityform.GetAttributeValue<bool>("mspp_geolocation_displaymap")
 					};
 
 					_mappingFieldCollection = mappingFieldCollection;
@@ -461,51 +461,51 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			RegisterClientSideDependencies(this);
 
-			var portalContext = PortalCrmConfigurationManager.CreatePortalContext(PortalName);
-			var sitemapNodeEntity = portalContext.Entity;
+			//var portalContext = PortalCrmConfigurationManager.CreatePortalContext(PortalName);
+			//var sitemapNodeEntity = portalContext.Entity;
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 
-			Entity entityform;
+			Entity entityform = new Entity();
 
 			if (EntityFormReference != null)
 			{
-				entityform = context.RetrieveSingle("adx_entityform", "adx_entityformid", this.EntityFormReference.Id, FetchAttribute.All);
+				entityform = context.RetrieveSingle("mspp_entityform", "mspp_entityformid", this.EntityFormReference.Id, FetchAttribute.All);
 
 				if (entityform == null)
 				{
-					throw new ApplicationException(string.Format("Couldn't find an Entity Form (adx_entityform) record where id equals {0}.", EntityFormReference.Id));
+					throw new ApplicationException(string.Format("Couldn't find an Entity Form (mspp_entityform) record where id equals {0}.", EntityFormReference.Id));
 				}
 			}
 			else
 			{
-				if (sitemapNodeEntity.LogicalName != "adx_webpage")
-				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "The current entity must be of type adx_webpage. Please select the correct template for this entity type.");
-					return;
-				}
+				//if (sitemapNodeEntity.LogicalName != "mspp_webpage")
+				//{
+				//	ADXTrace.Instance.TraceInfo(TraceCategory.Application, "The current entity must be of type mspp_webpage. Please select the correct template for this entity type.");
+				//	return;
+				//}
 
-				var entityformReference = sitemapNodeEntity.GetAttributeValue<EntityReference>("adx_entityform");
+				//var entityformReference = sitemapNodeEntity.GetAttributeValue<EntityReference>("mspp_entityform");
 
-				if (entityformReference == null)
-				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "CreateChildControls", string.Format("Could not find an Entity Form (adx_entityform) value on Web Page (adx_webpage) where id equals {0}.", sitemapNodeEntity.Id));
-					return;
-				}
+				//if (entityformReference == null)
+				//{
+				//	ADXTrace.Instance.TraceInfo(TraceCategory.Application, "CreateChildControls", string.Format("Could not find an Entity Form (mspp_entityform) value on Web Page (mspp_webpage) where id equals {0}.", sitemapNodeEntity.Id));
+				//	return;
+				//}
 
-				entityform = context.RetrieveSingle("adx_entityform", "adx_entityformid", entityformReference.Id, FetchAttribute.All);
+				//entityform = context.RetrieveSingle("mspp_entityform", "mspp_entityformid", entityformReference.Id, FetchAttribute.All);
 
-				if (entityform == null)
-				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Could not find an Entity Form (adx_webpage_entityform) value where id equals {0} on Web Page (adx_webpage) where id equals {1}.", entityformReference.Id, sitemapNodeEntity.Id));
-					return;
-				}
+				//if (entityform == null)
+				//{
+				//	ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Could not find an Entity Form (mspp_webpage_entityform) value where id equals {0} on Web Page (mspp_webpage) where id equals {1}.", entityformReference.Id, sitemapNodeEntity.Id));
+				//	return;
+				//}
 
-				EntityFormReference = entityform.ToEntityReference();
+				//EntityFormReference = entityform.ToEntityReference();
 			}
 
 			if (LanguageCode <= 0) { LanguageCode = this.Context.GetPortalSolutionsDetails().OrganizationBaseLanguageCode; }
 
-			var registerStartupScript = entityform.GetAttributeValue<string>("adx_registerstartupscript");
+			var registerStartupScript = entityform.GetAttributeValue<string>("mspp_registerstartupscript");
 
 			if (!string.IsNullOrWhiteSpace(registerStartupScript))
 			{
@@ -513,16 +513,16 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				var control = new HtmlGenericControl() { };
 
-				var script = html.ScriptAttribute(context, entityform, "adx_registerstartupscript");
+				var script = html.ScriptAttribute(context, entityform, "mspp_registerstartupscript");
 
 				control.InnerHtml = script.ToString();
 
 				Controls.Add(control);
 			}
 
-			EnableEntityPermissions = entityform.GetAttributeValue<bool?>("adx_entitypermissionsenabled").GetValueOrDefault(false);
+			EnableEntityPermissions = entityform.GetAttributeValue<bool?>("mspp_entitypermissionsenabled").GetValueOrDefault(false);
 
-			var modeOption = entityform.GetAttributeValue<OptionSetValue>("adx_mode");
+			var modeOption = entityform.GetAttributeValue<OptionSetValue>("mspp_mode");
 
 			if (modeOption != null)
 			{
@@ -535,7 +535,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				}
 			}
 
-			var recordNotFoundMessage = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("adx_recordnotfoundmessage"), LanguageCode);
+			var recordNotFoundMessage = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("mspp_recordnotfoundmessage"), LanguageCode);
 			RecordNotFoundMessage = !string.IsNullOrWhiteSpace(recordNotFoundMessage) ? recordNotFoundMessage : DefaultRecordNotFoundMessage;
 
 			try
@@ -629,16 +629,16 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected virtual void RegisterClientSideDependencies(Control control)
 		{
-			foreach (var script in ScriptIncludes)
-			{
-				var scriptManager = ScriptManager.GetCurrent(control.Page);
+			//foreach (var script in ScriptIncludes)
+			//{
+			//	var scriptManager = ScriptManager.GetCurrent(control.Page);
 
-				if (scriptManager == null) continue;
+			//	if (scriptManager == null) continue;
 
-				var absolutePath = VirtualPathUtility.ToAbsolute(script);
+			//	var absolutePath = VirtualPathUtility.ToAbsolute(script);
 
-				scriptManager.Scripts.Add(new ScriptReference(absolutePath));
-			}
+			//	scriptManager.Scripts.Add(new ScriptReference(absolutePath));
+			//}
 		}
 
 		//
@@ -657,7 +657,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var user = portalContext.User;
 
-			var formMetadataJson = entityform.GetAttributeValue<string>("adx_settings");
+			var formMetadataJson = entityform.GetAttributeValue<string>("mspp_settings");
 
 			FormActionMetadata formActionMetadata = null;
 			if (!string.IsNullOrWhiteSpace(formMetadataJson))
@@ -685,12 +685,12 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				}
 			}
 
-			var entityName = entityform.GetAttributeValue<string>("adx_entityname");
+			var entityName = entityform.GetAttributeValue<string>("mspp_entityname");
 
 			var formConfiguration = new FormConfiguration(portalContext, entityName, formActionMetadata,
 				PortalName, LanguageCode, EnableEntityPermissions, formObject.AutoGenerateStepsFromTabs, true, true);
 
-			var formView = new CrmEntityFormView
+			var formView = new CrmEntityFormView()
 			{
 				ID = this.ID + "_EntityFormView",
 				DataSourceID = dataSource.ID,
@@ -718,10 +718,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				ShowUnsupportedFields = formObject.ShowUnsupportedFields,
 				ToolTipEnabled = formObject.ToolTipEnabled,
 				WebFormMetadata = formObject.EntityFormMetadata,
-				MappingFieldCollection = MappingFieldCollection,
+				//MappingFieldCollection = MappingFieldCollection,
 				ClientIDMode = ClientIDMode.Static,
 				FormConfiguration = formConfiguration,
-				EnableEntityPermissions = EnableEntityPermissions
+				//EnableEntityPermissions = EnableEntityPermissions
 			};
 
 			if (formActionMetadata != null && formActionMetadata.ShowSaveChangesWarningOnExit.GetValueOrDefault(false))
@@ -778,21 +778,22 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			// Utilize whitelist of PortalTimeline enabled portals.
 			// This allows fallback to the Notes entity which is CRM OOB entity
-			if (PortalTimeline.EnabledPortalsByWebsiteGuid.Contains(portalContext.Website.Id))
-			{
-				// Get the value from the field since field if not null or default to Portal Comment if not specified
-				_attachmentSaveOption = formObject.AttachFileSaveOption == null
-					? AttachFileSaveOption.PortalComment
-					: (AttachFileSaveOption)formObject.AttachFileSaveOption.Value;
-			}
-			else
-			{
-				// Portal does not contain "AttachFileSaveOption" field since it's not PortalTimeline enabled.
-				// Fallback to Notes entity
-				_attachmentSaveOption = AttachFileSaveOption.Notes;
-			}
+			//if (PortalTimeline.EnabledPortalsByWebsiteGuid.Contains(portalContext.Website.Id))
+			//{
+			//	// Get the value from the field since field if not null or default to Portal Comment if not specified
+			//	_attachmentSaveOption = formObject.AttachFileSaveOption == null
+			//		? AttachFileSaveOption.PortalComment
+			//		: (AttachFileSaveOption)formObject.AttachFileSaveOption.Value;
+			//}
+			//else
+			//{
+			//	// Portal does not contain "AttachFileSaveOption" field since it's not PortalTimeline enabled.
+			//	// Fallback to Notes entity
+			//	_attachmentSaveOption = AttachFileSaveOption.Notes;
+   //         }
+            _attachmentSaveOption = AttachFileSaveOption.Notes;
 
-			switch (mode)
+            switch (mode)
 			{
 				case FormViewMode.Insert:
 					formView.ItemInserted += OnItemInserted;
@@ -988,16 +989,16 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		public FormEntitySourceDefinition GetEntitySourceDefinition(OrganizationServiceContext context, Entity entityform)
 		{
-			entityform.AssertEntityName("adx_entityform");
+			entityform.AssertEntityName("mspp_entityform");
 			AssociateToCurrentPortalUserOnItemInserted = false;
 
 			string id = Guid.Empty.ToString();
-			var logicalName = entityform.GetAttributeValue<string>("adx_entityname");
-			var primaryKey = entityform.GetAttributeValue<string>("adx_primarykeyname");
+			var logicalName = entityform.GetAttributeValue<string>("mspp_entityname");
+			var primaryKey = entityform.GetAttributeValue<string>("mspp_primarykeyname");
 
 			if (string.IsNullOrWhiteSpace(logicalName))
 			{
-				throw new ApplicationException("adx_entityform.adx_entityname must not be null.");
+				throw new ApplicationException("mspp_entityform.mspp_entityname must not be null.");
 			}
 
 			if (!string.IsNullOrWhiteSpace(logicalName) && string.IsNullOrWhiteSpace(primaryKey))
@@ -1016,15 +1017,15 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 
 			var portalContext = PortalCrmConfigurationManager.CreatePortalContext();
-			var entitySourceType = entityform.GetAttributeValue<OptionSetValue>("adx_entitysourcetype");
+			var entitySourceType = entityform.GetAttributeValue<OptionSetValue>("mspp_entitysourcetype");
 
-			var recordNotFoundMessage = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("adx_recordnotfoundmessage"), LanguageCode);
+			var recordNotFoundMessage = Localization.GetLocalizedString(entityform.GetAttributeValue<string>("mspp_recordnotfoundmessage"), LanguageCode);
 			RecordNotFoundMessage = !string.IsNullOrWhiteSpace(recordNotFoundMessage) ? recordNotFoundMessage : DefaultRecordNotFoundMessage;
 
 			switch (entitySourceType.Value)
 			{
 				case 756150001: // Query String
-					var queryStringParameter = entityform.GetAttributeValue<string>("adx_recordidquerystringparametername");
+					var queryStringParameter = entityform.GetAttributeValue<string>("mspp_recordidquerystringparametername");
 					id = HttpContext.Current.Request[queryStringParameter];
 					Guid guid;
 					if (string.IsNullOrWhiteSpace(id))
@@ -1056,7 +1057,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					}
 					break;
 				case 756150003: // Record Associated to Current Portal User
-					var relationship = entityform.GetAttributeValue<string>("adx_recordsourcerelationshipname");
+					var relationship = entityform.GetAttributeValue<string>("mspp_recordsourcerelationshipname");
 					if (string.IsNullOrWhiteSpace(relationship))
 					{
 						throw new ApplicationException("Required Relationship Name has not been specified for the Record Source Type 'Record Associated to Current Portal User'.");
@@ -1090,7 +1091,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					var source = context.RetrieveRelatedEntity(user, relationship);
 					if (source == null)
 					{
-						var allowCreate = entityform.GetAttributeValue<bool?>("adx_recordsourceallowcreateonnull").GetValueOrDefault();
+						var allowCreate = entityform.GetAttributeValue<bool?>("mspp_recordsourceallowcreateonnull").GetValueOrDefault();
 						if (allowCreate)
 						{
 							AssociateToCurrentPortalUserOnItemInserted = true;
@@ -1104,7 +1105,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					}
 					break;
 				default:
-					throw new ApplicationException("adx_entityform.adx_entitysourcetype is not valid."); 
+					throw new ApplicationException("mspp_entityform.mspp_entitysourcetype is not valid."); 
 			}
 
 			return new FormEntitySourceDefinition(logicalName, primaryKey, id);
@@ -1114,11 +1115,11 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 
-			var entityform = context.RetrieveSingle("adx_entityform", "adx_entityformid", this.EntityFormReference.Id, FetchAttribute.All);
+			var entityform = context.RetrieveSingle("mspp_entityform", "mspp_entityformid", this.EntityFormReference.Id, FetchAttribute.All);
 
 			if (entityform == null)
 			{
-				throw new ApplicationException(string.Format("Error retrieving adx_entityform where id equals {0}", EntityFormReference.Id));
+				throw new ApplicationException(string.Format("Error retrieving mspp_entityform where id equals {0}", EntityFormReference.Id));
 			}
 
 			SetAttributeValuesOnUpdating(context, entityform, e);
@@ -1136,11 +1137,11 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 
-			var entityform = context.RetrieveSingle("adx_entityform", "adx_entityformid", this.EntityFormReference.Id, FetchAttribute.All);
+			var entityform = context.RetrieveSingle("mspp_entityform", "mspp_entityformid", this.EntityFormReference.Id, FetchAttribute.All);
 
 			if (entityform == null)
 			{
-				throw new ApplicationException(string.Format("Error retrieving adx_entityform where id equals {0}", EntityFormReference.Id));
+				throw new ApplicationException(string.Format("Error retrieving mspp_entityform where id equals {0}", EntityFormReference.Id));
 			}
 
 			AssociateCurrentPortalUserOnInserting(context, entityform, e);
@@ -1162,11 +1163,11 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 
-			var entityform = context.RetrieveSingle("adx_entityform", "adx_entityformid", this.EntityFormReference.Id, FetchAttribute.All);
+			var entityform = context.RetrieveSingle("mspp_entityform", "mspp_entityformid", this.EntityFormReference.Id, FetchAttribute.All);
 
-			if (entityform == null) { throw new ApplicationException(string.Format("Error retrieving adx_entityform where id equals {0}", EntityFormReference.Id)); }
+			if (entityform == null) { throw new ApplicationException(string.Format("Error retrieving mspp_entityform where id equals {0}", EntityFormReference.Id)); }
 
-			var entityLogicalName = entityform.GetAttributeValue<string>("adx_entityname");
+			var entityLogicalName = entityform.GetAttributeValue<string>("mspp_entityname");
 
 			if (e.Exception == null)
 			{
@@ -1183,7 +1184,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						{
 							throw new ApplicationException("Couldn't load user record. Portal context User is null.");
 						}
-						var relationshipName = entityform.GetAttributeValue<string>("adx_recordsourcerelationshipname");
+						var relationshipName = entityform.GetAttributeValue<string>("mspp_recordsourcerelationshipname");
 						if (string.IsNullOrWhiteSpace(relationshipName))
 						{
 							throw new ApplicationException("Required Relationship Name has not been specified for the Record Source Type 'Record Associated to Current Portal User'.");
@@ -1263,11 +1264,11 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 
-			var entityform = context.RetrieveSingle("adx_entityform", "adx_entityformid", this.EntityFormReference.Id, FetchAttribute.All);
+			var entityform = context.RetrieveSingle("mspp_entityform", "mspp_entityformid", this.EntityFormReference.Id, FetchAttribute.All);
 
 			if (entityform == null)
 			{
-				throw new ApplicationException(string.Format("Error retrieving adx_entityform where id equals {0}", EntityFormReference.Id));
+				throw new ApplicationException(string.Format("Error retrieving mspp_entityform where id equals {0}", EntityFormReference.Id));
 			}
 
 			if (e.Exception == null)
@@ -1317,7 +1318,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.TelemetryFeatureUsage))
 				{
-					var entityLogicalName = entityform.GetAttributeValue<string>("adx_entityname");
+					var entityLogicalName = entityform.GetAttributeValue<string>("mspp_entityname");
 
 					PortalFeatureTrace.TraceInstance.LogFeatureUsage(FeatureTraceCategory.Forms, this.Context, "edit_" + entityLogicalName, 1, new EntityReference(entityLogicalName, EntitySourceDefinition.ID), "edit");
 				}
@@ -1370,7 +1371,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected void OnSuccess(OrganizationServiceContext context, Entity entityform, FormEntitySourceDefinition entitySourceDefinition)
 		{
-			var onSuccessOption = entityform.GetAttributeValue<OptionSetValue>("adx_onsuccess");
+			var onSuccessOption = entityform.GetAttributeValue<OptionSetValue>("mspp_onsuccess");
 
 			if (onSuccessOption == null) return;
 
@@ -1389,24 +1390,24 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		protected void ProcessRedirect(OrganizationServiceContext context, Entity entityform, FormEntitySourceDefinition entitySourceDefinition)
 		{
 			var existingQueryString = HttpContext.Current.Request.QueryString;
-			var redirectUrl = entityform.GetAttributeValue<string>("adx_redirecturl");
-			var appendExistingQueryString = entityform.GetAttributeValue<bool?>("adx_appendquerystring") ?? false;
+			var redirectUrl = entityform.GetAttributeValue<string>("mspp_redirecturl");
+			var appendExistingQueryString = entityform.GetAttributeValue<bool?>("mspp_appendquerystring") ?? false;
 			UrlBuilder url;
 
 			if (string.IsNullOrWhiteSpace(redirectUrl))
 			{
-				var pageReference = entityform.GetAttributeValue<EntityReference>("adx_redirectwebpage");
+				var pageReference = entityform.GetAttributeValue<EntityReference>("mspp_redirectwebpage");
 
 				if (pageReference == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_entityform.adx_entityform_redirectwebpage is null");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_entityform.mspp_entityform_redirectwebpage is null");
 					return;
 				}
 
 				var page = context.RetrieveSingle(
 					pageReference.LogicalName,
 					FetchAttribute.None,
-					new Condition("adx_webpageid", ConditionOperator.Equal, pageReference.Id));
+					new Condition("mspp_webpageid", ConditionOperator.Equal, pageReference.Id));
 
 				if (page == null)
 				{
@@ -1418,7 +1419,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (path == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_entityform.adx_entityform_redirectwebpage URL is null");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_entityform.mspp_entityform_redirectwebpage URL is null");
 					return;
 				}
 
@@ -1429,11 +1430,11 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				url = new UrlBuilder(redirectUrl.StartsWith("http") ? redirectUrl : string.Format("https://{0}", redirectUrl));
 			}
 
-			var addquerystring = entityform.GetAttributeValue<bool?>("adx_redirecturlappendentityidquerystring") ?? false;
+			var addquerystring = entityform.GetAttributeValue<bool?>("mspp_redirecturlappendentityidquerystring") ?? false;
 
 			if (addquerystring)
 			{
-				var queryStringParameterName = entityform.GetAttributeValue<string>("adx_redirecturlquerystringname");
+				var queryStringParameterName = entityform.GetAttributeValue<string>("mspp_redirecturlquerystringname");
 
 				if (entitySourceDefinition.ID == Guid.Empty)
 				{
@@ -1450,7 +1451,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				url.QueryString.Add(existingQueryString);
 			}
 
-			var customQueryString = entityform.GetAttributeValue<string>("adx_redirecturlcustomquerystring");
+			var customQueryString = entityform.GetAttributeValue<string>("mspp_redirecturlcustomquerystring");
 
 			if (!string.IsNullOrWhiteSpace(customQueryString))
 			{
@@ -1461,15 +1462,15 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				}
 				catch (Exception ex)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to add Custom Query String (adx_redirecturlcustomquerystring) to the Query String. {0}", ex.ToString()));
+					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to add Custom Query String (mspp_redirecturlcustomquerystring) to the Query String. {0}", ex.ToString()));
 				}
 			}
 
-			var queryStringAttributeParameterName = entityform.GetAttributeValue<string>("adx_redirecturlquerystringattributeparamname");
+			var queryStringAttributeParameterName = entityform.GetAttributeValue<string>("mspp_redirecturlquerystringattributeparamname");
 
 			if (!string.IsNullOrWhiteSpace(queryStringAttributeParameterName))
 			{
-				var queryStringAttributeLogicalName = entityform.GetAttributeValue<string>("adx_redirecturlquerystringattribute");
+				var queryStringAttributeLogicalName = entityform.GetAttributeValue<string>("mspp_redirecturlquerystringattribute");
 
 				if (!string.IsNullOrWhiteSpace(queryStringAttributeLogicalName))
 				{
@@ -1535,7 +1536,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected void ApplyMetadataPrepopulateValues(OrganizationServiceContext context, IEntityForm entityform, Control container)
 		{
-			var metadata = entityform.EntityFormMetadata.Where(m => m.GetAttributeValue<OptionSetValue>("adx_prepopulatetype") != null).ToList();
+			var metadata = entityform.EntityFormMetadata.Where(m => m.GetAttributeValue<OptionSetValue>("mspp_prepopulatetype") != null).ToList();
 
 			if (!metadata.Any()) return;
 
@@ -1546,12 +1547,12 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			foreach (var item in metadata)
 			{
-				var attributeName = item.GetAttributeValue<string>("adx_attributelogicalname");
+				var attributeName = item.GetAttributeValue<string>("mspp_attributelogicalname");
 				if (string.IsNullOrWhiteSpace(attributeName))
 				{
 					continue;
 				}
-				var type = item.GetAttributeValue<OptionSetValue>("adx_prepopulatetype");
+				var type = item.GetAttributeValue<OptionSetValue>("mspp_prepopulatetype");
 				if (type == null)
 				{
 					continue;
@@ -1560,7 +1561,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				switch (type.Value)
 				{
 					case 100000000: // Value
-						value = item.GetAttributeValue<string>("adx_prepopulatevalue");
+						value = item.GetAttributeValue<string>("mspp_prepopulatevalue");
 						break;
 					case 100000001: // Today's Date
 						value = DateTime.UtcNow;
@@ -1578,7 +1579,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						}
 						try
 						{
-							var fromAttribute = item.GetAttributeValue<string>("adx_prepopulatefromattribute");
+							var fromAttribute = item.GetAttributeValue<string>("mspp_prepopulatefromattribute");
 							if (string.IsNullOrWhiteSpace(fromAttribute))
 							{
 								continue;
@@ -1913,25 +1914,25 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var metadata = context.RetrieveRelatedEntities(
 				entityform, 
-				"adx_entityformmetadata_entityform", 
+				"mspp_entityformmetadata_entityform", 
 				filters: new[]
 						{
 							new Filter
 							{
 								Conditions = new[]
 								{
-									new Condition("adx_setvalueonsave", ConditionOperator.Equal, true)
+									new Condition("mspp_setvalueonsave", ConditionOperator.Equal, true)
 								}
 							}
 						}).Entities;
 
 			if (!metadata.Any()) return;
 
-			var targetEntityLogicalName = entityform.GetAttributeValue<string>("adx_entityname");
+			var targetEntityLogicalName = entityform.GetAttributeValue<string>("mspp_entityname");
 
 			if (string.IsNullOrWhiteSpace(targetEntityLogicalName))
 			{
-				throw new ApplicationException("adx_entityform.adx_entityname is null.");
+				throw new ApplicationException("mspp_entityform.mspp_entityname is null.");
 			}
 
 			if (AttributeTypeCodeDictionary == null || !AttributeTypeCodeDictionary.Any())
@@ -1941,10 +1942,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			foreach (var item in metadata)
 			{
-				var attributeName = item.GetAttributeValue<string>("adx_attributelogicalname");
+				var attributeName = item.GetAttributeValue<string>("mspp_attributelogicalname");
 				if (string.IsNullOrWhiteSpace(attributeName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_entityformmetadata.adx_attributelogicalname is null.");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_entityformmetadata.mspp_attributelogicalname is null.");
 					continue;
 				}
 				var value = GetOnSaveValue(context, item);
@@ -1977,7 +1978,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected object GetOnSaveValue(OrganizationServiceContext context, Entity item)
 		{
-			var type = item.GetAttributeValue<OptionSetValue>("adx_onsavetype");
+			var type = item.GetAttributeValue<OptionSetValue>("mspp_onsavetype");
 
 			if (type != null)
 			{
@@ -1998,7 +1999,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						}
 						try
 						{
-							var fromAttribute = item.GetAttributeValue<string>("adx_onsavefromattribute");
+							var fromAttribute = item.GetAttributeValue<string>("mspp_onsavefromattribute");
 							if (string.IsNullOrWhiteSpace(fromAttribute))
 							{
 								return null;
@@ -2019,7 +2020,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 
 			// Value
-			return item.GetAttributeValue<string>("adx_onsavevalue");
+			return item.GetAttributeValue<string>("mspp_onsavevalue");
 		}
 
 		protected void PopulateReferenceEntityField(OrganizationServiceContext context, IEntityForm entityform, Control container)
@@ -2061,13 +2062,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (string.IsNullOrWhiteSpace(entityform.TargetAttributeName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_entityform.adx_referenctargetlookupattributelogicalname must not be null.");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_entityform.mspp_referenctargetlookupattributelogicalname must not be null.");
 					return;
 				}
 
 				if (string.IsNullOrWhiteSpace(entityform.ReferenceEntityLogicalName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_entityform.adx_referenceentitylogicalname must not be null.");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_entityform.mspp_referenceentitylogicalname must not be null.");
 					return;
 				}
 
@@ -2164,17 +2165,17 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected void SetEntityReference(OrganizationServiceContext context, Entity entityform, IDictionary<string, object> values)
 		{
-			var setEntityReference = entityform.GetAttributeValue<bool?>("adx_setentityreference") ?? false;
+			var setEntityReference = entityform.GetAttributeValue<bool?>("mspp_setentityreference") ?? false;
 
 			if (!setEntityReference) return;
 
 			var id = Guid.Empty;
-			var targetAttributeName = entityform.GetAttributeValue<string>("adx_referencetargetlookupattributelogicalname") ?? string.Empty;
-			var referenceEntityLogicalName = entityform.GetAttributeValue<string>("adx_referenceentitylogicalname");
-			var referenceEntityRelationshipName = entityform.GetAttributeValue<string>("adx_referenceentityrelationshipname") ?? string.Empty;
+			var targetAttributeName = entityform.GetAttributeValue<string>("mspp_referencetargetlookupattributelogicalname") ?? string.Empty;
+			var referenceEntityLogicalName = entityform.GetAttributeValue<string>("mspp_referenceentitylogicalname");
+			var referenceEntityRelationshipName = entityform.GetAttributeValue<string>("mspp_referenceentityrelationshipname") ?? string.Empty;
 
 			var portalContext = PortalCrmConfigurationManager.CreatePortalContext();
-			var referenceEntitySourceType = entityform.GetAttributeValue<OptionSetValue>("adx_referenceentitysourcetype"); //NEED TO ADD ATTRIBUTE VALUE
+			var referenceEntitySourceType = entityform.GetAttributeValue<OptionSetValue>("mspp_referenceentitysourcetype"); //NEED TO ADD ATTRIBUTE VALUE
 
 			if (string.IsNullOrWhiteSpace(targetAttributeName))
 			{
@@ -2189,7 +2190,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				switch (referenceEntitySourceType.Value)
 				{
 					case 756150000: // Query String
-						var referenceQueryStringName = entityform.GetAttributeValue<string>("adx_referencequerystringname") ?? string.Empty;
+						var referenceQueryStringName = entityform.GetAttributeValue<string>("mspp_referencequerystringname") ?? string.Empty;
 						var referenceQueryStringValue = HttpContext.Current.Request[referenceQueryStringName];
 
 						if (string.IsNullOrEmpty(referenceQueryStringValue) && HttpContext.Current.Request["refentity"] == referenceEntityLogicalName)
@@ -2197,11 +2198,11 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 							referenceQueryStringValue = HttpContext.Current.Request["refid"];
 						}
 
-						var querystringIsPrimaryKey = entityform.GetAttributeValue<bool?>("adx_referencequerystringisprimarykey") ?? false;
+						var querystringIsPrimaryKey = entityform.GetAttributeValue<bool?>("mspp_referencequerystringisprimarykey") ?? false;
 
 						if (!querystringIsPrimaryKey)
 						{
-							var referenceQueryAttributeName = entityform.GetAttributeValue<string>("adx_referencequeryattributelogicalname");
+							var referenceQueryAttributeName = entityform.GetAttributeValue<string>("mspp_referencequeryattributelogicalname");
 							var entity =
 								context.RetrieveSingle(
 										new Fetch
@@ -2220,7 +2221,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						}
 						break;
 					case 756150001: // Record Associated to current user 
-						var relationship = entityform.GetAttributeValue<string>("adx_referencerecordsourcerelationshipname");  
+						var relationship = entityform.GetAttributeValue<string>("mspp_referencerecordsourcerelationshipname");  
 						if (string.IsNullOrWhiteSpace(relationship))
 						{
 							throw new ApplicationException("Required Relationship Name has not been specified for the Record Source Type 'Record Associated to Current Portal User'.");
@@ -2354,22 +2355,22 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			if (!HttpContext.Current.Request.IsAuthenticated) return;
 
-			var bAssociatePortalUser = entityform.GetAttributeValue<bool?>("adx_associatecurrentportaluser") ?? false;
-			var targetEntityLogicalName = entityform.GetAttributeValue<string>("adx_entityname");
-			var portalUserLookupAttributeName = entityform.GetAttributeValue<string>("adx_targetentityportaluserlookupattribute");
-			var portalUserLookupAttributeIsActivityParty = entityform.GetAttributeValue<bool?>("adx_portaluserlookupattributeisactivityparty") ?? false;
+			var bAssociatePortalUser = entityform.GetAttributeValue<bool?>("mspp_associatecurrentportaluser") ?? false;
+			var targetEntityLogicalName = entityform.GetAttributeValue<string>("mspp_entityname");
+			var portalUserLookupAttributeName = entityform.GetAttributeValue<string>("mspp_targetentityportaluserlookupattribute");
+			var portalUserLookupAttributeIsActivityParty = entityform.GetAttributeValue<bool?>("mspp_portaluserlookupattributeisactivityparty") ?? false;
 
 			if (!bAssociatePortalUser) return;
 
 			if (string.IsNullOrWhiteSpace(targetEntityLogicalName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_entityform.adx_entityname must not be null.");
+				ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_entityform.mspp_entityname must not be null.");
 				return;
 			}
 
 			if (string.IsNullOrWhiteSpace(portalUserLookupAttributeName))
 			{
-				ADXTrace.Instance.TraceWarning(TraceCategory.Application, "adx_entityform.adx_targetentityportaluserlookupattribute is null.");
+				ADXTrace.Instance.TraceWarning(TraceCategory.Application, "mspp_entityform.mspp_targetentityportaluserlookupattribute is null.");
 				return;
 			}
 
@@ -2431,7 +2432,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected void AttachFileOnSave(OrganizationServiceContext context, Entity entityform, object sender, Guid? entityid)
 		{
-			var attachFile = entityform.GetAttributeValue<bool?>("adx_attachfile") ?? false;
+			var attachFile = entityform.GetAttributeValue<bool?>("mspp_attachfile") ?? false;
 
 			if (!attachFile) return;
 
@@ -2443,12 +2444,12 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			try
 			{
-				var logicalName = entityform.GetAttributeValue<string>("adx_entityname");
-				var primaryKey = entityform.GetAttributeValue<string>("adx_primarykeyname");
+				var logicalName = entityform.GetAttributeValue<string>("mspp_entityname");
+				var primaryKey = entityform.GetAttributeValue<string>("mspp_primarykeyname");
 
 				if (string.IsNullOrWhiteSpace(logicalName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_entityform.adx_entityname must not be null.");
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_entityform.mspp_entityname must not be null.");
 					return;
 				}
 

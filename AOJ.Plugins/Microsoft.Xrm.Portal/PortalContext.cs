@@ -223,10 +223,18 @@ namespace Microsoft.Xrm.Portal
 		}
 
 		private static CrmSiteMapNode GetNode(RequestContext request)
-		{
-			if (request == null) return null;
+        {
+            if (request == null) return null;
+			try
+            {
+                if (SiteMap.Provider == null) return null;
+            }
+			catch (Exception)
+			{
+				return null;
+			}
 
-			var path = request.RouteData.Values["path"] as string;
+            var path = request.RouteData.Values["path"] as string;
 
 			path = !string.IsNullOrWhiteSpace(path)
 				? path.StartsWith("/") ? path : "/" + path

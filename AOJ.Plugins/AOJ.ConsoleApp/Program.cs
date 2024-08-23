@@ -97,12 +97,9 @@ namespace AOJ.ConsoleApp
             {
                 AojConfigurationManager.Service = client;
                 var name = "Xrm";
-
-                // retrieve by configuration
                 var portal = PortalCrmConfigurationManager.CreatePortalContext(name);
 
                 var svc = new OrganizationServiceContext(client);
-                var portalContext = new PortalContext(svc, client, Guid.Parse("ce496a9b-0b4b-4d8f-8f0e-7e08c21c5715"), Guid.Parse("2ba29921-1b5c-ef11-bfe2-000d3a56777a"));
                 var portalLiquidContext = new PortalLiquidContext(client);
 
                 //var blogDependencies = new Adxstudio.Xrm.Blogs.PortalConfigurationDataAdapterDependencies(svc, portalContext);
@@ -113,8 +110,8 @@ namespace AOJ.ConsoleApp
 
                 var globals = new Hash
             {
-				//{ "context", contextDrop },
-				{ "entities", new EntitiesDrop(portalLiquidContext) },
+                //{ "context", contextDrop },
+                { "entities", new EntitiesDrop(portalLiquidContext) },
                 { "now", DateTime.UtcNow },
 				//{ "params", requestDrop == null ? null : requestDrop.Params },
 				//{ "request", requestDrop },
