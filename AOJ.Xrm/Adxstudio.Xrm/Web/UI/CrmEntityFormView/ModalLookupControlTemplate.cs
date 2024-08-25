@@ -226,7 +226,6 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			if (modalSizeSetting != null && modalSizeSetting.ToLower() == "default") modalSize = BootstrapExtensions.BootstrapModalSize.Default;
 			if (modalSizeSetting != null && modalSizeSetting.ToLower() == "small") modalSize = BootstrapExtensions.BootstrapModalSize.Small;
 
-			
 			var modalTitle = HasProperty(html,"SnippetLiteral") ? html.SnippetLiteral("Portal/Lookup/Modal/Title") : "";
 			var modalPrimaryButtonText = HasProperty(html,"SnippetLiteral") ? html.SnippetLiteral("Portal/Lookup/Modal/PrimaryButtonText") : "";
 			var modalCancelButtonText = HasProperty(html,"SnippetLiteral") ? html.SnippetLiteral("Portal/Lookup/Modal/CancelButtonText") : "";

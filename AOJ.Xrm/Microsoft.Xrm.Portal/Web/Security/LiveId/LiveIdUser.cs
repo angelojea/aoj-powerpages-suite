@@ -21,7 +21,7 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 		private const string AttributeMapApproved = "mspp_logonenabled";
 		private const string AttributeMapCreatedAt = "createdon";
 		private const string AttributeMapLastLogin = "mspp_lastsuccessfullogon";
-		private const string AttributeMapUsername = "mspp_username";
+		private const string AttributeMapUsername = "adx_identity_username";
 		private const string MemberEntityName = "contact";
 
 		private readonly OrganizationServiceContext _context;

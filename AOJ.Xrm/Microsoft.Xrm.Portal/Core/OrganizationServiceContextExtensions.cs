@@ -212,7 +212,7 @@ namespace Microsoft.Xrm.Portal.Core
 		{
 			var findContact =
 				from c in context.CreateQuery("contact")
-				where c.GetAttributeValue<string>("mspp_username") == username
+				where c.GetAttributeValue<string>("adx_identity_username") == username
 				select c;
 
 			return findContact.FirstOrDefault();

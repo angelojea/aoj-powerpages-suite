@@ -72,7 +72,7 @@ namespace Microsoft.Xrm.Portal.IdentityModel.Web.Handlers
 
 		protected string AttributeMapUsername
 		{
-			get { return SelectUserSetting(setting => setting.AttributeMapUsername, "mspp_username"); }
+			get { return SelectUserSetting(setting => setting.AttributeMapUsername, "adx_identity_username"); }
 		}
 
 		protected string ReturnUrlKey

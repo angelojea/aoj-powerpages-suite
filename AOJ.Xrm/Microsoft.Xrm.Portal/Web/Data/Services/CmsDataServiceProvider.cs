@@ -477,7 +477,7 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 			// retrieve the username attribute from the portal configuration
 
 			var portal = PortalCrmConfigurationManager.CreatePortalContext(PortalName) as IUserResolutionSettings;
-			var attributeMapUsername = (portal != null ? portal.AttributeMapUsername : null) ?? "mspp_username";
+			var attributeMapUsername = (portal != null ? portal.AttributeMapUsername : null) ?? "adx_identity_username";
 			var memberEntityName = (portal != null ? portal.MemberEntityName : null) ?? "contact";
 
 			var username = GetCurrentIdentity();

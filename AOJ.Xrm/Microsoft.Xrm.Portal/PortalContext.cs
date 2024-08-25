@@ -206,7 +206,7 @@ namespace Microsoft.Xrm.Portal
 			if (request == null || request.HttpContext.User == null || !request.HttpContext.User.Identity.IsAuthenticated) return null;
 
 			var username = request.HttpContext.User.Identity.Name;
-			var attributeMapUsername = AttributeMapUsername ?? "mspp_username";
+			var attributeMapUsername = AttributeMapUsername ?? "adx_identity_username";
 			var memberEntityName = MemberEntityName ?? "contact";
 
 			var findContact =

@@ -28,7 +28,7 @@ namespace Microsoft.Xrm.Portal.Web.Security
 	///      attributeMapIsAuthenticatedUsersRole="mspp_authenticatedusersrole"
 	///      attributeMapRoleName="mspp_name"
 	///      attributeMapRoleWebsiteId="mspp_websiteid"
-	///      attributeMapUsername="mspp_username"
+	///      attributeMapUsername="adx_identity_username"
 	///      roleEntityName="mspp_webrole"
 	///      roleToUserRelationshipName="mspp_webrole_contact"
 	///      userEntityName="contact"
@@ -54,7 +54,7 @@ namespace Microsoft.Xrm.Portal.Web.Security
 
 			config["attributeMapRoleWebsiteId"] = config["attributeMapRoleWebsiteId"] ?? "mspp_websiteid";
 
-			config["attributeMapUsername"] = config["attributeMapUsername"] ?? "mspp_username";
+			config["attributeMapUsername"] = config["attributeMapUsername"] ?? "adx_identity_username";
 
 			config["roleEntityName"] = config["roleEntityName"] ?? "mspp_webrole";
 

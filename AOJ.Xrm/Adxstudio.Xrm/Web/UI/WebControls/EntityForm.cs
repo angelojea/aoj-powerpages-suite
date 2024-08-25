@@ -46,11 +46,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 	using Adxstudio.Xrm.Web.UI.EntityForm;
 	using Adxstudio.Xrm.Web.UI.JsonConfiguration;
 	using Adxstudio.Xrm.Web.UI.WebForms;
+    using Microsoft.SharePoint.Client;
+    using ListItem = System.Web.UI.WebControls.ListItem;
 
-	/// <summary>
-	/// Entity Form control retrieves the Entity Form record defined for the Web Page containing this control. Users can add data entry forms within the portal without the need for developer intervention.
-	/// </summary>
-	[Description("Entity Form control retrieves the Entity Form record defined for the Web Page containing this control. Users can add data entry forms within the portal without the need for developer intervention.")]
+    /// <summary>
+    /// Entity Form control retrieves the Entity Form record defined for the Web Page containing this control. Users can add data entry forms within the portal without the need for developer intervention.
+    /// </summary>
+    [Description("Entity Form control retrieves the Entity Form record defined for the Web Page containing this control. Users can add data entry forms within the portal without the need for developer intervention.")]
 	[ToolboxData(@"<{0}:EntityForm runat=""server""></{0}:EntityForm>")]
 	[DefaultProperty("")]
 	public class EntityForm : CompositeControl
@@ -453,19 +455,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				return true;
 			}
 			return false;
-        }
-        internal class AojFormView : CompositeControl
-        {
+		}
 
-        }
-        public Panel AOJCreateChildControls()
+        public CompositeControl AOJCreateChildControls()
 		{
 			CreateChildControls();
-
-			var formPanel = new Panel();
-			formPanel.Attributes.Add("runat", "server");
-			formPanel.Controls.Add(this);
-            return formPanel;
+			
+            return this;
         }
 
 
