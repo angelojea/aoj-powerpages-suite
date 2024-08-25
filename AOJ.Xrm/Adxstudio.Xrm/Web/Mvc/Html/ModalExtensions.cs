@@ -713,6 +713,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 		private static string GetPortalModalFormTemplatePath(string portalName)
 		{
+			return "";
 			var portal = PortalCrmConfigurationManager.CreatePortalContext(portalName);
 			var website = portal.Website;
 

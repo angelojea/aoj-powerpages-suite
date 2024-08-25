@@ -33,10 +33,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 	using Adxstudio.Xrm.Web.UI.HtmlControls;
 	using Adxstudio.Xrm.Web.UI.JsonConfiguration;
 	using Filter = Adxstudio.Xrm.Services.Query.Filter;
+    using Adxstudio.Xrm.Cms;
+    using Adxstudio.Xrm.Security;
+    using Adxstudio.Xrm.Web.UI.CrmEntityFormView;
 
-	/// <summary>
-	/// Renders a tabular lists of records within the portal.
-	/// </summary>
+    /// <summary>
+    /// Renders a tabular lists of records within the portal.
+    /// </summary>
 	[Description("CrmEntityListView control displays tabular lists of records within the portal.")]
 	[ToolboxData(@"<{0}:CrmEntityListView runat=""server""></{0}:CrmEntityListView>")]
 	[DefaultProperty("")]
@@ -182,7 +185,65 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected override HtmlTextWriterTag TagKey { get { return HtmlTextWriterTag.Div; } }
 
-		protected override void CreateChildControls()
+        public void AojCreateChildControls(Control container)
+        {
+            Controls.Clear();
+
+            CssClass = "entitylist";
+
+            var portalContext = PortalCrmConfigurationManager.CreatePortalContext(PortalName);
+            var serviceContext = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
+
+            if (LanguageCode <= 0)
+            {
+                LanguageCode = this.Context.GetPortalSolutionsDetails().OrganizationBaseLanguageCode;
+            }
+
+            RegisterClientSideDependencies(this);
+
+            CurrentViewConfiguration = GetCurrentViewConfiguration(GetSelectedViewId());
+
+            Views = GetViews(serviceContext).Select(v => new EntityView(serviceContext, v, LanguageCode));
+
+            CurrentView = CurrentViewConfiguration.GetEntityView(Views);
+
+            if (EntityListReference != null && IsGallery)
+            {
+                RenderToolbar(serviceContext, portalContext, this);
+
+                RenderGallery(portalContext, this);
+            }
+            else if (EntityListReference != null && CurrentViewConfiguration.MapSettings != null &&
+                CurrentViewConfiguration.MapSettings.Enabled && PortalSettings.Instance.BingMapsSupported)
+            {
+                RenderMap(serviceContext);
+            }
+            else if (EntityListReference != null && CurrentViewConfiguration.CalendarSettings != null &&
+                CurrentViewConfiguration.CalendarSettings.Enabled)
+            {
+                RenderToolbar(serviceContext, portalContext, this);
+
+                RenderCalendar(portalContext, this);
+            }
+            else
+            {
+                if (CurrentViewConfiguration.FilterSettings != null
+                    && CurrentViewConfiguration.FilterSettings.Enabled
+                    && CurrentViewConfiguration.FilterSettings.Orientation == FilterConfiguration.FilterOrientation.Vertical)
+                {
+                    RenderFiltersVertical(serviceContext, portalContext, this);
+                }
+                else
+                {
+                    RenderFilters(serviceContext, portalContext, this);
+
+                    RenderList(serviceContext, this);
+                }
+            }
+        }
+
+
+        protected override void CreateChildControls()
 		{
 			Controls.Clear();
 
@@ -1397,13 +1458,17 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			if (ErrorModal == null) ErrorModal = new ViewErrorModal();
 
-			var html = Mvc.Html.EntityExtensions.GetHtmlHelper(PortalName, Page.Request.RequestContext, Page.Response);
-			var portal = PortalCrmConfigurationManager.CreatePortalContext(PortalName);
+            //var html = Mvc.Html.EntityExtensions.GetHtmlHelper(PortalName, Page.Request.RequestContext, Page.Response);
+            var html = Mvc.Html.EntityExtensions.GetHtmlHelper(
+				PortalName,
+				HttpContext.Current.Request.RequestContext,
+                HttpContext.Current.Response
+            );
+            var portal = PortalCrmConfigurationManager.CreatePortalContext(PortalName);
 			var user = portal == null ? null : portal.User;
 
 			return html.EntityGrid(ViewConfigurations.ToList(),
-				BuildControllerActionUrl("GetGridData", "EntityGrid",
-					new { area = "Portal", __portalScopeId__ = portal == null ? Guid.Empty : portal.Website.Id }), user,
+				$"/_services/entity-grid-data.json/{AojConfigurationManager.Website.Id.ToString()}", user,
 				string.Join(" ", new[] { CssClass, CurrentViewConfiguration.CssClass }).TrimEnd(' '),
 				CurrentViewConfiguration.GridCssClass,
 				CurrentViewConfiguration.GridColumnWidthStyle ?? EntityGridExtensions.GridColumnWidthStyle.Percent,

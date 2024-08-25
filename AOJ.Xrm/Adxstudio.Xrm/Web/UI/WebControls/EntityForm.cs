@@ -457,10 +457,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			return false;
 		}
 
-        public CompositeControl AOJCreateChildControls()
+        public CompositeControl AOJCreateChildControls(Page page)
 		{
+			Page = page;
 			CreateChildControls();
-			
             return this;
         }
 
@@ -733,9 +733,8 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				FormConfiguration = formConfiguration,
 				EnableEntityPermissions = false,
 			};
-			this.Page = new Page();
-            formView.AojInit();
-			formView.AojCreateChildControls(this);
+            formView.AOJInit();
+			formView.AOJCreateChildControls(this);
 
 
             if (formActionMetadata != null && formActionMetadata.ShowSaveChangesWarningOnExit.GetValueOrDefault(false))

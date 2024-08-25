@@ -39,10 +39,14 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 	[DefaultProperty("")]
 	public class EntityList : CompositeControl
 	{
-		/// <summary>
-		/// Indicates whether the list is a gallery or not.
-		/// </summary>
-		public bool IsGallery
+        public EntityList(EntityReference list)
+        {
+			EntityListReference = list;
+        }
+        /// <summary>
+        /// Indicates whether the list is a gallery or not.
+        /// </summary>
+        public bool IsGallery
 		{
 			get { return (bool)(ViewState["IsGallery"] ?? false); }
 			set { ViewState["IsGallery"] = value; }
@@ -259,7 +263,14 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected override HtmlTextWriterTag TagKey { get { return HtmlTextWriterTag.Div; } }
 
-		protected override void CreateChildControls()
+        public CompositeControl AOJCreateChildControls(Page page)
+        {
+			Page = page;
+            CreateChildControls();
+            return this;
+        }
+
+        protected override void CreateChildControls()
 		{
 			Controls.Clear();
 
@@ -301,9 +312,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			var primaryKeyName = entitylist.GetAttributeValue<string>("mspp_primarykeyname");
 			var view = entitylist.GetAttributeValue<string>("mspp_view"); // old comma delimited list of views
 			var viewMetadataJson = entitylist.GetAttributeValue<string>("mspp_views");
-			EnableEntityPermissions = entitylist.GetAttributeValue<bool?>("mspp_entitypermissionsenabled").GetValueOrDefault(false);
+            //EnableEntityPermissions = entitylist.GetAttributeValue<bool?>("mspp_entitypermissionsenabled").GetValueOrDefault(false);
+            EnableEntityPermissions = false;
 
-			if (string.IsNullOrWhiteSpace(entityName))
+            if (string.IsNullOrWhiteSpace(entityName))
 			{
 				throw new ApplicationException("Entity Name (adx_entityname) attribute on Entity List (adx_entitylist) is null or empty. Please specify the logical name of the entity.");
 			}
@@ -433,8 +445,9 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				}
 			}
 
-			Controls.Add(crmEntityListView);
-		}
+            Controls.Add(crmEntityListView);
+            crmEntityListView.AojCreateChildControls(this);
+        }
 
 		/// <summary>
 		/// Add the <see cref="ScriptIncludes"/> to the <see cref="ScriptManager"/> if one exists.

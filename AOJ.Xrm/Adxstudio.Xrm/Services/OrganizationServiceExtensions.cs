@@ -561,7 +561,7 @@ namespace Adxstudio.Xrm.Services
 			int sourceLineNumber)
 		{
 			var request = new FetchMultipleRequest(query);
-			var response = service.Execute(request) as RetrieveMultipleResponse;
+			var response = service.Execute(request.Request) as RetrieveMultipleResponse;
 			var result = response.EntityCollection;
 
 			return result;

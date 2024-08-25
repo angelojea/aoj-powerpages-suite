@@ -264,10 +264,10 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			BootstrapExtensions.BootstrapModalSize modalWorkflowModalSize = BootstrapExtensions.BootstrapModalSize.Large,
 			string modalWorkflowModalCssClass = null, string modalWorkflowModalTitle = null)
 		{
-			if (!viewConfigurations.Any() || string.IsNullOrWhiteSpace(serviceUrl))
-			{
-				return new HtmlString(string.Empty);
-			}
+			//if (!viewConfigurations.Any() || string.IsNullOrWhiteSpace(serviceUrl))
+			//{
+			//	return new HtmlString(string.Empty);
+			//}
 
 			var grid = Grid(html, viewConfigurations, serviceUrl, user, cssClass, gridCssClass, columnWidthStyle, selectMode,
 				selectColumnHeaderText, loadingMessage, errorMessage, accessDeniedMessage, emptyMessage, portalName, languageCode,
@@ -677,10 +677,10 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
         {
             RefreshResourceStrings();
 
-            if (!viewConfigurations.Any() || string.IsNullOrWhiteSpace(serviceUrl))
-			{
-				return new TagBuilder("div");
-			}
+   //         if (!viewConfigurations.Any() || string.IsNullOrWhiteSpace(serviceUrl))
+			//{
+			//	return new TagBuilder("div");
+			//}
 
 			var layouts =
 				viewConfigurations.Select(c =>
@@ -822,10 +822,10 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
             var layouts = viewLayouts.ToList();
 
-			if (!layouts.Any() || string.IsNullOrWhiteSpace(serviceUrl))
-			{
-				return new TagBuilder("div");
-			}
+			//if (!layouts.Any() || string.IsNullOrWhiteSpace(serviceUrl))
+			//{
+			//	return new TagBuilder("div");
+			//}
 
 			CloseIncidentActionLink closeCaseAction = null;
 			ResolveCaseActionLink resolveCaseAction = null;

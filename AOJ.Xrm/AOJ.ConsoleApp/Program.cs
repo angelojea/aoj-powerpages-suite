@@ -1,39 +1,21 @@
 ﻿using Adxstudio.Xrm;
-using Adxstudio.Xrm.Services;
-using Adxstudio.Xrm.Web.Mvc.Html;
+using Adxstudio.Xrm.Visualizations;
 using Adxstudio.Xrm.Web.Mvc.Liquid;
-using Adxstudio.Xrm.Web.Mvc.Liquid.Tags;
-using Adxstudio.Xrm.Web.UI.CrmEntityListView;
 using Adxstudio.Xrm.Web.UI.JsonConfiguration;
 using Adxstudio.Xrm.Web.UI.WebControls;
-using DotLiquid;
-using Microsoft.ClearScript.V8;
+using Microsoft.ClearScript.JavaScript;
 using Microsoft.Xrm.Client;
-using Microsoft.Xrm.Client.Configuration;
 using Microsoft.Xrm.Portal.Configuration;
-using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Sdk.Client;
 using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Tooling.Connector;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Configuration;
 using System.IO;
-using System.Runtime.Caching;
-using System.Runtime.Remoting.Contexts;
-using System.Security.Policy;
 using System.Web;
-using System.Web.Mvc;
 using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using System.Windows.Controls;
-using System.Xml;
-using System.Xml.Serialization;
-using static Adxstudio.Xrm.Data.PaginatedList;
 using static Adxstudio.Xrm.Web.Mvc.Html.LiquidExtensions;
 using Context = DotLiquid.Context;
 using Hash = DotLiquid.Hash;
@@ -101,18 +83,21 @@ namespace AOJ.ConsoleApp
                 var context = new Context(new List<Hash> { localVariables }, new Hash(), registers, false);
 
                 var control = new LiquidServerControl();
+                var page = new MockPage();
 
-                var form = control.InitEntityForm(Guid.Parse("e0ce2b35-875e-ef11-bfe3-000d3a56777a"));
-                var view = form.AOJCreateChildControls();
+                //var form = control.InitEntityForm(Guid.Parse("e0ce2b35-875e-ef11-bfe3-000d3a56777a"));
+                //var formView = form.AOJCreateChildControls(page);
+                //page.AddForm(formView);
 
-                var page = new MockPage(view);
+                var list = new EntityList(client.Retrieve("mspp_entitylist", Guid.Parse("72194b7b-aa62-ef11-bfe2-6045bdff7792"), new ColumnSet(true)).ToEntityReference());
+                var listView = list.AOJCreateChildControls(page);
+                page.AddEntityList(listView);
 
                 using (StringWriter stringWriter = new StringWriter())
                 {
                     // Create an HtmlTextWriter to render the control
                     using (HtmlTextWriter htmlWriter = new HtmlTextWriter(stringWriter))
                     {
-                        //page.ProcessRequest(HttpContext.Current);
                         page.RenderControl(htmlWriter);
 
                         // Output the rendered HTML
@@ -150,7 +135,7 @@ namespace AOJ.ConsoleApp
 
             // Mock User if needed
             HttpContext.Current.User = new System.Security.Principal.GenericPrincipal(
-                new System.Security.Principal.GenericIdentity("12bb9eca-270c-4d37-be42-35bc0f325c11"),
+                new System.Security.Principal.GenericIdentity("Usuario"),
                 new[] { "admin", "customizer" });
         }
 
@@ -199,28 +184,42 @@ namespace AOJ.ConsoleApp
 
         public class MockPage : Page
         {
-            internal void SetPageOfChildControls(System.Web.UI.Control control)
+            private HttpContext _context;
+
+            internal void HandleChildControls(Control control)
             {
                 control.Page = this;
                 control.ID = Guid.NewGuid().ToString();
                 if (control.Controls.Count > 0)
                 {
-                    foreach (System.Web.UI.Control child in control.Controls)
+                    foreach (Control child in control.Controls.ToEnumerable())
                     {
-                        SetPageOfChildControls(child);
+                        HandleChildControls(child);
                     }
                 }
             }
 
-            public MockPage(CompositeControl view)
+            public MockPage()
             {
-                SetPageOfChildControls(view);
-                Controls.Add(view);
             }
 
-            public override void VerifyRenderingInServerForm(System.Web.UI.Control control)
+            public void AddEntityList(CompositeControl list)
             {
-                return;
+                HandleChildControls(list);
+                list.ID = "EntityListControl";
+                Controls.Add(list);
+                var rawHtml = new LiteralControl($"<script>{Helpers.EntityListScript()}</script>");
+                Controls.Add(rawHtml);
+            }
+
+            public void AddForm(CompositeControl form)
+            {
+                var htmlForm = new HtmlForm();
+                htmlForm.Attributes["runat"] = "server";
+                htmlForm.Controls.Add(form);
+
+                HandleChildControls(htmlForm);
+                Controls.Add(htmlForm);
             }
 
             public override bool EnableEventValidation {

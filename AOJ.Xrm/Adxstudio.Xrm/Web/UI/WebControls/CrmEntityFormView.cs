@@ -666,7 +666,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			return (ICellTemplateFactory)Activator.CreateInstance(factoryType);
 		}
 
-		public void AojCreateChildControls(Control container)
+		public void AOJCreateChildControls(Control container)
         {
             CssClass = string.Join(" ", new[] { "entity-form", CssClass }).TrimEnd(' ');
 
@@ -1191,7 +1191,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			return tabs.Select(tab => new TabTemplate(tab, LanguageCode, EntityMetadata, cellTemplateFactory, WebFormMetadata));
         }
 
-        public void AojInit()
+        public void AOJInit()
         {
             var context = CrmConfigurationManager.CreateContext(ContextName, true);
 
