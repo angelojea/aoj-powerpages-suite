@@ -84,8 +84,8 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 
 				var right = GetRight(context);
 
-				CrmEntityPermissionProvider.EntityPermissionRightResult permissionResult = new CrmEntityPermissionProvider()
-					.TryApplyRecordLevelFiltersToFetch(portalLiquidContext.PortalViewContext.CreateServiceContext(), right, fetch);
+				//CrmEntityPermissionProvider.EntityPermissionRightResult permissionResult = new CrmEntityPermissionProvider()
+				//	.TryApplyRecordLevelFiltersToFetch(portalLiquidContext.PortalViewContext.CreateServiceContext(), right, fetch);
 
                 // Apply Content Access Level filtering
                 var contentAccessLevelProvider = new ContentAccessLevelProvider();
@@ -95,7 +95,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
                 var productAccessProvider = new ProductAccessProvider();
                 productAccessProvider.TryApplyRecordLevelFiltersToFetch(CrmEntityPermissionRight.Read, fetch);
 
-                context.Scopes.Last()[_variableName] = new FetchXmlQueryDrop(portalLiquidContext, fetch, permissionResult);
+                context.Scopes.Last()[_variableName] = new FetchXmlQueryDrop(portalLiquidContext, fetch);
 			}
 		}
 

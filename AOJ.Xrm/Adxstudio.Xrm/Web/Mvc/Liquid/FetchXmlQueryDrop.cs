@@ -15,7 +15,6 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 	public class FetchXmlQueryDrop : PortalDrop
 	{
 		private readonly Lazy<Fetch> _fetch;
-		private readonly CrmEntityPermissionProvider.EntityPermissionRightResult _permissionRightResult;
 		private readonly Lazy<EntityCollectionDrop> _results;
 		private readonly Lazy<string> _xml;
 
@@ -24,7 +23,6 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			if (fetch == null) throw new ArgumentNullException("fetch");
 
 			_fetch = fetch;
-			_permissionRightResult = permissionRightResult;
 			_results = new Lazy<EntityCollectionDrop>(GetResults, LazyThreadSafetyMode.None);
 			_xml = new Lazy<string>(GetXml, LazyThreadSafetyMode.None);
 		}
@@ -36,13 +34,13 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			: this(portalLiquidContext, Fetch.Parse(fetchXml), permissionRightResult) { }
 
 		public bool GlobalPermissionGranted
-		{
-			get { return _permissionRightResult != null && _permissionRightResult.GlobalPermissionGranted; }
-		}
+        {
+            get { return true; }
+        }
 
 		public bool PermissionGranted
 		{
-			get { return _permissionRightResult != null && _permissionRightResult.PermissionGranted; }
+			get { return true; }
 		}
 
 		public EntityCollectionDrop Results
@@ -51,9 +49,9 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 		}
 
 		public bool RulesExist
-		{
-			get { return _permissionRightResult != null && _permissionRightResult.RulesExist; }
-		}
+        {
+            get { return true; }
+        }
 
 		public string Xml
 		{
@@ -61,13 +59,8 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 		}
 
 		private EntityCollectionDrop GetResults()
-		{
-			if (_permissionRightResult != null && !(_permissionRightResult.GlobalPermissionGranted || _permissionRightResult.PermissionGranted))
-			{
-				return new EntityCollectionDrop(this, new EntityCollection());
-			}
-
-			using (var serviceContext = PortalViewContext.CreateServiceContext())
+        {
+            using (var serviceContext = PortalViewContext.CreateServiceContext())
 			{
 				var response = (RetrieveMultipleResponse)serviceContext.Execute(_fetch.Value.ToRetrieveMultipleRequest());
 

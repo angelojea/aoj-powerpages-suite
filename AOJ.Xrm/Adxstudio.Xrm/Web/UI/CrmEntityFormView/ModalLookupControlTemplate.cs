@@ -21,6 +21,7 @@ using Adxstudio.Xrm.Web.Mvc.Html;
 using Adxstudio.Xrm.Web.UI.CrmEntityListView;
 using Adxstudio.Xrm.Web.UI.WebControls;
 using Adxstudio.Xrm.Web.UI.WebForms;
+using AOJ.Configuration;
 using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Client.Configuration;
 using Microsoft.Xrm.Portal.Configuration;

@@ -367,15 +367,6 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 		private EntityMetadata GetEntityMetadata()
 		{
-			var cacheKey = "liquid:entitymetadata:{0}".FormatWith(EntityReference.LogicalName);
-
-			object cached;
-
-			if (Html.ViewContext.TempData.TryGetValue(cacheKey, out cached) && cached is EntityMetadata)
-			{
-				return cached as EntityMetadata;
-			}
-
 			using (var serviceContext = PortalViewContext.CreateServiceContext())
 			{
 				var response = (RetrieveEntityResponse)serviceContext.Execute(new RetrieveEntityRequest
@@ -385,8 +376,6 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 				});
 
 				var entityMetadata = response.EntityMetadata;
-
-				Html.ViewContext.TempData[cacheKey] = entityMetadata;
 
 				return entityMetadata;
 			}

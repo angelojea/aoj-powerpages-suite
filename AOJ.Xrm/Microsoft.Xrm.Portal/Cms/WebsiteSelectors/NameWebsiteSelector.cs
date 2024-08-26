@@ -9,6 +9,7 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Linq;
 using System.Web.Routing;
+using AOJ.Configuration;
 using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Client.Configuration;
 using Microsoft.Xrm.Portal.Configuration;

@@ -28,7 +28,8 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 	using Adxstudio.Xrm.Services.Query;
 	using Adxstudio.Xrm.Web.Mvc;
 	using Adxstudio.Xrm.Web.UI.CrmEntityFormView;
-	using Microsoft.Xrm.Client;
+    using global::AOJ.Configuration;
+    using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Client.Configuration;
 	using Microsoft.Xrm.Client.Messages;
 	using Microsoft.Xrm.Portal.Configuration;

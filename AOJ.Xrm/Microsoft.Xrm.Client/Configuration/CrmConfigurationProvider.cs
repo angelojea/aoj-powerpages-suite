@@ -8,6 +8,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Runtime.Caching;
+using AOJ.Configuration;
 using Microsoft.Xrm.Client.Collections.Generic;
 using Microsoft.Xrm.Client.Runtime;
 using Microsoft.Xrm.Client.Services;

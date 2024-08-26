@@ -21,9 +21,22 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
         private readonly Random _random;
         private readonly ContextLanguageInfo _contextLanguageInfo;
         private readonly IOrganizationService _portalOrganizationService;
-
         public PortalLiquidContext(HtmlHelper html, IPortalViewContext portalViewContext)
-        { }
+        {
+            _organizationMoneyFormatInfo = new AojOrganizationMoneyFormatInfo();
+            _random = new Random();
+            PortalViewContext = portalViewContext;
+            _contextLanguageInfo = null;
+        }
+
+        public PortalLiquidContext(IOrganizationService svc, IPortalViewContext portalViewContext)
+        {
+            _organizationMoneyFormatInfo = new AojOrganizationMoneyFormatInfo();
+            _random = new Random();
+            PortalViewContext = portalViewContext;
+            _contextLanguageInfo = null;
+            _portalOrganizationService = svc;
+        }
 
         public PortalLiquidContext(IOrganizationService svc)
         {

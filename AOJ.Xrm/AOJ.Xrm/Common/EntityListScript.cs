@@ -1,4 +1,4 @@
-﻿namespace AOJ.ConsoleApp
+﻿namespace AOJ.Xrm.Common
 {
     public static class Helpers
     {

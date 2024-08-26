@@ -21,11 +21,12 @@ namespace Adxstudio.Xrm.AspNet.Cms
 	using Adxstudio.Xrm.Cms;
 	using Adxstudio.Xrm.Configuration;
 	using Adxstudio.Xrm.Web;
+    using global::AOJ.Configuration;
 
-	/// <summary>
-	/// Class holding context language information for a portal.
-	/// </summary>
-	public class ContextLanguageInfo : IDisposable
+    /// <summary>
+    /// Class holding context language information for a portal.
+    /// </summary>
+    public class ContextLanguageInfo : IDisposable
 	{
 		/// <summary>
 		/// Name of the cookie used to store portal language info.

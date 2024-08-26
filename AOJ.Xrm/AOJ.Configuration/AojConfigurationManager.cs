@@ -1,12 +1,7 @@
 ﻿using Microsoft.Xrm.Sdk;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace Microsoft.Xrm.Client
+namespace AOJ.Configuration
 {
     public class AojConfigurationManager
     {

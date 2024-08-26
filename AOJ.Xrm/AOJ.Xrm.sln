@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35219.272
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AOJ.ConsoleApp", "AOJ.ConsoleApp\AOJ.ConsoleApp.csproj", "{FC00005D-9120-485C-82A6-23E4996FE13C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AOJ.Plugins", "AOJ.Plugins\AOJ.Plugins.csproj", "{BAB07488-F1C1-4FAC-99C6-C54E842F2D42}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AOJ.Xrm", "AOJ.Xrm\AOJ.Xrm.csproj", "{BAB07488-F1C1-4FAC-99C6-C54E842F2D42}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adxstudio.Xrm", "Adxstudio.Xrm\Adxstudio.Xrm.csproj", "{A8AB533B-E117-4F62-AE45-C3DC5E1E5D0A}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Xrm.Portal", "Microsoft.Xrm.Portal\Microsoft.Xrm.Portal.csproj", "{9293D3F9-A840-4D3C-98D9-AA0C7343DF6F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Xrm.Portal.Files", "Microsoft.Xrm.Portal.Files\Microsoft.Xrm.Portal.Files.csproj", "{444776B5-4638-4800-9466-0E6F19EA9B93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AOJ.Configuration", "AOJ.Configuration\AOJ.Configuration.csproj", "{0145BA60-5A1E-412B-BC18-8F94CAD88A09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,14 @@ Global
 		{444776B5-4638-4800-9466-0E6F19EA9B93}.Release|Any CPU.Build.0 = Release|Any CPU
 		{444776B5-4638-4800-9466-0E6F19EA9B93}.Release|x86.ActiveCfg = Release|Any CPU
 		{444776B5-4638-4800-9466-0E6F19EA9B93}.Release|x86.Build.0 = Release|Any CPU
+		{0145BA60-5A1E-412B-BC18-8F94CAD88A09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0145BA60-5A1E-412B-BC18-8F94CAD88A09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0145BA60-5A1E-412B-BC18-8F94CAD88A09}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0145BA60-5A1E-412B-BC18-8F94CAD88A09}.Debug|x86.Build.0 = Debug|Any CPU
+		{0145BA60-5A1E-412B-BC18-8F94CAD88A09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0145BA60-5A1E-412B-BC18-8F94CAD88A09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0145BA60-5A1E-412B-BC18-8F94CAD88A09}.Release|x86.ActiveCfg = Release|Any CPU
+		{0145BA60-5A1E-412B-BC18-8F94CAD88A09}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

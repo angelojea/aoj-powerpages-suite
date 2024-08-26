@@ -36,11 +36,12 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
     using Adxstudio.Xrm.Cms;
     using Adxstudio.Xrm.Security;
     using Adxstudio.Xrm.Web.UI.CrmEntityFormView;
+    using global::AOJ.Configuration;
 
     /// <summary>
     /// Renders a tabular lists of records within the portal.
     /// </summary>
-	[Description("CrmEntityListView control displays tabular lists of records within the portal.")]
+    [Description("CrmEntityListView control displays tabular lists of records within the portal.")]
 	[ToolboxData(@"<{0}:CrmEntityListView runat=""server""></{0}:CrmEntityListView>")]
 	[DefaultProperty("")]
 	public class CrmEntityListView : CompositeControl

@@ -25,6 +25,7 @@ using Microsoft.Xrm.Portal.Web;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Client;
+using AOJ.Configuration;
 
 namespace Adxstudio.Xrm.Web
 {
