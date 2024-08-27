@@ -6,116 +6,37 @@
 namespace Adxstudio.Xrm.EventHubBasedInvalidation
 {
 	using System;
-	using Microsoft.ServiceBus.Messaging;
 	using Newtonsoft.Json;
 
-	/// <summary>
-	/// Class used for deserializing and storing message information from an Azure Topic subscription
-	/// </summary>
+
 	public abstract class CrmSubscriptionMessage : ICrmSubscriptionMessage
 	{
 		private MessageType messageType;
 
-		public CrmSubscriptionMessage()
-		{
-			Received = DateTime.UtcNow;
-		}
-
-		/// <summary>
-		/// Deserializes the JSON message from a BrokeredMessage
-		/// </summary>
-		/// <param name="messageBody">BrokeredMessage message body to deserialize</param>
-		/// <param name="t">Type to deserialize into</param>
-		/// <returns>ICrmSubscriptionMessage initialized from the BrokeredMessage message body</returns>
-		protected static ICrmSubscriptionMessage DeserializeMessage(string messageBody, Type t)
-		{
-			try
-			{
-				var x = JsonConvert.DeserializeObject(messageBody, t) as ICrmSubscriptionMessage;
-				return x;
-			}
-			catch (Exception e)
-			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, e.ToString());
-			}
-			return null;
-		}
-
-		/// <summary>
-		/// Populates this message from the properties of the brokered message
-		/// </summary>
-		/// <param name="message">BrokeredMessage to pull properties from</param>
-		protected void AppendProperties(BrokeredMessage message)
-		{
-			EnqueuedTopicTimeUtc = TryGetDateTime(message, BrokeredMessageConstants.EnqueuedTopicTimeUtc);
-			EnqueuedEventhubTimeUtc = TryGetDateTime(message, BrokeredMessageConstants.EnqueuedEventhubTimeUtc);
-			DequeuedEventhubTimeUtc = TryGetDateTime(message, BrokeredMessageConstants.DequeuedEventhubTimeUtc);
-			DequeuedTopicTimeUtc = Received;
-		}
-
-		/// <summary>
-		/// Attempts to get the dateTime object out of the BrokeredMessageProperty
-		/// </summary>
-		/// <param name="message">message to pull the property from</param>
-		/// <param name="property">Property to pull out of the message</param>
-		/// <returns>DateTime object from the message property or default DateTime</returns>
-		private DateTime TryGetDateTime(BrokeredMessage message, string property)
-		{
-			if (message.Properties.ContainsKey(property))
-			{
-				try
-				{
-					return (DateTime)message.Properties[property];
-				}
-				catch
-				{
-				}
-			}
-
-			return default(DateTime);
-		}
-
 		public DateTime Received { get; }
 
-		/// <summary>
-		/// Time in UTC in which the message was enqueued in the Topic
-		/// </summary>
+
 		public DateTime EnqueuedTopicTimeUtc { get; private set; }
 
-		/// <summary>
-		/// Time in UTC in which the message was dequeued from the Topic
-		/// </summary>
+
 		public DateTime DequeuedTopicTimeUtc { get; private set; }
 
-		/// <summary>
-		/// Time in UTC in which the message was enqueued in the Eventhub
-		/// </summary>
+
 		public DateTime EnqueuedEventhubTimeUtc { get; private set; }
 
-		/// <summary>
-		/// Time in UTC in which the message was dequeued from the Eventhub
-		/// </summary>
+
 		public DateTime DequeuedEventhubTimeUtc { get; private set; }
 
-		/// <summary>
-		/// OrganizationId
-		/// </summary>
+
 		public Guid OrganizationId { get; set; }
 
-		/// <summary>
-		/// MessageId
-		/// </summary>
+
 		public Guid MessageId { get; set; }
 
-		/// <summary>
-		/// MessageName
-		/// 	Create, Update, Delete, Associate, MetadataChange, Disassociate
-		/// </summary>
+
 		public string MessageName { get; set; }
 
-		/// <summary>
-		/// Returns true if the properties are all present, otherwise false
-		/// </summary>
+
 		protected virtual bool ValidMessage
 		{
 			get
@@ -125,9 +46,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			}
 		}
 
-		/// <summary>
-		/// Returns the message type
-		/// </summary>
+
 		public MessageType MessageType
 		{
 			get

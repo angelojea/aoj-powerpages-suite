@@ -243,10 +243,6 @@
     <Reference Include="Microsoft.Practices.Unity.Interception.Configuration">
       <HintPath>..\packages\Unity.Interception.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\WindowsAzure.ServiceBus.3.1.3\lib\net45-full\Microsoft.ServiceBus.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.SharePoint.Client">
       <HintPath>..\DllImports\Microsoft.SharePoint.Client.dll</HintPath>
       <Private>True</Private>
@@ -510,7 +506,6 @@
     <Compile Include="EntityList\LocalizedException.cs" />
     <Compile Include="EventHubBasedInvalidation\CacheInvalidationJob.cs" />
     <Compile Include="EventHubBasedInvalidation\CacheInvalidationJobSettings.cs" />
-    <Compile Include="EventHubBasedInvalidation\EventHubJobManager.cs" />
     <Compile Include="EventHubBasedInvalidation\EventHubJob.cs" />
     <Compile Include="EventHubBasedInvalidation\SearchMetadataCache.cs" />
     <Compile Include="EventHubBasedInvalidation\SearchSavedQuery.cs" />
@@ -601,10 +596,8 @@
     <Compile Include="EventHubBasedInvalidation\CrmChangeTrackingManager.cs" />
     <Compile Include="EventHubBasedInvalidation\SubscriptionMessage\AssociateDisassociateMessage.cs" />
     <Compile Include="EventHubBasedInvalidation\SubscriptionMessage\CrmSubscriptionMessage.cs" />
-    <Compile Include="EventHubBasedInvalidation\SubscriptionMessage\CrmSubscriptionMessageFactory.cs" />
     <Compile Include="EventHubBasedInvalidation\SubscriptionMessage\EntityRecordMessage.cs" />
     <Compile Include="EventHubBasedInvalidation\SubscriptionMessage\ICrmSubscriptionMessage.cs" />
-    <Compile Include="EventHubBasedInvalidation\SubscriptionMessage\MetadataMessage.cs" />
     <Compile Include="EventHubBasedInvalidation\TimeBasedChangedData.cs" />
     <Compile Include="EventHubBasedInvalidation\WebAppConfigurationProvider.cs" />
     <Compile Include="Feedback\CommentPolicy.cs" />

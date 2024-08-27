@@ -168,17 +168,6 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		// TODO perf might require us to keep a table in memory for lookup and access cache only to insert
 		internal void UpdateNotificationMessageTable(ICrmSubscriptionMessage crmSubscriptionMessage, bool isSearchIndexInvalidationMessage = false)
 		{
-			if (crmSubscriptionMessage is MetadataMessage)
-			{
-				//When New Views are added which is a metadata change we Refresh Search Index Enabled entity List
-				WebAppConfigurationProvider.GetPortalEntityList();
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Found a MetaData Change {0} in messageId: {1}.", crmSubscriptionMessage.MessageName, crmSubscriptionMessage.MessageId));
-				lock (metadataFlagLock)
-				{
-					MetadataDirtyEntry = true;
-				}
-				return;
-			}
 			EntityRecordMessage message = crmSubscriptionMessage as EntityRecordMessage;
 			portalUsedEntities = WebAppConfigurationProvider.PortalUsedEntities;
 

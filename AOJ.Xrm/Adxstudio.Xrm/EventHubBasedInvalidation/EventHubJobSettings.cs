@@ -7,7 +7,6 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 {
 	using System;
 	using System.Configuration;
-	using Microsoft.ServiceBus.Messaging;
 	using Core.Flighting;
 
 	/// <summary>
@@ -31,11 +30,6 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		public bool Reentrant { get; set; }
 
 		/// <summary>
-		/// The subscription settings. For search we create one instance per webapp and for cache we create one subscription per instance of the webapp.
-		/// </summary>
-		public SubscriptionDescription Subscription { get; set; }
-
-		/// <summary>
 		/// The flag indicating that the subscription should be re-created at application startup."
 		/// </summary>
 		public bool RecreateSubscription { get; set; }
@@ -57,11 +51,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		{
 			get
 			{
-				return FeatureCheckHelper.IsFeatureEnabled(FeatureNames.EventHubCacheInvalidation)
-					&& Subscription != null
-					&& !string.IsNullOrWhiteSpace(ConnectionString)
-					&& !string.IsNullOrWhiteSpace(Subscription.Name)
-					&& !string.IsNullOrWhiteSpace(Subscription.TopicPath);
+				return false;
 			}
 		}
 
@@ -89,19 +79,6 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			ReceiveBatchServerWaitTime = new TimeSpan(0, 0, 0);
 			ConnectionString = connectionString;
 
-			if (!string.IsNullOrWhiteSpace(topicPath) && !string.IsNullOrWhiteSpace(subscriptionName))
-			{
-				Subscription = new SubscriptionDescription(topicPath, subscriptionName)
-				{
-					EnableDeadLetteringOnFilterEvaluationExceptions = true,
-					EnableDeadLetteringOnMessageExpiration = false,
-					EnableBatchedOperations = true,
-					MaxDeliveryCount = 4000, // for debugging
-
-					// Check if we need this
-					////LockDuration = TimeSpan.FromMilliseconds(500),
-				};
-			}
 		}
 	}
 
