@@ -1,4 +1,6 @@
-﻿using Microsoft.Xrm.Sdk;
+﻿using AOJ.Xrm.Common;
+using Microsoft.Xrm.Client.Services;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Workflow;
 using System;
 using System.Activities;
@@ -10,17 +12,84 @@ using System.Threading.Tasks;
 
 namespace AOJ.Xrm.Workflows
 {
-    // Define the plugin class
     public class RenderLiquid : CodeActivity
     {
+        [Input("Website Id")]
+        public InArgument<string> WebsiteId { get; set; }
+
+        [Input("Liquid")]
+        public InArgument<string> Liquid { get; set; }
+
+        [Output("Rendered Html")]
+        public OutArgument<string> RenderedHtml { get; set; }
+
+
+        protected override void Execute(CodeActivityContext executionContext)
+        {
+            ITracingService tracingService = executionContext.GetExtension<ITracingService>();
+
+            IWorkflowContext context = executionContext.GetExtension<IWorkflowContext>();
+
+            IOrganizationServiceFactory serviceFactory = executionContext.GetExtension<IOrganizationServiceFactory>();
+            IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
+
+            var renderer = new AOJRenderer(
+                new OrganizationService(service),
+                Guid.Parse(WebsiteId.Get(executionContext)),
+                Guid.Parse("2ba29921-1b5c-ef11-bfe2-000d3a56777a")
+            );
+            RenderedHtml.Set(
+                executionContext,
+                renderer.RenderLiquid(Liquid.Get(executionContext))
+            );
+        }
+    }
+
+    public class RenderEntityForm : CodeActivity
+    {
+        [Input("Website Id")]
+        public InArgument<string> WebsiteId { get; set; }
+
+        [Input("Entity Form Id")]
+        public InArgument<string> EntityFormId { get; set; }
+
+        [Output("Rendered Html")]
+        public OutArgument<string> RenderedHtml { get; set; }
+
+
+        protected override void Execute(CodeActivityContext executionContext)
+        {
+            ITracingService tracingService = executionContext.GetExtension<ITracingService>();
+
+            IWorkflowContext context = executionContext.GetExtension<IWorkflowContext>();
+
+            IOrganizationServiceFactory serviceFactory = executionContext.GetExtension<IOrganizationServiceFactory>();
+            IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
+
+            var renderer = new AOJRenderer(
+                new OrganizationService(service),
+                Guid.Parse(WebsiteId.Get(executionContext)),
+                Guid.Parse("2ba29921-1b5c-ef11-bfe2-000d3a56777a")
+            );
+            RenderedHtml.Set(
+                executionContext,
+                renderer.RenderEntityForm(Guid.Parse(EntityFormId.Get(executionContext)))
+            );
+        }
+    }
+
+    public class RenderEntityList : CodeActivity
+    {
         // Define the input argument for Account Name
-        [Input("Account Name")]
-        [Default("")]
-        public InArgument<string> AccountName { get; set; }
+        [Input("Website Id")]
+        public InArgument<string> WebsiteId { get; set; }
+
+        [Input("Entity List Id")]
+        public InArgument<string> EntityListId { get; set; }
 
         // Define the output argument to indicate uniqueness
-        [Output("Is Unique")]
-        public OutArgument<bool> IsUnique { get; set; }
+        [Output("Rendered Html")]
+        public OutArgument<string> RenderedHtml { get; set; }
 
 
         protected override void Execute(CodeActivityContext executionContext)
@@ -34,6 +103,16 @@ namespace AOJ.Xrm.Workflows
             // Create the organization service factory
             IOrganizationServiceFactory serviceFactory = executionContext.GetExtension<IOrganizationServiceFactory>();
             IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
+
+            var renderer = new AOJRenderer(
+                new OrganizationService(service),
+                Guid.Parse(WebsiteId.Get(executionContext)),
+                Guid.Parse("2ba29921-1b5c-ef11-bfe2-000d3a56777a")
+            );
+            RenderedHtml.Set(
+                executionContext,
+                renderer.RenderEntityList(Guid.Parse(EntityListId.Get(executionContext)))
+            );
         }
     }
 }

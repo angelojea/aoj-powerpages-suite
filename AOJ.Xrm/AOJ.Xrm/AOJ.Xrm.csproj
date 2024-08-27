@@ -178,6 +178,7 @@
   <ItemGroup>
     <Content Include="js\entity-form.js" />
     <Content Include="js\entity-grid.js" />
+    <Content Include="post-build.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
