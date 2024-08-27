@@ -11,7 +11,6 @@ namespace Adxstudio.Xrm.AspNet.Identity
 	using Cms;
 	using Resources;
 	using Web;
-	using Microsoft.Owin;
 	using Xrm.Cms;
 
 	public class IdentityError
@@ -25,33 +24,6 @@ namespace Adxstudio.Xrm.AspNet.Identity
 		public IContentMapProvider ContentMapProvider { get; }
 
 		public ContextLanguageInfo Language { get; }
-
-		public IdentityErrorDescriber(IOwinContext context)
-			: this(context.GetContentMapProvider(), context.GetContextLanguageInfo())
-		{
-		}
-
-		public IdentityErrorDescriber(IContentMapProvider contentMapProvider, ContextLanguageInfo language)
-		{
-			if (contentMapProvider == null)
-			{
-				throw new ArgumentNullException("contentMapProvider");
-			}
-
-			ContentMapProvider = contentMapProvider;
-			Language = language;
-		}
-
-		public virtual IdentityError DefaultError()
-		{
-			var guid = WebEventSource.Log.GenericErrorException(null);
-			return GetError(string.Format(ResourceManager.GetString("Generic_Error_Message"), guid));
-		}
-
-		public virtual IdentityError ConcurrencyFailure()
-		{
-			return GetError(ResourceManager.GetString("Optimistic_Concurrency_Failure_Exception"));
-		}
 
 		public virtual IdentityError PasswordMismatch()
 		{
@@ -164,8 +136,7 @@ namespace Adxstudio.Xrm.AspNet.Identity
 
 	public class CrmIdentityErrorDescriber : IdentityErrorDescriber
 	{
-		public CrmIdentityErrorDescriber(IOwinContext context)
-			: base(context)
+		public CrmIdentityErrorDescriber()
 		{
 		}
 

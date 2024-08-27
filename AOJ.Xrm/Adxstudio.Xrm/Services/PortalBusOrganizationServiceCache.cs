@@ -12,7 +12,6 @@ namespace Adxstudio.Xrm.Services
 	using System.Web.Hosting;
 	using AspNet;
 	using AspNet.PortalBus;
-	using Microsoft.Owin;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Client.Services;
 	using Microsoft.Xrm.Client.Services.Messages;
@@ -134,38 +133,7 @@ namespace Adxstudio.Xrm.Services
 
 			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Begin");
 
-			IOwinContext context = null;
-
-			if (HttpContext.Current != null)
-			{
-				try
-				{
-					context = HttpContext.Current.GetOwinContext();
-				}
-				catch (Exception)
-				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "No owin.Environment item was found in the context");
-					return;
-				}
-			}
-
 			var portalBusMessage = new CacheInvalidationPortalBusMessage { Message = message };
-
-			if (_syncRemoveEnabled)
-			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Sending messages syncronously");
-
-				var task = PortalBusManager<CacheInvalidationPortalBusMessage>.SendAsync(context, portalBusMessage).WithCurrentCulture();
-				task.GetAwaiter().GetResult();
-			}
-			else
-			{
-				RemoveLocal(message);
-
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Sending messages asyncronously");
-
-				HostingEnvironment.QueueBackgroundWorkItem(ct => PortalBusManager<CacheInvalidationPortalBusMessage>.SendAsync(context, portalBusMessage));
-			}
 
 			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
 		}

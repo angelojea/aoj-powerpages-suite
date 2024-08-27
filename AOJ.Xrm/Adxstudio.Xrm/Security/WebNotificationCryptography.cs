@@ -8,7 +8,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Web;
 using Adxstudio.Xrm.Core.Telemetry.EventSources;
-using Microsoft.Owin;
 using Microsoft.Xrm.Portal.Configuration;
 
 namespace Adxstudio.Xrm.Security

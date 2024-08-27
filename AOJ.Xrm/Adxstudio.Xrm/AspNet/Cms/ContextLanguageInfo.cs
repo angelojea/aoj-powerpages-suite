@@ -11,8 +11,6 @@ namespace Adxstudio.Xrm.AspNet.Cms
 	using System.Linq;
 	using System.Threading;
 	using System.Web;
-	using Microsoft.AspNet.Identity.Owin;
-	using Microsoft.Owin;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Portal.Web;
 	using Microsoft.Xrm.Sdk;
@@ -72,8 +70,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		{
 			get
 			{
-				bool displayLanguageCodeInUrl;
-				return bool.TryParse(HttpContext.Current.GetSiteSetting(SiteSettingNameDisplayLanguageCodeInUrl), out displayLanguageCodeInUrl) && displayLanguageCodeInUrl;
+				return true;
 			}
 		}
 
@@ -126,36 +123,6 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		public bool IsCrmMultiLanguageEnabled
 		{
 			get { return ContextLanguage != null && ContextLanguage.PortalLanguageId != Guid.Empty; }
-		}
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ContextLanguageInfo"/> class.
-		/// </summary>
-		/// <param name="context">The HTTP request context.</param>
-		public ContextLanguageInfo(HttpContextBase context)
-		{
-			BuildContextLanguageInfo(context);
-			ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo built - lang:{0} url=[{1}]", ContextLanguage == null ? "N/A" : ContextLanguage.Code, context.Request.Url.AbsolutePath));
-
-			// Update the current culture so correct resources are loaded.
-			// Note: for legacy CRM environments withOUT multi-language, the CurrentCulture will be set by IAppBuilder.UseLocalizedBundles(...)
-			if (ContextLanguage != null)
-			{
-				SetCultureInfo(ContextLanguage.Lcid);
-			}
-		}
-
-		/// <summary>
-		/// Create ContextLanguageInfo
-		/// </summary>
-		/// <param name="options">the options</param>
-		/// <param name="context">the Owin context</param>
-		/// <returns>Context Language Info class</returns>
-		public static ContextLanguageInfo Create(IdentityFactoryOptions<ContextLanguageInfo> options, IOwinContext context)
-		{
-			var requestContext = context.Get<HttpContextBase>(typeof(HttpContextBase).FullName);
-			var contextLanguageInfo = new ContextLanguageInfo(requestContext);
-			return contextLanguageInfo;
 		}
 
 		/// <summary>
@@ -300,20 +267,8 @@ namespace Adxstudio.Xrm.AspNet.Cms
 				return AojConfigurationManager.LanguageCode;
             }
 
-            var contentMapProvider = AdxstudioCrmConfigurationManager.CreateContentMapProvider() ?? HttpContext.Current.GetContentMapProvider();
-
 			IDictionary<EntityReference, EntityNode> portalLanguages;
 			PortalLanguageNode matchLanguage = null;
-			contentMapProvider.Using(
-				map =>
-					{
-						if (map.TryGetValue("adx_portallanguage", out portalLanguages))
-						{
-							var languageNodes = portalLanguages.Values.Cast<PortalLanguageNode>().ToArray();
-							matchLanguage = languageNodes.FirstOrDefault(pl => pl.Lcid == lcid)
-											?? languageNodes.FirstOrDefault(pl => pl.CrmLanguage == lcid);
-						}
-					});
 
 			return matchLanguage?.CrmLanguage ?? lcid;
 		}
@@ -364,41 +319,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		public static bool TryGetLanguageFromMapping(IEnumerable<IWebsiteLanguage> websiteLanguages, string code, out IWebsiteLanguage language)
 		{
 			language = null;
-			if (string.IsNullOrWhiteSpace(code) || HttpContext.Current == null || HttpContext.Current.GetWebsite() == null)
-			{
-				return false;
-			}
-
-			var languageMappingSetting = HttpContext.Current.GetWebsite().Settings.Get<string>("MultiLanguage/Fallback");
-			if (string.IsNullOrWhiteSpace(languageMappingSetting))
-			{
-				return false;
-			}
-
-			var mappings = HttpUtility.ParseQueryString(languageMappingSetting);
-
-			if (mappings.Count <= 0)
-			{
-				return false;
-			}
-
-			var languageList = websiteLanguages.ToList();
-			foreach (string key in mappings.Keys)
-			{
-				var fallback = key.Trim();
-				var supportedVariants = mappings[fallback].Split(',').Select(s => s.Trim());
-				if (supportedVariants.Contains(code, StringComparer.InvariantCultureIgnoreCase))
-				{
-					language = FindWebsiteLanguage(languageList, fallback, false);
-					if (language != null)
-					{
-						language.UsedAsFallback = !fallback.Equals(code, StringComparison.InvariantCultureIgnoreCase);
-						break;
-					}
-				}
-			}
-
-			return language != null;
+			return true;
 		}
 
 		/// <summary>
@@ -625,80 +546,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		/// <returns>IEnumerable of active website languages.</returns>
 		private static IEnumerable<IWebsiteLanguage> BuildActiveWebsiteLanguages(bool writeResultsToStatic, HttpContextBase httpContext)
 		{
-			List<IWebsiteLanguage> websiteLanguages = new List<IWebsiteLanguage>();
-
-			WebsiteNode website = null;
-			bool contentMapHasPortalLanguages = false;
-
-			IContentMapProvider contentMapProvider = httpContext != null && httpContext.GetContentMapProvider() != null
-									? httpContext.GetContentMapProvider()
-									: AdxstudioCrmConfigurationManager.CreateContentMapProvider();
-
-			if (contentMapProvider == null)
-			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "Failed to create ContentMapProvider.");
-			}
-			else
-			{
-				var crmWebsite = httpContext.GetWebsite();
-				if (crmWebsite != null)
-				{
-					var websiteEntity = crmWebsite.Entity;
-					contentMapProvider.Using(map =>
-					{
-						map.TryGetValue(new EntityReference(websiteEntity.LogicalName, websiteEntity.Id), out website);
-						contentMapHasPortalLanguages = map.ContainsKey("adx_portallanguage");   // Remember this for error checking later
-					});
-				}
-			}
-
-			if (website == null)
-			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "Failed to obtain WebsiteNode.");
-			}
-			else
-			{
-				if (website.WebsiteLanguages == null || !website.WebsiteLanguages.Any())
-				{
-					if (contentMapHasPortalLanguages)
-					{
-						// Portal corrupted: if there exists PortalLanguages entity, but no WebsiteLanguages, then user must have deleted their WebsiteLanguages, thus corrupting the Portal.
-						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("[{0}]. No WebsiteLanguage records exist. Org solutions support Multilanguage, but the portal [{1}] does not have the data provided from upgrade.", website.Id, website.Name));
-					}
-					else
-					{
-						// Probably legacy CRM (before multi-language) is being used.
-						ADXTrace.Instance.TraceInfo(TraceCategory.Application, "WebsiteNode has no website languages, probably legacy (pre-multilanguage) CRM in use.");
-					}
-				}
-
-				websiteLanguages = GetLanguagesFromWebsiteNode(website);
-			}
-
-			var filteredLanguages = FilterActiveLanguages(websiteLanguages.Where(l => !UnsupportedLcids.Contains(l.CrmLcid)), httpContext.GetOrganizationService()).ToList();
-
-			// If necessary, write the active website languages to static
-			if (writeResultsToStatic)
-			{
-				if (ActiveWebsiteLanguagesLock.TryEnterWriteLock(ActiveWebsiteLanguagesLockWriteTimeout))
-				{
-					try
-					{
-						activeWebsiteLanguages = filteredLanguages;	// Save a clone
-					}
-					finally
-					{
-						ActiveWebsiteLanguagesLock.ExitWriteLock();
-					}
-				}
-				else
-				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Failed to acquire WRITE lock on activeWebsiteLanguages.");
-				}
-			}
-			
-
-			return filteredLanguages;
+			return null;
 		}
 
 		/// <summary>
@@ -707,66 +555,8 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		/// <param name="website">Website Node</param>
 		/// <returns>List of active website languages</returns>
 		private static List<IWebsiteLanguage> GetLanguagesFromWebsiteNode(WebsiteNode website)
-		{
-			List<IWebsiteLanguage> websiteLanguages = new List<IWebsiteLanguage>();
-
-			// if Portal solutions do not support MLP then use the legacy website_language value
-			if (website.WebsiteLanguages == null || !website.WebsiteLanguages.Any())
-			{
-				int lcid;
-				if (website.WebsiteLanguage != null)
-				{
-					lcid = website.WebsiteLanguage.Value;
-				}
-				else if (HttpContext.Current != null && HttpContext.Current.GetPortalSolutionsDetails() != null && HttpContext.Current.GetPortalSolutionsDetails().OrganizationBaseLanguageCode != 0)
-				{
-					lcid = HttpContext.Current.GetPortalSolutionsDetails().OrganizationBaseLanguageCode;
-				}
-				else
-				{
-					lcid = CultureInfo.CurrentCulture.LCID;
-				}
-
-				var culture = new CultureInfo(lcid);
-				websiteLanguages.Add(
-					new WebsiteLanguage(
-						culture.DisplayName,
-						culture.DisplayName,
-						culture.Name,
-						culture.LCID,
-						culture.LCID,
-						Guid.Empty,
-						true,
-						null));
-
-				// add tracing here to tell storey
-
-				return websiteLanguages;
-			}
-
-			// Get the active website languages from the WebsiteNode
-			foreach (var websiteLanguage in website.WebsiteLanguages)
-			{
-				// Do this null check to make sure the user didn't break their own CRM data and thus cause exception.
-				if (websiteLanguage.PortalLanguage != null && websiteLanguage.PublishingState != null && !websiteLanguage.PublishingState.IsReference)
-				{
-					var portalLanguage = websiteLanguage.PortalLanguage;
-					bool isPublished = websiteLanguage.PublishingState.IsVisible == true;
-					websiteLanguages.Add(new WebsiteLanguage(portalLanguage.Name, portalLanguage.DisplayName, portalLanguage.Code,
-						portalLanguage.CrmLanguage ?? 0, portalLanguage.Lcid ?? 0, portalLanguage.Id, isPublished, websiteLanguage));
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application,
-						string.Format("Website Language [{0}] record found a publishing state[{1}] for the website [{2}]",
-							websiteLanguage.Name, websiteLanguage.PublishingState.Name, website.Name));
-				}
-				else if (websiteLanguage.PublishingState != null && websiteLanguage.PublishingState.IsReference)
-				{
-					ADXTrace.Instance.TraceWarning(TraceCategory.Application,
-						string.Format("Website Language [{0}] record is associated with a publishing state[{1}] that cannot be found for the website or is inactive [{2}]",
-							websiteLanguage.Name, websiteLanguage.PublishingState.Name, website.Name));
-				}
-			}
-
-			return websiteLanguages;
+        {
+            return null;
 		}
 
 		/// <summary>
@@ -913,51 +703,8 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		/// <returns>List of website languages</returns>
 		public IEnumerable<IWebsiteLanguage> GetWebPageWebsiteLanguages(EntityReference webPageReference, HttpContext context)
 		{
-			IContentMapProvider contentMapPrvd = context.GetContentMapProvider() ?? AdxstudioCrmConfigurationManager.CreateContentMapProvider();
-			string pageName = string.Empty;
-			List<IWebsiteLanguage> pageWebsiteLanguages = new List<IWebsiteLanguage>();
-			contentMapPrvd.Using(map =>
-			{
-				WebPageNode webPageNode = null;
-				if (map.TryGetValue(webPageReference, out webPageNode))
-				{
-					pageName = webPageNode.Name;
-					if (webPageNode.RootWebPage != null)
-					{
-						foreach (var languagePage in webPageNode.RootWebPage.LanguageContentPages)
-						{
-							if (languagePage.WebPageLanguage == null)
-							{
-								continue;
-							}
-							if (languagePage.WebPageLanguage.IsReference)
-							{
-								ADXTrace.Instance.TraceWarning(TraceCategory.Application,
-									string.Format("Website Language [{0}] record for webpage [{1}] cannot be found or is inactive", languagePage.WebPageLanguage.Name, languagePage.Name));
-							}
-							else if (languagePage.WebPageLanguage.PublishingState != null && languagePage.WebPageLanguage.PublishingState.IsReference)
-							{
-								ADXTrace.Instance.TraceWarning(TraceCategory.Application,
-									string.Format("Website Language [{0}] record is associated with a publishing state that cannot be found for the website [{1}] or is inactive", languagePage.WebPageLanguage.Name, languagePage.Website != null ? languagePage.Website.Name : string.Empty));
-							}
-							else if (languagePage.WebPageLanguage.PublishingState != null)
-							{
-								var portalLanguage = languagePage.WebPageLanguage.PortalLanguage;
-								bool isPublished = languagePage.WebPageLanguage.PublishingState.IsVisible == true;
-								pageWebsiteLanguages.Add(new WebsiteLanguage(portalLanguage.Name, portalLanguage.DisplayName, portalLanguage.Code, portalLanguage.CrmLanguage ?? 0, portalLanguage.Lcid ?? 0, portalLanguage.Id, isPublished, languagePage.WebPageLanguage));
 
-								ADXTrace.Instance.TraceWarning(TraceCategory.Application,
-									string.Format("Website Language [{0}] was found for the webpage [{1}] and website[{2}]", languagePage.WebPageLanguage.Name, languagePage.Name, languagePage.Website != null ? languagePage.Website.Name : string.Empty));
-							}
-						}
-					}
-				}
-			});
-
-			var filteredLanguages = FilterActiveLanguages(pageWebsiteLanguages, context.GetOrganizationService()).ToList();
-			ADXTrace.Instance.TraceVerbose(TraceCategory.Application, string.Format("Found {0} active supported languages and {1} are enabled languages for the organization: Page Name [{2}]", pageWebsiteLanguages.Count, filteredLanguages.Count, pageName));
-
-			return filteredLanguages;
+            return null;
 		}
 
 		/// <summary>
@@ -1127,110 +874,6 @@ namespace Adxstudio.Xrm.AspNet.Cms
 				return false;
 			}
 			return websiteLanguages.Count(l => !l.WebsiteLanguageNode.IsReference) == 1 && Equals(first.EntityReference.Id, defaultLanguage.EntityReference.Id);
-		}
-
-		/// <summary>
-		/// Continue constructing this class using the ContentMap.
-		/// </summary>
-		/// <param name="context">The HTTP request.</param>
-		private void BuildContextLanguageInfo(HttpContextBase context)
-		{
-			// Set this by default to the request URL path. AbsolutePath will always have leading forward-slash (even if it's just '/') so we're ok from that standpoint.
-			ContextUrl = context.Request.Url;
-
-			// 1. Get the context active website languages.
-			var website = context.GetWebsite();
-			
-			var websiteLanguages = BuildActiveWebsiteLanguages(true, context).ToArray();
-			if (websiteLanguages.Length == 1 && websiteLanguages[0].PortalLanguageId == Guid.Empty)
-			{
-				// Disable MLP if there are not portal languages
-				ContextUrl = context.Request.Url;
-				ContextLanguage = websiteLanguages[0];
-				RequestUrlHasLanguageCode = false;
-				return;
-			}
-
-			// 2b. User preferred language
-			var crmUser = context.GetUser();
-			if (crmUser != null)	// If current user is not authenticated, then result will be null.
-			{
-				var preferredLanguage = crmUser.PreferredLanguage;
-				if (preferredLanguage != null)
-				{
-					UserPreferredLanguage = GetWebsiteLanguageByPortalLanguageId(preferredLanguage.Id, websiteLanguages);
-				}
-			}
-
-			// 2c. Default web site language
-			if (website.DefaultLanguage != null)
-			{
-				DefaultLanguage = GetWebsiteLanguage(website.DefaultLanguage.Id, websiteLanguages);
-			}
-
-			// 3. Figure out what the context language should be. There's 4 places that we can check for this info:
-			ContextLanguage = null;
-
-			// 3a. Check the URL for language code.
-			IWebsiteLanguage language = null;
-			string absolutePathWithoutLanguageCode;
-			bool pathHasLanguageCode;
-			ExtractLanguageCode(ContextUrl.PathAndQuery, websiteLanguages, out pathHasLanguageCode, out language, out absolutePathWithoutLanguageCode);
-			RequestUrlHasLanguageCode = pathHasLanguageCode;
-			AbsolutePathWithoutLanguageCode = absolutePathWithoutLanguageCode; // While we're here, save the partial URL without language code
-			if (pathHasLanguageCode && language != null)
-			{
-				RequestUrlHasLanguageCode = true;
-				ContextLanguage = language;
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo found in URL lang:{0} url=[{1}]", ContextLanguage.Code, context.Request.Url));
-				return;
-			}
-
-			// if this is a single language portal and language is not in the url then we don't need to look further
-			if (IsSingleLanguageWebsite(websiteLanguages, DefaultLanguage))
-			{
-				ContextLanguage = DefaultLanguage;
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo found in single language portal's default lang:{0} url=[{1}]", ContextLanguage.Code, context.Request.Url));
-				return;
-			}
-
-			// 3b. Else, check the session cookie for previously stored language code.
-			if (ContextLanguage == null)
-			{
-				string cookieLanguageCode;
-				if (TryReadLanguageCodeFromCookie(context, out cookieLanguageCode))
-				{
-					ContextLanguage = GetWebsiteLanguage(cookieLanguageCode, websiteLanguages);
-					if (ContextLanguage == null)
-					{
-						ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo cookie has invalid lang:{0} url=[{1}]", cookieLanguageCode, context.Request.Url));
-					}
-					else
-					{
-						ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo found in cookie lang:{0} url=[{1}]", ContextLanguage.Code, context.Request.Url));
-						return;
-					}
-				}
-			}
-
-			// 3c. Else, check authenticated user's preferred language.
-			if (ContextLanguage == null && UserPreferredLanguage != null)
-			{
-				ContextLanguage = UserPreferredLanguage;
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo found in user pref lang:{0} url=[{1}]", ContextLanguage.Code, context.Request.Url));
-				return;
-			}
-
-			// 3d. Else, use website default language
-			if (ContextLanguage == null && DefaultLanguage != null)
-			{
-				ContextLanguage = DefaultLanguage;
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo use web default lang:{0} url=[{1}]", ContextLanguage.Code, context.Request.Url));
-			}
-
-			// At this point if we still haven't figured out what the context language is, then we must be dealing with a legacy CRM instance
-			// that doesn't suport multi-language.
-			// Leave ContextLanguage as null, thus making IsCrmMultiLanguageEnabled flag return false.
 		}
 
 		/// <summary>

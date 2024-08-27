@@ -14,7 +14,6 @@ using System.Web.Routing;
 using Adxstudio.Xrm.Cms;
 using Adxstudio.Xrm.Resources;
 using Adxstudio.Xrm.Text;
-using Microsoft.Owin;
 using Microsoft.Xrm.Client;
 using Adxstudio.Xrm.Configuration;
 
@@ -29,24 +28,6 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		public WebsiteManager(IWebsiteStore<TWebsite, TKey> store)
 			: base(store)
 		{
-		}
-
-		public virtual TWebsite Find(IOwinContext owinContext, PortalHostingEnvironment environment)
-		{
-			ThrowIfDisposed();
-
-			return FindAsync(owinContext, environment).Result;
-		}
-
-		public virtual Task<TWebsite> FindAsync(IOwinContext owinContext, PortalHostingEnvironment environment)
-		{
-			ThrowIfDisposed();
-
-			var request = owinContext != null
-				? owinContext.Get<RequestContext>(typeof(RequestContext).FullName)
-				: null;
-
-			return FindAsync(request, environment);
 		}
 
 		public virtual TWebsite Find(RequestContext request, PortalHostingEnvironment environment)

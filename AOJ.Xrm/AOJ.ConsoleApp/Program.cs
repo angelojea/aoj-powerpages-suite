@@ -43,12 +43,17 @@ namespace AOJ.ConsoleApp
   {% endfor %}
 ]
 ");
+                Console.WriteLine(rendered);
+                Console.ReadLine();
 
-                //var rendered = new AOJRenderer(new OrganizationService(orgService), Guid.Parse("ce496a9b-0b4b-4d8f-8f0e-7e08c21c5715"), Guid.Parse("2ba29921-1b5c-ef11-bfe2-000d3a56777a"))
-                //        .RenderEntityForm(Guid.Parse("e0ce2b35-875e-ef11-bfe3-000d3a56777a"));
+                rendered = new AOJRenderer(new OrganizationService(client), Guid.Parse("ce496a9b-0b4b-4d8f-8f0e-7e08c21c5715"), Guid.Parse("2ba29921-1b5c-ef11-bfe2-000d3a56777a"))
+                        .RenderEntityForm(Guid.Parse("e0ce2b35-875e-ef11-bfe3-000d3a56777a"));
 
-                //var rendered = new AOJRenderer(new OrganizationService(client), Guid.Parse("ce496a9b-0b4b-4d8f-8f0e-7e08c21c5715"), Guid.Parse("2ba29921-1b5c-ef11-bfe2-000d3a56777a"))
-                //        .RenderEntityList(Guid.Parse("72194b7b-aa62-ef11-bfe2-6045bdff7792"));
+                Console.WriteLine(rendered);
+                Console.ReadLine();
+
+                rendered = new AOJRenderer(new OrganizationService(client), Guid.Parse("ce496a9b-0b4b-4d8f-8f0e-7e08c21c5715"), Guid.Parse("2ba29921-1b5c-ef11-bfe2-000d3a56777a"))
+                        .RenderEntityList(Guid.Parse("72194b7b-aa62-ef11-bfe2-6045bdff7792"));
 
                 Console.WriteLine(rendered);
                 Console.ReadLine();

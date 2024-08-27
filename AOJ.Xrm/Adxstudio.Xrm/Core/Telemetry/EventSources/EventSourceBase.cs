@@ -13,8 +13,6 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 	using Decorators;
 	using Diagnostics.Trace;
 	using Web;
-	using Microsoft.AspNet.Identity.Owin;
-	using Microsoft.Owin;
 	public abstract class EventSourceBase : EventSource
 	{
 		private const int DefaultLcid = 0;
@@ -126,31 +124,9 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 		protected int Lcid
 		{
 			get
-			{
-				try
-				{
-					var context = HttpContext;
-					if (context == null)
-						return DefaultLcid;
-
-					if (OwinContext == null)
-						return DefaultLcid;
-
-					var language = OwinContext.Get<ContextLanguageInfo>();
-					if (language == null)
-						return DefaultLcid;
-
-					return language.IsCrmMultiLanguageEnabled
-						? language.ContextLanguage.Lcid
-						: DefaultLcid;
-				}
-				catch
-				{
-					// eat exception expecting it to possibly happen in scenarios without context
-					// i.g., background worker threads
-					return DefaultLcid;
-				}
-			}
+            {
+                return DefaultLcid;
+            }
 		}
 
 		/// <summary>
@@ -159,31 +135,9 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 		protected int CrmLcid
 		{
 			get
-			{
-				try
-				{
-					var context = HttpContext;
-					if (context == null)
-						return DefaultLcid;
-					
-					if (OwinContext == null)
-						return DefaultLcid;
-
-					var language = OwinContext.Get<ContextLanguageInfo>();
-					if (language == null)
-						return DefaultLcid;
-
-					return language.IsCrmMultiLanguageEnabled
-						? language.ContextLanguage.CrmLcid
-						: DefaultLcid;
-				}
-				catch
-				{
-					// eat exception expecting it to possibly happen in scenarios without context
-					// i.g., background worker threads
-					return DefaultLcid;
-				}
-			}
+            {
+                return DefaultLcid;
+            }
 		}
 
 		/// <summary>
@@ -204,32 +158,7 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 		[NonEvent]
 		protected string ElapsedTime()
 		{
-			try
-			{
-				if (HttpContext == null)
-					return string.Empty;
-
-				if (OwinContext == null || OwinContext.Get<RequestElapsedTimeContext>() == null)
-				{
-					var inspector = ItemDecorator.GetInspectorInstance(HttpContextBase);
-					var startTime = inspector[ItemDecorator.RequestStartTime];
-					if (startTime != null)
-					{
-						var requestStartTime = (DateTime)startTime;
-						return (DateTime.UtcNow - requestStartTime).TotalMilliseconds.ToString(CultureInfo.InvariantCulture);
-					}
-
-					return string.Empty;
-				}
-
-				return OwinContext.Get<RequestElapsedTimeContext>().ElapsedTime().ToString();
-			}
-			catch
-			{
-				// eat exception expecting it to possibly happen in scenarios without context
-				// i.g., background worker threads
-				return string.Empty;
-			}
+			return "";
 		}
 		
 		[NonEvent]
@@ -238,27 +167,6 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 			var eventId = Convert.ToInt32(eventName, CultureInfo.InvariantCulture);
 
 			base.WriteEvent(eventId, eventData);
-		}
-
-		/// <summary>
-		/// Attempts to retrieve the OwinContext
-		/// </summary>
-		private IOwinContext OwinContext
-		{
-			get
-			{
-				try
-				{
-					if (HttpContext == null || !HttpContext.Items.Contains("owin.Environment"))
-						return null;
-
-					return HttpContext.GetOwinContext();
-				}
-				catch
-				{
-					return null;
-				}
-			}
 		}
 
 		/// <summary>

@@ -18,8 +18,6 @@ using Adxstudio.Xrm.Cms;
 using Adxstudio.Xrm.Core.Telemetry;
 using Adxstudio.Xrm.Search;
 using Adxstudio.Xrm.Globalization;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin;
 using Microsoft.Xrm.Portal.Configuration;
 using Microsoft.Xrm.Portal.Web;
 using Microsoft.Xrm.Sdk;
@@ -180,35 +178,14 @@ namespace Adxstudio.Xrm.Web
 
 		#region IOwinContext
 
-		public static IOwinContext Set<T>(this RequestContext request, T value)
-		{
-			return Set(request.HttpContext, value);
-		}
-
-		public static IOwinContext Set<T>(this HttpContextBase context, T value)
-		{
-			return Set(context.GetOwinContext(), value);
-		}
-
-		public static IOwinContext Set<T>(this IOwinContext context, T value)
-		{
-			return context.Set(typeof(T).FullName, value);
-		}
-
 		public static IOrganizationService GetOrganizationService(this HttpContext context)
-		{
-			return GetOrganizationService(context.GetOwinContext());
-		}
+        {
+            return AojConfigurationManager.Service;
+        }
 
 		public static IOrganizationService GetOrganizationService(this HttpContextBase context)
 		{
-			return GetOrganizationService(context.GetOwinContext());
-		}
-
-		public static IOrganizationService GetOrganizationService(this IOwinContext context)
-		{
-			var dbContext = context.Get<CrmDbContext>();
-			return dbContext.Service;
+			return AojConfigurationManager.Service;
 		}
 
 		public static CrmWebsite GetWebsite(this HttpContext context)
@@ -221,11 +198,6 @@ namespace Adxstudio.Xrm.Web
             return new CrmWebsite();
         }
 
-		public static CrmWebsite GetWebsite(this IOwinContext context)
-		{
-			return new CrmWebsite();
-		}
-
 		public static CrmUser GetUser(this HttpContext context)
 		{
 			return new CrmUser();
@@ -236,22 +208,12 @@ namespace Adxstudio.Xrm.Web
             return new CrmUser();
         }
 
-		public static CrmUser GetUser(this IOwinContext context)
-        {
-            return new CrmUser();
-        }
-
 		public static CrmSiteMapNode GetNode(this HttpContext context)
         {
             return null;
         }
 
 		public static CrmSiteMapNode GetNode(this HttpContextBase context)
-        {
-            return null;
-        }
-
-		public static CrmSiteMapNode GetNode(this IOwinContext context)
         {
             return null;
         }
@@ -268,12 +230,6 @@ namespace Adxstudio.Xrm.Web
 			return node != null ? node.Entity : null;
 		}
 
-		public static Entity GetEntity(this IOwinContext context)
-		{
-			var node = GetNode(context);
-			return node != null ? node.Entity : null;
-		}
-
 		public static IContentMapProvider GetContentMapProvider(this HttpContext context)
 		{
 			return null;
@@ -284,57 +240,41 @@ namespace Adxstudio.Xrm.Web
             return null;
         }
 
-		public static IContentMapProvider GetContentMapProvider(this IOwinContext context)
+		public static T GetSiteSetting<T>(this HttpContext context, string name)
         {
-            return null;
+            return default;
         }
 
-		public static T GetSiteSetting<T>(this HttpContext context, string name)
-		{
-			return GetSiteSetting<T>(context.GetOwinContext(), name);
-		}
-
 		public static T GetSiteSetting<T>(this HttpContextBase context, string name)
-		{
-			return GetSiteSetting<T>(context.GetOwinContext(), name);
-		}
-
-		public static T GetSiteSetting<T>(this IOwinContext context, string name)
-		{
-			var website = GetWebsite(context);
-			return website.Settings.Get<T>(name);
-		}
+        {
+            return default;
+        }
 
 		public static string GetSiteSetting(this HttpContext context, string name)
-		{
-			return GetSiteSetting(context.GetOwinContext(), name);
-		}
+        {
+            return "";
+        }
 
 		public static string GetSiteSetting(this HttpContextBase context, string name)
 		{
-			return GetSiteSetting(context.GetOwinContext(), name);
-		}
-
-		public static string GetSiteSetting(this IOwinContext context, string name)
-		{
-			var website = GetWebsite(context);
-			return website.Settings.Get<string>(name);
+			return "";
 		}
 
 		public static ContextLanguageInfo GetContextLanguageInfo(this HttpContext context)
 		{
-			return GetContextLanguageInfo(context.GetOwinContext());
-		}
+            return new ContextLanguageInfo()
+            {
+
+            };
+        }
 
 		public static ContextLanguageInfo GetContextLanguageInfo(this HttpContextBase context)
-		{
-			return null;
-		}
+        {
+            return new ContextLanguageInfo()
+            {
 
-		public static ContextLanguageInfo GetContextLanguageInfo(this IOwinContext context)
-		{
-			return context.Get<ContextLanguageInfo>();
-		}
+            };
+        }
 
 		/// <summary>
 		/// Gets the LCID of current CRM language. Ex: if current language is en-CA (4105), then 1033 (en-US) will be returned because that is the associated CRM language.
@@ -359,16 +299,6 @@ namespace Adxstudio.Xrm.Web
 		/// <summary>
 		/// Gets the LCID of current CRM language. Ex: if current language is en-CA (4105), then 1033 (en-US) will be returned because that is the associated CRM language.
 		/// </summary>
-		/// <param name="context">Current Owin context.</param>
-		/// <returns>LCID of current CRM language.</returns>
-		public static int GetCrmLcid(this IOwinContext context)
-        {
-            return AojConfigurationManager.LanguageCode;
-        }
-
-		/// <summary>
-		/// Gets the LCID of current CRM language. Ex: if current language is en-CA (4105), then 1033 (en-US) will be returned because that is the associated CRM language.
-		/// </summary>
 		/// <param name="languageInfo">ContextLanguageInfo to extract language info from.</param>
 		/// <returns>LCID of current CRM language.</returns>
 		public static int GetCrmLcid(this ContextLanguageInfo languageInfo)
@@ -382,11 +312,6 @@ namespace Adxstudio.Xrm.Web
 		}
 
 		public static PortalSolutions GetPortalSolutionsDetails(this HttpContextBase context)
-        {
-            return new PortalSolutions();
-        }
-
-		public static PortalSolutions GetPortalSolutionsDetails(this IOwinContext context)
         {
             return new PortalSolutions();
         }

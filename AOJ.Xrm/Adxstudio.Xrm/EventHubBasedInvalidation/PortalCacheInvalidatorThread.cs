@@ -14,7 +14,6 @@ using Adxstudio.Xrm.Cms;
 using Adxstudio.Xrm.Core.Flighting;
 using Adxstudio.Xrm.Configuration;
 using Adxstudio.Xrm.IO;
-using Microsoft.Owin;
 using Microsoft.Practices.TransientFaultHandling;
 using Microsoft.Xrm.Client.Services.Messages;
 using Microsoft.Xrm.Sdk;
@@ -224,9 +223,6 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 								// The restart messages should be processed only once when the message is received from Cache subscription.
 								if (!isSearchIndexInvalidation)
 								{
-									// restart the web application
-									var task = restartMessage.InvokeAsync(new OwinContext()).WithCurrentCulture();
-									task.GetAwaiter().GetResult();
 									SearchIndexBuildRequest.ProcessMessage(message);
 								}
 							}

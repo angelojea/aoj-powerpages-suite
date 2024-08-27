@@ -92,7 +92,6 @@ namespace Adxstudio.Xrm.Web.Handlers
 			{
 				Authorization = context.Request.Headers["Authorization"],
 				ContentType = context.Request.ContentType,
-				Body = context.GetOwinContext().GetRequestBody()
 			};
 
 			HostingEnvironment.QueueBackgroundWorkItem(cancellationToken => ProcessNotification(cancellationToken, request));

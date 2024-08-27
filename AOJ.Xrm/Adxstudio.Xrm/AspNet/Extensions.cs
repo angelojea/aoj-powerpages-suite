@@ -13,7 +13,6 @@ namespace Adxstudio.Xrm.AspNet
 	using System.Threading.Tasks;
 	using Adxstudio.Xrm.Cms;
 	using Services.Query;
-	using Microsoft.Owin;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Messages;
 	using Microsoft.Xrm.Sdk.Query;
@@ -50,30 +49,6 @@ namespace Adxstudio.Xrm.AspNet
 			}
 
 			return null;
-		}
-
-		public static string GetRequestBody(this IOwinContext context)
-		{
-			if (!string.Equals(context.Request.Method, "POST"))
-			{
-				ADXTrace.Instance.TraceWarning(TraceCategory.Application, "Unable to read request body. Invalid request method.");
-
-				return null;
-			}
-
-			if (context.Request.CallCancelled.IsCancellationRequested)
-			{
-				ADXTrace.Instance.TraceWarning(TraceCategory.Application, "Unable to read request body. The client is disconnected.");
-
-				return null;
-			}
-
-			var reader = new StreamReader(context.Request.Body);
-			var originalPosition = context.Request.Body.Position;
-			var body = reader.ReadToEnd();
-			context.Request.Body.Position = originalPosition;
-
-			return body;
 		}
 	}
 

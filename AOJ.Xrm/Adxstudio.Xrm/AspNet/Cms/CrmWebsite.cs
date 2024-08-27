@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Owin;
 using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Sdk;
 
@@ -112,11 +111,6 @@ namespace Adxstudio.Xrm.AspNet.Cms
 				{
 					return (T)(object)result;
 				}
-			}
-
-			if (type.IsA(typeof(PathString)) || type.IsA(typeof(PathString?)))
-			{
-				return (T)(object)new PathString(value);
 			}
 
 			return default(T);

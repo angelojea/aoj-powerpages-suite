@@ -8,16 +8,12 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Text.RegularExpressions;
-	using System.Threading.Tasks;
-	using Core.Telemetry;
-	using Web;
-	using Microsoft.Owin;
 	using Microsoft.Xrm.Client.Services.Messages;
 
 	/// <summary>
 	/// A portal bus message that restarts the current web application when invoked.
 	/// </summary>
-	public class ApplicationRestartPortalBusMessage : PortalBusMessage
+	public class ApplicationRestartPortalBusMessage
 	{
 		private static readonly IDictionary<string, IEnumerable<string>> _entitiesToRestart = new Dictionary<string, IEnumerable<string>>
 		{
@@ -25,16 +21,6 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 			{ "adx_websitebinding", new[] { ".*" } },
 			{ "adx_website", new[] { ".*" } }
 		};
-
-		public override Task InvokeAsync(IOwinContext context)
-		{
-			WebEventSource.Log.WriteApplicationLifecycleEvent(ApplicationLifecycleEventCategory.Restart, "PortalBusMessage Initiating Restart");
-
-			TelemetryState.ApplicationEndInfo = ApplicationEndFlags.MetadataDriven;
-			Web.Extensions.RestartWebApplication();
-
-			return Task.FromResult(0);
-		}
 
 		public virtual bool Validate(PluginMessage message)
 		{

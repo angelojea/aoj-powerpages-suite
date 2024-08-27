@@ -64,12 +64,6 @@ namespace Adxstudio.Xrm.Web.Routing
 			ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("GetHttpHandler route=[{0}] ", routeUrl));
 
 			// apply the current SiteMapNode to the OWIN environment
-			var node = GetNode(requestContext);
-
-			if (node != null)
-			{
-				requestContext.Set(node);
-			}
 
 			// Note: prior to this next call, PortalContext is null.
 			var portal = PortalCrmConfigurationManager.CreatePortalContext(PortalName, requestContext);
@@ -108,13 +102,6 @@ namespace Adxstudio.Xrm.Web.Routing
 			if (TryCreateHandler(portal, out handler))
 			{
 				return handler;
-			}
-
-			if (node?.Entity?.Attributes != null && node.Entity.Attributes.ContainsKey("adx_alloworigin"))
-			{
-				var allowOrigin = node.Entity["adx_alloworigin"] as string;
-
-				Web.Extensions.SetAccessControlAllowOriginHeader(requestContext.HttpContext, allowOrigin);
 			}
 			// remove the querystring
 
