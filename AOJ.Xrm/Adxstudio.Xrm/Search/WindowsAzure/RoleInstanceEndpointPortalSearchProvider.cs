@@ -9,17 +9,13 @@ using System.Collections.Specialized;
 using System.Configuration.Provider;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.ServiceModel;
 using Adxstudio.Xrm.Collections.Generic;
 using Adxstudio.Xrm.Configuration;
 using Adxstudio.Xrm.Globalization;
 using Adxstudio.Xrm.Search.Index;
 using Adxstudio.Xrm.Security;
-using Adxstudio.Xrm.Resources;
-using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.Xrm.Client;
-using Microsoft.Xrm.Client.Diagnostics;
 using Microsoft.Xrm.Client.Security;
 using Microsoft.Xrm.Portal;
 using Microsoft.Xrm.Portal.Configuration;
@@ -57,93 +53,7 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 
 		public override void Initialize(string name, NameValueCollection config)
 		{
-			if (config == null)
-			{
-				throw new ArgumentNullException("config");
-			}
-
-			if (string.IsNullOrEmpty(name))
-			{
-				name = GetType().Name;
-			}
-
-			base.Initialize(name, config);
-
-			PortalName = config["portalName"];
-			BindingConfiguration = config["bindingConfiguration"];
-
-			var recognizedAttributes = new List<string>
-			{
-				"name",
-				"description",
-				"portalName",
-				"bindingConfiguration"
-			};
-
-			// Remove all of the known configuration values. If there are any left over, they are unrecognized.
-			recognizedAttributes.ForEach(config.Remove);
-
-			if (config.Count > 0)
-			{
-				var unrecognizedAttribute = config.GetKey(0);
-
-				if (!string.IsNullOrEmpty(unrecognizedAttribute))
-				{
-					throw new ProviderException("The search provider {0} does not currently recognize or support the attribute {1}.".FormatWith(name, unrecognizedAttribute));
-				}
-			}
-
-			try
-			{
-				var serviceRoleName = RoleEnvironment.GetConfigurationSettingValue("Adxstudio.Xrm.Search.WindowsAzure.ServiceRole");
-
-				if (string.IsNullOrEmpty(serviceRoleName))
-				{
-					throw new ProviderException("Configuration value Adxstudio.Xrm.Search.WindowsAzure.ServiceRole cannot be null or empty.");
-				}
-
-				Role serviceRole;
-
-				if (!RoleEnvironment.Roles.TryGetValue(serviceRoleName, out serviceRole))
-				{
-					throw new ProviderException("Unable to retrieve the role {0}.".FormatWith(serviceRoleName));
-				}
-
-				var serviceEndpointName = RoleEnvironment.GetConfigurationSettingValue("Adxstudio.Xrm.Search.WindowsAzure.ServiceEndpoint");
-
-				if (string.IsNullOrEmpty(serviceEndpointName))
-				{
-					throw new ProviderException("Configuration value Adxstudio.Xrm.Search.WindowsAzure.ServiceEndpoint cannot be null or empty.");
-				}
-
-				var serviceEndpoint = serviceRole.Instances.Select(instance =>
-				{
-					RoleInstanceEndpoint endpoint;
-
-					return instance.InstanceEndpoints.TryGetValue(serviceEndpointName, out endpoint) ? endpoint : null;
-				}).FirstOrDefault(endpoint => endpoint != null);
-
-				if (serviceEndpoint == null)
-				{
-					throw new ProviderException("Unable to retrieve the endpoint {0} from role {1}.".FormatWith(serviceEndpointName, serviceRole.Name));
-				}
-
-				ServiceEndpointAddress = new EndpointAddress(string.Format(CultureInfo.InvariantCulture, "net.tcp://{0}/search", serviceEndpoint.IPEndpoint));
-
-				var binding = string.IsNullOrEmpty(BindingConfiguration)
-					? new NetTcpBinding(SecurityMode.None) { ReceiveTimeout = TimeSpan.FromDays(1), SendTimeout = TimeSpan.FromDays(1) }
-					: new NetTcpBinding(BindingConfiguration);
-
-				ServiceChannelFactory = new ChannelFactory<ISearchService>(binding);
-
-				ServiceChannelFactory.Faulted += OnServiceChannelFactoryFaulted;
-			}
-			catch (Exception e)
-			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Error initializing provider ""{0}"": {1}", name, e));
-
-                throw;
-			}
+			return;
 		}
 
 		private void OnServiceChannelFactoryFaulted(object sender, EventArgs e)

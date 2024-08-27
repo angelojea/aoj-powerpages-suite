@@ -114,42 +114,7 @@ namespace Adxstudio.Xrm.Activity
 
 		private IEnumerable<IAttachment> GetAnnotationsAsAttachmentCollection(EntityReference regarding, bool respectPermissions = true)
 		{
-			// Retrieve attachments
-			var annotationDataAdapter = new AnnotationDataAdapter(_dependencies);
-			var annotationCollection = annotationDataAdapter.GetAnnotations(regarding, respectPermissions: respectPermissions, privacy: AnnotationPrivacy.Any);
-
-			// Filter and project into Attachment object
-			return annotationCollection.Where(annotation => EntityContainsRequiredAnnotationFields(annotation.Entity.Attributes)).Select(annotation =>
-			{
-				var entity = annotation.Entity;
-				var fileName = GetFieldValue(entity, "filename");
-				var fileType = GetFieldValue(entity, "mimetype");
-				ulong fileSize;
-				if (!ulong.TryParse(GetFieldValue(entity, "filesize"), out fileSize))
-				{
-					fileSize = 0;
-				}
-				FileSize attachmentSize = new FileSize(fileSize);
-
-				// Create CrmAnnotationFile for URL generation
-				var crmAnnotationFile = new CrmAnnotationFile(fileName, fileType, new byte[0]);
-				crmAnnotationFile.Annotation = new Entity("annotation")
-				{
-					Id = Guid.Parse(GetFieldValue(entity, "annotationid"))
-				};
-
-				var activityAttachment = new Attachment
-				{
-					AttachmentContentType = fileType,
-					AttachmentFileName = fileName,
-					AttachmentIsImage = (new List<string> { "image/jpeg", "image/gif", "image/png" }).Contains(fileType),
-					AttachmentSize = attachmentSize,
-					AttachmentSizeDisplay = attachmentSize.ToString(),
-					AttachmentUrl = crmAnnotationFile.Annotation.GetFileAttachmentUrl(_dependencies.GetWebsite())
-				};
-
-				return activityAttachment;
-			});
+			return null;
 		}
 
 	    private bool EntityContainsRequiredAnnotationFields(AttributeCollection attributeCollection)
@@ -230,78 +195,6 @@ namespace Adxstudio.Xrm.Activity
 
 			var entityPermissionProvider = new CrmEntityPermissionProvider();
 			result = new PortalCommentCreateResult(entityPermissionProvider, serviceContext, portalComment.Regarding);
-
-			if (result.PermissionsExist && result.PermissionGranted)
-			{
-				var acceptMimeTypes = AnnotationDataAdapter.GetAcceptRegex(portalComment.AttachmentSettings.AcceptMimeTypes);
-				var acceptExtensionTypes = AnnotationDataAdapter.GetAcceptRegex(portalComment.AttachmentSettings.AcceptExtensionTypes);
-				if (portalComment.FileAttachments != null)
-				{
-					portalComment.FileAttachments.ForEach(attachment =>
-					{
-						if (!(acceptExtensionTypes.IsMatch(Path.GetExtension(attachment.FileName).ToLower()) ||
-								acceptMimeTypes.IsMatch(attachment.MimeType)))
-						{
-							throw new AnnotationException(portalComment.AttachmentSettings.RestrictMimeTypesErrorMessage);
-						}
-					});
-				}
-
-				var owner = portalComment.To?.GetAttributeValue<EntityReference>("partyid");
-
-				var entity = new Entity("adx_portalcomment");
-
-				entity.SetAttributeValue("description", portalComment.Description);
-				entity.SetAttributeValue("regardingobjectid", portalComment.Regarding);
-				entity.SetAttributeValue("regardingobjecttypecode", portalComment.Regarding.LogicalName);
-				entity.SetAttributeValue("from", new[] { portalComment.From });
-				entity.SetAttributeValue("adx_portalcommentdirectioncode", new OptionSetValue((int)portalComment.DirectionCode));
-				
-				if (owner != null)
-				{
-					entity.SetAttributeValue("ownerid", owner);
-
-					if (!string.Equals(owner.LogicalName, "team", StringComparison.OrdinalIgnoreCase))
-					{
-						entity.SetAttributeValue("to", new[] { portalComment.To });
-					}
-				}
-
-				// Create adx_portalcomment but skip cache invalidation.
-				var id = (serviceContext as IOrganizationService).ExecuteCreate(entity, RequestFlag.ByPassCacheInvalidation);
-
-				portalComment.ActivityId = entity.Id = id;
-				portalComment.Entity = entity;
-
-				// Can only change state code value after entity creation
-				entity.SetAttributeValue("statecode", new OptionSetValue((int)portalComment.StateCode));
-				entity.SetAttributeValue("statuscode", new OptionSetValue((int)portalComment.StatusCode));
-
-				// Explicitly include the activityid, this way the Cache will know to add dependency on "activitypointer" for this "adx_portalcomment" entity.
-				entity.SetAttributeValue("activityid", id);
-
-				(serviceContext as IOrganizationService).ExecuteUpdate(entity);
-				
-				if (portalComment.FileAttachments != null)
-				{
-					// permission for Portal Comment implies permission for attachment to Portal Comment
-					portalComment.AttachmentSettings.RespectPermissions = false;
-
-					foreach (IAnnotationFile attachment in portalComment.FileAttachments)
-					{
-						IAnnotation annotation = new Annotation
-						{
-							Subject = string.Empty,
-							NoteText = string.Empty,
-							Regarding = portalComment.Entity.ToEntityReference(),
-							FileAttachment = attachment
-						};
-
-						IAnnotationDataAdapter da = new AnnotationDataAdapter(_dependencies);
-						da.CreateAnnotation(annotation, portalComment.AttachmentSettings);
-					}
-				}
-			}
 
 			return result;
 		}

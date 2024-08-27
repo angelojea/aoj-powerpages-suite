@@ -195,17 +195,8 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 		}
 
 		public virtual IEnumerable<IRelatedNote> SelectRelatedNotes(IKnowledgeArticle article)
-		{
-			if (!IsAnnotationSearchEnabled)
-			{
-				return null;
-			}
-
-			var annotationDataAdapter = new AnnotationDataAdapter(Dependencies);
-			var webPrefix = GetNotesFilterPrefix;
-
-			var relatedNotes = annotationDataAdapter.GetDocuments(article.EntityReference, webPrefix: webPrefix);
-			return relatedNotes.Select(a => new RelatedNote(a.NoteText == null ? string.Empty : a.NoteText.ToString().Substring(webPrefix.Length), a.FileAttachment.FileName, a.FileAttachment.Url));
+        {
+            return null;
 		}
 
 		/// <summary>

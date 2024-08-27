@@ -31,33 +31,6 @@ namespace Adxstudio.Xrm
 
 		public virtual void AttachFile(OrganizationServiceContext context, Entity entity, HttpPostedFile postedFile)
 		{
-			if (context == null)
-			{
-				throw new ArgumentNullException("context");
-			}
-
-			if (entity == null)
-			{
-				throw new ArgumentNullException("entity");
-			}
-
-			if (postedFile == null)
-			{
-				throw new ArgumentNullException("postedFile");
-			}
-
-			var securityProvider = PortalCrmConfigurationManager.CreateCrmEntitySecurityProvider(PortalName);
-
-			securityProvider.Assert(context, entity, CrmEntityRight.Change);
-			
-			var dataAdapterDependencies = new PortalConfigurationDataAdapterDependencies(requestContext: HttpContext.Current.Request.RequestContext, portalName: PortalName);
-			var dataAdapter = new AnnotationDataAdapter(dataAdapterDependencies);
-			var result = dataAdapter.CreateAnnotation(entity.ToEntityReference(), string.Empty, string.Empty,
-				new HttpPostedFileWrapper(postedFile));
-			if (result.Annotation.Entity.Id != null)
-			{
-				throw new InvalidOperationException("The file couldn't be attached to entity {0}.".FormatWith(entity));
-			}
 		}
 
 		public virtual IEnumerable<ICrmEntityAttachmentInfo> GetAttachmentInfo(OrganizationServiceContext context, Entity entity)

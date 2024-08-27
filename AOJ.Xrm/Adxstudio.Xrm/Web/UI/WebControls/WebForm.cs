@@ -4430,18 +4430,12 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					};
 
 					var fileAttachments = new List<IAnnotationFile>();
-					foreach (var uploadedFile in fileUpload.PostedFiles)
-					{
-						fileAttachments.Add(AnnotationDataAdapter.CreateFileAttachment(new HttpPostedFileWrapper(uploadedFile), _annotationSettings.StorageLocation));
-					}
 					portalComment.FileAttachments = fileAttachments;
 
 					portalCommentDataAdapter.CreatePortalComment(portalComment);
 				}
 				else
 				{
-					IAnnotationDataAdapter notesDataAdapter = new AnnotationDataAdapter(dataAdapterDependencies);
-
 					foreach (var uploadedFile in fileUpload.PostedFiles)
 					{
 						var annotation = new Annotation
@@ -4449,10 +4443,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 							Regarding = regarding,
 							Subject = AnnotationHelper.BuildNoteSubject(context, portalUser),
 							NoteText = AnnotationHelper.WebAnnotationPrefix,
-							FileAttachment = AnnotationDataAdapter.CreateFileAttachment(new HttpPostedFileWrapper(uploadedFile), _annotationSettings.StorageLocation)
 						};
-
-						notesDataAdapter.CreateAnnotation(annotation, _annotationSettings);
 					}
 				}
 			}
@@ -5672,19 +5663,6 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			private void ValidateFileAccept(FileUpload fileUpload, ServerValidateEventArgs args)
 			{
-				args.IsValid = true;
-
-				if (!fileUpload.HasFiles) return;
-
-				var regex = AnnotationDataAdapter.GetAcceptRegex(_attachFileAccept);
-				foreach (var uploadedFile in fileUpload.PostedFiles)
-				{
-					args.IsValid = regex.IsMatch(uploadedFile.ContentType);
-					if (!args.IsValid)
-					{
-						break;
-					}
-				}
 			}
 		}
 

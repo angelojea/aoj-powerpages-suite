@@ -10,8 +10,6 @@ using System.Threading;
 using Adxstudio.Xrm.Notes;
 using Adxstudio.Xrm.Resources;
 using Adxstudio.Xrm.Web.Mvc;
-using Microsoft.WindowsAzure.Storage.Blob;
-using Microsoft.Xrm.Client.Diagnostics;
 using Microsoft.Xrm.Client.Security;
 using Microsoft.Xrm.Portal.Web;
 using Microsoft.Xrm.Sdk;
@@ -76,86 +74,8 @@ namespace Adxstudio.Xrm.Forums
 		}
 
 		public IEnumerable<IForumPost> SelectPosts(bool descending, int startRowIndex, int maximumRows = -1)
-		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("startRowIndex={0}, maximumRows={1}: Start", startRowIndex, maximumRows));
-
-			var serviceContext = Dependencies.GetServiceContext();
-			var securityProvider = Dependencies.GetSecurityProvider();
-			var entityUrlProvider = Dependencies.GetUrlProvider();
-			var user = Dependencies.GetPortalUser();
-			var website = Dependencies.GetWebsite();
-
-			if (startRowIndex < 0)
-			{
-                throw new ArgumentException("Value must be a positive integer.", "startRowIndex");
-			}
-
-			if (maximumRows == 0)
-			{
-				return new IForumPost[] { };
-			}
-
-			var query = serviceContext.CreateQuery("adx_communityforumpost")
-				.Join(serviceContext.CreateQuery("adx_communityforumthread"), fp => fp.GetAttributeValue<Guid>("adx_forumthreadid"), ft => ft.GetAttributeValue<Guid>("adx_communityforumthreadid"), (fp, ft) => new { Post = fp, Thread = ft })
-				.Join(serviceContext.CreateQuery("adx_communityforum"), e => e.Thread.GetAttributeValue<Guid>("adx_forumid"), f => f.GetAttributeValue<Guid>("adx_communityforumid"), (e, f) => new { e, Forum = f })
-				.Where(e => e.e.Post.GetAttributeValue<EntityReference>("adx_authorid").Id == UserId)
-				.Where(e => e.Forum.GetAttributeValue<EntityReference>("adx_websiteid") == website);
-
-			query = descending
-				? query.OrderByDescending(e => e.e.Post.GetAttributeValue<DateTime?>("adx_date"))
-				: query.OrderBy(e => e.e.Post.GetAttributeValue<DateTime?>("adx_date"));
-
-			if (startRowIndex > 0)
-			{
-				query = query.Skip(startRowIndex);
-			}
-
-			if (maximumRows > 0)
-			{
-				query = query.Take(maximumRows);
-			}
-
-			var entities = query.Select(e => e.e.Post).ToArray();
-			var firstPostEntity = entities.FirstOrDefault();
-			
-			var cloudStorageAccount = AnnotationDataAdapter.GetStorageAccount(serviceContext);
-			var cloudStorageContainerName = AnnotationDataAdapter.GetStorageContainerName(serviceContext);
-			CloudBlobContainer cloudStorageContainer = null;
-			if (cloudStorageAccount != null)
-			{
-				cloudStorageContainer = AnnotationDataAdapter.GetBlobContainer(cloudStorageAccount, cloudStorageContainerName);
-			}
-
-			var postInfos = serviceContext.FetchForumPostInfos(entities.Select(e => e.Id), website.Id, cloudStorageContainer);
-			var urlProvider = new ForumPostUrlProvider();
-
-			var posts = entities.Select(entity =>
-			{
-				IForumPostInfo postInfo;
-				postInfo = postInfos.TryGetValue(entity.Id, out postInfo) ? postInfo : new UnknownForumPostInfo();
-				var viewEntity = new PortalViewEntity(serviceContext, entity, securityProvider, entityUrlProvider);
-				var thread = GetThread(postInfo.ThreadEntity.Id);
-
-				return new ForumPost(entity, viewEntity, postInfo,
-					new Lazy<ApplicationPath>(() => Dependencies.GetEditPath(entity.ToEntityReference()), LazyThreadSafetyMode.None),
-					new Lazy<ApplicationPath>(() => Dependencies.GetDeletePath(entity.ToEntityReference()), LazyThreadSafetyMode.None),
-					new Lazy<bool>(() => thread.Editable, LazyThreadSafetyMode.None),
-					new Lazy<bool>(() =>
-						thread.ThreadType != null
-						&& thread.ThreadType.RequiresAnswer
-						&& (firstPostEntity == null || !firstPostEntity.ToEntityReference().Equals(entity.ToEntityReference()))
-						&& ((user != null && user.Equals(thread.Author.EntityReference)) || thread.Editable),
-						LazyThreadSafetyMode.None),
-					urlProvider.GetPostUrl(thread, entity.Id),
-					thread,
-					new Lazy<bool>(() =>
-						user != null
-						&& user.Equals(postInfo.Author.EntityReference), LazyThreadSafetyMode.None));
-			}).ToArray();
-
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
-
-			return posts;
+        {
+            return new IForumPost[] { };
 		}
 
 		public IEnumerable<IForumPost> SelectPostsDescending()

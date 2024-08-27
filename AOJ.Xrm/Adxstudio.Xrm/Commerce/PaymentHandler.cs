@@ -169,14 +169,6 @@ namespace Adxstudio.Xrm.Commerce
 
 		protected virtual void LogPaymentRequest(HttpContext context, PortalConfigurationDataAdapterDependencies dataAdapterDependencies, Tuple<Guid, string> quoteAndReturnUrl, string subject, string log)
 		{
-			var dataAdapter = new AnnotationDataAdapter(dataAdapterDependencies);
-			var note = new Annotation
-			{
-				Subject = subject,
-				Regarding = new EntityReference("quote", quoteAndReturnUrl.Item1),
-				FileAttachment = AnnotationDataAdapter.CreateFileAttachment("log.txt", "text/plain", Encoding.UTF8.GetBytes(log))
-			};
-			dataAdapter.CreateAnnotation(note);
 		}
 
 		protected virtual void LogPaymentRequest(HttpContext context, PortalConfigurationDataAdapterDependencies dataAdapterDependencies, Tuple<Guid, string> quoteAndReturnUrl, Exception exception)

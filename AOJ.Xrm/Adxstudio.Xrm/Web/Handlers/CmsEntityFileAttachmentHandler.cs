@@ -35,7 +35,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 			var dataAdapterDependencies =
 				new PortalConfigurationDataAdapterDependencies(requestContext: context.Request.RequestContext,
 					portalName: PortalName);
-			var annotationDataAdapter = new AnnotationDataAdapter(dataAdapterDependencies);
+			//var annotationDataAdapter = new AnnotationDataAdapter(dataAdapterDependencies);
 			var website = context.GetWebsite();
 
 			var location = website.Settings.Get<string>("WebFiles/StorageLocation");
@@ -60,11 +60,11 @@ namespace Adxstudio.Xrm.Web.Handlers
 
 			foreach (var file in postedFiles)
 			{
-				annotationDataAdapter.CreateAnnotation(new Annotation
-				{
-					Regarding = entity.ToEntityReference(),
-					FileAttachment = AnnotationDataAdapter.CreateFileAttachment(new HttpPostedFileWrapper(file), annotationSettings.StorageLocation)
-				}, annotationSettings);
+				//annotationDataAdapter.CreateAnnotation(new Annotation
+				//{
+				//	Regarding = entity.ToEntityReference(),
+				//	//FileAttachment = AnnotationDataAdapter.CreateFileAttachment(new HttpPostedFileWrapper(file), annotationSettings.StorageLocation)
+				//}, annotationSettings);
 			}
 
 			context.Response.ContentType = "text/plain";

@@ -2475,17 +2475,17 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					};
 
 					var fileAttachments = new List<IAnnotationFile>();
-					foreach (var uploadedFile in fileUpload.PostedFiles)
-					{
-					  fileAttachments.Add(AnnotationDataAdapter.CreateFileAttachment(new HttpPostedFileWrapper(uploadedFile), _annotationSettings.StorageLocation));
-					}
+					//foreach (var uploadedFile in fileUpload.PostedFiles)
+					//{
+					//  fileAttachments.Add(AnnotationDataAdapter.CreateFileAttachment(new HttpPostedFileWrapper(uploadedFile), _annotationSettings.StorageLocation));
+					//}
 					portalComment.FileAttachments = fileAttachments;
 
 					portalCommentDataAdapter.CreatePortalComment(portalComment);
 				}
 				else
 				{
-					IAnnotationDataAdapter notesDataAdapter = new AnnotationDataAdapter(dataAdapterDependencies);
+					//IAnnotationDataAdapter notesDataAdapter = new AnnotationDataAdapter(dataAdapterDependencies);
 
 					foreach (var uploadedFile in fileUpload.PostedFiles)
 					{
@@ -2494,10 +2494,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 							Regarding = regarding,
 							Subject = AnnotationHelper.BuildNoteSubject(context, portalUser),
 							NoteText = AnnotationHelper.WebAnnotationPrefix,
-							FileAttachment = AnnotationDataAdapter.CreateFileAttachment(new HttpPostedFileWrapper(uploadedFile), _annotationSettings.StorageLocation)
+							//FileAttachment = AnnotationDataAdapter.CreateFileAttachment(new HttpPostedFileWrapper(uploadedFile), _annotationSettings.StorageLocation)
 						};
 
-						notesDataAdapter.CreateAnnotation(annotation, _annotationSettings);
+						//notesDataAdapter.CreateAnnotation(annotation, _annotationSettings);
 					}
 				}
 			}

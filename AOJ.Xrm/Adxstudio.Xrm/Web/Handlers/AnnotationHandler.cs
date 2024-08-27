@@ -83,32 +83,32 @@ namespace Adxstudio.Xrm.Web.Handlers
 
 		public void ProcessRequest(HttpContext context)
 		{
-			if (_annotation == null)
-			{
-				context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-				return;
-			}
+			//if (_annotation == null)
+			//{
+			//	context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+			//	return;
+			//}
 
-			string portalName = null;
-			var portalContext = PortalCrmConfigurationManager.CreatePortalContext();
-			var languageCodeSetting = portalContext.ServiceContext.GetSiteSettingValueByName(portalContext.Website,
-				"Language Code");
+			//string portalName = null;
+			//var portalContext = PortalCrmConfigurationManager.CreatePortalContext();
+			//var languageCodeSetting = portalContext.ServiceContext.GetSiteSettingValueByName(portalContext.Website,
+			//	"Language Code");
 
-			if (!string.IsNullOrWhiteSpace(languageCodeSetting))
-			{
-				int languageCode;
-				if (int.TryParse(languageCodeSetting, out languageCode))
-				{
-					portalName = languageCode.ToString(CultureInfo.InvariantCulture);
-				}
-			}
+			//if (!string.IsNullOrWhiteSpace(languageCodeSetting))
+			//{
+			//	int languageCode;
+			//	if (int.TryParse(languageCodeSetting, out languageCode))
+			//	{
+			//		portalName = languageCode.ToString(CultureInfo.InvariantCulture);
+			//	}
+			//}
 
-			var dataAdapterDependencies =
-				new PortalConfigurationDataAdapterDependencies(requestContext: context.Request.RequestContext,
-					portalName: portalName);
-			var dataAdapter = new AnnotationDataAdapter(dataAdapterDependencies);
+			//var dataAdapterDependencies =
+			//	new PortalConfigurationDataAdapterDependencies(requestContext: context.Request.RequestContext,
+			//		portalName: portalName);
+			//var dataAdapter = new AnnotationDataAdapter(dataAdapterDependencies);
 
-			dataAdapter.Download(new HttpContextWrapper(context), _annotation, _webfile);
+			//dataAdapter.Download(new HttpContextWrapper(context), _annotation, _webfile);
 		}
 	}
 }

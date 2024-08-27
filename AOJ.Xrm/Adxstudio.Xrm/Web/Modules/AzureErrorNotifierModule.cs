@@ -3,9 +3,9 @@
   Licensed under the MIT License. See License.txt in the project root for license information.
 */
 
+using System;
 using System.Configuration;
 using System.Net.Mail;
-using Microsoft.WindowsAzure.ServiceRuntime;
 
 namespace Adxstudio.Xrm.Web.Modules
 {
@@ -46,7 +46,7 @@ namespace Adxstudio.Xrm.Web.Modules
 			{
 				value = GetAzureConfigurationSettingValue(configName);
 			}
-			catch (RoleEnvironmentException)
+			catch (Exception e)
 			{
 				// the setting does not exist in the deployment configuration
 				value = null;
@@ -57,7 +57,7 @@ namespace Adxstudio.Xrm.Web.Modules
 
 		private static string GetAzureConfigurationSettingValue(string configName)
 		{
-			return RoleEnvironment.IsAvailable ? RoleEnvironment.GetConfigurationSettingValue(configName) : null;
+			return "";
 		}
 	}
 }

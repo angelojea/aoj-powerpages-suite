@@ -255,19 +255,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Configuration">
-      <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.2.1\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime">
-      <HintPath>..\DllImports\Microsoft.WindowsAzure.ServiceRuntime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Storage, Version=7.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\WindowsAzure.Storage.7.0.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Xrm.Sdk, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.9.0.2.56\lib\net462\Microsoft.Xrm.Sdk.dll</HintPath>
     </Reference>
@@ -668,9 +655,6 @@
     <Compile Include="Notes\AnnotationCollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Notes\AnnotationDataAdapter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Notes\AnnotationException.cs" />
     <Compile Include="Notes\AnnotationFile.cs">
       <SubType>Code</SubType>
@@ -679,7 +663,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Notes\AnnotationSettings.cs" />
-    <Compile Include="Notes\AzureAnnotationFile.cs" />
     <Compile Include="Notes\CrmAnnotationFile.cs" />
     <Compile Include="Notes\IAnnotation.cs">
       <SubType>Code</SubType>
@@ -697,7 +680,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Notes\IAnnotationSettings.cs" />
-    <Compile Include="Notes\IAzureAnnotationFile.cs" />
     <Compile Include="Notes\ICrmAnnotationFile.cs" />
     <Compile Include="Performance\AggregateEvent\PerformanceAggregateLogger.cs" />
     <Compile Include="Performance\EventSourcePerformanceLogger.cs" />

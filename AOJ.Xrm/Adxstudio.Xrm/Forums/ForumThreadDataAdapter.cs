@@ -10,7 +10,6 @@ namespace Adxstudio.Xrm.Forums
 	using System.Linq;
 	using System.Threading;
 	using System.Web;
-	using Microsoft.WindowsAzure.Storage.Blob;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Client.Security;
 	using Microsoft.Xrm.Portal.Web;
@@ -183,13 +182,6 @@ namespace Adxstudio.Xrm.Forums
 
 			forumDataAdapter.UpdateLatestPost(entityReference, incrementForumThreadCount);
 
-			foreach (var attachment in forumPost.Attachments)
-			{
-				IAnnotationDataAdapter da = new AnnotationDataAdapter(Dependencies);
-				da.CreateAnnotation(entityReference, string.Empty, string.Empty, attachment.Name, attachment.ContentType,
-					attachment.Content);
-			}
-
 			var post = SelectPost(entityReference.Id);
 
 			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
@@ -232,13 +224,6 @@ namespace Adxstudio.Xrm.Forums
 				serviceContext.Attach(update);
 				serviceContext.UpdateObject(update);
 				serviceContext.SaveChanges();
-			}
-
-			foreach (var attachment in forumPost.Attachments)
-			{
-				IAnnotationDataAdapter da = new AnnotationDataAdapter(Dependencies);
-				da.CreateAnnotation(entityReference, string.Empty, string.Empty, attachment.Name, attachment.ContentType,
-					attachment.Content);
 			}
 
 			if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.TelemetryFeatureUsage))
@@ -610,15 +595,7 @@ namespace Adxstudio.Xrm.Forums
 			var entities = query.ToArray();
 			var firstPostEntity = entities.FirstOrDefault();
 
-			var cloudStorageAccount = AnnotationDataAdapter.GetStorageAccount(serviceContext);
-			var cloudStorageContainerName = AnnotationDataAdapter.GetStorageContainerName(serviceContext);
-			CloudBlobContainer cloudStorageContainer = null;
-			if (cloudStorageAccount != null)
-			{
-				cloudStorageContainer = AnnotationDataAdapter.GetBlobContainer(cloudStorageAccount, cloudStorageContainerName);
-			}
-
-			var postInfos = serviceContext.FetchForumPostInfos(entities.Select(e => e.Id), website.Id, cloudStorageContainer: cloudStorageContainer);
+			var postInfos = serviceContext.FetchForumPostInfos(entities.Select(e => e.Id), website.Id);
 			var urlProvider = Dependencies.GetUrlProvider();
 			var thread = Select();
 			var user = Dependencies.GetPortalUser();
@@ -711,15 +688,7 @@ namespace Adxstudio.Xrm.Forums
 			var urlProvider = Dependencies.GetUrlProvider();
 			var viewEntity = new PortalViewEntity(serviceContext, entity, securityProvider, urlProvider);
 
-			var cloudStorageAccount = AnnotationDataAdapter.GetStorageAccount(serviceContext);
-			var cloudStorageContainerName = AnnotationDataAdapter.GetStorageContainerName(serviceContext);
-			CloudBlobContainer cloudStorageContainer = null;
-			if (cloudStorageAccount != null)
-			{
-				cloudStorageContainer = AnnotationDataAdapter.GetBlobContainer(cloudStorageAccount, cloudStorageContainerName);
-			}
-
-			var postInfo = serviceContext.FetchForumPostInfo(entity.Id, website.Id, cloudStorageContainer);
+			var postInfo = serviceContext.FetchForumPostInfo(entity.Id, website.Id);
 			var user = Dependencies.GetPortalUser();
 
 			return new ForumPost(entity, viewEntity, postInfo,

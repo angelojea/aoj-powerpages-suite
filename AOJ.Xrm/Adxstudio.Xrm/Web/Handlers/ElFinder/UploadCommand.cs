@@ -150,7 +150,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			errors = new List<Tuple<string, string>>();
 			
 			var dataAdapterDependencies = new PortalConfigurationDataAdapterDependencies();
-			var annotationDataAdapter = new AnnotationDataAdapter(dataAdapterDependencies);
+			//var annotationDataAdapter = new AnnotationDataAdapter(dataAdapterDependencies);
 			var website = HttpContext.Current.GetWebsite();
 
 			var location = website.Settings.Get<string>("WebFiles/StorageLocation");
@@ -186,13 +186,13 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 					serviceContext.AddObject(webFile);
 					serviceContext.SaveChanges();
 
-					annotationDataAdapter.CreateAnnotation(new Annotation
-					{
-						Regarding = webFile.ToEntityReference(),
-						FileAttachment = AnnotationDataAdapter.CreateFileAttachment(new HttpPostedFileWrapper(file), annotationSettings.StorageLocation)
-					}, annotationSettings);
+					//annotationDataAdapter.CreateAnnotation(new Annotation
+					//{
+					//	Regarding = webFile.ToEntityReference(),
+					//	FileAttachment = AnnotationDataAdapter.CreateFileAttachment(new HttpPostedFileWrapper(file), annotationSettings.StorageLocation)
+					//}, annotationSettings);
 
-					select.Add(new DirectoryContentHash(webFile.ToEntityReference()).ToString());
+					//select.Add(new DirectoryContentHash(webFile.ToEntityReference()).ToString());
 				}
 				catch (Exception e)
 				{

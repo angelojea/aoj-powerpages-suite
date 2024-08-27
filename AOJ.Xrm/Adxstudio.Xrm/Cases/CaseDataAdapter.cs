@@ -41,27 +41,6 @@ namespace Adxstudio.Xrm.Cases
 
 		public virtual void AddNote(string text, string fileName = null, string contentType = null, byte[] fileContent = null, EntityReference ownerId = null)
 		{
-			try
-			{
-				var da = new AnnotationDataAdapter(Dependencies);
-				var annotation = new Annotation
-				{
-					Subject = AnnotationHelper.BuildNoteSubject(Dependencies),
-					NoteText = string.Format("{0}{1}", AnnotationHelper.WebAnnotationPrefix, text),
-					Regarding = Incident,
-					Owner = ownerId
-				};
-				if (fileContent != null && fileContent.Length > 0 && !string.IsNullOrEmpty(fileName) && !string.IsNullOrEmpty(contentType))
-				{
-					annotation.FileAttachment = AnnotationDataAdapter.CreateFileAttachment(EnsureValidFileName(fileName), contentType, fileContent);
-				}
-				da.CreateAnnotation(annotation);
-			}
-			catch (Exception e)
-			{
-				WebEventSource.Log.GenericErrorException(new Exception("Create annotation error", e));
-				throw;
-			}
 		}
 
 		public virtual void Cancel()
@@ -207,17 +186,7 @@ namespace Adxstudio.Xrm.Cases
 
 		public virtual IEnumerable<IAnnotation> SelectNotes()
 		{
-			var serviceContext = Dependencies.GetServiceContext();
-			IAnnotationDataAdapter annotationDataAdapter = new AnnotationDataAdapter(Dependencies);
-
-			return serviceContext.CreateQuery("annotation")
-				.Where(e => e.GetAttributeValue<EntityReference>("objectid") == Incident
-					&& e.GetAttributeValue<string>("objecttypecode") == Incident.LogicalName
-					&& e.GetAttributeValue<string>("notetext").Contains(AnnotationHelper.WebAnnotationPrefix))
-				.ToArray()
-				.Select(entity => annotationDataAdapter.GetAnnotation(entity))
-				.OrderBy(e => e.CreatedOn)
-				.ToArray();
+			return null;
 		}
 
 		public virtual IEnumerable<ICaseResolution> SelectResolutions()

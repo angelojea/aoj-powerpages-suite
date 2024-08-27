@@ -72,13 +72,13 @@ namespace Adxstudio.Xrm.Products
 		/// <param name="remarks"></param>
 		public virtual void ReportAbuse(string remarks)
 		{
-			var httpContext = Dependencies.GetRequestContext().HttpContext;
-			var user = Dependencies.GetPortalUser();
-			var username = httpContext.Request.IsAuthenticated && user != null ? user.Name : httpContext.Request.AnonymousID;
-			var title = string.Format("Abuse Reported on {0} by {1}", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture), username);
+			//var httpContext = Dependencies.GetRequestContext().HttpContext;
+			//var user = Dependencies.GetPortalUser();
+			//var username = httpContext.Request.IsAuthenticated && user != null ? user.Name : httpContext.Request.AnonymousID;
+			//var title = string.Format("Abuse Reported on {0} by {1}", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture), username);
 
-			IAnnotationDataAdapter da = new AnnotationDataAdapter(Dependencies);
-			da.CreateAnnotation(Review, title, remarks);
+			//IAnnotationDataAdapter da = new AnnotationDataAdapter(Dependencies);
+			//da.CreateAnnotation(Review, title, remarks);
 		}
 
 		protected IDataAdapterDependencies Dependencies { get; }

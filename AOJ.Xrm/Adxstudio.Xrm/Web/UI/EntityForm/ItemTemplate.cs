@@ -194,20 +194,20 @@ namespace Adxstudio.Xrm.Web.UI.EntityForm
 
 		private void ValidateFileAccept(FileUpload fileUpload, ServerValidateEventArgs args)
 		{
-			args.IsValid = true;
+			//args.IsValid = true;
 
-			if (!fileUpload.HasFiles) return;
+			//if (!fileUpload.HasFiles) return;
 
-			var regex = AnnotationDataAdapter.GetAcceptRegex(_attachFileAccept);
-			foreach (var uploadedFile in fileUpload.PostedFiles)
-			{
-			    var path = System.IO.Path.GetExtension(uploadedFile.FileName);
-				args.IsValid = regex.IsMatch(uploadedFile.ContentType) || regex.IsMatch(path);
-				if (!args.IsValid)
-				{
-					break;
-				}
-			}
+			//var regex = AnnotationDataAdapter.GetAcceptRegex(_attachFileAccept);
+			//foreach (var uploadedFile in fileUpload.PostedFiles)
+			//{
+			//    var path = System.IO.Path.GetExtension(uploadedFile.FileName);
+			//	args.IsValid = regex.IsMatch(uploadedFile.ContentType) || regex.IsMatch(path);
+			//	if (!args.IsValid)
+			//	{
+			//		break;
+			//	}
+			//}
 		}
 	}
 }
