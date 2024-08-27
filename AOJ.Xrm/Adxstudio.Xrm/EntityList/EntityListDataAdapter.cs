@@ -38,9 +38,9 @@ namespace Adxstudio.Xrm.EntityList
 			Dependencies = dependencies;
 		}
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
-		protected EntityReference EntityList { get; private set; }
+		protected EntityReference EntityList { get; }
 
 		protected EntityReference View { get; private set; }
 
@@ -200,8 +200,6 @@ namespace Adxstudio.Xrm.EntityList
 			if (filters.TryGetValue("account", out applyFilter))
 			{
 				applyFilter();
-
-				return;
 			}
 		}
 
@@ -236,7 +234,7 @@ namespace Adxstudio.Xrm.EntityList
 
 		protected virtual IEnumerable<Entity> FetchEntities(OrganizationServiceContext serviceContext, Fetch fetch)
 		{
-			if (fetch == null || this.EntityPermissionDenied)
+			if (fetch == null || EntityPermissionDenied)
 			{
 				return Enumerable.Empty<Entity>();
 			}
@@ -486,7 +484,7 @@ namespace Adxstudio.Xrm.EntityList
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error parsing adx_views JSON: {0}", e.ToString()));
+					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error parsing adx_views JSON: {0}", e));
 				}
 			}
 
@@ -558,13 +556,13 @@ namespace Adxstudio.Xrm.EntityList
 				get { return _attributeMap["adx_calendar_enddatefieldname"]; }
 			}
 
-			public bool EntityPermissionsEnabled { get; private set; }
+			public bool EntityPermissionsEnabled { get; }
 
-			public string FilterAccountFieldName { get; private set; }
+			public string FilterAccountFieldName { get; }
 
-			public string FilterPortalUserFieldName { get; private set; }
+			public string FilterPortalUserFieldName { get; }
 
-			public string FilterWebsiteFieldName { get; private set; }
+			public string FilterWebsiteFieldName { get; }
 
 			public string IdQueryStringParameterName { get; private set; }
 
@@ -583,7 +581,7 @@ namespace Adxstudio.Xrm.EntityList
 				get { return _attributeMap["adx_calendar_organizerfieldname"]; }
 			}
 
-			public bool SearchEnabled { get; private set; }
+			public bool SearchEnabled { get; }
 
 			public string StartDateFieldName
 			{

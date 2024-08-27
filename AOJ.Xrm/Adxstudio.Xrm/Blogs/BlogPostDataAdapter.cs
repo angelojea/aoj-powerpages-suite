@@ -56,13 +56,13 @@ namespace Adxstudio.Xrm.Blogs
 
 		public BlogPostDataAdapter(IBlogPost blogPost, string portalName = null) : this(blogPost, new PortalConfigurationDataAdapterDependencies(portalName)) { }
 
-		protected EntityReference BlogPostReference { get; private set; }
+		protected EntityReference BlogPostReference { get; }
 
-		protected IDataAdapterDependencies BlogDependencies { get; private set; }
+		protected IDataAdapterDependencies BlogDependencies { get; }
 
-		protected IBlogPost BlogPost { get; private set; }
+		protected IBlogPost BlogPost { get; }
 
-		protected BlogSecurityInfo Security { get; private set; }
+		protected BlogSecurityInfo Security { get; }
 
 		protected enum StateCode
 		{

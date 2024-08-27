@@ -68,7 +68,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		[Description("The expression by which to sort results")]
 		[Bindable(false)]
 		[Category("Data")]
-		[DefaultValue((string)null)]
+		[DefaultValue(null)]
 		public string SortExpression { get; set; }
 
 		/// <summary>

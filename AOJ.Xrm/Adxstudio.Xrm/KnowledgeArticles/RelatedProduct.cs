@@ -12,7 +12,7 @@ namespace Adxstudio.Xrm.KnowledgeArticles
         public Guid Id { get; private set; }
         public string Name { get; set; }
 
-		public string Url { get; private set; }
+		public string Url { get; }
 
 		public RelatedProduct(Guid id, string name, string url)
 		{

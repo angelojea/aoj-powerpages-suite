@@ -28,7 +28,7 @@ namespace Adxstudio.Xrm.Marketing
 			get { return _encryptionKey.Value; }
 		}
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 		
 		public MarketingDataAdapter(IDataAdapterDependencies dependencies)
 		{

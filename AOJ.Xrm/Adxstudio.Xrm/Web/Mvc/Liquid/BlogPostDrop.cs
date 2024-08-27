@@ -51,6 +51,6 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			get { return Post.ApplicationPath.AbsolutePath; }
 		}
 		
-		protected IBlogPost Post { get; private set; }
+		protected IBlogPost Post { get; }
 	}
 }

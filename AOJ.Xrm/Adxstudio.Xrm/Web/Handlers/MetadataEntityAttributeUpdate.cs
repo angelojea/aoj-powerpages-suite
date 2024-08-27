@@ -28,7 +28,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 			Attribute = attribute;
 		}
 
-		protected AttributeMetadata Attribute { get; private set; }
+		protected AttributeMetadata Attribute { get; }
 
 		public override void Apply(JToken token)
 		{

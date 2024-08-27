@@ -36,13 +36,13 @@ namespace Adxstudio.Xrm.EntityList
 			GetPackageImageUrl = getPackageImageUrl;
 		}
 
-		protected Func<Guid, Guid, string> GetPackageImageUrl { get; private set; }
+		protected Func<Guid, Guid, string> GetPackageImageUrl { get; }
 
-		protected Func<Guid, Guid, string> GetPackageRepositoryUrl { get; private set; }
+		protected Func<Guid, Guid, string> GetPackageRepositoryUrl { get; }
 
-		protected Func<Guid, Guid, string> GetPackageVersionUrl { get; private set; }
+		protected Func<Guid, Guid, string> GetPackageVersionUrl { get; }
 
-		protected EntityReference PackageRepository { get; private set; }
+		protected EntityReference PackageRepository { get; }
 		
 
 		public PackageRepository SelectRepository(string category = null, string filter = null, string search = null)
@@ -462,7 +462,7 @@ namespace Adxstudio.Xrm.EntityList
 					}
 					catch (Exception e)
 					{
-						ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("GetPackageVersions", "{0}", e.ToString()));
+						ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("GetPackageVersions", "{0}", e));
                     }
 				}
 
@@ -849,7 +849,7 @@ namespace Adxstudio.Xrm.EntityList
 			Name = name;
 		}
 
-		public string Name { get; private set; }
+		public string Name { get; }
 	}
 
 	public class PackageComponent

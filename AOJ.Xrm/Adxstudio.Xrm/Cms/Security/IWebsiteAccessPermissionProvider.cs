@@ -53,8 +53,8 @@ namespace Adxstudio.Xrm.Cms.Security
 				throw new ArgumentNullException("website");
 			}
 
-			this._underlyingProvider = underlyingProvider;
-			this._website = website;
+			_underlyingProvider = underlyingProvider;
+			_website = website;
 		}
 
 		/// <summary> The try assert. </summary>

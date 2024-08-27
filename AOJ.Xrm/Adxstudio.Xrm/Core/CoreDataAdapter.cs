@@ -122,8 +122,8 @@ namespace Adxstudio.Xrm.Core
 			var portal = PortalCrmConfigurationManager.CreatePortalContext();
 			var context = portal.ServiceContext;
 			
-			var setStateRequest = new SetStateRequest()
-								  {
+			var setStateRequest = new SetStateRequest
+			{
 									  EntityMoniker	= entityReference,
 									  State	= new OptionSetValue(stateCode),
 									  Status = new OptionSetValue(statusReason)
@@ -209,7 +209,7 @@ namespace Adxstudio.Xrm.Core
 
 			// Convert the quote to	a sales	order
 			var	convertQuoteRequest	=
-				new	ConvertQuoteToSalesOrderRequest()
+				new	ConvertQuoteToSalesOrderRequest
 				{
 					QuoteId	= entityReference.Id,
 					ColumnSet =	salesOrderColumns
@@ -230,7 +230,7 @@ namespace Adxstudio.Xrm.Core
 
 			// Convert the quote to	a sales	order
 			var	convertQuoteRequest	=
-				new	ConvertSalesOrderToInvoiceRequest()
+				new	ConvertSalesOrderToInvoiceRequest
 				{
 					SalesOrderId = entityReference.Id,
 					ColumnSet =	salesOrderColumns
@@ -251,7 +251,7 @@ namespace Adxstudio.Xrm.Core
 			quoteClose.Attributes["subject"] = "Quote Closed from Web " + DateTime.Now.ToString(CultureInfo.InvariantCulture);
 			quoteClose.Attributes["quoteid"] = entityReference;
 
-			var winQuoteRequest = new WinQuoteRequest()
+			var winQuoteRequest = new WinQuoteRequest
 			{
 				QuoteClose = quoteClose,
 				Status = new OptionSetValue(-1)
@@ -272,7 +272,7 @@ namespace Adxstudio.Xrm.Core
 			opportunityClose.Attributes["subject"] = "Opportunity won via Web Portal" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
 			opportunityClose.Attributes["opportunityid"] = entityReference;
 
-			var winQuoteRequest = new WinOpportunityRequest()
+			var winQuoteRequest = new WinOpportunityRequest
 			{
 				OpportunityClose = opportunityClose,
 				Status = new OptionSetValue((int)OpportunityStatusCode.Won)
@@ -293,7 +293,7 @@ namespace Adxstudio.Xrm.Core
 			opportunityClose.Attributes["subject"] = "Opportunity closed as lost via Web Portal" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
 			opportunityClose.Attributes["opportunityid"] = entityReference;
 
-			var loseOpportunityRequest = new LoseOpportunityRequest()
+			var loseOpportunityRequest = new LoseOpportunityRequest
 			{
 				OpportunityClose = opportunityClose,
 				Status = new OptionSetValue((int)OpportunityStatusCode.Canceled)
@@ -310,7 +310,7 @@ namespace Adxstudio.Xrm.Core
 			var	context	= portal.ServiceContext;
 
 			var	calculateActualValueRequest	= 
-				new	CalculateActualValueOpportunityRequest()
+				new	CalculateActualValueOpportunityRequest
 				{
 					OpportunityId = entityReference.Id
 				};
@@ -330,7 +330,7 @@ namespace Adxstudio.Xrm.Core
 
 			// Convert the quote to	a sales	order
 			var generateQuoteFromOpportunityRequest =
-				new GenerateQuoteFromOpportunityRequest()
+				new GenerateQuoteFromOpportunityRequest
 				{
 					OpportunityId = entityReference.Id,
 					ColumnSet = quoteColumns

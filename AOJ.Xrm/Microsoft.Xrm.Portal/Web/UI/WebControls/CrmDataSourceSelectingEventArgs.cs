@@ -20,39 +20,18 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 			string fetchXml,
 			QueryByAttribute query)
 		{
-			_dataSource = dataSource;
-			_arguments = arguments;
-			_fetchXml = fetchXml;
-			_query = query;
+			DataSource = dataSource;
+			Arguments = arguments;
+			FetchXml = fetchXml;
+			Query = query;
 		}
 
-		private CrmDataSource _dataSource;
+		public CrmDataSource DataSource { get; }
 
-		public CrmDataSource DataSource
-		{
-			get { return _dataSource; }
-		}
+		public DataSourceSelectArguments Arguments { get; }
 
-		private readonly DataSourceSelectArguments _arguments;
+		public string FetchXml { get; set; }
 
-		public DataSourceSelectArguments Arguments
-		{
-			get	{ return _arguments; }
-		}
-
-		private string _fetchXml;
-
-		public string FetchXml
-		{
-			get { return _fetchXml; }
-			set { _fetchXml = value; }
-		}
-
-		private readonly QueryByAttribute _query;
-
-		public QueryByAttribute Query
-		{
-			get { return _query; }
-		}
+		public QueryByAttribute Query { get; }
 	}
 }

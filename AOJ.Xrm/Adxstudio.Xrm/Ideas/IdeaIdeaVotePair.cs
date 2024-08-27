@@ -27,11 +27,11 @@ namespace Adxstudio.Xrm.Ideas
 		/// <summary>
 		/// An <see cref="IIdea"/>.
 		/// </summary>
-		public IIdea Idea { get; private set; }
+		public IIdea Idea { get; }
 
 		/// <summary>
 		/// An <see cref="IIdeaVote"/> for the paired Idea.
 		/// </summary>
-		public IIdeaVote IdeaVote { get; private set; }
+		public IIdeaVote IdeaVote { get; }
 	}
 }

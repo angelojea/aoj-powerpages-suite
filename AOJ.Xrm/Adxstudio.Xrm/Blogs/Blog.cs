@@ -46,23 +46,23 @@ namespace Adxstudio.Xrm.Blogs
             }
         }
 
-		public ApplicationPath ApplicationPath { get; private set; }
+		public ApplicationPath ApplicationPath { get; }
 
-		public BlogCommentPolicy CommentPolicy { get; private set; }
+		public BlogCommentPolicy CommentPolicy { get; }
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public ApplicationPath FeedPath { get; private set; }
+		public ApplicationPath FeedPath { get; }
 
-		public Guid Id { get; private set; }
+		public Guid Id { get; }
 
 		public bool IsAggregation
 		{
 			get { return false; }
 		}
 
-		public IHtmlString Summary { get; private set; }
+		public IHtmlString Summary { get; }
 
-		public string Title { get; private set; }
+		public string Title { get; }
 	}
 }

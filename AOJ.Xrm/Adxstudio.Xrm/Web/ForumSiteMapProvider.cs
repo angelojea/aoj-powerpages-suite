@@ -140,7 +140,7 @@ namespace Adxstudio.Xrm.Web
 			};
 
 			var forumsInCurrentWebsite = context.RetrieveMultiple(fetch);
-			var forumInCurrentWebsite = forumsInCurrentWebsite.Entities.FirstOrDefault(e => this.EntityHasPath(context, e, path));
+			var forumInCurrentWebsite = forumsInCurrentWebsite.Entities.FirstOrDefault(e => EntityHasPath(context, e, path));
 
 			return forumInCurrentWebsite;
 		}

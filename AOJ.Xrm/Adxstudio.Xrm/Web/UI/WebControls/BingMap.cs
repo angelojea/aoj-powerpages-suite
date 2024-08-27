@@ -75,80 +75,80 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			ClientIDMode = ClientIDMode.Static;
 
 			//here we will add hidden input fields containing the values of the MappingFieldsMetadataCollection
-			var latitudeFieldName = new HiddenField()
-										{
+			var latitudeFieldName = new HiddenField
+			{
 											Value = MappingFieldCollection.LatitudeFieldName ?? "mspp_latitude",
 											ID = "geolocation_latitudefieldname"
 										};
 
 			Controls.Add(latitudeFieldName);
 
-			var longitudeFieldName = new HiddenField()
-										 {
+			var longitudeFieldName = new HiddenField
+			{
 											 Value = MappingFieldCollection.LongitudeFieldName ?? "mspp_longitude",
 											 ID = "geolocation_longitudefieldname"
 										 };
 
 			Controls.Add(longitudeFieldName);
 
-			var addressLineFieldName = new HiddenField()
-										{
+			var addressLineFieldName = new HiddenField
+			{
 											Value = MappingFieldCollection.AddressLineFieldName ?? "mspp_location_addressline",
 											ID = "geolocation_addresslinefieldname"
 										};
 
 			Controls.Add(addressLineFieldName);
 
-			var neighbourhoodFieldName = new HiddenField()
-										{
+			var neighbourhoodFieldName = new HiddenField
+			{
 											Value = MappingFieldCollection.NeightbourhoodFieldName ?? "mspp_location_neighorhood",
 											ID = "geolocation_neighbourhoodfieldname"
 										};
 
 			Controls.Add(neighbourhoodFieldName);
 
-			var cityFieldName = new HiddenField()
-										{
+			var cityFieldName = new HiddenField
+			{
 											Value = MappingFieldCollection.CityFieldName ?? "mspp_location_city",
 											ID = "geolocation_cityfieldname"
 										};
 
 			Controls.Add(cityFieldName);
 
-			var countyFieldName = new HiddenField()
-										{
+			var countyFieldName = new HiddenField
+			{
 											Value = MappingFieldCollection.CountyFieldName ?? "mspp_location_county",
 											ID = "geolocation_countyfieldname"
 										};
 
 			Controls.Add(countyFieldName);
 
-			var stateFieldName = new HiddenField()
-										 {
+			var stateFieldName = new HiddenField
+			{
 											 Value = MappingFieldCollection.StateProvinceFieldName ?? "mspp_location_stateorprovince",
 											 ID = "geolocation_statefieldname"
 										 };
 
 			Controls.Add(stateFieldName);
 
-			var countryFieldName = new HiddenField()
-										{
+			var countryFieldName = new HiddenField
+			{
 											Value = MappingFieldCollection.CountryFieldName ?? "mspp_location_country",
 											ID = "geolocation_countryfieldname"
 										};
 
 			Controls.Add(countryFieldName);
 
-			var postalCodeFieldName = new HiddenField()
-										{
+			var postalCodeFieldName = new HiddenField
+			{
 											Value = MappingFieldCollection.PostalCodeFieldName ?? "mspp_location_postalcode",
 											ID = "geolocation_portalcodefieldname"
 										};
 
 			Controls.Add(postalCodeFieldName);
 
-			var formattedLocationFieldName = new HiddenField()
-										{
+			var formattedLocationFieldName = new HiddenField
+			{
 											Value = MappingFieldCollection.FormattedLocationFieldName ?? "mspp_location",
 											ID = "geolocation_formattedlocationfieldname"
 										};
@@ -156,7 +156,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			Controls.Add(formattedLocationFieldName);
 
 
-			var bingMapsRestUrl = new HiddenField()
+			var bingMapsRestUrl = new HiddenField
 			{
 				Value = MappingFieldCollection.BingMapsURL,
 				ID = "bingmapsresturl"
@@ -164,7 +164,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			Controls.Add(bingMapsRestUrl);
 
-			var bingMapsCredentials = new HiddenField()
+			var bingMapsCredentials = new HiddenField
 			{
 				Value = MappingFieldCollection.BingMapsCredentials,
 				ID = "bingmapscredentials"

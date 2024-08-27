@@ -63,7 +63,7 @@ namespace Adxstudio.Xrm.Search.Index
 		/// <returns>True if currently processed field represents language code</returns>
 		public bool IsLanguageCodeLogicalName(string fieldName)
 		{
-			return !string.IsNullOrEmpty(this.localeCodeLogicalName) && this.localeCodeLogicalName == fieldName;
+			return !string.IsNullOrEmpty(localeCodeLogicalName) && localeCodeLogicalName == fieldName;
 		}
 
 		/// <summary>
@@ -73,7 +73,7 @@ namespace Adxstudio.Xrm.Search.Index
 		/// <returns>True if currently processed field represents language LCID</returns>
 		public bool IsLCIDLogicalName(string fieldName)
 		{
-			return !string.IsNullOrEmpty(this.localeLCIDLogicalName) && this.localeLCIDLogicalName == fieldName;
+			return !string.IsNullOrEmpty(localeLCIDLogicalName) && localeLCIDLogicalName == fieldName;
 		}
 
 		/// <summary>
@@ -83,7 +83,7 @@ namespace Adxstudio.Xrm.Search.Index
 		/// <returns>True if parsing field metadata should be skipped</returns>
 		public bool CanSkipMetadata(string fieldName)
 		{
-			return (this.IsLanguageCodeLogicalName(fieldName) || this.IsLCIDLogicalName(fieldName)) && !this.isKnowledgeArticle;
+			return (IsLanguageCodeLogicalName(fieldName) || IsLCIDLogicalName(fieldName)) && !isKnowledgeArticle;
 		}
 	}
 }

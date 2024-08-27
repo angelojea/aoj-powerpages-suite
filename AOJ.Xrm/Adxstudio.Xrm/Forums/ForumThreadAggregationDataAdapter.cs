@@ -45,17 +45,17 @@ namespace Adxstudio.Xrm.Forums
 			ThreadUrlProvider = threadUrlProvider;
 		}
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
-		protected bool FilterByForumReadAccess { get; private set; }
+		protected bool FilterByForumReadAccess { get; }
 
-		protected Func<OrganizationServiceContext, ForumCounts> SelectForumCounts { get; private set; }
+		protected Func<OrganizationServiceContext, ForumCounts> SelectForumCounts { get; }
 
-		protected Func<OrganizationServiceContext, IQueryable<Entity>> SelectThreadEntities { get; private set; }
+		protected Func<OrganizationServiceContext, IQueryable<Entity>> SelectThreadEntities { get; }
 
-		protected Func<OrganizationServiceContext, IEnumerable<ITagInfo>> SelectTagInfos { get; private set; }
+		protected Func<OrganizationServiceContext, IEnumerable<ITagInfo>> SelectTagInfos { get; }
 
-		protected IForumThreadUrlProvider ThreadUrlProvider { get; private set; }
+		protected IForumThreadUrlProvider ThreadUrlProvider { get; }
 
 		public int SelectPostCount()
 		{

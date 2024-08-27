@@ -46,18 +46,18 @@ namespace Adxstudio.Xrm.Web.Mvc
 			get { return _description.Value; }
 		}
 
-		public EntityReference EntityReference { get; private set; }
+		public EntityReference EntityReference { get; }
 
-		public string LogicalName { get; private set; }
+		public string LogicalName { get; }
 
-		protected IPortalViewEntity Entity { get; private set; }
+		protected IPortalViewEntity Entity { get; }
 
 		public bool Editable
 		{
 			get { return Entity.Editable; }
 		}
 
-		public object Value { get; private set; }
+		public object Value { get; }
 
 		public override string ToString()
 		{

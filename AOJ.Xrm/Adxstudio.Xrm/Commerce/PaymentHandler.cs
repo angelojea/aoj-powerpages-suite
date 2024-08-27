@@ -32,7 +32,7 @@ namespace Adxstudio.Xrm.Commerce
 			get { return false; }
 		}
 
-		public string PortalName { get; private set; }
+		public string PortalName { get; }
 
 		public void ProcessRequest(HttpContext context)
 		{
@@ -231,11 +231,11 @@ namespace Adxstudio.Xrm.Commerce
 				ErrorMessage = errorMessage;
 			}
 
-			public string ErrorMessage { get; private set; }
+			public string ErrorMessage { get; }
 
-			public string Log { get; private set; }
+			public string Log { get; }
 
-			public bool Success { get; private set; }
+			public bool Success { get; }
 		}
 
 		protected class SuccessfulPaymentValidation : PaymentValidation

@@ -21,7 +21,7 @@ namespace Microsoft.Xrm.Client.Metadata
 		/// <summary>
 		/// The custom <see cref="OrganizationServiceContext"/> class.
 		/// </summary>
-		public Type ContextType { get; private set; }
+		public Type ContextType { get; }
 
 		public OrganizationServiceContextInfo(Type contextType)
 		{

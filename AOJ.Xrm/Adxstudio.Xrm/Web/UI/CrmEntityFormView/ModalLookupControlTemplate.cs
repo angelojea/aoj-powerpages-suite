@@ -74,7 +74,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// Form field.
 		/// </summary>
-		public CrmEntityFormViewField Field { get; private set; }
+		public CrmEntityFormViewField Field { get; }
 
 		/// <summary>
 		/// CSS Class name(s) added to the table cell containing this control
@@ -293,11 +293,14 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 						hasCreatePrivilege = crmEntityPermissionProvider.TryAssert(serviceContext, CrmEntityPermissionRight.Create, entityLogicalName);
 						return hasCreatePrivilege;
 					}
-					else { return hasCreatePrivilege; }
+
+					return hasCreatePrivilege;
 				}
-				else { return hasCreatePrivilege; }
+
+				return hasCreatePrivilege;
 			}
-			else { return hasCreatePrivilege; }
+
+			return hasCreatePrivilege;
 		}
 
 		private static Tuple<string, Guid?, string, string> GetFormEntityReferenceInfo(HttpRequest request)

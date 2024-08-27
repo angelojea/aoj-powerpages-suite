@@ -78,7 +78,7 @@ namespace Adxstudio.Xrm.Products
 		/// <param name="portalName">The configured name of the portal to get and set data for.</param>
 		public ProductDataAdapter(IProduct product, string portalName = null) : this(product, new PortalConfigurationDataAdapterDependencies(portalName)) { }
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 		
 		protected EntityReference Product { get; set; }
 

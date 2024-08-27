@@ -12,12 +12,12 @@ namespace Adxstudio.Xrm.EntityForm
 	using System.Web;
 	using System.Web.UI;
 	using System.Web.UI.WebControls;
-	using Adxstudio.Xrm.Core;
-	using Adxstudio.Xrm.Resources;
-	using Adxstudio.Xrm.Web;
+	using Core;
+	using Resources;
+	using Web;
 	using Adxstudio.Xrm.Web.UI.EntityForm;
-	using Adxstudio.Xrm.Web.UI.WebControls;
-	using Adxstudio.Xrm.Globalization;
+	using Web.UI.WebControls;
+	using Globalization;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Client.Messages;
 	using Microsoft.Xrm.Portal.Configuration;
@@ -52,7 +52,7 @@ namespace Adxstudio.Xrm.EntityForm
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to set statecode. {0}", ex.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to set statecode. {0}", ex));
 			}
 		}
 
@@ -145,7 +145,7 @@ namespace Adxstudio.Xrm.EntityForm
 			return newValue;
 		}
 
-		internal static void DisplayMessage(Web.UI.WebControls.EntityForm sender, string message, string cssClass, bool hideForm)
+		internal static void DisplayMessage(EntityForm sender, string message, string cssClass, bool hideForm)
 		{
 			if (sender == null || string.IsNullOrWhiteSpace(message))
 			{
@@ -381,7 +381,7 @@ namespace Adxstudio.Xrm.EntityForm
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("{0}", ex.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("{0}", ex));
 			}
 		}
 
@@ -443,10 +443,10 @@ namespace Adxstudio.Xrm.EntityForm
 				switch (attributeTypeCode)
 				{
 					case AttributeTypeCode.BigInt:
-						newValue = value == null ? (object)null : Convert.ToInt64(value);
+						newValue = value == null ? null : Convert.ToInt64(value);
 						break;
 					case AttributeTypeCode.Boolean:
-						newValue = value == null ? (object)null : Convert.ToBoolean(value);
+						newValue = value == null ? null : Convert.ToBoolean(value);
 						break;
 					case AttributeTypeCode.Customer:
 						if (value is EntityReference)
@@ -469,16 +469,16 @@ namespace Adxstudio.Xrm.EntityForm
 						}
 						break;
 					case AttributeTypeCode.DateTime:
-						newValue = value == null ? (object)null : Convert.ToDateTime(value).ToUniversalTime();
+						newValue = value == null ? null : Convert.ToDateTime(value).ToUniversalTime();
 						break;
 					case AttributeTypeCode.Decimal:
-						newValue = value == null ? (object)null : Convert.ToDecimal(value);
+						newValue = value == null ? null : Convert.ToDecimal(value);
 						break;
 					case AttributeTypeCode.Double:
-						newValue = value == null ? (object)null : Convert.ToDouble(value);
+						newValue = value == null ? null : Convert.ToDouble(value);
 						break;
 					case AttributeTypeCode.Integer:
-						newValue = value == null ? (object)null : Convert.ToInt32(value);
+						newValue = value == null ? null : Convert.ToInt32(value);
 						break;
 					case AttributeTypeCode.Lookup:
 						if (value is EntityReference)
@@ -504,7 +504,7 @@ namespace Adxstudio.Xrm.EntityForm
 						newValue = value as string;
 						break;
 					case AttributeTypeCode.Money:
-						newValue = value == null ? (object)null : Convert.ToDecimal(value);
+						newValue = value == null ? null : Convert.ToDecimal(value);
 						break;
 					case AttributeTypeCode.Picklist:
 						var plMetadata = MetadataHelper.GetEntityMetadata(context, entityName);

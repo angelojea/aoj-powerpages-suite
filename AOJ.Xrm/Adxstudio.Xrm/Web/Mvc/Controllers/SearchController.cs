@@ -12,11 +12,11 @@ namespace Adxstudio.Xrm.Web.Mvc.Controllers
 	using System.Linq;
 	using System.Text.RegularExpressions;
 	using System.Web.Mvc;
-	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Search;
-	using Adxstudio.Xrm.Search.Facets;
-	using Adxstudio.Xrm.Metadata;
-	using Adxstudio.Xrm.Core.Flighting;
+	using Cms;
+	using Search;
+	using Search.Facets;
+	using Metadata;
+	using Core.Flighting;
 	using Microsoft.Xrm.Portal.Configuration;
 	using Microsoft.Xrm.Sdk;
 	using Newtonsoft.Json.Linq;
@@ -84,7 +84,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Controllers
 			// TODO this doesn't work, facetConstraints is never null
 			var entityQuery = new CrmEntityQuery(queryText, pageNumber, pageSize, getLogicalNamesAsEnumerable(logicalNames), contextLanguage.ContextLanguage, multiLanguageEnabled, filterText, facetConstraints, sortingOption, searchTerm);
 
-			var searcher = this.GetSearcher(provider);
+			var searcher = GetSearcher(provider);
 
 			using (searcher)
 			{
@@ -221,7 +221,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Controllers
 			var portal = PortalCrmConfigurationManager.CreatePortalContext();
 			var serviceContext = portal.ServiceContext;
 
-			var contextLanguageInfo = this.HttpContext.GetContextLanguageInfo();
+			var contextLanguageInfo = HttpContext.GetContextLanguageInfo();
 			var lcid = contextLanguageInfo.IsCrmMultiLanguageEnabled ? contextLanguageInfo.ContextLanguage.CrmLcid : CultureInfo.CurrentCulture.LCID;
 
 			return
@@ -255,20 +255,20 @@ namespace Adxstudio.Xrm.Web.Mvc.Controllers
 			return facetName != FixedFacetsConfiguration.RecordTypeFacetFieldName || string.IsNullOrEmpty(logicalNames);
 		}
 
-		private JObject GetSearchResultJson(ICrmEntitySearchResult @searchResult)
+		private JObject GetSearchResultJson(ICrmEntitySearchResult searchResult)
 		{
 			var json = new JObject
 			{
-				{ "entityID", @searchResult.EntityID.ToString() },
-				{ "entityLogicalName", @searchResult.EntityLogicalName },
-				{ "title", @searchResult.Title },
-				{ "fragment", @searchResult.Fragment },
-				{ "resultNumber", @searchResult.ResultNumber },
-				{ "score", @searchResult.Score }
+				{ "entityID", searchResult.EntityID.ToString() },
+				{ "entityLogicalName", searchResult.EntityLogicalName },
+				{ "title", searchResult.Title },
+				{ "fragment", searchResult.Fragment },
+				{ "resultNumber", searchResult.ResultNumber },
+				{ "score", searchResult.Score }
 			};
 
 			//Adding annotations to KnowledgeArticle
-			var relatedNotes = @searchResult.Entity.GetAttributeValue<IEnumerable>("relatedNotes");
+			var relatedNotes = searchResult.Entity.GetAttributeValue<IEnumerable>("relatedNotes");
 			if (relatedNotes != null)
 			{
 				var list = new JArray();
@@ -290,9 +290,9 @@ namespace Adxstudio.Xrm.Web.Mvc.Controllers
 				json["relatedNotes"] = list;
 			}
 
-			if (@searchResult.Url == null) return json;
-			json["url"] = @searchResult.Url.ToString();
-			json["absoluteUrl"] = BuildAbsoluteUrl(@searchResult.Url.ToString());
+			if (searchResult.Url == null) return json;
+			json["url"] = searchResult.Url.ToString();
+			json["absoluteUrl"] = BuildAbsoluteUrl(searchResult.Url.ToString());
 
 			return json;
 		}
@@ -314,7 +314,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Controllers
 
 		protected bool TryGetLanguageCode(out ContextLanguageInfo contextLanguageInfo)
 		{
-			var contextLanguage = this.HttpContext.GetContextLanguageInfo();
+			var contextLanguage = HttpContext.GetContextLanguageInfo();
 			contextLanguageInfo = contextLanguage;
 			return contextLanguage.IsCrmMultiLanguageEnabled;
 		}
@@ -365,7 +365,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Controllers
 
 		protected string BuildAbsoluteUrl(string url)
 		{
-			var baseUrl = this.HttpContext.GetSiteSetting("BaseURL");
+			var baseUrl = HttpContext.GetSiteSetting("BaseURL");
 
 			return !string.IsNullOrWhiteSpace(baseUrl)
 				? ((Request.IsSecureConnection) ? Uri.UriSchemeHttps : Uri.UriSchemeHttp) + Uri.SchemeDelimiter + baseUrl + url

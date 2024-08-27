@@ -20,12 +20,12 @@ namespace Adxstudio.Xrm.Commerce
 			Instructions = instructions;
 		}
 
-		public string Instructions { get; private set; }
+		public string Instructions { get; }
 
-		public bool? IsSelected { get; private set; }
+		public bool? IsSelected { get; }
 
-		public decimal? Quantity { get; private set; }
+		public decimal? Quantity { get; }
 
-		public EntityReference QuoteProduct { get; private set; }
+		public EntityReference QuoteProduct { get; }
 	}
 }

@@ -8,7 +8,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 	using System;
 	using System.Threading.Tasks;
 	using Microsoft.Owin;
-	using Adxstudio.Xrm.Configuration;
+	using Configuration;
 
 	/// <summary>
 	/// Settings for HTTPS redirect.
@@ -17,11 +17,11 @@ namespace Adxstudio.Xrm.AspNet.Cms
 	{
 		public RequireSslOptions(WebAppSettings webAppSettings)
 		{
-			this.Scheme = "https";
-			this.Port = 443;
-			this.RedirectStatusCode = 301;
+			Scheme = "https";
+			Port = 443;
+			RedirectStatusCode = 301;
 			// require SSL in Azure web apps by default
-			this.Enabled = "PortalRequireSsl".ResolveAppSetting().ToBoolean().GetValueOrDefault(webAppSettings.AzureWebAppEnabled);
+			Enabled = "PortalRequireSsl".ResolveAppSetting().ToBoolean().GetValueOrDefault(webAppSettings.AzureWebAppEnabled);
 		}
 
 		public bool Enabled { get; set; }
@@ -38,7 +38,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 	/// </summary>
 	public class RequireSslMiddleware : OwinMiddleware
 	{
-		public RequireSslOptions Options { get; private set; }
+		public RequireSslOptions Options { get; }
 
 		public RequireSslMiddleware(OwinMiddleware next, RequireSslOptions options)
 			: base(next)

@@ -9,7 +9,7 @@ namespace Adxstudio.Xrm.Blogs
 {
 	public class BlogCommentPolicyReader : ICommentPolicyReader
 	{
-		private IBlogPost _blogPost;
+		private readonly IBlogPost _blogPost;
 
 		public BlogCommentPolicyReader(IBlogPost blogPost)
 		{

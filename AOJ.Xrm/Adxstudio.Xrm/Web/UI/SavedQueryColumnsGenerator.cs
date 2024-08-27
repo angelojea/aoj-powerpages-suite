@@ -23,7 +23,7 @@ namespace Adxstudio.Xrm.Web.UI
 	using Microsoft.Xrm.Sdk.Messages;
 	using Microsoft.Xrm.Sdk.Metadata;
 	using Adxstudio.Xrm.Data;
-	using Adxstudio.Xrm.Globalization;
+	using Globalization;
 
 	/// <summary>
 	/// Generates Fields for databound controls based on a Saved Query from CRM.
@@ -92,9 +92,9 @@ namespace Adxstudio.Xrm.Web.UI
 			LanguageCode = languageCode;
 		}
 
-		protected Entity SavedQuery { get; private set; }
+		protected Entity SavedQuery { get; }
 
-		protected OrganizationServiceContext ServiceContext { get; private set; }
+		protected OrganizationServiceContext ServiceContext { get; }
 
 		public ICollection GenerateFields(Control control)
 		{

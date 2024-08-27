@@ -10,9 +10,9 @@ namespace Adxstudio.Xrm.Web
 	using System.Diagnostics.Tracing;
 	using System.Text;
 	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.Core.Telemetry.EventSources;
-	using Adxstudio.Xrm.Diagnostics.Metrics;
-	using Adxstudio.Xrm.Diagnostics.Trace;
+	using Core.Telemetry.EventSources;
+	using Diagnostics.Metrics;
+	using Diagnostics.Trace;
 
 	[EventSource(Guid = "14318B53-CEB4-420D-A9F9-78CA594C751B", Name = InternalName)]
 	public sealed class WebEventSource : EventSourceBase
@@ -70,21 +70,21 @@ namespace Adxstudio.Xrm.Web
 		[NonEvent]
 		public string GenericErrorException(Exception exception, string eventData = null, [System.Runtime.CompilerServices.CallerMemberName] string memberName = "", [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "", [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
 		{
-			this.WriteEventGenericErrorException(
+			WriteEventGenericErrorException(
 				Serialize(exception) ?? string.Empty,
 				eventData ?? string.Empty,
-				this.PortalVersion,
+				PortalVersion,
 				memberName,
 				sourceFilePath,
 				sourceLineNumber,
-				this.PortalUrl,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			MdmMetrics.WebGenericErrorExceptionMetric.LogValue(1);
 
-			return this.GetActivityId();
+			return GetActivityId();
 		}
 
 		[Event((int)EventName.GenericException, Message = "Exception Message : {0} Event Data : {1} Portal Version : {2} Member Name : {3} Source File Path : {4} Source Line Number : {5} PortalURL : {6} PortalProductionOrTrial : {7} SessionId:{8} ElapsedTime:{9}", Level = EventLevel.Error, Version = 4)]
@@ -95,7 +95,7 @@ namespace Adxstudio.Xrm.Web
 				"Exception Message : {0} Event Data : {1} Portal Version : {2} Member Name : {3} Source File Path : {4} Source Line Number : {5}",
 				exceptionMessage, optionalEventData, portalVersion, memberName, sourceFilePath, sourceLineNumber);
 
-			this.WriteEvent(EventName.GenericException, exceptionMessage, optionalEventData, portalVersion, memberName, sourceFilePath, sourceLineNumber, portalUrl, portalProductionOrTrialType, sessionId, elapsedTime);
+			WriteEvent(EventName.GenericException, exceptionMessage, optionalEventData, portalVersion, memberName, sourceFilePath, sourceLineNumber, portalUrl, portalProductionOrTrialType, sessionId, elapsedTime);
 		}
 
 		/// <summary>
@@ -107,19 +107,19 @@ namespace Adxstudio.Xrm.Web
 		[NonEvent]
 		public string GenericWarningException(Exception exception, string eventData = null, [System.Runtime.CompilerServices.CallerMemberName] string memberName = "", [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "", [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
 		{
-			this.WriteEventGenericWarningException(
+			WriteEventGenericWarningException(
 				Serialize(exception) ?? string.Empty,
 				eventData ?? string.Empty,
-				this.PortalVersion,
+				PortalVersion,
 				memberName,
 				sourceFilePath,
 				sourceLineNumber,
-				this.PortalUrl,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
-			return this.GetActivityId();
+			return GetActivityId();
 		}
 
 		/// <summary>
@@ -130,14 +130,14 @@ namespace Adxstudio.Xrm.Web
 		[NonEvent]
 		public void WriteApplicationLifecycleEvent(ApplicationLifecycleEventCategory category, string message = "")
 		{
-			this.WriteEventApplicationLifecycle(
+			WriteEventApplicationLifecycle(
 				category,
 				message,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 		}
 
 		/// <summary>
@@ -158,7 +158,7 @@ namespace Adxstudio.Xrm.Web
 				"Lifecycle = {0} Message = {1} PortalURL = {2} PortalVersion = {3} PortalProductionOrTrial = {4} sessionId = {5} elapsedTime= {6}",
 				category, message, portalUrl, portalVersion, portalProductionOrTrialType, sessionId, elapsedTime);
 
-			this.WriteEvent(EventName.ApplicationLifecycle, category, message, portalUrl, portalVersion, portalProductionOrTrialType, sessionId, elapsedTime);
+			WriteEvent(EventName.ApplicationLifecycle, category, message, portalUrl, portalVersion, portalProductionOrTrialType, sessionId, elapsedTime);
 		}
 
 		[Event((int)EventName.GenericWarningException, Message = "Exception Message : {0} Event Data : {1} Portal Version : {2} Member Name : {3} Source File Path : {4} Source Line Number : {5} PortalURL : {6} PortalProductionOrTrial : {7} SessionId:{8} ElapsedTime:{9}", Level = EventLevel.Warning, Version = 3)]
@@ -169,7 +169,7 @@ namespace Adxstudio.Xrm.Web
 				"Exception Message : {0} Event Data : {1} Portal Version : {2} Member Name : {3} Source File Path : {4} Source Line Number : {5}",
 				exceptionMessage, optionalEventData, portalVersion, memberName, sourceFilePath, sourceLineNumber);
 
-			this.WriteEvent(EventName.GenericWarningException, exceptionMessage, optionalEventData, portalVersion, memberName, sourceFilePath, sourceLineNumber, portalUrl, portalProductionOrTrialType, sessionId, elapsedTime);
+			WriteEvent(EventName.GenericWarningException, exceptionMessage, optionalEventData, portalVersion, memberName, sourceFilePath, sourceLineNumber, portalUrl, portalProductionOrTrialType, sessionId, elapsedTime);
 		}
 
 		/// <summary>
@@ -181,18 +181,18 @@ namespace Adxstudio.Xrm.Web
 		[NonEvent]
 		public string UnhandledException(Exception exception, string eventData = null)
 		{
-			this.WriteEventUnhandledException(
+			WriteEventUnhandledException(
 				Serialize(exception) ?? string.Empty,
 				eventData ?? string.Empty,
-				this.PortalVersion,
-				this.PortalUrl,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalVersion,
+				PortalUrl,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			MdmMetrics.WebUnhandledExceptionMetric.LogValue(1);
 
-			return this.GetActivityId();
+			return GetActivityId();
 		}
 
 		[Event((int)EventName.UnhandledException, Message = "Exception Message : {0} Event Data : {1} Portal Version : {2} PortalURL : {3} PortalProductionOrTrial : {4} SessionId:{5} ElapsedTime:{6}", Level = EventLevel.Error, Version = 4)]
@@ -203,7 +203,7 @@ namespace Adxstudio.Xrm.Web
 				"Exception Message : {0} Event Data : {1} Portal Version : {2}",
 				exceptionMessage, optionalEventData, portalVersion);
 
-			this.WriteEvent(EventName.UnhandledException, exceptionMessage, optionalEventData, portalVersion, portalUrl, portalProductionOrTrialType, sessionId, elapsedTime);
+			WriteEvent(EventName.UnhandledException, exceptionMessage, optionalEventData, portalVersion, portalUrl, portalProductionOrTrialType, sessionId, elapsedTime);
 		}
 
 		/// <summary>

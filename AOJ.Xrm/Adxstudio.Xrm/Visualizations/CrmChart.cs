@@ -13,9 +13,9 @@ namespace Adxstudio.Xrm.Visualizations
 	using System.Xml;
 	using System.Xml.Linq;
 	using System.Xml.XPath;
-	using Adxstudio.Xrm.Core;
-	using Adxstudio.Xrm.Metadata;
-	using Adxstudio.Xrm.Services.Query;
+	using Core;
+	using Metadata;
+	using Services.Query;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Client;
 	using Microsoft.Xrm.Sdk.Messages;
@@ -74,7 +74,7 @@ namespace Adxstudio.Xrm.Visualizations
 		/// <summary>
 		/// Gets the <see cref="EntityMetadata"/> for the primary entity of the chart.
 		/// </summary>
-		public EntityMetadata PrimaryEntityMetadata { get; private set; }
+		public EntityMetadata PrimaryEntityMetadata { get; }
 
 		/// <summary>
 		/// Logical name of the entity being charted.
@@ -96,30 +96,30 @@ namespace Adxstudio.Xrm.Visualizations
 
 			this.languageCode = languageCode;
 
-			this.DataDescriptionXml = chart.GetAttributeValue<string>("datadescription");
+			DataDescriptionXml = chart.GetAttributeValue<string>("datadescription");
 
-			this.DataDescription = DataDefinition.Parse(this.DataDescriptionXml);
+			DataDescription = DataDefinition.Parse(DataDescriptionXml);
 
 			var localizedDescription = serviceContext.RetrieveLocalizedLabel(chart.ToEntityReference(), "description", languageCode);
 
-			this.Description = string.IsNullOrWhiteSpace(localizedDescription) ? chart.GetAttributeValue<string>("description") : localizedDescription;
+			Description = string.IsNullOrWhiteSpace(localizedDescription) ? chart.GetAttributeValue<string>("description") : localizedDescription;
 
-			if (this.DataDescription != null && this.DataDescription.FetchCollection != null)
+			if (DataDescription != null && DataDescription.FetchCollection != null)
 			{
-				this.Fetch = this.DataDescription.FetchCollection.FirstOrDefault();
+				Fetch = DataDescription.FetchCollection.FirstOrDefault();
 			}
 			
-			this.Id = chart.Id;
+			Id = chart.Id;
 
 			var localizedName = serviceContext.RetrieveLocalizedLabel(chart.ToEntityReference(), "name", languageCode);
 
-			this.Name = string.IsNullOrWhiteSpace(localizedName) ? chart.GetAttributeValue<string>("name") : localizedName;
+			Name = string.IsNullOrWhiteSpace(localizedName) ? chart.GetAttributeValue<string>("name") : localizedName;
 
-			this.PrimaryEntityTypeCode = chart.GetAttributeValue<string>("primaryentitytypecode");
+			PrimaryEntityTypeCode = chart.GetAttributeValue<string>("primaryentitytypecode");
 
-			this.PrimaryEntityMetadata = MetadataHelper.GetEntityMetadata(serviceContext, this.PrimaryEntityTypeCode);
+			PrimaryEntityMetadata = MetadataHelper.GetEntityMetadata(serviceContext, PrimaryEntityTypeCode);
 
-			this.PresentationDescriptionXml = this.ReplacePresentationDescriptionMetadataPlaceholders(chart.GetAttributeValue<string>("presentationdescription"), serviceContext);
+			PresentationDescriptionXml = ReplacePresentationDescriptionMetadataPlaceholders(chart.GetAttributeValue<string>("presentationdescription"), serviceContext);
 		}
 
 		/// <summary>
@@ -141,7 +141,7 @@ namespace Adxstudio.Xrm.Visualizations
 
 				foreach (var namedElement in xml.XPathSelectElements("//*[@Name]"))
 				{
-					this.ReplacePresentationDescriptionOptionSetPlaceholders(namedElement, "Name", serviceContext);
+					ReplacePresentationDescriptionOptionSetPlaceholders(namedElement, "Name", serviceContext);
 				}
 
 				return xml.ToString(SaveOptions.DisableFormatting);
@@ -171,7 +171,7 @@ namespace Adxstudio.Xrm.Visualizations
 
 			if (placeholderMatch.Success)
 			{
-				attribute.SetValue(this.ReplacePresentationDescriptionOptionSetPlaceholderMatch(placeholderMatch, serviceContext));
+				attribute.SetValue(ReplacePresentationDescriptionOptionSetPlaceholderMatch(placeholderMatch, serviceContext));
 			}
 		}
 
@@ -186,13 +186,13 @@ namespace Adxstudio.Xrm.Visualizations
 			var optionSetName = match.Groups["optionSetName"].Value;
 			var optionSetValue = match.Groups["optionSetValue"].Value;
 
-			var optionSetAttributeMetadata = this.PrimaryEntityMetadata.Attributes
+			var optionSetAttributeMetadata = PrimaryEntityMetadata.Attributes
 				.OfType<EnumAttributeMetadata>()
 				.FirstOrDefault(e => e.OptionSet != null && string.Equals(optionSetName, e.OptionSet.Name, StringComparison.OrdinalIgnoreCase));
 
 			if (optionSetAttributeMetadata != null)
 			{
-				return this.GetOptionSetValueLabel(optionSetAttributeMetadata.OptionSet, optionSetValue);
+				return GetOptionSetValueLabel(optionSetAttributeMetadata.OptionSet, optionSetValue);
 			}
 
 			OptionSetMetadata optionSet;
@@ -216,7 +216,7 @@ namespace Adxstudio.Xrm.Visualizations
 				return optionSetValue;
 			}
 
-			return this.GetOptionSetValueLabel(optionSet, optionSetValue);
+			return GetOptionSetValueLabel(optionSet, optionSetValue);
 		}
 
 		/// <summary>
@@ -241,7 +241,7 @@ namespace Adxstudio.Xrm.Visualizations
 				return optionSetValue;
 			}
 
-			return this.GetLocalizedLabel(option.Label);
+			return GetLocalizedLabel(option.Label);
 		}
 		
 		/// <summary>
@@ -251,7 +251,7 @@ namespace Adxstudio.Xrm.Visualizations
 		/// <returns>A localized string.</returns>
 		private string GetLocalizedLabel(Label label)
 		{
-			var localizedLabel = label.LocalizedLabels.FirstOrDefault(l => l.LanguageCode == this.languageCode);
+			var localizedLabel = label.LocalizedLabels.FirstOrDefault(l => l.LanguageCode == languageCode);
 
 			if (localizedLabel != null)
 			{

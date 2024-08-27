@@ -13,7 +13,7 @@ namespace Adxstudio.Xrm.Web.Routing
 {
 	public class WebResourceRouteHandler : IRouteHandler
 	{
-		public virtual string PortalName { get; private set; }
+		public virtual string PortalName { get; }
 
 		public WebResourceRouteHandler(string portalName)
 		{

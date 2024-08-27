@@ -45,15 +45,15 @@ namespace Adxstudio.Xrm.Cases
 			Write = write;
 		}
 
-		public EntityReference Account { get; private set; }
+		public EntityReference Account { get; }
 
-		public bool Create { get; private set; }
+		public bool Create { get; }
 
-		public bool Delete { get; private set; }
+		public bool Delete { get; }
 
-		public bool Read { get; private set; }
+		public bool Read { get; }
 
-		public bool Write { get; private set; }
+		public bool Write { get; }
 	}
 
 	internal class CaseAccessPermissions : ICaseAccessPermissions
@@ -69,12 +69,12 @@ namespace Adxstudio.Xrm.Cases
 			Write = write;
 		}
 
-		public bool Create { get; private set; }
+		public bool Create { get; }
 
-		public bool Delete { get; private set; }
+		public bool Delete { get; }
 
-		public bool Read { get; private set; }
+		public bool Read { get; }
 
-		public bool Write { get; private set; }
+		public bool Write { get; }
 	}
 }

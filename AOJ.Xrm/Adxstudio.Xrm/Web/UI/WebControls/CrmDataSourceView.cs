@@ -87,8 +87,6 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		private static readonly object EventUpdated = new object();
 		private static readonly object EventDeleted = new object();
 
-		private readonly HttpContext _context;
-		private readonly CrmDataSource _owner;
 		private readonly CrmOrganizationServiceContext _crmDataContext;
 		private string _cacheKey;
 		private bool _cancelSelectOnNullParameter;
@@ -103,7 +101,6 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		private Fetch _fetch;
 		private Func<Fetch, EntityCollection> _executeFetchMultiple;
 		private ParameterCollection _selectParameters;
-		private bool _tracking;
 
 		public event EventHandler<CrmDataSourceViewInsertedEventArgs> Inserted
 		{
@@ -127,20 +124,14 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			: base(owner, name)
 		{
 			_cancelSelectOnNullParameter = true;
-			_owner = owner;
-			_context = context;
-			_crmDataContext = OrganizationServiceContextFactory.Create(_owner.CrmDataContextName);
+			Owner = owner;
+			Context = context;
+			_crmDataContext = OrganizationServiceContextFactory.Create(Owner.CrmDataContextName);
 		}
 
-		protected CrmDataSource Owner
-		{
-			get { return _owner; }
-		}
+		protected CrmDataSource Owner { get; }
 
-		protected HttpContext Context
-		{
-			get { return _context; }
-		}
+		protected HttpContext Context { get; }
 
 		protected RetrieveMultipleRequest Request
 		{
@@ -176,7 +167,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				{
 					_queryByAttribute = new CrmDataSource.QueryByAttributeParameters();
 
-					if (_tracking)
+					if (IsTrackingViewState)
 					{
 						((IStateManager)_queryByAttribute).TrackViewState();
 					}
@@ -195,7 +186,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					_queryParameters = new ParameterCollection();
 					_queryParameters.ParametersChanged += SelectParametersChangedEventHandler;
 
-					if (_tracking)
+					if (IsTrackingViewState)
 					{
 						((IStateManager)_queryParameters).TrackViewState();
 					}
@@ -227,7 +218,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					_selectParameters = new ParameterCollection();
 					_selectParameters.ParametersChanged += SelectParametersChangedEventHandler;
 
-					if (_tracking)
+					if (IsTrackingViewState)
 					{
 						((IStateManager)_selectParameters).TrackViewState();
 					}
@@ -244,10 +235,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		#region IStateManager Members
 
-		public bool IsTrackingViewState
-		{
-			get { return _tracking; }
-		}
+		public bool IsTrackingViewState { get; private set; }
 
 		void IStateManager.LoadViewState(object savedState)
 		{
@@ -288,13 +276,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		public event EventHandler<CrmDataSourceStatusEventArgs> Selected
 		{
-			add { base.Events.AddHandler(EventSelected, value); }
-			remove { base.Events.RemoveHandler(EventSelected, value); }
+			add { Events.AddHandler(EventSelected, value); }
+			remove { Events.RemoveHandler(EventSelected, value); }
 		}
 
 		protected virtual void OnSelected(CrmDataSourceStatusEventArgs e)
 		{
-			EventHandler<CrmDataSourceStatusEventArgs> handler = base.Events[EventSelected] as EventHandler<CrmDataSourceStatusEventArgs>;
+			EventHandler<CrmDataSourceStatusEventArgs> handler = Events[EventSelected] as EventHandler<CrmDataSourceStatusEventArgs>;
 
 			if (handler != null)
 			{
@@ -304,13 +292,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		public event EventHandler<CrmDataSourceSelectingEventArgs> Selecting
 		{
-			add { base.Events.AddHandler(EventSelecting, value); }
-			remove { base.Events.RemoveHandler(EventSelecting, value); }
+			add { Events.AddHandler(EventSelecting, value); }
+			remove { Events.RemoveHandler(EventSelecting, value); }
 		}
 
 		protected virtual void OnSelecting(CrmDataSourceSelectingEventArgs args)
 		{
-			EventHandler<CrmDataSourceSelectingEventArgs> handler = base.Events[EventSelecting] as EventHandler<CrmDataSourceSelectingEventArgs>;
+			EventHandler<CrmDataSourceSelectingEventArgs> handler = Events[EventSelecting] as EventHandler<CrmDataSourceSelectingEventArgs>;
 
 			if (handler != null)
 			{
@@ -410,11 +398,11 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (System.Web.Services.Protocols.SoapException ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("{0}\n\n{1}", ex.Detail.InnerXml, ex.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("{0}\n\n{1}", ex.Detail.InnerXml, ex));
             }
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception: {0}", e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception: {0}", e));
 
                 _client = null;
 
@@ -486,19 +474,17 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (Owner.IsSingleSource)
 			{
-				_executeSingle = new Func<Fetch, Entity>(f => client.RetrieveSingle(f));
+				_executeSingle = f => client.RetrieveSingle(f);
 				return _executeSingle.BeginInvoke(fetch, asyncCallback, asyncState);
 			}
-			else
+
+			if (fetch != null)
 			{
-				if (fetch != null)
-				{
-					_executeFetchMultiple = new Func<Fetch, EntityCollection>(f => client.RetrieveMultiple(f));
-					return _executeFetchMultiple.BeginInvoke(fetch, asyncCallback, asyncState);
-				}
+				_executeFetchMultiple = f => client.RetrieveMultiple(f);
+				return _executeFetchMultiple.BeginInvoke(fetch, asyncCallback, asyncState);
 			}
 
-			_execute = new Func<QueryBase, EntityCollection>(client.RetrieveMultiple);
+			_execute = client.RetrieveMultiple;
 			return _execute.BeginInvoke(query, asyncCallback, asyncState);
 		}
 
@@ -506,7 +492,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			foreach (Entity entity in entities)
 			{
-				yield return entity as Entity;
+				yield return entity;
 			}
 		}
 
@@ -588,11 +574,11 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (System.Web.Services.Protocols.SoapException ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("{0}\n\n{1}", ex.Detail.InnerXml, ex.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("{0}\n\n{1}", ex.Detail.InnerXml, ex));
             }
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception: {0}", e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception: {0}", e));
 
                 // raise post-event with exception
                 CrmDataSourceStatusEventArgs selectedExceptionArgs = new CrmDataSourceStatusEventArgs(0, e);
@@ -991,15 +977,15 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		private void InitializeParameters(out string fetchXml, out QueryByAttribute query)
 		{
 			// merge the select parameters
-			IOrderedDictionary parameters = QueryParameters.GetValues(_context, _owner);
+			IOrderedDictionary parameters = QueryParameters.GetValues(Context, Owner);
 
 			fetchXml = GetNonNullOrEmpty(
 				parameters[_fetchXmlParameterName] as string,
-				_owner.FetchXml);
+				Owner.FetchXml);
 
 			if (!string.IsNullOrEmpty(fetchXml))
 			{
-				IOrderedDictionary selectParameters = SelectParameters.GetValues(_context, _owner);
+				IOrderedDictionary selectParameters = SelectParameters.GetValues(Context, Owner);
 
 				// apply select parameters replacement to the FetchXml
 				foreach (DictionaryEntry entry in selectParameters)
@@ -1028,19 +1014,19 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			// process the QueryByAttribute
 			query = null;
 
-			if (_owner.QueryByAttribute != null && !string.IsNullOrEmpty(_owner.QueryByAttribute.EntityName))
+			if (Owner.QueryByAttribute != null && !string.IsNullOrEmpty(Owner.QueryByAttribute.EntityName))
 			{
-				IOrderedDictionary selectParameters = SelectParameters.GetValues(_context, _owner);
+				IOrderedDictionary selectParameters = SelectParameters.GetValues(Context, Owner);
 
 				query = new QueryByAttribute();
-				query.EntityName = LookupParameter(selectParameters, _owner.QueryByAttribute.EntityName);
-				query.Attributes.AddRange(CopyParameters(selectParameters, _owner.QueryByAttribute.Attributes));
-				query.Values.AddRange(CopyParameters(selectParameters, _owner.QueryByAttribute.Values));
+				query.EntityName = LookupParameter(selectParameters, Owner.QueryByAttribute.EntityName);
+				query.Attributes.AddRange(CopyParameters(selectParameters, Owner.QueryByAttribute.Attributes));
+				query.Values.AddRange(CopyParameters(selectParameters, Owner.QueryByAttribute.Values));
 
-				if (_owner.QueryByAttribute.ColumnSet != null && _owner.QueryByAttribute.ColumnSet.Count > 0)
+				if (Owner.QueryByAttribute.ColumnSet != null && Owner.QueryByAttribute.ColumnSet.Count > 0)
 				{
 					// specify individual columns to load
-					query.ColumnSet = new ColumnSet(CopyParameters(selectParameters, _owner.QueryByAttribute.ColumnSet));
+					query.ColumnSet = new ColumnSet(CopyParameters(selectParameters, Owner.QueryByAttribute.ColumnSet));
 				}
 				else
 				{
@@ -1048,14 +1034,14 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					query.ColumnSet = new ColumnSet(true);
 				}
 
-				if (_owner.QueryByAttribute.Orders != null && _owner.QueryByAttribute.Orders.Count > 0)
+				if (Owner.QueryByAttribute.Orders != null && Owner.QueryByAttribute.Orders.Count > 0)
 				{
-					for (int i = 0; i < _owner.QueryByAttribute.Orders.Count; ++i)
+					for (int i = 0; i < Owner.QueryByAttribute.Orders.Count; ++i)
 					{
 						OrderExpression order = new OrderExpression();
-						order.AttributeName = LookupParameter(selectParameters, _owner.QueryByAttribute.Orders[i].Value);
+						order.AttributeName = LookupParameter(selectParameters, Owner.QueryByAttribute.Orders[i].Value);
 
-						string orderText = LookupParameter(selectParameters, _owner.QueryByAttribute.Orders[i].Text);
+						string orderText = LookupParameter(selectParameters, Owner.QueryByAttribute.Orders[i].Text);
 
 						if (orderText.StartsWith("desc", StringComparison.InvariantCultureIgnoreCase))
 						{
@@ -1103,7 +1089,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					}
 					else
 					{
-						string[] parts = columnSet.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+						string[] parts = columnSet.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
 						if (parts.Length > 0)
 						{
@@ -1208,7 +1194,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		private static void AppendSortExpressionToQuery(string sortExpression, Action<OrderExpression> action)
 		{
-			string[] parts = sortExpression.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+			string[] parts = sortExpression.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
 			for (int i = 0; i < parts.Length; ++i)
 			{
@@ -1216,7 +1202,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				// attribute name and direction are separated by a space, direction is optional
 				// attribute1 ascending, attribute2 descending
-				string[] pairs = part.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+				string[] pairs = part.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 				OrderExpression order = new OrderExpression();
 				order.AttributeName = pairs[0];
 				if (pairs.Length > 1 && (pairs[1].StartsWith("desc", StringComparison.InvariantCultureIgnoreCase)))
@@ -1280,7 +1266,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		public void TrackViewState()
 		{
-			_tracking = true;
+			IsTrackingViewState = true;
 
 			if (_selectParameters != null)
 			{

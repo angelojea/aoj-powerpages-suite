@@ -45,7 +45,7 @@ namespace Adxstudio.Xrm.Search
 			ExtendedAttributes = new Dictionary<string, string>(extendedAttributes);
 		}
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
 		public Guid EntityID
 		{
@@ -57,16 +57,16 @@ namespace Adxstudio.Xrm.Search
 			get { return Entity.LogicalName; }
 		}
 
-		public Dictionary<string, string> ExtendedAttributes { get; private set; }
+		public Dictionary<string, string> ExtendedAttributes { get; }
 
 		public string Fragment { get; set; }
 
-		public int ResultNumber { get; private set; }
+		public int ResultNumber { get; }
 
-		public float Score { get; private set; }
+		public float Score { get; }
 
-		public string Title { get; private set; }
+		public string Title { get; }
 
-		public Uri Url { get; private set; }
+		public Uri Url { get; }
 	}
 }

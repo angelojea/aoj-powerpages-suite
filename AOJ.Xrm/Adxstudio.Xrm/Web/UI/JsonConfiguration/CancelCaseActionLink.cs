@@ -13,8 +13,8 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
 	public class CancelCaseActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-times fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Cancel_Case_DefaultText");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Cancel_Case_DefaultText");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-times fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Cancel_Case_DefaultText");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Cancel_Case_DefaultText");
 
 		public ViewCancelCaseModal Modal { get; set; }
 

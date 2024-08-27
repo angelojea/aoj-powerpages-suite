@@ -9,8 +9,8 @@ namespace Adxstudio.Xrm.AspNet.Cms
 	using System.Collections.Generic;
 	using System.Linq;
 	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
+	using Services;
+	using Services.Query;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Messages;
 	using Microsoft.Xrm.Sdk.Query;
@@ -80,7 +80,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			// build the related entity queries
 			var siteSettingFetch = new Fetch
 			{
-				Entity = new FetchEntity("adx_sitesetting", WebsiteConstants.WebsiteSettingAttributes.ToFilteredColumns(this.BaseSolutionCrmVersion))
+				Entity = new FetchEntity("adx_sitesetting", WebsiteConstants.WebsiteSettingAttributes.ToFilteredColumns(BaseSolutionCrmVersion))
 				{
 					Filters = new[] { new Filter {
 						Conditions = GetActiveStateConditions().ToArray()
@@ -90,7 +90,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 			var bindingFetch = new Fetch
 			{
-				Entity = new FetchEntity("adx_websitebinding", WebsiteConstants.WebsiteBindingAttributes.ToFilteredColumns(this.BaseSolutionCrmVersion))
+				Entity = new FetchEntity("adx_websitebinding", WebsiteConstants.WebsiteBindingAttributes.ToFilteredColumns(BaseSolutionCrmVersion))
 				{
 					Filters = new[] { new Filter {
 						Conditions = GetActiveStateConditions().ToArray()
@@ -109,7 +109,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			var request = new RetrieveRequest
 			{
 				Target = id,
-				ColumnSet = new ColumnSet(this.GetWebsiteAttributes().ToArray()),
+				ColumnSet = new ColumnSet(GetWebsiteAttributes().ToArray()),
 				RelatedEntitiesQuery = relatedEntitiesQuery
 			};
 
@@ -118,7 +118,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 		protected virtual IEnumerable<string> GetWebsiteAttributes()
 		{
-			return WebsiteConstants.WebsiteAttributes.ToFilteredColumns(this.BaseSolutionCrmVersion);
+			return WebsiteConstants.WebsiteAttributes.ToFilteredColumns(BaseSolutionCrmVersion);
 		}
 
 		#endregion
@@ -131,7 +131,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			{
 				var fetchWebsites = new Fetch
 				{
-					Entity = new FetchEntity(this.LogicalName, this.GetWebsiteAttributes())
+					Entity = new FetchEntity(LogicalName, GetWebsiteAttributes())
 					{
 						Filters = new[] { new Filter {
 							Conditions = GetActiveEntityConditions().ToArray()
@@ -140,7 +140,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 				};
 
 				var websites = Context.Service.RetrieveMultiple(fetchWebsites);
-				MergeRelatedEntities(websites.Entities, WebsiteConstants.WebsiteBindingRelationship, "adx_websitebinding", new ColumnSet(WebsiteConstants.WebsiteBindingAttributes.ToFilteredColumns(this.BaseSolutionCrmVersion)));
+				MergeRelatedEntities(websites.Entities, WebsiteConstants.WebsiteBindingRelationship, "adx_websitebinding", new ColumnSet(WebsiteConstants.WebsiteBindingAttributes.ToFilteredColumns(BaseSolutionCrmVersion)));
 
 				return websites.Entities.Select(ToModel).ToList().AsQueryable();
 			}

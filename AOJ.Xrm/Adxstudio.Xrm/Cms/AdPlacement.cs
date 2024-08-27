@@ -28,12 +28,12 @@ namespace Adxstudio.Xrm.Cms
 		}
 
 		[JsonIgnore]
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public IEnumerable<IAd> Ads { get; private set; }
+		public IEnumerable<IAd> Ads { get; }
 
-		public EntityReference WebTemplate { get; private set; }
+		public EntityReference WebTemplate { get; }
 	}
 }

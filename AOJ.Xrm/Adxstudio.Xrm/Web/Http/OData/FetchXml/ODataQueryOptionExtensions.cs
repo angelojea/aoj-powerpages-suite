@@ -219,7 +219,7 @@ namespace Adxstudio.Xrm.Web.Http.OData.FetchXml
 						}
 						continue;
 				}
-				var str2 = key.Length <= 0 || (int)key[0] != 36 ? Uri.EscapeDataString(key) : string.Format("${0}", Uri.EscapeDataString(key.Substring(1)));
+				var str2 = key.Length <= 0 || key[0] != 36 ? Uri.EscapeDataString(key) : string.Format("${0}", Uri.EscapeDataString(key.Substring(1)));
 				var str3 = Uri.EscapeDataString(str1);
 				stringBuilder.Append(str2);
 				stringBuilder.Append('=');

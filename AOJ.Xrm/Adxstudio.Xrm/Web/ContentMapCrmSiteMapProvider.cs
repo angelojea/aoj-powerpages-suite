@@ -107,7 +107,8 @@ namespace Adxstudio.Xrm.Web
 					ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (4)FOUND PAGE");
 					return GetAccessibleNodeOrAccessDeniedNode(map, mappingResult.Node, urlProvider, excludeFromSecurityValidation);
 				}
-				else if (!mappingResult.IsUnique)
+
+				if (!mappingResult.IsUnique)
 				{
 					return GetNotFoundNode(map, site, urlProvider);
 				}
@@ -385,15 +386,15 @@ namespace Adxstudio.Xrm.Web
 
 		protected CrmSiteMapNode GetAccessDeniedNodeInternal()
 		{
-			var portalContext = this.PortalContext;
+			var portalContext = PortalContext;
 			var serviceContext = portalContext.ServiceContext;
 			var website = portalContext.Website;
 
 			var siteMarker = serviceContext.GetPageBySiteMarkerName(website, AccessDeniedPageSiteMarkerName);
 
 			return siteMarker != null
-				  ? this.GetWebPageNodeWithReturnUrl(serviceContext, siteMarker, HttpStatusCode.Forbidden)
-				  : this.GetNotFoundNode();
+				  ? GetWebPageNodeWithReturnUrl(serviceContext, siteMarker, HttpStatusCode.Forbidden)
+				  : GetNotFoundNode();
 		}
 
 
@@ -419,7 +420,7 @@ namespace Adxstudio.Xrm.Web
 
 				if (isPublished && notFoundNode == null)
 				{
-					var root = this.RootNode as CrmSiteMapNode;
+					var root = RootNode as CrmSiteMapNode;
 
 					if (null != root)
 					{

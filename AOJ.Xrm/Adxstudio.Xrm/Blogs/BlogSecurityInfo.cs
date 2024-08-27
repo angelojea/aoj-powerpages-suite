@@ -48,7 +48,7 @@ namespace Adxstudio.Xrm.Blogs
 			get { return _userHasAuthorPermission.Value; }
 		}
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
 		private Entity GetRecord(EntityReference record)
 		{

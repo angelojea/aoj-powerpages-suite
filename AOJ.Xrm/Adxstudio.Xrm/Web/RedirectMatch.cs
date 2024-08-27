@@ -19,9 +19,9 @@ namespace Adxstudio.Xrm.Web
 
 		public RedirectMatch(int statusCode, string location) : this(statusCode.ToEnum<HttpStatusCode>(), location) { }
 
-		public virtual string Location { get; private set; }
+		public virtual string Location { get; }
 
-		public virtual HttpStatusCode StatusCode { get; private set; }
+		public virtual HttpStatusCode StatusCode { get; }
 
 		public virtual bool Success
 		{

@@ -203,7 +203,7 @@ namespace Microsoft.Xrm.Portal.Core
 				where c.GetAttributeValue<string>("firstname") == firstName
 					&& c.GetAttributeValue<string>("lastname") == lastName
 						&& c.GetAttributeValue<string>("emailaddress1") == emailAddress
-				select c as Entity;
+				select c;
 
 			return findContact.FirstOrDefault();
 		}

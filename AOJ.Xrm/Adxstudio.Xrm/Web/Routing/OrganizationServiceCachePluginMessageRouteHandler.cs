@@ -24,7 +24,7 @@ namespace Adxstudio.Xrm.Web.Routing
 		/// <summary>
 		/// The name of the <see cref="PortalContextElement"/> specifying the current portal.
 		/// </summary>
-		public virtual string PortalName { get; private set; }
+		public virtual string PortalName { get; }
 
 		public virtual IHttpHandler GetHttpHandler(RequestContext requestContext)
 		{

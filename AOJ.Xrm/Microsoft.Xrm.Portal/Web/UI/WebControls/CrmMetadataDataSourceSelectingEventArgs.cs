@@ -14,59 +14,19 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 	[AspNetHostingPermission(SecurityAction.InheritanceDemand, Level = AspNetHostingPermissionLevel.Minimal), AspNetHostingPermission(SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal)]
 	public class CrmMetadataDataSourceSelectingEventArgs : CancelEventArgs
 	{
-		private CrmMetadataDataSource _dataSource;
+		public CrmMetadataDataSource DataSource { get; }
 
-		public CrmMetadataDataSource DataSource
-		{
-			get { return _dataSource; }
-		}
+		public DataSourceSelectArguments Arguments { get; }
 
-		private readonly DataSourceSelectArguments _arguments;
+		public EntityFilters MetadataFlags { get; set; }
 
-		public DataSourceSelectArguments Arguments
-		{
-			get { return _arguments; }
-		}
+		public EntityFilters EntityFlags { get; set; }
 
-		private EntityFilters _metadataFlags;
+		public string EntityName { get; set; }
 
-		public EntityFilters MetadataFlags
-		{
-			get { return _metadataFlags; }
-			set { _metadataFlags = value; }
-		}
+		public string AttributeName { get; set; }
 
-		private EntityFilters _entityFlags;
-
-		public EntityFilters EntityFlags
-		{
-			get { return _entityFlags; }
-			set { _entityFlags = value; }
-		}
-
-		private string _entityName;
-
-		public string EntityName
-		{
-			get { return _entityName; }
-			set { _entityName = value; }
-		}
-
-		private string _attributeName;
-
-		public string AttributeName
-		{
-			get { return _attributeName; }
-			set { _attributeName = value; }
-		}
-
-		private string _sortExpression;
-
-		public string SortExpression
-		{
-			get { return _sortExpression; }
-			set { _sortExpression = value; }
-		}
+		public string SortExpression { get; set; }
 
 		public CrmMetadataDataSourceSelectingEventArgs(
 			CrmMetadataDataSource dataSource,
@@ -77,13 +37,13 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 			EntityFilters entityFlags,
 			string sortExpression)
 		{
-			_dataSource = dataSource;
-			_arguments = arguments;
-			_entityName = entityName;
-			_attributeName = attributeName;
-			_metadataFlags = metadataFlags;
-			_entityFlags = entityFlags;
-			_sortExpression = sortExpression;
+			DataSource = dataSource;
+			Arguments = arguments;
+			EntityName = entityName;
+			AttributeName = attributeName;
+			MetadataFlags = metadataFlags;
+			EntityFlags = entityFlags;
+			SortExpression = sortExpression;
 		}
 	}
 }

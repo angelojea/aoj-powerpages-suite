@@ -29,7 +29,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 		/// <summary>
 		/// The CRM logical name of the attribute being requested.
 		/// </summary>
-		protected virtual string AttributeLogicalName { get; private set; }
+		protected virtual string AttributeLogicalName { get; }
 
 		protected override void ProcessRequest(HttpContext context, ICmsEntityServiceProvider serviceProvider, Guid portalScopeId, IPortalContext portal, OrganizationServiceContext serviceContext, Entity entity, CmsEntityMetadata entityMetadata, ICrmEntitySecurityProvider security)
 		{

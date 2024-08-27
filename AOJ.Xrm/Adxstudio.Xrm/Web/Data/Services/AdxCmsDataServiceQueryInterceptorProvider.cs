@@ -13,7 +13,7 @@ namespace Adxstudio.Xrm.Web.Data.Services
 {
 	public class AdxCmsDataServiceQueryInterceptorProvider : ICmsDataServiceQueryInterceptorProvider
 	{
-		public string PortalName { get; private set; }
+		public string PortalName { get; }
 
 		public AdxCmsDataServiceQueryInterceptorProvider(string portalName)
 		{
@@ -28,7 +28,7 @@ namespace Adxstudio.Xrm.Web.Data.Services
 		public ICmsDataServiceQueryInterceptor GetInterceptor()
 		{
 			return WebsiteSpecifiedInConfigurationHasChildWebsites
-				? (ICmsDataServiceQueryInterceptor)new MultipleWebsiteCmsDataServiceQueryInterceptor(PortalName)
+				? new MultipleWebsiteCmsDataServiceQueryInterceptor(PortalName)
 				: new SingleWebsiteCmsDataServiceQueryInterceptor(PortalName);
 		}
 	}

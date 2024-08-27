@@ -30,7 +30,7 @@ namespace Microsoft.Xrm.Portal.Cms.WebsiteSelectors
 		/// <summary>
 		/// The name of the <see cref="PortalContextElement"/> where the website name is specified.
 		/// </summary>
-		public string PortalName { get; private set; }
+		public string PortalName { get; }
 
 		/// <summary>
 		/// Gets the value of the configured website name.

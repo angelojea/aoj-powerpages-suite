@@ -16,10 +16,10 @@ namespace Adxstudio.Xrm.Products
 			Sum = sum;
 		}
 
-		public double Average { get; private set; }
-		public double AverageRationalValue { get; private set; }
-		public int Count { get; private set; }
-		public int MaximumValue { get; private set; }
-		public double Sum { get; private set; }
+		public double Average { get; }
+		public double AverageRationalValue { get; }
+		public int Count { get; }
+		public int MaximumValue { get; }
+		public double Sum { get; }
 	}
 }

@@ -35,9 +35,9 @@ namespace Adxstudio.Xrm.Cms
 		/// <param name="installedOn">Date when solution was installed</param>
 		public SolutionInfo(string name, Version version, DateTime installedOn)
 		{
-			this.Name = name;
-			this.SolutionVersion = version;
-			this.InstalledOn = installedOn;
+			Name = name;
+			SolutionVersion = version;
+			InstalledOn = installedOn;
 		}
 	}
 }

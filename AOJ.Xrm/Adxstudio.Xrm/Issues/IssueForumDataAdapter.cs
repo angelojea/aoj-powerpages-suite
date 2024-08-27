@@ -79,9 +79,9 @@ namespace Adxstudio.Xrm.Issues
 		/// <param name="portalName">The configured name of the portal to get and set data for.</param>
 		public IssueForumDataAdapter(IIssueForum issueForum, string portalName = null) : this(issueForum.Entity, portalName) { }
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
-		protected EntityReference IssueForum { get; private set; }
+		protected EntityReference IssueForum { get; }
 
 		public int? Priority { get; set; }
 

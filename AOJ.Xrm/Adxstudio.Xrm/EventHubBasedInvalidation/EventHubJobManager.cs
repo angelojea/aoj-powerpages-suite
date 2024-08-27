@@ -10,8 +10,8 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 	using Microsoft.Crm.Sdk.Messages;
 	using Microsoft.ServiceBus;
 	using Microsoft.ServiceBus.Messaging;
-	using Adxstudio.Xrm.AspNet;
-	using Adxstudio.Xrm.Web;
+	using AspNet;
+	using Web;
 
 	/// <summary>
 	/// The Event Hub context.
@@ -21,7 +21,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// <summary>
 		/// The settings.
 		/// </summary>
-		public EventHubJobSettings Settings { get; private set; }
+		public EventHubJobSettings Settings { get; }
 
 		/// <summary>
 		/// The organization Id field.
@@ -37,7 +37,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			{
 				try
 				{
-					return this.organizationId.Value;
+					return organizationId.Value;
 				}
 				catch (Exception e)
 				{
@@ -62,7 +62,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			{
 				try
 				{
-					return this.namespaceManager.Value;
+					return namespaceManager.Value;
 				}
 				catch (Exception e)
 				{
@@ -87,7 +87,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			{
 				try
 				{
-					return this.topicExists.Value;
+					return topicExists.Value;
 				}
 				catch (Exception e)
 				{
@@ -112,7 +112,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			{
 				try
 				{
-					return this.subscription.Value;
+					return subscription.Value;
 				}
 				catch (Exception e)
 				{
@@ -137,7 +137,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			{
 				try
 				{
-					return this.subscriptionClient.Value;
+					return subscriptionClient.Value;
 				}
 				catch (Exception e)
 				{
@@ -155,10 +155,10 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// <param name="settings">The settings.</param>
 		public EventHubJobManager(CrmDbContext context, EventHubJobSettings settings)
 		{
-			this.Settings = settings;
+			Settings = settings;
 
-			this.organizationId = new Lazy<Guid>(() => GetOrganizationId(context), LazyThreadSafetyMode.PublicationOnly);
-			this.Reset();
+			organizationId = new Lazy<Guid>(() => GetOrganizationId(context), LazyThreadSafetyMode.PublicationOnly);
+			Reset();
 		}
 
 		/// <summary>
@@ -166,10 +166,10 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// </summary>
 		public void Reset()
 		{
-			this.namespaceManager = new Lazy<NamespaceManager>(CreateNamespaceManager(this.Settings), LazyThreadSafetyMode.PublicationOnly);
-			this.topicExists = new Lazy<bool>(() => this.GetTopicExists(this.Settings), LazyThreadSafetyMode.PublicationOnly);
-			this.subscription = new Lazy<SubscriptionDescription>(() => this.GetSubscription(this.Settings), LazyThreadSafetyMode.PublicationOnly);
-			this.subscriptionClient = new Lazy<SubscriptionClient>(() => this.GetSubscriptionClient(this.Settings), LazyThreadSafetyMode.PublicationOnly);
+			namespaceManager = new Lazy<NamespaceManager>(CreateNamespaceManager(Settings), LazyThreadSafetyMode.PublicationOnly);
+			topicExists = new Lazy<bool>(() => GetTopicExists(Settings), LazyThreadSafetyMode.PublicationOnly);
+			subscription = new Lazy<SubscriptionDescription>(() => GetSubscription(Settings), LazyThreadSafetyMode.PublicationOnly);
+			subscriptionClient = new Lazy<SubscriptionClient>(() => GetSubscriptionClient(Settings), LazyThreadSafetyMode.PublicationOnly);
 		}
 
 		/// <summary>
@@ -201,7 +201,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		private bool GetTopicExists(EventHubJobSettings settings)
 		{
 			var topicPath = settings.Subscription.TopicPath;
-			var exists = this.NamespaceManager.TopicExists(topicPath);
+			var exists = NamespaceManager.TopicExists(topicPath);
 
 			if (!exists)
 			{
@@ -221,34 +221,34 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			var topicPath = settings.Subscription.TopicPath;
 			var subscriptionName = settings.Subscription.Name;
 
-			if (!this.TopicExists)
+			if (!TopicExists)
 			{
 				throw new InvalidOperationException(string.Format("The topic '{0}' does not exist.", topicPath));
 			}
 
-			var subscriptionExists = this.NamespaceManager.SubscriptionExists(topicPath, subscriptionName);
+			var subscriptionExists = NamespaceManager.SubscriptionExists(topicPath, subscriptionName);
 
 			if (!subscriptionExists)
 			{
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Creating Subscription '{0}' for topic '{1}'.", subscriptionName, topicPath));
 
-				return this.CreateSubscription(settings.Subscription);
+				return CreateSubscription(settings.Subscription);
 			}
 
 			if (settings.RecreateSubscription)
 			{
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Deleting Subscription '{0}' for topic '{1}'.", subscriptionName, topicPath));
 
-				this.NamespaceManager.DeleteSubscription(topicPath, subscriptionName);
+				NamespaceManager.DeleteSubscription(topicPath, subscriptionName);
 
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Creating Subscription '{0}' for topic '{1}'.", subscriptionName, topicPath));
 
-				return this.CreateSubscription(settings.Subscription);
+				return CreateSubscription(settings.Subscription);
 			}
 
 			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Using Subscription '{0}' for topic '{1}'.", subscriptionName, topicPath));
 
-			return this.NamespaceManager.GetSubscription(topicPath, subscriptionName);
+			return NamespaceManager.GetSubscription(topicPath, subscriptionName);
 		}
 
 		/// <summary>
@@ -260,12 +260,12 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		{
             try
             {
-                return this.NamespaceManager.CreateSubscription(description, this.CreateFilter());
+                return NamespaceManager.CreateSubscription(description, CreateFilter());
             }
             catch (MessagingEntityAlreadyExistsException e)
             {
                 WebEventSource.Log.GenericWarningException(e, string.Format("MessagingEntityAlreadyExistsException: Using Subscription '{0}' for topic '{1}'.", description.Name, description.TopicPath));
-                return this.NamespaceManager.GetSubscription(description.TopicPath, description.Name);
+                return NamespaceManager.GetSubscription(description.TopicPath, description.Name);
             }
         }
 
@@ -275,7 +275,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
         /// <returns>The filter.</returns>
         private Filter CreateFilter()
 		{
-			return new SqlFilter(string.Format("OrganizationId = '{0}'", this.OrganizationId));
+			return new SqlFilter(string.Format("OrganizationId = '{0}'", OrganizationId));
 		}
 
 		/// <summary>
@@ -285,10 +285,10 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// <returns>The subscription client.</returns>
 		private SubscriptionClient GetSubscriptionClient(EventHubJobSettings settings)
 		{
-			if (this.Subscription != null)
+			if (Subscription != null)
 			{
-				var topicPath = this.Subscription.TopicPath;
-				var subscriptionName = this.Subscription.Name;
+				var topicPath = Subscription.TopicPath;
+				var subscriptionName = Subscription.Name;
 				return SubscriptionClient.CreateFromConnectionString(settings.ConnectionString, topicPath, subscriptionName);
 			}
 

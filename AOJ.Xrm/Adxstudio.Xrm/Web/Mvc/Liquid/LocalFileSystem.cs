@@ -26,7 +26,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			Root = root;
 		}
 
-		public string Root { get; private set; }
+		public string Root { get; }
 
 		public IEnumerable<TemplateFileInfo> GetTemplateFiles()
 		{

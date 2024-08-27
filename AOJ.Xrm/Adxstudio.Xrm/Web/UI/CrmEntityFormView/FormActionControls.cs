@@ -431,7 +431,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		public static WebControl FormActionNavbarInnerHtml(HtmlHelper html, WebControl containerLeft, WebControl containerRight, IFormConfiguration formConfiguration,
 			ActionButtonPlacement actionButtonPlacement)
 		{
-			var collapsedNavbar = new Panel { ID = "form-navbar-collapse" + actionButtonPlacement.ToString() };
+			var collapsedNavbar = new Panel { ID = "form-navbar-collapse" + actionButtonPlacement };
 
 			collapsedNavbar.AddClass("collapse");
 			collapsedNavbar.AddClass("navbar-collapse");
@@ -460,7 +460,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			collapseButton.AddCssClass("collapsed");
 			collapseButton.Attributes["type"] = "button";
 			collapseButton.Attributes["data-toggle"] = "collapse";
-			collapseButton.Attributes["data-target"] = "#form-navbar-collapse" + actionButtonPlacement.ToString();
+			collapseButton.Attributes["data-target"] = "#form-navbar-collapse" + actionButtonPlacement;
 			var srOnly = new TagBuilder("span");
 			srOnly.AddCssClass("sr-only");
 			collapseButton.InnerHtml += srOnly;
@@ -743,7 +743,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 						new LiteralControl(html.CreateRelatedRecordModal(BootstrapExtensions.BootstrapModalSize.Large,
 						createRelatedRecordAction.Modal.CssClass, createRelatedRecordAction.Modal.Title,
 						createRelatedRecordAction.Modal.DismissButtonSrText, createRelatedRecordAction.Modal.TitleCssClass,
-						null, htmlAttributes, null).ToString()));
+						null, htmlAttributes).ToString()));
 				}
 			}
 		}

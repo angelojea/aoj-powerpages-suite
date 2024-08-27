@@ -86,7 +86,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 
 		public IEnumerable<Relationship> Relationships
 		{
-			get { return _relationships.Keys.OrderBy(r => r.ToSchemaName(".")).ToArray(); }
+			get { return _relationships.Keys.OrderBy(r => r.ToSchemaName()).ToArray(); }
 		}
 
 		public bool HasAttribute(string attributeLogicalName)

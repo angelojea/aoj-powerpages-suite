@@ -11,7 +11,7 @@ namespace Adxstudio.Xrm.Web.Providers
 	using Microsoft.Xrm.Portal.Web.Providers;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Client;
-	using Adxstudio.Xrm.Services;
+	using Services;
 
 	public class AdxEntityWebsiteProvider : EntityWebsiteProvider
 	{

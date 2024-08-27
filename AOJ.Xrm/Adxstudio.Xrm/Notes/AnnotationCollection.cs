@@ -10,7 +10,7 @@ namespace Adxstudio.Xrm.Notes
 {
 	class AnnotationCollection : IAnnotationCollection
 	{
-		private IEnumerable<IAnnotation> Enumerable { get; set; }
+		private IEnumerable<IAnnotation> Enumerable { get; }
 
 		private AnnotationCollection(bool permissionDenied)
 		{
@@ -36,8 +36,8 @@ namespace Adxstudio.Xrm.Notes
 			return GetEnumerator();
 		}
 
-		public int TotalCount { get; private set; }
-		public bool PermissionDenied { get; private set; }
+		public int TotalCount { get; }
+		public bool PermissionDenied { get; }
 
 		public static IAnnotationCollection Empty(bool permissionDenied)
 		{

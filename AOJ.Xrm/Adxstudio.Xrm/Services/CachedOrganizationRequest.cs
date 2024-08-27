@@ -9,7 +9,7 @@ namespace Adxstudio.Xrm.Services
 	using System.Configuration;
 	using System.Runtime.CompilerServices;
 	using System.Runtime.Serialization;
-	using Adxstudio.Xrm.Core.Flighting;
+	using Core.Flighting;
 	using Microsoft.Xrm.Sdk;
 	using Newtonsoft.Json;
 	using Query;
@@ -52,7 +52,7 @@ namespace Adxstudio.Xrm.Services
 		public CachedOrganizationRequest(OrganizationRequest request, Caller caller)
 			: this(request)
 		{
-			this.Telemetry = new CacheItemTelemetry(request, caller);
+			Telemetry = new CacheItemTelemetry(request, caller);
 		}
 
 		/// <summary>
@@ -65,9 +65,9 @@ namespace Adxstudio.Xrm.Services
 		public CachedOrganizationRequest(OrganizationRequest request, RequestFlag flag, TimeSpan? expiration, Caller caller)
 			: this(request)
 		{
-			this.Telemetry = new CacheItemTelemetry(request, caller);
+			Telemetry = new CacheItemTelemetry(request, caller);
 			this.flag = flag;
-			this.CacheExpiration = expiration;
+			CacheExpiration = expiration;
 		}
 
 		/// <summary>
@@ -78,13 +78,13 @@ namespace Adxstudio.Xrm.Services
 		{
 			Fetch fQuery = null;
 
-			if (this.Request is FetchMultipleRequest)
+			if (Request is FetchMultipleRequest)
 			{
-				fQuery = (this.Request as FetchMultipleRequest).Fetch;
+				fQuery = (Request as FetchMultipleRequest).Fetch;
 			}
-			else if (this.Request is RetrieveSingleRequest)
+			else if (Request is RetrieveSingleRequest)
 			{
-				fQuery = (this.Request as RetrieveSingleRequest).Fetch;
+				fQuery = (Request as RetrieveSingleRequest).Fetch;
 			}
 
 			return fQuery;
@@ -96,11 +96,11 @@ namespace Adxstudio.Xrm.Services
 		/// <param name="request">The wrapped request.</param>
 		private CachedOrganizationRequest(OrganizationRequest request)
 		{
-			this.Request = request;
-			this.ExtensionData = request.ExtensionData;
-			this.Parameters = request.Parameters;
-			this.RequestId = request.RequestId;
-			this.RequestName = request.RequestName;
+			Request = request;
+			ExtensionData = request.ExtensionData;
+			Parameters = request.Parameters;
+			RequestId = request.RequestId;
+			RequestName = request.RequestName;
 		}
 
 		/// <summary>
@@ -126,11 +126,11 @@ namespace Adxstudio.Xrm.Services
 				case RequestFlag.AllowStaleData:
 					if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.PortalAllowStaleData))
 					{
-						return (this.flag & value) == value;
+						return (flag & value) == value;
 					}
 					return false;
 				default:
-					return (this.flag & value) == value;
+					return (flag & value) == value;
 			}
 		}
 	}

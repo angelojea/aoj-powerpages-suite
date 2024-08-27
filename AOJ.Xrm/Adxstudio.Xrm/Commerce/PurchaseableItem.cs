@@ -40,50 +40,50 @@ namespace Adxstudio.Xrm.Commerce
 			AmountAfterDiscount = Amount - TotalDiscountAmount;
 		}
 
-		public decimal Amount { get; private set; }
+		public decimal Amount { get; }
 
-		public decimal AmountAfterDiscount { get; private set; }
+		public decimal AmountAfterDiscount { get; }
 
-		public string Description { get; private set; }
+		public string Description { get; }
 
-		public IEnumerable<IDiscount> Discounts { get; private set; }
+		public IEnumerable<IDiscount> Discounts { get; }
 
-		public decimal ExtendedAmount { get; private set; }
+		public decimal ExtendedAmount { get; }
 
 		public bool IsOptional
 		{
 			get { return !IsRequired; }
 		}
 
-		public bool IsRequired { get; private set; }
+		public bool IsRequired { get; }
 
 		public bool IsSelected { get; set; }
 
-		public int LineItemNumber { get; private set; }
+		public int LineItemNumber { get; }
 
-		public decimal ManualDiscountAmount { get; private set; }
+		public decimal ManualDiscountAmount { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public decimal PricePerUnit { get; private set; }
+		public decimal PricePerUnit { get; }
 
-		public EntityReference Product { get; private set; }
+		public EntityReference Product { get; }
 
-		public decimal Quantity { get; private set; }
+		public decimal Quantity { get; }
 
-		public EntityReference QuoteProduct { get; private set; }
+		public EntityReference QuoteProduct { get; }
 
-		public bool RequiresShipping { get; private set; }
+		public bool RequiresShipping { get; }
 
 		public bool SupportsQuantities { get; set; }
 
-		public decimal Tax { get; private set; }
+		public decimal Tax { get; }
 
-		public decimal TotalDiscountAmount { get; private set; }
+		public decimal TotalDiscountAmount { get; }
 
-		public EntityReference UnitOfMeasure { get; private set; }
+		public EntityReference UnitOfMeasure { get; }
 
-		public decimal VolumeDiscountAmount { get; private set; }
+		public decimal VolumeDiscountAmount { get; }
 
 		private static decimal GetDecimalFromMoney(Entity quoteProduct, string attributeLogicalName, decimal defaultValue = 0)
 		{

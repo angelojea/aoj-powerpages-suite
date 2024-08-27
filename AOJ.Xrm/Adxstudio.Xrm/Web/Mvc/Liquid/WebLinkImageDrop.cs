@@ -38,6 +38,6 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			get { return WebLink.ImageWidth; }
 		}
 
-		protected IWebLink WebLink { get; private set; }
+		protected IWebLink WebLink { get; }
 	}
 }

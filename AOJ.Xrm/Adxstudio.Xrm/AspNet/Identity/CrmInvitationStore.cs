@@ -103,16 +103,7 @@ namespace Adxstudio.Xrm.AspNet.Identity
 
 		#region IInvitationStore
 
-		private static readonly ColumnSet _invitationAttributes = new ColumnSet(new[]
-		{
-			"adx_name",
-			"adx_expirydate",
-			"adx_invitationcode",
-			"adx_redemptions",
-			"adx_maximumredemptions",
-			"adx_type",
-			"adx_invitecontact",
-		});
+		private static readonly ColumnSet _invitationAttributes = new ColumnSet("adx_name", "adx_expirydate", "adx_invitationcode", "adx_redemptions", "adx_maximumredemptions", "adx_type", "adx_invitecontact");
 
 		public virtual async Task<TInvitation> FindByCodeAsync(string invitationCode)
 		{

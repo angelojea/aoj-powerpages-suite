@@ -78,6 +78,6 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			get { return _webLinks.Value.AsEnumerable(); }
 		}
 
-		protected IWebLink WebLink { get; private set; }
+		protected IWebLink WebLink { get; }
 	}
 }

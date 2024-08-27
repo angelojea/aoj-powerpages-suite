@@ -10,8 +10,8 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 {
 	public abstract class PortalUrlDrop : PortalDrop
 	{
-		private Lazy<bool> _isSitemapAncestor;
-		private Lazy<bool> _isSitemapCurrent;
+		private readonly Lazy<bool> _isSitemapAncestor;
+		private readonly Lazy<bool> _isSitemapCurrent;
 
 		protected PortalUrlDrop(IPortalLiquidContext portalLiquidContext) : base(portalLiquidContext)
 		{

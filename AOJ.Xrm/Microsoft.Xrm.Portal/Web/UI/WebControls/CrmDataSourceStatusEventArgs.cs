@@ -14,31 +14,15 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 	{
 		public CrmDataSourceStatusEventArgs(int rowsAffected, Exception exception)
 		{
-			_rowsAffected = rowsAffected;
-			_exception = exception;
-			_exceptionHandled = true;
+			RowsAffected = rowsAffected;
+			Exception = exception;
+			ExceptionHandled = true;
 		}
 
-		private readonly int _rowsAffected;
+		public int RowsAffected { get; }
 
-		public int RowsAffected
-		{
-			get { return _rowsAffected; }
-		}
+		public Exception Exception { get; }
 
-		private readonly Exception _exception;
-
-		public Exception Exception
-		{
-			get { return _exception; }
-		}
-
-		private bool _exceptionHandled;
-
-		public bool ExceptionHandled
-		{
-			get { return _exceptionHandled; }
-			set { _exceptionHandled = value; }
-		}
+		public bool ExceptionHandled { get; set; }
 	}
 }

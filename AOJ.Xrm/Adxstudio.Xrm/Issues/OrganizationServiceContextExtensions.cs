@@ -130,10 +130,8 @@ namespace Adxstudio.Xrm.Issues
 					addCondition("statecode", "eq", "0");
 				});
 			}
-			else
-			{
-				return new Dictionary<Guid, int>();
-			}
+
+			return new Dictionary<Guid, int>();
 		}
 
 		public static IDictionary<Guid, Tuple<string, string>> FetchIssueCommentExtendedData(this OrganizationServiceContext serviceContext, IEnumerable<Guid> commentIds)

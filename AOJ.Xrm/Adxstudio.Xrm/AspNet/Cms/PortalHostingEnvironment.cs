@@ -6,7 +6,7 @@
 namespace Adxstudio.Xrm.AspNet.Cms
 {
 	using System.Web.Hosting;
-	using Adxstudio.Xrm.Configuration;
+	using Configuration;
 
 	/// <summary>
 	/// The web app host details.
@@ -30,13 +30,13 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		{
 			if (PortalSettings.Instance.UseOnlineSetup && !string.IsNullOrEmpty(PortalSettings.Instance.DomainName))
 			{
-				this.SiteName = PortalSettings.Instance.DomainName;
-				this.ApplicationVirtualPath = "/";
+				SiteName = PortalSettings.Instance.DomainName;
+				ApplicationVirtualPath = "/";
 			}
 			else
 			{
-				this.SiteName = HostingEnvironment.SiteName;
-				this.ApplicationVirtualPath = HostingEnvironment.ApplicationVirtualPath;
+				SiteName = HostingEnvironment.SiteName;
+				ApplicationVirtualPath = HostingEnvironment.ApplicationVirtualPath;
 			}
 		}
 
@@ -47,8 +47,8 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		/// <param name="applicationVirtualPath">The virtual path.</param>
 		public PortalHostingEnvironment(string siteName, string applicationVirtualPath)
 		{
-			this.SiteName = siteName;
-			this.ApplicationVirtualPath = applicationVirtualPath;
+			SiteName = siteName;
+			ApplicationVirtualPath = applicationVirtualPath;
 		}
 	}
 }

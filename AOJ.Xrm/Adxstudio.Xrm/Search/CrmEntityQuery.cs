@@ -36,27 +36,27 @@ namespace Adxstudio.Xrm.Search
 
 		public CrmEntityQuery(string queryText, int pageNumber, int pageSize, IWebsiteLanguage language, bool multiLanguageEnabled, string filter = null) : this(queryText, pageNumber, pageSize, Enumerable.Empty<string>(), language, multiLanguageEnabled, filter) { }
 
-		public string Filter { get; private set; }
+		public string Filter { get; }
 
-		public IEnumerable<string> LogicalNames { get; private set; }
+		public IEnumerable<string> LogicalNames { get; }
 
-		public int PageNumber { get; private set; }
+		public int PageNumber { get; }
 
-		public int PageSize { get; private set; }
+		public int PageSize { get; }
 
-		public string QueryText { get; private set; }
+		public string QueryText { get; }
 
-		public string LanguageCode { get; private set; }
+		public string LanguageCode { get; }
 
-		public IEnumerable<FacetConstraints> FacetConstraints { get; private set; }
+		public IEnumerable<FacetConstraints> FacetConstraints { get; }
 
 		public string SortingOption { get; set; }
 
-		public IWebsiteLanguage ContextLanguage { get; private set; }
+		public IWebsiteLanguage ContextLanguage { get; }
 
-		public bool MultiLanguageEnabled { get; private set; }
+		public bool MultiLanguageEnabled { get; }
 
-		public string QueryTerm { get; private set; }
+		public string QueryTerm { get; }
 
 		public override string ToString()
 		{

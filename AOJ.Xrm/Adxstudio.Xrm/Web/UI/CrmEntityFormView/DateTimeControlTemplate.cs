@@ -39,7 +39,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// Form Field
 		/// </summary>
-		public CrmEntityFormViewField Field { get; private set; }
+		public CrmEntityFormViewField Field { get; }
 
 		protected bool IncludesTime
 		{

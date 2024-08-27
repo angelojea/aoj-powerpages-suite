@@ -7,7 +7,7 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 {
 	public sealed class CmsDataServiceQueryInterceptorProvider : ICmsDataServiceQueryInterceptorProvider
 	{
-		public string PortalName { get; private set; }
+		public string PortalName { get; }
 
 		public CmsDataServiceQueryInterceptorProvider(string portalName)
 		{

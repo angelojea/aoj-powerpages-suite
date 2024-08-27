@@ -27,19 +27,19 @@ namespace Adxstudio.Xrm.Search.Store
 			}
 
 			_directory = directoryInfo;
-			this._useEncryptedDirectory = useEncryptedDirectory;
-			this._isOnlinePortal = isOnlinePortal;
+			_useEncryptedDirectory = useEncryptedDirectory;
+			_isOnlinePortal = isOnlinePortal;
 		}
 
 		public Directory GetDirectory(Version version)
 		{
 			if (!_useEncryptedDirectory)
 			{
-				return FSDirectory.Open(this._directory);
+				return FSDirectory.Open(_directory);
 			}
 
-			var certificateProvider = new CertificateProviderFactory().GetCertificateProvider(this._isOnlinePortal);
-			var directoryPath = string.Format("{0}.{1}", this._directory.FullName, certificateProvider.Thumbprint);
+			var certificateProvider = new CertificateProviderFactory().GetCertificateProvider(_isOnlinePortal);
+			var directoryPath = string.Format("{0}.{1}", _directory.FullName, certificateProvider.Thumbprint);
 
 			var directory = new EncryptedDirectory(directoryPath, certificateProvider.Certificate);
 

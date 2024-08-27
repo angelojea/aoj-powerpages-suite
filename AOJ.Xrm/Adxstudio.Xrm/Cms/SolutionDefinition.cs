@@ -20,9 +20,9 @@ namespace Adxstudio.Xrm.Cms
 			return new SolutionDefinition(new[] { solution }, entities, manyRelationships);
 		}
 
-		public IEnumerable<string> Solutions { get; private set; }
-		public IDictionary<string, EntityDefinition> Entities { get; private set; }
-		public IDictionary<string, ManyRelationshipDefinition> ManyRelationships { get; private set; }
+		public IEnumerable<string> Solutions { get; }
+		public IDictionary<string, EntityDefinition> Entities { get; }
+		public IDictionary<string, ManyRelationshipDefinition> ManyRelationships { get; }
 
 		public SolutionDefinition(
 			IEnumerable<string> solutions,
@@ -42,7 +42,7 @@ namespace Adxstudio.Xrm.Cms
 		public Dictionary<string, EntityDefinition> GetFilteredEntities(IDictionary<string, SolutionInfo> crmSolutions)
 		{
 			Dictionary<string, EntityDefinition> filteredEntities = new Dictionary<string, EntityDefinition>();
-			foreach (var entity in this.Entities)
+			foreach (var entity in Entities)
 			{
 				// If solution name is missing in entity definition or CRM is missing this solution, do the filtering based on MicrosoftCrmPortalBase solution version.
 				var solutionVersion = !string.IsNullOrEmpty(entity.Value.Solution) && crmSolutions.ContainsKey(entity.Value.Solution)

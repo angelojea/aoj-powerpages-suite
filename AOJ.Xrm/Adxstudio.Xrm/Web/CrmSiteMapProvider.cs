@@ -60,7 +60,7 @@ namespace Adxstudio.Xrm.Web
 				if (IsPageless(HttpContext.Current))
 				{
 					// short circuit to the root node for flagged routes
-					return this.RootNode;
+					return RootNode;
 				}
 
 				return base.CurrentNode;
@@ -87,7 +87,8 @@ namespace Adxstudio.Xrm.Web
 			{
 				return GetAccessibleNodeOrAccessDeniedNode(context, pageMappingResult.Node);
 			}
-			else if (!pageMappingResult.IsUnique)
+
+			if (!pageMappingResult.IsUnique)
 			{
 				return GetNotFoundNode();
 			}
@@ -243,9 +244,7 @@ namespace Adxstudio.Xrm.Web
 					}
 					catch (Exception e)
 					{
-						ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Exception creating child node for node child entity [{0}:{1}]: {2}", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id, e.ToString()));
-
-						continue;
+						ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Exception creating child node for node child entity [{0}:{1}]: {2}", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id, e));
 					}
 				}
 			}

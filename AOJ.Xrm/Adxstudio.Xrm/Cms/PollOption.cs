@@ -12,7 +12,7 @@ namespace Adxstudio.Xrm.Cms
 {
 	public class PollOption : IPollOption
 	{
-		private IPoll _poll;
+		private readonly IPoll _poll;
 
 		public PollOption(Entity entity, IPoll poll)
 		{
@@ -33,17 +33,17 @@ namespace Adxstudio.Xrm.Cms
 		}
 
 		[JsonIgnore]
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public int? DisplayOrder { get; private set; }
+		public int? DisplayOrder { get; }
 
-		public Guid Id { get; private set; }
+		public Guid Id { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public string Answer { get; private set; }
+		public string Answer { get; }
 
-		public int? Votes { get; private set; }
+		public int? Votes { get; }
 
 		public decimal Percentage {
 			get { return _poll.Votes > 0 ? (Votes.GetValueOrDefault(0) / (decimal)_poll.Votes) * 100 : 0; }

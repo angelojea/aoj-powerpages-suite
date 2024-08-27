@@ -11,7 +11,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 {
 	public class EventScheduleDrop : EntityDrop
 	{
-		private IDataAdapterDependencies _dependencies;
+		private readonly IDataAdapterDependencies _dependencies;
 
 		public EventScheduleDrop(IPortalLiquidContext portalLiquidContext, IDataAdapterDependencies dependencies, IEventSchedule eventSchedule)
 			: base(portalLiquidContext, eventSchedule.Entity)
@@ -21,7 +21,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			_dependencies = dependencies;
 		}
 
-		protected IEventSchedule Schedule { get; private set; }
+		protected IEventSchedule Schedule { get; }
 
 		public string Name
 		{

@@ -21,7 +21,7 @@ namespace Microsoft.Xrm.Portal.Configuration
 		/// <summary>
 		/// The portal name used by dependencies that require a portal.
 		/// </summary>
-		public string PortalName { get; private set; }
+		public string PortalName { get; }
 
 		public DependencyProvider(string portalName)
 		{

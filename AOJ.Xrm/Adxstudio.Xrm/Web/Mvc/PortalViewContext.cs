@@ -153,28 +153,28 @@ namespace Adxstudio.Xrm.Web.Mvc
 			get { return _entity.Value; }
 		}
 
-		public string PortalName { get; private set; }
+		public string PortalName { get; }
 
-		public ISettingDataAdapter Settings { get; private set; }
+		public ISettingDataAdapter Settings { get; }
 
-		public SiteMapProvider SiteMapProvider { get; private set; }
+		public SiteMapProvider SiteMapProvider { get; }
 
-		public ISiteMarkerDataAdapter SiteMarkers { get; private set; }
+		public ISiteMarkerDataAdapter SiteMarkers { get; }
 
-		public ISnippetDataAdapter Snippets { get; private set; }
+		public ISnippetDataAdapter Snippets { get; }
 
-		public IEntityUrlProvider UrlProvider { get; private set; }
+		public IEntityUrlProvider UrlProvider { get; }
 
 		public IPortalViewEntity User
 		{
 			get { return _user.Value; }
 		}
 
-		public IWebLinkSetDataAdapter WebLinks { get; private set; }
+		public IWebLinkSetDataAdapter WebLinks { get; }
 
-		public IAdDataAdapter Ads { get; private set; }
+		public IAdDataAdapter Ads { get; }
 
-		public IPollDataAdapter Polls { get; private set; }
+		public IPollDataAdapter Polls { get; }
 
 		public IPortalViewEntity Website
 		{
@@ -186,7 +186,7 @@ namespace Adxstudio.Xrm.Web.Mvc
 			get { return _websiteAccessPermissionProvider.Value; }
 		}
 
-		protected RequestContext RequestContext { get; private set; }
+		protected RequestContext RequestContext { get; }
 
 		public ICrmEntitySecurityProvider CreateCrmEntitySecurityProvider()
 		{

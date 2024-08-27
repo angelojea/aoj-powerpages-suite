@@ -15,9 +15,9 @@ namespace Adxstudio.Xrm
 	using System.Collections.Concurrent;
 	using System.Threading.Tasks;
 	using System.Web.Hosting;
-	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.Web;
-	using Adxstudio.Xrm.Diagnostics.Trace;
+	using Configuration;
+	using Web;
+	using Diagnostics.Trace;
 	using Newtonsoft.Json.Linq;
 
 	/// <summary>
@@ -186,10 +186,8 @@ namespace Adxstudio.Xrm
 				{
 					return new Guid(HttpContextBase.GetUser().Id);
 				}
-				else
-				{
-					return Guid.Empty;
-				}
+
+				return Guid.Empty;
 			}
 		}
 
@@ -205,7 +203,7 @@ namespace Adxstudio.Xrm
 			if (!string.IsNullOrEmpty(HubUri))
 			{
 				// if the user is not logged in, don't bother logging it.
-				var context = this.HttpContextBase;
+				var context = HttpContextBase;
 
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application,
 					$"LogJourneyEvent: Got Log message for LogType: {logType} Id: {entityIdOrSearchTerm}");
@@ -215,16 +213,16 @@ namespace Adxstudio.Xrm
 					switch (logType)
 					{
 						case Diagnostics.Constants.Blog:
-							this.LogBlogPost(entityIdOrSearchTerm, title);
+							LogBlogPost(entityIdOrSearchTerm, title);
 							break;
 						case Diagnostics.Constants.Article:
-							this.LogJourneyEvent(entityIdOrSearchTerm, title);
+							LogJourneyEvent(entityIdOrSearchTerm, title);
 							break;
 						case Diagnostics.Constants.Forum:
-							this.LogForumEvent(entityIdOrSearchTerm, title);
+							LogForumEvent(entityIdOrSearchTerm, title);
 							break;
 						case Diagnostics.Constants.Search:
-							this.LogSearchEvent(entityIdOrSearchTerm);
+							LogSearchEvent(entityIdOrSearchTerm);
 							break;
 					}
 				}
@@ -252,7 +250,7 @@ namespace Adxstudio.Xrm
 							{ Diagnostics.Constants.PortalTrackingInteractionType.ResolveAppSetting(), BlogPostViewInteractionName },
 							{ Diagnostics.Constants.PortalTrackingCrmInteractionId.ResolveAppSetting(), guid },
 							{ Diagnostics.Constants.PortalTrackingTimeStamp.ResolveAppSetting(), timestamp },
-							{ Diagnostics.Constants.PortalTrackingContactId.ResolveAppSetting(), this.UserId },
+							{ Diagnostics.Constants.PortalTrackingContactId.ResolveAppSetting(), UserId },
 							{ Diagnostics.Constants.PortalTrackingBlogPostId.ResolveAppSetting(), blogpostid },
 							{ Diagnostics.Constants.PortalTrackingBlogPostTitle.ResolveAppSetting(), blogposttitle },
 							{ Diagnostics.Constants.PortalTrackingPortalId.ResolveAppSetting(), PortalId }
@@ -261,7 +259,7 @@ namespace Adxstudio.Xrm
 					ADXTrace.Instance.TraceInfo(TraceCategory.Application,
 						$"LogJourneyEvent: Logging Blog message for Blog CrmInteractionId: {guid} PortalId: {PortalId} TimeStamp: {timestamp}");
 
-					this.Activate(json);
+					Activate(json);
 				}
 				catch (Exception ex)
 				{
@@ -298,7 +296,7 @@ namespace Adxstudio.Xrm
 							{ Diagnostics.Constants.PortalTrackingInteractionType.ResolveAppSetting(), ForumPostViewInteractionName },
 							{ Diagnostics.Constants.PortalTrackingCrmInteractionId.ResolveAppSetting(), guid },
 							{ Diagnostics.Constants.PortalTrackingTimeStamp.ResolveAppSetting(), timestamp },
-							{ Diagnostics.Constants.PortalTrackingContactId.ResolveAppSetting(), this.UserId },
+							{ Diagnostics.Constants.PortalTrackingContactId.ResolveAppSetting(), UserId },
 							{ Diagnostics.Constants.PortalTrackingForumPostId.ResolveAppSetting(), forumpostid },
 							{ Diagnostics.Constants.PortalTrackingForumPostTitle.ResolveAppSetting(), forumposttitle },
 							{ Diagnostics.Constants.PortalTrackingPortalId.ResolveAppSetting(), PortalId }
@@ -307,7 +305,7 @@ namespace Adxstudio.Xrm
 					ADXTrace.Instance.TraceInfo(TraceCategory.Application,
 						$"LogJourneyEvent: Logging Forum message for Forum CrmInteractionId: {guid} PortalId: {PortalId} TimeStamp: {timestamp}");
 
-					this.Activate(json);
+					Activate(json);
 				}
 				catch (Exception ex)
 				{
@@ -343,7 +341,7 @@ namespace Adxstudio.Xrm
 							{ Diagnostics.Constants.PortalTrackingInteractionType.ResolveAppSetting(), SearchExecuteInteractionName },
 							{ Diagnostics.Constants.PortalTrackingCrmInteractionId.ResolveAppSetting(), Guid.NewGuid() },
 							{ Diagnostics.Constants.PortalTrackingTimeStamp.ResolveAppSetting(), timestamp },
-							{ Diagnostics.Constants.PortalTrackingContactId.ResolveAppSetting(), this.UserId },
+							{ Diagnostics.Constants.PortalTrackingContactId.ResolveAppSetting(), UserId },
 							{ Diagnostics.Constants.PortalTrackingSearchString.ResolveAppSetting(), searchTerm },
 							{ Diagnostics.Constants.PortalTrackingPortalId.ResolveAppSetting(), PortalId },
 						};
@@ -351,7 +349,7 @@ namespace Adxstudio.Xrm
 					ADXTrace.Instance.TraceInfo(TraceCategory.Application,
 						$"LogJourneyEvent: Logging Search message for Forum CrmInteractionId: {guid} PortalId: {PortalId} TimeStamp: {timestamp}");
 
-					this.Activate(json);
+					Activate(json);
 				}
 				catch (Exception ex)
 				{
@@ -390,7 +388,7 @@ namespace Adxstudio.Xrm
 							{ Diagnostics.Constants.PortalTrackingInteractionType.ResolveAppSetting(), KnowledgeArticleViewInteractionName },
 							{ Diagnostics.Constants.PortalTrackingTimeStamp.ResolveAppSetting(), timestamp },
 							{ Diagnostics.Constants.PortalTrackingCrmInteractionId.ResolveAppSetting(), guid },
-							{ Diagnostics.Constants.PortalTrackingContactId.ResolveAppSetting(), this.UserId },
+							{ Diagnostics.Constants.PortalTrackingContactId.ResolveAppSetting(), UserId },
 							{ Diagnostics.Constants.PortalTrackingKnowledgeArticleId.ResolveAppSetting(), knowledgeArticleId },
 							{ Diagnostics.Constants.PortalTrackingPortalId.ResolveAppSetting(), PortalId },
 							{ Diagnostics.Constants.PortalTrackingKnowledgeArticleTitle.ResolveAppSetting(), knowledgeArticleTitle }
@@ -399,7 +397,7 @@ namespace Adxstudio.Xrm
 					ADXTrace.Instance.TraceInfo(TraceCategory.Application,
 						$"LogJourneyEvent: Logging KB message for Forum CrmInteractionId: {guid} PortalId: {PortalId} TimeStamp: {timestamp}");
 
-					this.Activate(json);
+					Activate(json);
 
 				}
 				catch (Exception ex)
@@ -423,7 +421,7 @@ namespace Adxstudio.Xrm
 		/// <returns>true boolean</returns>
 		private void Activate(JObject interactionJson)
 		{
-			HostingEnvironment.QueueBackgroundWorkItem(ct => this.AuthDCICall(interactionJson, HubUri, PolicyName, Sig, PortalId));
+			HostingEnvironment.QueueBackgroundWorkItem(ct => AuthDCICall(interactionJson, HubUri, PolicyName, Sig, PortalId));
 		}
 
 		/// <summary>Auth UCI Call</summary>
@@ -447,7 +445,7 @@ namespace Adxstudio.Xrm
 
 				var token = ComputeTokenSignature(hubUri, sig, policyName);
 
-				var request = new HttpRequestMessage()
+				var request = new HttpRequestMessage
 				{
 					RequestUri = new Uri(hubUri + PutInteractionsUriSuffix),
 					Method = HttpMethod.Post,

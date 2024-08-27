@@ -31,12 +31,10 @@ namespace Adxstudio.Xrm.Text
 			{
 				return content;
 			}
-			else
-			{
-				string strippedContent = StripHtml(content);
 
-				return strippedContent.Length <= CommentTitleLength ? strippedContent : strippedContent.Substring(0, CommentTitleLength);
-			}
+			string strippedContent = StripHtml(content);
+
+			return strippedContent.Length <= CommentTitleLength ? strippedContent : strippedContent.Substring(0, CommentTitleLength);
 		}
 
 		/// <summary>

@@ -9,9 +9,9 @@ namespace Adxstudio.Xrm.Services
 	using System.Collections.Generic;
 	using System.Collections.Specialized;
 	using System.Linq;
-	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.Core.Flighting;
-	using Adxstudio.Xrm.Web;
+	using Configuration;
+	using Core.Flighting;
+	using Web;
 	using Microsoft.Crm.Sdk.Messages;
 	using Microsoft.IdentityModel.Clients.ActiveDirectory;
 	using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;

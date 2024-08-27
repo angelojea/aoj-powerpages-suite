@@ -6,7 +6,7 @@
 namespace Adxstudio.Xrm.Visualizations
 {
 	using System;
-	using Adxstudio.Xrm.Services.Query;
+	using Services.Query;
 	using Microsoft.Xrm.Sdk;
 
 	/// <summary>
@@ -55,17 +55,17 @@ namespace Adxstudio.Xrm.Visualizations
 				return;
 			}
 
-			this.FetchXml = view.GetAttributeValue<string>("fetchxml");
+			FetchXml = view.GetAttributeValue<string>("fetchxml");
 
-			this.Fetch = Fetch.Parse(this.FetchXml);
+			Fetch = Fetch.Parse(FetchXml);
 
-			this.Id = view.Id;
+			Id = view.Id;
 
-			this.LayoutXml = view.GetAttributeValue<string>("layoutxml");
+			LayoutXml = view.GetAttributeValue<string>("layoutxml");
 
-			this.Name = view.GetAttributeValue<string>("name");
+			Name = view.GetAttributeValue<string>("name");
 
-			this.ReturnedTypeCode = view.GetAttributeValue<string>("returnedtypecode");
+			ReturnedTypeCode = view.GetAttributeValue<string>("returnedtypecode");
 		}
 	}
 }

@@ -19,8 +19,8 @@ namespace Adxstudio.Xrm.Web
 		/// <param name="isUnique">Unique state.</param>
 		private UrlMappingResult(T node, bool isUnique)
 		{
-			this.Node = node;
-			this.IsUnique = isUnique;
+			Node = node;
+			IsUnique = isUnique;
 		}
 
 		/// <summary>

@@ -20,7 +20,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// The dictionary of all the metadata that are saved during the process of cell initialization.
 		/// This dictionary is built up during construction of all the cell controls 
 		/// </summary>
-		private IDictionary<string, FormXmlCellMetadata> CellMetadata = new Dictionary<string, FormXmlCellMetadata>();
+		private readonly IDictionary<string, FormXmlCellMetadata> CellMetadata = new Dictionary<string, FormXmlCellMetadata>();
 
 		private void AddCellMetadata(FormXmlCellMetadata metadata)
 		{

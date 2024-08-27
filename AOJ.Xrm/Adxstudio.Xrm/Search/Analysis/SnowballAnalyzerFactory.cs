@@ -31,11 +31,11 @@ namespace Adxstudio.Xrm.Search.Analysis
 
 		public virtual Analyzer GetAnalyzer(Version version)
 		{
-			if (string.IsNullOrEmpty(this._stemmer))
+			if (string.IsNullOrEmpty(_stemmer))
 			{
 				return null;
 			}
-			if (!AnalyzerConstants.SupportedStemmer.Contains(this._stemmer))
+			if (!AnalyzerConstants.SupportedStemmer.Contains(_stemmer))
 			{
 				return null;
 			}

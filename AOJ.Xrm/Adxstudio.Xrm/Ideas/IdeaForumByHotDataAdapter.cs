@@ -53,7 +53,7 @@ namespace Adxstudio.Xrm.Ideas
 
 					if (Status.HasValue)
 					{
-						addCondition("statuscode", "eq", "{0}".FormatWith((int)Status.Value));
+						addCondition("statuscode", "eq", "{0}".FormatWith(Status.Value));
 					}
 				},
 				addLinkEntity => addLinkEntity("feedback", "regardingobjectid", "adx_ideaid",

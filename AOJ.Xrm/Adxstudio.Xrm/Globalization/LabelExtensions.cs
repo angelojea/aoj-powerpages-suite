@@ -9,7 +9,7 @@ namespace Adxstudio.Xrm.Globalization
 	using System.Globalization;
 	using System.Linq;
 	using Microsoft.Xrm.Sdk;
-	using Adxstudio.Xrm.Web;
+	using Web;
 
 	public static class LabelExtensions
 	{

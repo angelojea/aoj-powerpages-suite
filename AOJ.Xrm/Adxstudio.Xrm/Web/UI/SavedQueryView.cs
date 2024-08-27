@@ -19,9 +19,9 @@ namespace Adxstudio.Xrm.Web.UI
 	using Microsoft.Xrm.Sdk.Client;
 	using Microsoft.Xrm.Sdk.Messages;
 	using Microsoft.Xrm.Sdk.Metadata;
-	using Adxstudio.Xrm.Diagnostics.Trace;
-	using Adxstudio.Xrm.Globalization;
-	using Adxstudio.Xrm.Metadata;
+	using Diagnostics.Trace;
+	using Globalization;
+	using Metadata;
 
 	/// <summary>
 	/// A view defined by a savedquery record in CRM.
@@ -250,7 +250,7 @@ namespace Adxstudio.Xrm.Web.UI
 		/// <summary>
 		/// A format string used to compose an alias column label. Index 0 is the alias attribute display name, index 1 is the aliased entity's display name. Default is "{0} ({1})".
 		/// </summary>
-		public string AliasColumnNameStringFormat { get; private set; }
+		public string AliasColumnNameStringFormat { get; }
 
 		/// <summary>
 		/// The name of the view.
@@ -265,22 +265,22 @@ namespace Adxstudio.Xrm.Web.UI
 		/// <summary>
 		/// Collection of the names of cells in the layout grid.
 		/// </summary>
-		public IEnumerable<XAttribute> CellNames { get; private set; }
+		public IEnumerable<XAttribute> CellNames { get; }
 
 		/// <summary>
 		/// Width of the cells in pixels.
 		/// </summary>
-		public Dictionary<string, int> CellWidths { get; private set; }
+		public Dictionary<string, int> CellWidths { get; }
 
 		/// <summary>
 		/// Collection of the names of cells in the layout grid where sort is disabled.
 		/// </summary>
-		public IEnumerable<string> DisabledSortCellNames { get; private set; }
+		public IEnumerable<string> DisabledSortCellNames { get; }
 
 		/// <summary>
 		/// Logical name of the entity associated with the savedquery.
 		/// </summary>
-		public string EntityLogicalName { get; private set; }
+		public string EntityLogicalName { get; }
 
 		/// <summary>
 		/// Describes the data to return in the saved query using the FetchXML language.
@@ -308,7 +308,7 @@ namespace Adxstudio.Xrm.Web.UI
 		/// <summary>
 		/// <see cref="EntityMetadata"/> for the target entity of the savedquery.
 		/// </summary>
-		public EntityMetadata EntityMetadata { get; private set; }
+		public EntityMetadata EntityMetadata { get; }
 
 		/// <summary>
 		/// Get the columns of the savedquery view with the localized display names.
@@ -348,7 +348,7 @@ namespace Adxstudio.Xrm.Web.UI
 		/// <summary>
 		/// OrganizationServiceContext
 		/// </summary>
-		protected OrganizationServiceContext ServiceContext { get; private set; }
+		protected OrganizationServiceContext ServiceContext { get; }
 
 		private string SetSortExpression(XElement fetchXml)
 		{

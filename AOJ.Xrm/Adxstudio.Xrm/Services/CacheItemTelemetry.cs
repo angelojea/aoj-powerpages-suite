@@ -10,7 +10,7 @@ namespace Adxstudio.Xrm.Services
 	using System.Linq;
 	using System.Xml.Linq;
 
-	using Adxstudio.Xrm.Services.Query;
+	using Query;
 
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Messages;
@@ -29,7 +29,7 @@ namespace Adxstudio.Xrm.Services
 		/// <summary>
 		/// The request.
 		/// </summary>
-		public OrganizationRequest Request { get; private set; }
+		public OrganizationRequest Request { get; }
 
 		/// <summary>
 		/// The caller.
@@ -85,11 +85,11 @@ namespace Adxstudio.Xrm.Services
 		/// <param name="caller">The caller.</param>
 		public CacheItemTelemetry(OrganizationRequest request, Caller caller)
 		{
-			this.Request = request;
-			this.Caller = caller;
-			this.IsStartup = StartupFlag;
-			this.LastAccessedOn = DateTimeOffset.UtcNow;
-			this.SetColumnsTelemetry();
+			Request = request;
+			Caller = caller;
+			IsStartup = StartupFlag;
+			LastAccessedOn = DateTimeOffset.UtcNow;
+			SetColumnsTelemetry();
 		}
 
 		/// <summary>
@@ -97,8 +97,8 @@ namespace Adxstudio.Xrm.Services
 		/// </summary>
 		public void IncrementAccessCount()
 		{
-			++this.AccessCount;
-			this.LastAccessedOn = DateTimeOffset.UtcNow;
+			++AccessCount;
+			LastAccessedOn = DateTimeOffset.UtcNow;
 		}
 
 		/// <summary>
@@ -106,8 +106,8 @@ namespace Adxstudio.Xrm.Services
 		/// </summary>
 		public void IncrementStaleAccessCount()
 		{
-			++this.StaleAccessCount;
-			this.LastAccessedOn = DateTimeOffset.UtcNow;
+			++StaleAccessCount;
+			LastAccessedOn = DateTimeOffset.UtcNow;
 		}
 
 		/// <summary>
@@ -115,37 +115,37 @@ namespace Adxstudio.Xrm.Services
 		/// </summary>
 		private void SetColumnsTelemetry()
 		{
-			this.Attributes = new List<string>();
+			Attributes = new List<string>();
 
-			if (this.Request == null)
+			if (Request == null)
 			{
 				return;
 			}
 
-			var fmr = this.Request as FetchMultipleRequest;
+			var fmr = Request as FetchMultipleRequest;
 			if (fmr != null)
 			{
 				if (fmr.Fetch.Entity.Attributes != null && fmr.Fetch.Entity.Attributes.Any())
 				{
-					this.Attributes.AddRange(fmr.Fetch.Entity.Attributes.Select(attr => attr.Name));
-					this.IsAllColumns = object.Equals(fmr.Fetch.Entity.Attributes, FetchAttribute.All);
+					Attributes.AddRange(fmr.Fetch.Entity.Attributes.Select(attr => attr.Name));
+					IsAllColumns = Equals(fmr.Fetch.Entity.Attributes, FetchAttribute.All);
 				}
 			}
 
-			var rr = this.Request as RetrieveRequest;
+			var rr = Request as RetrieveRequest;
 			if (rr != null)
 			{
 				if (rr.ColumnSet.Columns != null && rr.ColumnSet.Columns.Any())
 				{
-					this.Attributes.AddRange(rr.ColumnSet.Columns);
+					Attributes.AddRange(rr.ColumnSet.Columns);
 				}
-				this.IsAllColumns = rr.ColumnSet.AllColumns;
+				IsAllColumns = rr.ColumnSet.AllColumns;
 			}
 
-			var rmr = this.Request as RetrieveMultipleRequest;
+			var rmr = Request as RetrieveMultipleRequest;
 			if (rmr == null)
 			{
-				var rsr = this.Request as RetrieveSingleRequest;
+				var rsr = Request as RetrieveSingleRequest;
 				if (rsr != null)
 				{
 					rmr = rsr.Request;
@@ -159,9 +159,9 @@ namespace Adxstudio.Xrm.Services
 				{
 					if (query.ColumnSet.Columns != null && query.ColumnSet.Columns.Any())
 					{
-						this.Attributes.AddRange(query.ColumnSet.Columns);
+						Attributes.AddRange(query.ColumnSet.Columns);
 					}
-					this.IsAllColumns = query.ColumnSet.AllColumns;
+					IsAllColumns = query.ColumnSet.AllColumns;
 				}
 
 				var fe = rmr.Query as FetchExpression;
@@ -170,8 +170,8 @@ namespace Adxstudio.Xrm.Services
 					var fetch = Fetch.Parse(fe.Query);
 					if (fetch.Entity.Attributes != null && fetch.Entity.Attributes.Any())
 					{
-						this.Attributes.AddRange(fetch.Entity.Attributes.Select(attr => attr.Name));
-						this.IsAllColumns = object.Equals(fetch.Entity.Attributes, FetchAttribute.All);
+						Attributes.AddRange(fetch.Entity.Attributes.Select(attr => attr.Name));
+						IsAllColumns = Equals(fetch.Entity.Attributes, FetchAttribute.All);
 					}
 				}
 			}

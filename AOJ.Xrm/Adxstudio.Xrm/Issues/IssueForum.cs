@@ -43,42 +43,42 @@ namespace Adxstudio.Xrm.Issues
 		/// <summary>
 		/// The comment policy for this issue forum.
 		/// </summary>
-		public IssueForumCommentPolicy CommentPolicy { get; private set; }
+		public IssueForumCommentPolicy CommentPolicy { get; }
 
 		/// <summary>
 		/// Whether or not the current user is allowed to submit new issues in this issue forum.
 		/// </summary>
-		public bool CurrentUserCanSubmitIssues { get; private set; }
+		public bool CurrentUserCanSubmitIssues { get; }
 
 		/// <summary>
 		/// An adx_issueforum entity.
 		/// </summary>
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
 		/// <summary>
 		/// The unique identifier for this issue forum.
 		/// </summary>
-		public Guid Id { get; private set; }
+		public Guid Id { get; }
 
 		/// <summary>
 		/// The policy for new issue submissions in this issue forum.
 		/// </summary>
-		public IssueForumIssueSubmissionPolicy IssueSubmissionPolicy { get; private set; }
+		public IssueForumIssueSubmissionPolicy IssueSubmissionPolicy { get; }
 
 		/// <summary>
 		/// The URL slug for this issue forum.
 		/// </summary>
-		public string PartialUrl { get; private set; }
+		public string PartialUrl { get; }
 
 		/// <summary>
 		/// An abstract or description for this issue forum.
 		/// </summary>
-		public string Summary { get; private set; }
+		public string Summary { get; }
 
 		/// <summary>
 		/// The title for this issue forum.
 		/// </summary>
-		public string Title { get; private set; }
+		public string Title { get; }
 
 		private static void ThrowOnNegative(int value, string parameterName)
 		{

@@ -35,13 +35,13 @@ namespace Adxstudio.Xrm.Forums
 		public Forum(Entity entity, IPortalViewEntity viewEntity, IForumInfo forumInfo, ForumCounts counts)
 			: this(entity, viewEntity, forumInfo, () => counts) { }
 
-		public string Description { get; private set; }
+		public string Description { get; }
 
 		public Entity Entity { get; set; }
 
-		public IForumPostInfo LatestPost { get; private set; }
+		public IForumPostInfo LatestPost { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
 		public int PostCount
 		{

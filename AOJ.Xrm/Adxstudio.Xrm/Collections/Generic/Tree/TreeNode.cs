@@ -21,7 +21,7 @@ namespace Adxstudio.Xrm.Collections.Generic
 		public TreeNode()
 		{
 			_parent = null;
-			_children = new TreeNodeList<T>(this);
+			Children = new TreeNodeList<T>(this);
 		}
 
 		/// <summary>
@@ -32,7 +32,7 @@ namespace Adxstudio.Xrm.Collections.Generic
 		{
 			_value = value;
 			_parent = null;
-			_children = new TreeNodeList<T>(this);
+			Children = new TreeNodeList<T>(this);
 		}
 
 		/// <summary>
@@ -44,7 +44,7 @@ namespace Adxstudio.Xrm.Collections.Generic
 		{
 			_value = value;
 			_parent = parent;
-			_children = new TreeNodeList<T>(this);
+			Children = new TreeNodeList<T>(this);
 		}
 
 		private ITreeNode<T> _parent;
@@ -80,11 +80,7 @@ namespace Adxstudio.Xrm.Collections.Generic
 			}
 		}
 
-		private readonly TreeNodeList<T> _children;
-		public TreeNodeList<T> Children
-		{
-			get { return _children; }
-		}
+		public TreeNodeList<T> Children { get; }
 
 		private T _value;
 		public T Value

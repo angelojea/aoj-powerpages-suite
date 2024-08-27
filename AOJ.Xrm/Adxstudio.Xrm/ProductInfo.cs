@@ -38,7 +38,7 @@ namespace Adxstudio.Xrm
 		/// <summary>
 		/// Collection of assemblies referenced by the product
 		/// </summary>
-		public IEnumerable<ProductAssembly> Assemblies { get; private set; }
+		public IEnumerable<ProductAssembly> Assemblies { get; }
 		
 		/// <summary>
 		/// The Adxstudio.Xrm assembly details
@@ -57,11 +57,11 @@ namespace Adxstudio.Xrm
 				where includeGac || !assembly.GlobalAssemblyCache
 				select name;
 
-			this.Assemblies =
+			Assemblies =
 				assemblies.Select(a => new ProductAssembly { Name = a.Name, Version = a.Version, Location = a.EscapedCodeBase })
 					.ToList();
 
-			this.Assembly = this.Assemblies.FirstOrDefault(a => a.Name == "Adxstudio.Xrm");
+			Assembly = Assemblies.FirstOrDefault(a => a.Name == "Adxstudio.Xrm");
 		}
 	}
 }

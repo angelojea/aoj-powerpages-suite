@@ -376,14 +376,12 @@ namespace Adxstudio.Xrm.Web.Security
 					new Condition(_attributeMapUsername, ConditionOperator.Equal, userName)
 				};
 			}
-			else
+
+			return new[]
 			{
-				return new[]
-				{
-					new Condition(_attributeMapStateCode, ConditionOperator.Equal, 0),
-					new Condition(_attributeMapUsername, ConditionOperator.Equal, userName)
-				};
-			}
+				new Condition(_attributeMapStateCode, ConditionOperator.Equal, 0),
+				new Condition(_attributeMapUsername, ConditionOperator.Equal, userName)
+			};
 		}
 
 		/// <summary>
@@ -466,14 +464,12 @@ namespace Adxstudio.Xrm.Web.Security
 					new Condition(_attributeMapUsername, ConditionOperator.NotNull)
 				};
 			}
-			else
+
+			return new[]
 			{
-				return new[]
-				{
-					new Condition(_attributeMapStateCode, ConditionOperator.Equal, 0),
-					new Condition(_attributeMapUsername, ConditionOperator.NotNull)
-				};
-			}
+				new Condition(_attributeMapStateCode, ConditionOperator.Equal, 0),
+				new Condition(_attributeMapUsername, ConditionOperator.NotNull)
+			};
 		}
 
 		/// <summary>
@@ -582,10 +578,8 @@ namespace Adxstudio.Xrm.Web.Security
 			{
 				return user => user.GetAttributeValue<bool>(_attributeMapIsDisabled) == false;
 			}
-			else
-			{
-				return user => user.GetAttributeValue<int>(_attributeMapStateCode) == 0;
-			}
+
+			return user => user.GetAttributeValue<int>(_attributeMapStateCode) == 0;
 		}
 
 		private IEnumerable<Entity> GetRolesInWebsiteByName(OrganizationServiceContext context, string roleName)

@@ -59,15 +59,15 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		public int ApproximateTotalHits { get; private set; }
 
-		public int Count { get; private set; }
+		public int Count { get; }
 
-		public int FirstResultNumber { get; private set; }
+		public int FirstResultNumber { get; }
 
 		public int LastResultNumber { get; private set; }
 
-		public int PageNumber { get; private set; }
+		public int PageNumber { get; }
 
-		public int PageSize { get; private set; }
+		public int PageSize { get; }
 
 		public string QueryText { get; private set; }
 	}

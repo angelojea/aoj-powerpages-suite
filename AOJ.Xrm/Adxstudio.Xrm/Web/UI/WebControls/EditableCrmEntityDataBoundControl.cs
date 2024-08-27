@@ -13,8 +13,6 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 {
 	public abstract class EditableCrmEntityDataBoundControl : CrmEntityDataBoundControl, IEditableCrmEntityControl
 	{
-		private bool _editable = true;
-
 		/// <summary>
 		/// Gets or sets the base URI of the data service to be used for front-side editing functionality
 		/// provided by this control. Set to use a data service other than the system global/default service.
@@ -26,11 +24,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// (provided the user has edit permission, and no other properties have been set on this control which
 		/// disable inline editing support).
 		/// </summary>
-		public virtual bool Editable
-		{
-			get { return _editable; }
-			set { _editable = value; }
-		}
+		public virtual bool Editable { get; set; } = true;
 
 		protected virtual bool HasEditPermission(Entity entity)
 		{

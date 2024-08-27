@@ -15,7 +15,7 @@ namespace Adxstudio.Xrm.Core.Flighting
 	{
 		public FeatureDetailContainer()
 		{
-			this.InitializeFeatureMetadata();
+			InitializeFeatureMetadata();
 		}
 
 		public Dictionary<string, IFeatureDetail> Features { get; set; } = new Dictionary<string, IFeatureDetail>();
@@ -39,7 +39,7 @@ namespace Adxstudio.Xrm.Core.Flighting
 		/// <param name="isEnabled"></param>
 		private void AddGlobalFeature(string feature, bool isEnabled)
 		{
-			this.Features.Add(feature, this.Feature(feature, isEnabled, FeatureLocation.Global));
+			Features.Add(feature, Feature(feature, isEnabled, FeatureLocation.Global));
 		}
 
 		/// <summary>
@@ -47,19 +47,19 @@ namespace Adxstudio.Xrm.Core.Flighting
 		/// </summary>
 		void InitializeFeatureMetadata()
 		{
-			this.AddGlobalFeature(FeatureNames.Web2Case, true);
-			this.AddGlobalFeature(FeatureNames.Feedback, true);
-			this.AddGlobalFeature(FeatureNames.EventHubCacheInvalidation, true);
-			this.AddGlobalFeature(FeatureNames.Categories, true);
-			this.AddGlobalFeature(FeatureNames.TelemetryFeatureUsage, true);
-			this.AddGlobalFeature(FeatureNames.PortalFacetedNavigation, true);
-			this.AddGlobalFeature(FeatureNames.CmsEnabledSearching, true);
-			this.AddGlobalFeature(FeatureNames.CustomerJourneyTracking, "PortalTracking".ResolveAppSetting().ToBoolean().GetValueOrDefault());
-			this.AddGlobalFeature(FeatureNames.EntityPermissionFetchUnionHint, true);
-			this.AddGlobalFeature(FeatureNames.PortalAllowStaleData, "PortalAllowStaleData".ResolveAppSetting().ToBoolean().GetValueOrDefault());
-			this.AddGlobalFeature(FeatureNames.WebProxyClientFailover, "PortalWebProxyClientFailover".ResolveAppSetting().ToBoolean().GetValueOrDefault());
+			AddGlobalFeature(FeatureNames.Web2Case, true);
+			AddGlobalFeature(FeatureNames.Feedback, true);
+			AddGlobalFeature(FeatureNames.EventHubCacheInvalidation, true);
+			AddGlobalFeature(FeatureNames.Categories, true);
+			AddGlobalFeature(FeatureNames.TelemetryFeatureUsage, true);
+			AddGlobalFeature(FeatureNames.PortalFacetedNavigation, true);
+			AddGlobalFeature(FeatureNames.CmsEnabledSearching, true);
+			AddGlobalFeature(FeatureNames.CustomerJourneyTracking, "PortalTracking".ResolveAppSetting().ToBoolean().GetValueOrDefault());
+			AddGlobalFeature(FeatureNames.EntityPermissionFetchUnionHint, true);
+			AddGlobalFeature(FeatureNames.PortalAllowStaleData, "PortalAllowStaleData".ResolveAppSetting().ToBoolean().GetValueOrDefault());
+			AddGlobalFeature(FeatureNames.WebProxyClientFailover, "PortalWebProxyClientFailover".ResolveAppSetting().ToBoolean().GetValueOrDefault());
 
-			this.AddGlobalFeature(FeatureNames.CALProductSearchPostFiltering, false);
+			AddGlobalFeature(FeatureNames.CALProductSearchPostFiltering, false);
 		}
 	}
 }

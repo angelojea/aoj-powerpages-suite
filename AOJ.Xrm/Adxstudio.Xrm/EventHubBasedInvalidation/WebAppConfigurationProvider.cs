@@ -13,7 +13,6 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 	public class WebAppConfigurationProvider
 	{
 		private static string appStartTime;
-		private static ConcurrentDictionary<string, bool> portalUsedEntitiesList = new ConcurrentDictionary<string, bool>(Environment.ProcessorCount * 2, 10009);
 
 		private static T GetAppSetting<T>(string appSetting)
 		{
@@ -37,7 +36,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 
 		public static bool GetTimeTrackingTelemetryString()
 		{
-			return WebAppConfigurationProvider.GetAppSetting<bool>(Constants.TimeTrackingTelemetry);
+			return GetAppSetting<bool>(Constants.TimeTrackingTelemetry);
 		}
 
 		public static string AppStartTime
@@ -46,8 +45,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			{
 				if (appStartTime != null)
 					return appStartTime;
-				else
-					return System.DateTime.UtcNow.ToString(("MM/dd/yyyy HH:mm:ss"));
+				return DateTime.UtcNow.ToString(("MM/dd/yyyy HH:mm:ss"));
 			}
 			set
 			{
@@ -58,13 +56,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// <summary>
 		/// Returns the List of Portal Used Entities
 		/// </summary>
-		public static ConcurrentDictionary<string, bool> PortalUsedEntities
-		{
-			get
-			{
-				return portalUsedEntitiesList;
-			}
-		}
+		public static ConcurrentDictionary<string, bool> PortalUsedEntities { get; } = new ConcurrentDictionary<string, bool>(Environment.ProcessorCount * 2, 10009);
 
 		/// <summary>
 		/// This function add List of Entities Enabled for Portal Search
@@ -81,7 +73,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 					PortalUsedEntities.TryAdd(entity, true);
 				}
 			}
-			return portalUsedEntitiesList;
+			return PortalUsedEntities;
 		}
 
 	}

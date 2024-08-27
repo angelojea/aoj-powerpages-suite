@@ -22,9 +22,9 @@ namespace Adxstudio.Xrm.Products
 			Dependencies = dependencies;
 		}
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
-		protected EntityReference Subject { get; private set; }
+		protected EntityReference Subject { get; }
 
 		public IBrand SelectBrand(Guid id)
 		{

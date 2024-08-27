@@ -10,7 +10,7 @@ namespace Adxstudio.Xrm.Activity
 {
 	class ActivityCollection : IActivityCollection
 	{
-		private IEnumerable<IActivity> Enumerable { get; set; }
+		private IEnumerable<IActivity> Enumerable { get; }
 
 		private ActivityCollection(bool permissionDenied)
 		{
@@ -36,8 +36,8 @@ namespace Adxstudio.Xrm.Activity
 			return GetEnumerator();
 		}
 
-		public int TotalCount { get; private set; }
-		public bool PermissionDenied { get; private set; }
+		public int TotalCount { get; }
+		public bool PermissionDenied { get; }
 
 		public static IActivityCollection Empty(bool permissionDenied)
 		{

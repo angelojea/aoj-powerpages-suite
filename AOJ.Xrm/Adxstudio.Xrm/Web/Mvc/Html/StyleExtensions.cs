@@ -87,8 +87,6 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 				case LocaleIds.Hindi:
 					only.Add("hi-IN.css", "~/css/lang/hi-IN.css");
 					break;
-				default:
-					break;
 			}
 			return ContentStyles(html, null, only);
 		}
@@ -526,11 +524,11 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 					Children = new List<Node>();
 				}
 
-				public string Key { get; private set; }
+				public string Key { get; }
 
-				public Tuple<string, string, int> Value { get; private set; }
+				public Tuple<string, string, int> Value { get; }
 
-				public ICollection<Node> Children { get; private set; }
+				public ICollection<Node> Children { get; }
 
 				public bool TryGetTerminalNode(out Node terminalNode)
 				{
@@ -562,7 +560,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 				get { return Prefix; }
 			}
 
-			public string Prefix { get; private set; }
+			public string Prefix { get; }
 
 			public void Add(DisplayModeFile file)
 			{
@@ -590,9 +588,9 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 				DisplayModeId = displayModeId;
 			}
 
-			public string DisplayModeId { get; private set; }
+			public string DisplayModeId { get; }
 
-			public Tuple<string, string, int> Name { get; private set; }
+			public Tuple<string, string, int> Name { get; }
 		}
 
 		private class DisplayModeComparer : IComparer<DisplayModeFile>

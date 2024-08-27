@@ -7,7 +7,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 {
 	using System.Collections.Generic;
 	using Microsoft.ServiceBus.Messaging;
-	using Adxstudio.Xrm.Cms;
+	using Cms;
 	using Newtonsoft.Json;
 
 	/// <summary>
@@ -30,9 +30,9 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			if (messageBody == null)
 				return null;
 			
-			ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Message Body for Subscription message is {0} ", messageBody.ToString()));
+			ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Message Body for Subscription message is {0} ", messageBody));
 
-			ICrmSubscriptionMessage subscriptionMessage = CrmSubscriptionMessageFactory.Create(messageBody, message);
+			ICrmSubscriptionMessage subscriptionMessage = Create(messageBody, message);
 
 			if (subscriptionMessage != null)
 			{

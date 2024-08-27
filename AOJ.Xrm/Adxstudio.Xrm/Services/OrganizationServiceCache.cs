@@ -28,14 +28,14 @@ namespace Adxstudio.Xrm.Services
 	using Microsoft.Crm.Sdk.Messages;
 	using Newtonsoft.Json;
 
-	using Adxstudio.Xrm.Core.Flighting;
-	using Adxstudio.Xrm.Threading;
-	using Adxstudio.Xrm.Caching;
-	using Adxstudio.Xrm.Diagnostics.Metrics;
-	using Adxstudio.Xrm.Diagnostics.Trace;
-	using Adxstudio.Xrm.EventHubBasedInvalidation;
-	using Adxstudio.Xrm.Performance;
-	using Adxstudio.Xrm.Services.Query;
+	using Core.Flighting;
+	using Threading;
+	using Caching;
+	using Diagnostics.Metrics;
+	using Diagnostics.Trace;
+	using EventHubBasedInvalidation;
+	using Performance;
+	using Query;
 
 	/// <summary>
 	/// An extended <see cref="Microsoft.Xrm.Client.Services.OrganizationServiceCache"/> that is capable of invalidating relationship changes.
@@ -50,7 +50,7 @@ namespace Adxstudio.Xrm.Services
 		/// <summary>
 		/// The cache region used when interacting with the <see cref="ObjectCache"/>.
 		/// </summary>
-		public string CacheRegionName { get; private set; }
+		public string CacheRegionName { get; }
 
 		/// <summary>
 		/// The caching behavior mode.
@@ -65,24 +65,24 @@ namespace Adxstudio.Xrm.Services
 		/// <summary>
 		/// The underlying cache.
 		/// </summary>
-		public virtual ObjectCache Cache { get; private set; }
+		public virtual ObjectCache Cache { get; }
 
 		/// <summary>
 		/// The prefix string used for constructing the <see cref="CacheEntryChangeMonitor"/> objects assigned to the cache items.
 		/// </summary>
-		public virtual string CacheEntryChangeMonitorPrefix { get; private set; }
+		public virtual string CacheEntryChangeMonitorPrefix { get; }
 
 		/// <summary>
 		/// A key value for uniquely distinguishing the connection.
 		/// </summary>
-		public string ConnectionId { get; private set; }
+		public string ConnectionId { get; }
 
 		public CacheDependencyCalculator CacheDependencyCalculator { get; }
 
 		/// <summary>
 		/// Gets or sets the flag determining whether or not to hash the serialized query.
 		/// </summary>
-		public bool QueryHashingEnabled { get; private set; }
+		public bool QueryHashingEnabled { get; }
 
 		static OrganizationServiceCache()
 		{
@@ -122,7 +122,7 @@ namespace Adxstudio.Xrm.Services
 			QueryHashingEnabled = cacheSettings.QueryHashingEnabled;
 			CacheEntryChangeMonitorPrefix = cacheSettings.CacheEntryChangeMonitorPrefix;
 			_cacheItemPolicyFactory = cacheSettings.PolicyFactory;
-			this.CacheDependencyCalculator = new CacheDependencyCalculator(cacheSettings.CacheEntryChangeMonitorPrefix);
+			CacheDependencyCalculator = new CacheDependencyCalculator(cacheSettings.CacheEntryChangeMonitorPrefix);
 		}
 
 		/// <summary>
@@ -154,7 +154,7 @@ namespace Adxstudio.Xrm.Services
 		/// <param name="entity"></param>
 		public void Remove(Entity entity)
 		{
-			InvalidateCacheDependencies(this.CacheDependencyCalculator.GetDependencies(entity, false));
+			InvalidateCacheDependencies(CacheDependencyCalculator.GetDependencies(entity, false));
 		}
 
 		/// <summary>
@@ -163,7 +163,7 @@ namespace Adxstudio.Xrm.Services
 		/// <param name="entity"></param>
 		public void Remove(EntityReference entity)
 		{
-			InvalidateCacheDependencies(this.CacheDependencyCalculator.GetDependencies(entity, false));
+			InvalidateCacheDependencies(CacheDependencyCalculator.GetDependencies(entity, false));
 		}
 
 		/// <summary>
@@ -173,11 +173,11 @@ namespace Adxstudio.Xrm.Services
 		/// <param name="id"></param>
 		public void Remove(string entityLogicalName, Guid? id)
 		{
-			InvalidateCacheDependency(this.CacheDependencyCalculator.GetDependency(entityLogicalName));
+			InvalidateCacheDependency(CacheDependencyCalculator.GetDependency(entityLogicalName));
 
 			if (id != null && id.Value != Guid.Empty)
 			{
-				InvalidateCacheDependency(this.CacheDependencyCalculator.GetDependency(entityLogicalName, id.Value));
+				InvalidateCacheDependency(CacheDependencyCalculator.GetDependency(entityLogicalName, id.Value));
 			}
 		}
 
@@ -187,7 +187,7 @@ namespace Adxstudio.Xrm.Services
 		/// <param name="request"></param>
 		public void Remove(OrganizationRequest request)
 		{
-			var dependencies = this.CacheDependencyCalculator.GetDependenciesForObject(request).ToList();
+			var dependencies = CacheDependencyCalculator.GetDependenciesForObject(request).ToList();
 
 			InvalidateCacheDependencies(dependencies);
 		}
@@ -303,7 +303,7 @@ namespace Adxstudio.Xrm.Services
 
 			if (!isCachedRequest && !bypassCacheInvalidation)
 			{
-				var dependencies = this.CacheDependencyCalculator.GetDependenciesForObject(request).ToList();
+				var dependencies = CacheDependencyCalculator.GetDependenciesForObject(request).ToList();
 				InvalidateCacheDependencies(dependencies);
 			}
 
@@ -414,7 +414,7 @@ namespace Adxstudio.Xrm.Services
 				ADXTrace.Instance.TraceInfo(TraceCategory.CacheInfra, string.Format("Cache miss, Query={0}, IsAuthenticated={1}, IsStaleAllowed={2}", queryText, isAuthenticated, cacheItemDetail?.IsStaleDataAllowed == true));
 			}
 
-			return this.ReturnMode == OrganizationServiceCacheReturnMode.Cloned ? this.InternalCloneResponse(response) : response;
+			return ReturnMode == OrganizationServiceCacheReturnMode.Cloned ? InternalCloneResponse(response) : response;
 		}
 
 		/// <summary>
@@ -488,7 +488,7 @@ namespace Adxstudio.Xrm.Services
 		public virtual void Insert(string key, object query, object result)
 		{
 			var cachePolicy = GetCachePolicy(query, result);
-			this.Insert(key, query, result, cachePolicy);
+			Insert(key, query, result, cachePolicy);
 		}
 
 		private void Insert(string key, object query, object result, CacheItemPolicy cachePolicy)
@@ -528,8 +528,8 @@ namespace Adxstudio.Xrm.Services
 			var skipDependencies = cachedRequest?.IsFlagEnabled(RequestFlag.SkipDependencyCalculation) == true;
 
 			var dependencies = skipDependencies
-				? this.CacheDependencyCalculator.GetDependenciesEmpty()
-				: this.CacheDependencyCalculator.GetDependenciesForObject(query).Concat(this.CacheDependencyCalculator.GetDependenciesForObject(result)).Distinct().ToList();
+				? CacheDependencyCalculator.GetDependenciesEmpty()
+				: CacheDependencyCalculator.GetDependenciesForObject(query).Concat(CacheDependencyCalculator.GetDependenciesForObject(result)).Distinct().ToList();
 
 			var monitor = Cache.GetChangeMonitor(dependencies, CacheRegionName);
 
@@ -555,13 +555,13 @@ namespace Adxstudio.Xrm.Services
 
 		private string GetCacheKey(object query, string selectorCacheKey, out string queryText)
 		{
-			if (query is CachedOrganizationRequest) return this.GetCacheKey((query as CachedOrganizationRequest).Request, selectorCacheKey, out queryText);
-			if (query is RetrieveSingleRequest) return this.GetCacheKey((query as RetrieveSingleRequest).Request, selectorCacheKey, out queryText);
-			if (query is FetchMultipleRequest) return this.GetCacheKey((query as FetchMultipleRequest).Request, selectorCacheKey, out queryText);
+			if (query is CachedOrganizationRequest) return GetCacheKey((query as CachedOrganizationRequest).Request, selectorCacheKey, out queryText);
+			if (query is RetrieveSingleRequest) return GetCacheKey((query as RetrieveSingleRequest).Request, selectorCacheKey, out queryText);
+			if (query is FetchMultipleRequest) return GetCacheKey((query as FetchMultipleRequest).Request, selectorCacheKey, out queryText);
 
 			var sb = new StringBuilder(128);
 
-			var text = queryText = this.GetCacheKey(query) ?? Serialize(query);
+			var text = queryText = GetCacheKey(query) ?? Serialize(query);
 			var connection = !string.IsNullOrWhiteSpace(ConnectionId)
 				? ":ConnectionId={0}".FormatWith(QueryHashingEnabled ? ConnectionId.GetHashCode().ToString(CultureInfo.InvariantCulture) : ConnectionId)
 				: null;
@@ -857,7 +857,7 @@ namespace Adxstudio.Xrm.Services
 		{
 			using (PerformanceProfiler.Instance.StartMarker(PerformanceMarkerName.Cache, PerformanceMarkerArea.Cms, PerformanceMarkerTagName.CloneResponse))
 			{
-				return this.CloneResponse(item);
+				return CloneResponse(item);
 			}
 		}
 
@@ -887,7 +887,7 @@ namespace Adxstudio.Xrm.Services
 		private static object CloneResponse(RetrieveResponse response)
 		{
 			var clone = new RetrieveResponse { ResponseName = response.ResponseName };
-			clone["Entity"] = Microsoft.Xrm.Client.EntityExtensions.Clone(response.Entity);
+			clone["Entity"] = response.Entity.Clone();
 			return clone;
 		}
 

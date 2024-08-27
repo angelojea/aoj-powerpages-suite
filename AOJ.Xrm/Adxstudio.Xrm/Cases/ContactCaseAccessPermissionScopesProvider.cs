@@ -33,9 +33,9 @@ namespace Adxstudio.Xrm.Cases
 			Dependencies = dependencies;
 		}
 
-		protected EntityReference Contact { get; private set; }
+		protected EntityReference Contact { get; }
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
 		public ICaseAccessPermissionScopes SelectPermissionScopes()
 		{

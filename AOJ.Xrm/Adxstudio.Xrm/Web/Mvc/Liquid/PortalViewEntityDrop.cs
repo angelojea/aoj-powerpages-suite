@@ -40,7 +40,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			get { return ViewEntity.EntityReference; }
 		}
 
-		protected IPortalViewEntity ViewEntity { get; private set; }
+		protected IPortalViewEntity ViewEntity { get; }
 
 		public override object BeforeMethod(string method)
 		{

@@ -36,7 +36,7 @@ namespace Adxstudio.Xrm.Category
             this.dependencies = dependencies;
 
             var request = this.dependencies.GetRequestContext();
-            this.httpContext = request == null ? null : request.HttpContext;
+            httpContext = request == null ? null : request.HttpContext;
         }
 
         /// <summary>

@@ -48,11 +48,11 @@ namespace Adxstudio.Xrm.Ideas
 		/// <param name="portalName">The configured name of the portal to get and set data for.</param>
 		public WebsiteIdeaUserAggregationDataAdapter(Guid userId, string portalName = null) : this(userId, new PortalConfigurationDataAdapterDependencies(portalName)) { }
 
-		protected Guid UserId { get; private set; }
+		protected Guid UserId { get; }
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
-		protected EntityReference Website { get; private set; }
+		protected EntityReference Website { get; }
 
 		/// <summary>
 		/// Returns comments that have been posted for the website and user this adapter applies to.

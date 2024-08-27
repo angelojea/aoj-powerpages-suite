@@ -45,13 +45,13 @@ namespace Microsoft.Xrm.Portal.Web.UI.CrmEntityFormView
 			}
 		}
 
-		public string Label { get; private set; }
+		public string Label { get; }
 
-		public bool ShowLabel { get; private set; }
+		public bool ShowLabel { get; }
 
-		public bool ShowBar { get; private set; }
+		public bool ShowBar { get; }
 
-		protected RowTemplateFactory RowTemplateFactory { get; private set; }
+		protected RowTemplateFactory RowTemplateFactory { get; }
 
 		public override void InstantiateIn(Control container)
 		{

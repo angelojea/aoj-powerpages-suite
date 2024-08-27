@@ -7,9 +7,9 @@ namespace Adxstudio.Xrm.Cms.Security
 {
 	using System.Web;
 	using System.Web.Security;
-	using Adxstudio.Xrm.Configuration;
+	using Configuration;
 	using Adxstudio.Xrm.Security;
-	using Adxstudio.Xrm.Web;
+	using Web;
 	using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 	using Microsoft.Xrm.Client.Security;
 	using Microsoft.Xrm.Sdk;
@@ -32,7 +32,7 @@ namespace Adxstudio.Xrm.Cms.Security
 		/// <param name="contentMapProvider"> The content map provider. </param>
 		protected ContentMapAccessProvider(IContentMapProvider contentMapProvider)
 		{
-			this.ContentMapProvider = contentMapProvider ?? AdxstudioCrmConfigurationManager.CreateContentMapProvider();
+			ContentMapProvider = contentMapProvider ?? AdxstudioCrmConfigurationManager.CreateContentMapProvider();
 		}
 
 		/// <summary> The get user roles. </summary>
@@ -58,9 +58,9 @@ namespace Adxstudio.Xrm.Cms.Security
 		{
 
 			EntityNode entity = null;
-			this.ContentMapProvider.Using(map => map.TryGetValue(entityReference, out entity));
+			ContentMapProvider.Using(map => map.TryGetValue(entityReference, out entity));
 
-			return entity != null && this.TryAssert(context, entity.ToEntity(), right, dependencies);
+			return entity != null && TryAssert(context, entity.ToEntity(), right, dependencies);
 		}
 
 		/// <summary> The try assert. </summary>
@@ -71,7 +71,7 @@ namespace Adxstudio.Xrm.Cms.Security
 		/// <returns> The assertion. </returns>
 		public override bool TryAssert(OrganizationServiceContext context, Entity entity, CrmEntityRight right, CrmEntityCacheDependencyTrace dependencies)
 		{
-			return this.ContentMapProvider.Using(map => this.TryAssert(context, entity, right, dependencies, map));
+			return ContentMapProvider.Using(map => TryAssert(context, entity, right, dependencies, map));
 		}
 
 		/// <summary> The try assert. </summary>

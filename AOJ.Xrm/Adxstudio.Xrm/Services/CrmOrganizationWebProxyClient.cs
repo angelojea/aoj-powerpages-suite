@@ -11,7 +11,7 @@ namespace Adxstudio.Xrm.Services
 	using System.ServiceModel;
 	using System.ServiceModel.Channels;
 	using Adxstudio.Xrm.AspNet.Cms;
-	using Adxstudio.Xrm.Diagnostics.Trace;
+	using Diagnostics.Trace;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.WebServiceClient;
 
@@ -33,7 +33,7 @@ namespace Adxstudio.Xrm.Services
 			: base(serviceUrl, useStrongTypes)
 		{
 			this.crmTokenManager = crmTokenManager;
-			this.CreateNewInitializer();
+			CreateNewInitializer();
 		}
 
 		/// <summary>
@@ -42,7 +42,7 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>Type: <see cref="T:Microsoft.Xrm.Sdk.WebServiceClient.WebProxyClientContextInitializer`1"></see>A web proxy client context initializer.</returns>
 		protected sealed override WebProxyClientContextInitializer<IOrganizationService> CreateNewInitializer()
 		{
-			this.HeaderToken = this.crmTokenManager.GetToken();
+			HeaderToken = crmTokenManager.GetToken();
 			var initializer = base.CreateNewInitializer();
 			AddUserAgent();
 

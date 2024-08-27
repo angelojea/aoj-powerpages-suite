@@ -12,10 +12,10 @@ namespace Adxstudio.Xrm.Cms
 	using Microsoft.Xrm.Client.Security;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Client;
-	using Adxstudio.Xrm.Cms.Security;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
-	using Adxstudio.Xrm.Web;
+	using Security;
+	using Services;
+	using Services.Query;
+	using Web;
 
 	using Microsoft.Xrm.Sdk.Query;
 
@@ -98,7 +98,7 @@ namespace Adxstudio.Xrm.Cms
 					break;
 			}
 
-			return this.TryAssert(context, entity, right, dependencies);
+			return TryAssert(context, entity, right, dependencies);
 		}
 
 		private static bool TryAssert(ShortcutNode shortcut)

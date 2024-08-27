@@ -47,11 +47,11 @@ namespace Adxstudio.Xrm.Products
 			SelectEntities = selectEntities;
 		}
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
-		protected Func<OrganizationServiceContext, string, int?, int> SelectCount { get; private set; }
+		protected Func<OrganizationServiceContext, string, int?, int> SelectCount { get; }
 
-		protected Func<OrganizationServiceContext, IQueryable<Entity>> SelectEntities { get; private set; }
+		protected Func<OrganizationServiceContext, IQueryable<Entity>> SelectEntities { get; }
 
 		public IEnumerable<IProduct> SelectProducts()
 		{

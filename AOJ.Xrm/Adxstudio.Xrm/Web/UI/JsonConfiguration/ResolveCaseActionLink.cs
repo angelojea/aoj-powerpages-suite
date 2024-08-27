@@ -13,10 +13,10 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
 	public class ResolveCaseActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-check-circle fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Resolve_Case_DefaultText");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Resolve_Case_DefaultText");
-		private static string DefaultDescriptionLabel = ResourceManager.GetString("Description_Of_Resolution_Label_Text");
-		private static string DefaultSubjectLabel = ResourceManager.GetString("Resolution_DefaultText");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-check-circle fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Resolve_Case_DefaultText");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Resolve_Case_DefaultText");
+		private static readonly string DefaultDescriptionLabel = ResourceManager.GetString("Description_Of_Resolution_Label_Text");
+		private static readonly string DefaultSubjectLabel = ResourceManager.GetString("Resolution_DefaultText");
 
 		public string DescriptionLabel { get; set; }
 

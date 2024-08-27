@@ -186,7 +186,7 @@ namespace Microsoft.Xrm.Client
 
 		#region IUpdatable Members
 
-		private static readonly string[] _readOnlyProperties = new[] { "Id", "LogicalName", "EntityState", "RelatedEntities" };
+		private static readonly string[] _readOnlyProperties = { "Id", "LogicalName", "EntityState", "RelatedEntities" };
 
 		void IUpdatable.ClearChanges()
 		{

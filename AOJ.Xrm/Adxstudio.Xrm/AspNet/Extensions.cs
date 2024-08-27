@@ -12,7 +12,7 @@ namespace Adxstudio.Xrm.AspNet
 	using System.Runtime.CompilerServices;
 	using System.Threading.Tasks;
 	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Services.Query;
+	using Services.Query;
 	using Microsoft.Owin;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Messages;

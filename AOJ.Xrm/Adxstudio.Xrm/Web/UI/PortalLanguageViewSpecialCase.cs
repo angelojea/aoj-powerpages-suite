@@ -10,9 +10,9 @@ namespace Adxstudio.Xrm.Web.UI
 	using System.Linq;
 
 	using Adxstudio.Xrm.AspNet.Cms;
-	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Services.Query;
-	using Adxstudio.Xrm.Web.UI.CrmEntityListView;
+	using Cms;
+	using Services.Query;
+	using CrmEntityListView;
 
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Query;
@@ -38,7 +38,7 @@ namespace Adxstudio.Xrm.Web.UI
 		/// <returns>True if applied, false otherwise.</returns>
 		public bool TryApply(IViewConfiguration configuration, IDataAdapterDependencies dependencies, IDictionary<string, string> customParameters, Fetch fetch)
 		{
-			if (!this.IsApplicable(configuration))
+			if (!IsApplicable(configuration))
 			{
 				return false;
 			}

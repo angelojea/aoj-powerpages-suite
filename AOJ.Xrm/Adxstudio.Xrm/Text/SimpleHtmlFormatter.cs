@@ -25,7 +25,7 @@ namespace Adxstudio.Xrm.Text
 			LinkifyUrls = linkifyUrls;
 		}
 
-		protected bool LinkifyUrls { get; private  set; }
+		protected bool LinkifyUrls { get; }
 
 		public IHtmlString Format(string text)
 		{

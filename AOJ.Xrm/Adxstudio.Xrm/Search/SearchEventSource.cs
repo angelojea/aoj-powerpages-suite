@@ -7,7 +7,7 @@ namespace Adxstudio.Xrm.Search
 {
 	using System;
 	using System.Diagnostics.Tracing;
-	using Adxstudio.Xrm.Core.Telemetry.EventSources;
+	using Core.Telemetry.EventSources;
 
 	[EventSource(Guid = "8C3F51E2-A61A-47AC-B82C-0F6E79FDC1BF", Name = InternalName)]
 	internal sealed class SearchEventSource : EventSourceBase
@@ -55,11 +55,11 @@ namespace Adxstudio.Xrm.Search
 
 			QueryError(
 				exception.ToString(),
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 		}
 
 		[Event((int)EventName.QueryError, Message = "Message : {0} PortalUrl : {1} PortalVersion : {2} PortalProductionOrTrial : {3} SessionId:{4} ElapsedTime:{5}", Level = EventLevel.Error, Version = 3)]
@@ -81,11 +81,11 @@ namespace Adxstudio.Xrm.Search
 
 			ReadError(
 				exception.ToString(),
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 		}
 
 		[Event((int)EventName.ReadError, Message = "Message : {0} PortalUrl : {1} PortalVersion : {2} PortalProductionOrTrial : {3} SessionId:{4} ElapsedTime:{5}", Level = EventLevel.Error, Version = 3)]
@@ -107,11 +107,11 @@ namespace Adxstudio.Xrm.Search
 
 			WriteError(
 				exception.ToString(),
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 		}
 
 		[Event((int)EventName.WriteError, Message = "Message : {0} PortalUrl : {1} PortalVersion : {2} PortalProductionOrTrial : {3} SessionId:{4} ElapsedTime:{5}", Level = EventLevel.Error, Version = 3)]

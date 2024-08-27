@@ -20,16 +20,16 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 	using Microsoft.Xrm.Sdk.Client;
 	using Microsoft.Xrm.Sdk.Query;
 	using Newtonsoft.Json;
-	using Adxstudio.Xrm.Core;
-	using Adxstudio.Xrm.Resources;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
-	using Adxstudio.Xrm.Web.Mvc.Html;
+	using Core;
+	using Resources;
+	using Services;
+	using Services.Query;
+	using Mvc.Html;
 	using Adxstudio.Xrm.Web.UI.CrmEntityListView;
-	using Adxstudio.Xrm.Web.UI.JsonConfiguration;
-	using Adxstudio.Xrm.Web.UI.WebForms;
-	using GridMetadata = Adxstudio.Xrm.Web.UI.JsonConfiguration.GridMetadata;
-	using GuidConverter = Adxstudio.Xrm.Web.UI.JsonConfiguration.GuidConverter;
+	using JsonConfiguration;
+	using WebForms;
+	using GridMetadata = JsonConfiguration.GridMetadata;
+	using GuidConverter = JsonConfiguration.GuidConverter;
 
 	/// <summary>
 	/// Entity List control retrieves the Entity List record defined for the Web Page containing this control. Users can add tabular lists of records within the portal without the need for developer intervention.
@@ -289,7 +289,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (updateEntityListReference) { EntityListReference = entitylist.ToEntityReference(); }
 
-			if (LanguageCode <= 0) { LanguageCode = this.Context.GetPortalSolutionsDetails().OrganizationBaseLanguageCode; }
+			if (LanguageCode <= 0) { LanguageCode = Context.GetPortalSolutionsDetails().OrganizationBaseLanguageCode; }
 
 			RegisterClientSideDependencies(this);
 
@@ -297,9 +297,9 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (!string.IsNullOrWhiteSpace(registerStartupScript))
 			{
-				var html = Mvc.Html.EntityExtensions.GetHtmlHelper(PortalName, Page.Request.RequestContext, Page.Response);
+				var html = EntityExtensions.GetHtmlHelper(PortalName, Page.Request.RequestContext, Page.Response);
 
-				var control = new HtmlGenericControl() { };
+				var control = new HtmlGenericControl();
 
 				var script = html.ScriptAttribute(serviceContext, entitylist, "mspp_registerstartupscript");
 

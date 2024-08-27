@@ -15,7 +15,7 @@ namespace Adxstudio.Xrm.Services
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Messages;
 	using Microsoft.Xrm.Sdk.Query;
-	using Adxstudio.Xrm.Services.Query;
+	using Query;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Sdk.Metadata;
     using RetrieveRequest = Microsoft.Xrm.Sdk.Messages.RetrieveRequest;
@@ -105,7 +105,7 @@ namespace Adxstudio.Xrm.Services
 			[CallerFilePath] string sourceFilePath = "",
 			[CallerLineNumber] int sourceLineNumber = 0)
 		{
-			var request = new RetrieveMultipleRequest() { Query = query };
+			var request = new RetrieveMultipleRequest { Query = query };
 			var response = service.Execute(request) as RetrieveMultipleResponse;
 
 			return response.EntityCollection.Entities.FirstOrDefault();
@@ -133,7 +133,7 @@ namespace Adxstudio.Xrm.Services
 			[CallerFilePath] string sourceFilePath = "",
 			[CallerLineNumber] int sourceLineNumber = 0)
         {
-            var request = new RetrieveMultipleRequest() { Query = fetch.ToFetchExpression() };
+            var request = new RetrieveMultipleRequest { Query = fetch.ToFetchExpression() };
             var response = service.Execute(request) as RetrieveMultipleResponse;
 
             return response.EntityCollection.Entities.FirstOrDefault();

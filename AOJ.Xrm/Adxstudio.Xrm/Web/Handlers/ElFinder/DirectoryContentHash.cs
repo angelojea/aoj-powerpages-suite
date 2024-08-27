@@ -40,7 +40,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			get { return _entityReference.Id; }
 		}
 
-		public bool IsDirectory { get; private set; }
+		public bool IsDirectory { get; }
 
 		public string LogicalName
 		{

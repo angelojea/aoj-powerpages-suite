@@ -191,11 +191,11 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 				Valid = true;
 			}
 
-			public string EntitySetName { get; private set; }
+			public string EntitySetName { get; }
 
-			public Guid PrimaryKey { get; private set; }
+			public Guid PrimaryKey { get; }
 
-			public bool Valid { get; private set; }
+			public bool Valid { get; }
 		}
 
 		private static string GetCmsServiceBaseUri(string portalName = null)

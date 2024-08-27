@@ -153,15 +153,15 @@ namespace Adxstudio.Xrm.Commerce
 			WebFormSession = webFormSession;
 		}
 
-		protected EntityReference Target { get; private set; }
+		protected EntityReference Target { get; }
 
-		protected string TargetPrimaryKeyLogicalName { get; private set; }
+		protected string TargetPrimaryKeyLogicalName { get; }
 
-		protected EntityReference WebForm { get; private set; }
+		protected EntityReference WebForm { get; }
 
-		protected IEnumerable<Entity> WebFormMetadata { get; private set; }
+		protected IEnumerable<Entity> WebFormMetadata { get; }
 
-		protected SessionHistory WebFormSession { get; private set; }
+		protected SessionHistory WebFormSession { get; }
 
 		public override void CompletePurchase(bool fulfillOrder = false, bool createInvoice = false)
 		{
@@ -233,7 +233,7 @@ namespace Adxstudio.Xrm.Commerce
 
 			if (createInvoice)
 			{
-                var convertOrderRequest = new ConvertSalesOrderToInvoiceRequest()
+                var convertOrderRequest = new ConvertSalesOrderToInvoiceRequest
                 {
                     ColumnSet = new ColumnSet("invoiceid"),
                     SalesOrderId = order.Id
@@ -243,7 +243,7 @@ namespace Adxstudio.Xrm.Commerce
 
                 var invoice = convertOrderResponse.Entity;
 
-                var setStateRequest = new SetStateRequest()
+                var setStateRequest = new SetStateRequest
                 {
                     EntityMoniker = invoice.ToEntityReference(),
                     State = new OptionSetValue(2),

@@ -20,7 +20,7 @@ namespace Adxstudio.Xrm.Performance.AggregateEvent
 		public static readonly object AggregatorKey = "PerfAg";
 
 
-		private IPerformanceLogger _logger;
+		private readonly IPerformanceLogger _logger;
 		/// <summary>
 		/// Initializes PerformanceAggregateLogger with a inner logger.
 		/// </summary>

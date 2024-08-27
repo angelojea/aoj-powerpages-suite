@@ -20,35 +20,35 @@ namespace Adxstudio.Xrm.Cms
 		/// <summary>
 		/// Gets this language's name (i.e. the name of the corresponding Portal Language entity).
 		/// </summary>
-		public string Name { get; private set; }
+		public string Name { get; }
 
 		/// <summary>
 		/// Gets this language's localized portal display name (i.e. the Portal Display Name field of the corresponding Portal Language entity).
 		/// </summary>
-		public string DisplayName { get; private set; }
+		public string DisplayName { get; }
 
 		/// <summary>
 		/// Gets the localizable language code (i.e. the Code field of the corresponding Portal Language entity).
 		/// Ex: "en-US".
 		/// </summary>
-		public string Code { get; private set; }
+		public string Code { get; }
 
 		/// <summary>
 		/// Gets the LCID of this language's corresponding CRM language (i.e. the CRM Language field of the corresponding Portal Language entity).
 		/// Ex: 1033.
 		/// </summary>
-		public int CrmLcid { get; private set; }
+		public int CrmLcid { get; }
 
 		/// <summary>
 		/// Gets the localizable LCID (i.e. the LCID field of the corresponding Portal Language entity).
 		/// Ex: 1033.
 		/// </summary>
-		public int Lcid { get; private set; }
+		public int Lcid { get; }
 
 		/// <summary>
 		/// Gets the ID of the corresponding Portal language entity.
 		/// </summary>
-		public Guid PortalLanguageId { get; private set; }
+		public Guid PortalLanguageId { get; }
 
 		/// <summary>
 		/// Gets or sets if this language was selected as a fallback from another language lcid or code 
@@ -58,17 +58,17 @@ namespace Adxstudio.Xrm.Cms
 		/// <summary>
 		/// Gets whether this website language is published.
 		/// </summary>
-		public bool IsPublished { get; private set; }
+		public bool IsPublished { get; }
 
 		/// <summary>
 		/// Gets a reference to the corresponding WebsiteLanguage entity.
 		/// </summary>
-		public EntityReference EntityReference { get; private set; }
+		public EntityReference EntityReference { get; }
 
 		/// <summary>
 		/// Gets a reference to the corresponding WebsiteLanguage EntityNode.
 		/// </summary>
-		public WebsiteLanguageNode WebsiteLanguageNode { get; private set; }
+		public WebsiteLanguageNode WebsiteLanguageNode { get; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="WebsiteLanguage" /> class.
@@ -83,15 +83,15 @@ namespace Adxstudio.Xrm.Cms
 		/// <param name="websiteLanguageNode">Reference to the corresponding WebsiteLanguage EntityNode.</param>
 		public WebsiteLanguage(string name, string displayName, string code, int crmLcid, int lcid, Guid portalLanguageId, bool isPublished, WebsiteLanguageNode websiteLanguageNode)
 		{
-			this.Name = name;
-			this.DisplayName = displayName;
-			this.Code = code;
-			this.CrmLcid = crmLcid;
-			this.Lcid = lcid;
-			this.PortalLanguageId = portalLanguageId;
-			this.IsPublished = isPublished;
-			this.EntityReference = websiteLanguageNode != null ? websiteLanguageNode.ToEntityReference() : null;
-			this.WebsiteLanguageNode = websiteLanguageNode;
+			Name = name;
+			DisplayName = displayName;
+			Code = code;
+			CrmLcid = crmLcid;
+			Lcid = lcid;
+			PortalLanguageId = portalLanguageId;
+			IsPublished = isPublished;
+			EntityReference = websiteLanguageNode != null ? websiteLanguageNode.ToEntityReference() : null;
+			WebsiteLanguageNode = websiteLanguageNode;
 		}
 	}
 }

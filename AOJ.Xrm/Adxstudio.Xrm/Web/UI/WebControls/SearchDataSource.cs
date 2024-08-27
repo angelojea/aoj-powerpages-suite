@@ -27,28 +27,28 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		private ParameterCollection _selectParameters;
 		private SearchDataSourceView _view;
 
-		[Description(""), Category("Data"), DefaultValue((string)null)]
+		[Description(""), Category("Data"), DefaultValue(null)]
 		public string LogicalNames
 		{
 			get { return ViewState["LogicalNames"] as string; }
 			set { ViewState["LogicalNames"] = value; }
 		}
 
-		[Description(""), Category("Data"), DefaultValue((string)null)]
+		[Description(""), Category("Data"), DefaultValue(null)]
 		public string Filter
 		{
 			get { return ViewState["Filter"] as string; }
 			set { ViewState["Filter"] = value; }
 		}
 
-		[Description(""), Category("Data"), DefaultValue((string)null)]
+		[Description(""), Category("Data"), DefaultValue(null)]
 		public string Query
 		{
 			get { return ViewState["Query"] as string; }
 			set { ViewState["Query"] = value; }
 		}
 
-		[Description(""), Category("Data"), DefaultValue((string)null)]
+		[Description(""), Category("Data"), DefaultValue(null)]
 		public string SearchProvider
 		{
 			get { return ViewState["SearchProvider"] as string; }
@@ -102,7 +102,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// <summary>
 		/// Gets the parameters collection that contains the parameters that are used when selecting data.
 		/// </summary>
-		[Description(""), Category("Data"), PersistenceMode(PersistenceMode.InnerProperty), DefaultValue((string)null), Editor("System.Web.UI.Design.WebControls.ParameterCollectionEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor)), MergableProperty(false)]
+		[Description(""), Category("Data"), PersistenceMode(PersistenceMode.InnerProperty), DefaultValue(null), Editor("System.Web.UI.Design.WebControls.ParameterCollectionEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor)), MergableProperty(false)]
 		public ParameterCollection SelectParameters
 		{
 			get

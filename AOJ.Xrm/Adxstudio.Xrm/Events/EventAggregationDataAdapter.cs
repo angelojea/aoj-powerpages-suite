@@ -30,7 +30,7 @@ namespace Adxstudio.Xrm.Events
 			Dependencies = dependencies;
 		}
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
 		/// <summary>
 		/// Gets all <see cref="EventOccurrence">event occurrences</see> within a given date/time range.

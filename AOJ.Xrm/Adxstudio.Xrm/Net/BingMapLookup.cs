@@ -21,10 +21,10 @@ namespace Adxstudio.Xrm.Net
 	/// </summary>
 	public class BingMapLookup
 	{
-		private string BingMapRestUrl { get; set; }
-		private string BingMapKey { get; set; }
-		private string UserLocation { get; set; }
-		private int? IncludeNeighborhood { get; set; }
+		private string BingMapRestUrl { get; }
+		private string BingMapKey { get; }
+		private string UserLocation { get; }
+		private int? IncludeNeighborhood { get; }
 
 		/// <summary>
 		/// Parameterless initialization for calling the Bing Maps REST API that uses Settings records from within CRM when building the request URL.
@@ -342,7 +342,7 @@ namespace Adxstudio.Xrm.Net
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("SetGeoLocationCoordinates", "{0}", ex.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("SetGeoLocationCoordinates", "{0}", ex));
             }
 		}
 	}

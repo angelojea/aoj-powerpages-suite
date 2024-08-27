@@ -7,7 +7,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 {
 	using System;
 	using System.Linq;
-	using Adxstudio.Xrm.Threading;
+	using Threading;
 
 	/// <summary>
 	/// A continuous job for consuming the Service Bus topic.
@@ -22,7 +22,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// <summary>
 		/// The Event Hub manager.
 		/// </summary>
-		public EventHubJobManager Manager { get; private set; }
+		public EventHubJobManager Manager { get; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="EventHubJob" /> class.
@@ -30,7 +30,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// <param name="manager">The Event Hub manager.</param>
 		public EventHubJob(EventHubJobManager manager)
 		{
-			this.Manager = manager;
+			Manager = manager;
 		}
 
 		/// <summary>
@@ -39,18 +39,18 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// <param name="id">The activity id.</param>
 		protected override void ExecuteInternal(Guid id)
 		{
-			bool isSearchSubscription = this.Manager.Settings.SubscriptionType == EventHubSubscriptionType.SearchSubscription;
-			if (this.Manager.SubscriptionClient != null)
+			bool isSearchSubscription = Manager.Settings.SubscriptionType == EventHubSubscriptionType.SearchSubscription;
+			if (Manager.SubscriptionClient != null)
 			{
 				lock (JobLock)
 				{
 					try
 					{
-						ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Subscription = '{0}' Topic = '{1}'", this.Manager.Subscription.Name, this.Manager.Subscription.TopicPath));
+						ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Subscription = '{0}' Topic = '{1}'", Manager.Subscription.Name, Manager.Subscription.TopicPath));
 
 						// take N at a time
-						var messages = this.Manager.SubscriptionClient
-							.ReceiveBatch(this.Manager.Settings.ReceiveBatchMessageCount, this.Manager.Settings.ReceiveBatchServerWaitTime)
+						var messages = Manager.SubscriptionClient
+							.ReceiveBatch(Manager.Settings.ReceiveBatchMessageCount, Manager.Settings.ReceiveBatchServerWaitTime)
 							.Where(message => message != null);
 
 						foreach (var message in messages)
@@ -67,7 +67,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 					}
 					catch (Exception e)
 					{
-						this.Manager.Reset();
+						Manager.Reset();
 						ADXTrace.Instance.TraceInfo(TraceCategory.Application, e.ToString());
 					}
 				}

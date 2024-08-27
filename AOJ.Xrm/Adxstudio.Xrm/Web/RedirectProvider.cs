@@ -22,7 +22,7 @@ namespace Adxstudio.Xrm.Web
 	/// </summary>
 	public class RedirectProvider : IRedirectProvider
 	{
-		public string PortalName { get; private set; }
+		public string PortalName { get; }
 
 		public RedirectProvider(string portalName)
 		{

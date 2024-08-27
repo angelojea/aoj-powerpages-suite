@@ -22,6 +22,6 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			get { return Target.Url; }
 		}
 
-		protected ISiteMarkerTarget Target { get; private set; }
+		protected ISiteMarkerTarget Target { get; }
 	}
 }

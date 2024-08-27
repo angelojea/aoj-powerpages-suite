@@ -10,13 +10,13 @@ namespace Adxstudio.Xrm.Blogs
 	using System.Linq;
 	using System.Web;
 	using System.Web.Security;
-	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Security;
+	using Cms;
+	using Security;
 	using Adxstudio.Xrm.Cms.Security;
-	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
-	using Adxstudio.Xrm.Web;
+	using Configuration;
+	using Services;
+	using Services.Query;
+	using Web;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Client.Security;
 	using Microsoft.Xrm.Sdk;
@@ -27,7 +27,7 @@ namespace Adxstudio.Xrm.Blogs
 	{
 		protected string PortalName { get; private set; }
 
-		protected CacheSupportingCrmEntitySecurityProvider WebPageSecurityProvider { get; private set; }
+		protected CacheSupportingCrmEntitySecurityProvider WebPageSecurityProvider { get; }
 
 		public BlogSecurityProvider(CacheSupportingCrmEntitySecurityProvider webPageSecurityProvider, HttpContext context, string portalName = null)
 			: this(context)
@@ -37,8 +37,8 @@ namespace Adxstudio.Xrm.Blogs
 				throw new ArgumentNullException("webPageSecurityProvider");
 			}
 
-			this.WebPageSecurityProvider = webPageSecurityProvider;
-			this.PortalName = portalName;
+			WebPageSecurityProvider = webPageSecurityProvider;
+			PortalName = portalName;
 		}
 
 		/// <summary> Initializes a new instance of the <see cref="BlogSecurityProvider"/> class. </summary>
@@ -66,7 +66,7 @@ namespace Adxstudio.Xrm.Blogs
 			{
                 ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on adx_blog ({1}).", right, entity.Id));
 
-				return this.TryAssertBlog(serviceContext, entity, right, dependencies, map);
+				return TryAssertBlog(serviceContext, entity, right, dependencies, map);
 			}
 
 			if (entity.LogicalName == "adx_blogpost")
@@ -74,7 +74,7 @@ namespace Adxstudio.Xrm.Blogs
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on adx_blogpost ({1}).", right, entity.Id));
 				dependencies.AddEntityDependency(entity);
 
-				return this.TryAssertBlogPost(serviceContext, entity, right, dependencies);
+				return TryAssertBlogPost(serviceContext, entity, right, dependencies);
 			}
 
 			if (entity.LogicalName == "adx_blogpostcomment")
@@ -82,7 +82,7 @@ namespace Adxstudio.Xrm.Blogs
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on adx_blogpostcomment ({1}).", right, entity.Id));
 				dependencies.AddEntityDependency(entity);
 
-				return this.TryAssertBlogPostComment(serviceContext, entity, right, dependencies);
+				return TryAssertBlogPostComment(serviceContext, entity, right, dependencies);
 			}
 
 			throw new NotSupportedException("Entities of type {0} are not supported by this provider.".FormatWith(entity.LogicalName));
@@ -103,7 +103,7 @@ namespace Adxstudio.Xrm.Blogs
 
 			if (right == CrmEntityRight.Read)
 			{
-				return parentPage != null && this.WebPageSecurityProvider.TryAssert(serviceContext, parentPage, right, dependencies);
+				return parentPage != null && WebPageSecurityProvider.TryAssert(serviceContext, parentPage, right, dependencies);
 			}
 
 			if (!Roles.Enabled)
@@ -132,10 +132,10 @@ namespace Adxstudio.Xrm.Blogs
 
 			dependencies.AddEntityDependencies(authorRoles);
 
-			var userRoles = this.GetUserRoles();
+			var userRoles = GetUserRoles();
 
 			return authorRoles.Select(e => e.GetAttributeValue<string>("adx_name")).Intersect(userRoles, StringComparer.InvariantCulture).Any()
-				|| (parentPage != null && this.WebPageSecurityProvider.TryAssert(serviceContext, parentPage, right, dependencies));
+				|| (parentPage != null && WebPageSecurityProvider.TryAssert(serviceContext, parentPage, right, dependencies));
 		}
 
 		private bool TryAssertBlogPost(OrganizationServiceContext serviceContext, Entity entity, CrmEntityRight right, CrmEntityCacheDependencyTrace dependencies)
@@ -159,7 +159,7 @@ namespace Adxstudio.Xrm.Blogs
 
 			var published = entity.GetAttributeValue<bool?>("adx_published").GetValueOrDefault(false);
 
-			return this.TryAssert(
+			return TryAssert(
 				serviceContext,
 				blog,
 				(right == CrmEntityRight.Read && published ? CrmEntityRight.Read : CrmEntityRight.Change),
@@ -187,7 +187,7 @@ namespace Adxstudio.Xrm.Blogs
 
 			var approved = entity.GetAttributeValue<bool?>("adx_approved").GetValueOrDefault(false);
 
-			return this.TryAssert(
+			return TryAssert(
 				serviceContext,
 				blogPost,
 				(right == CrmEntityRight.Read && approved ? CrmEntityRight.Read : CrmEntityRight.Change),

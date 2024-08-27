@@ -43,7 +43,7 @@ namespace Adxstudio.Xrm.Cms
 		/// <summary>
 		/// Gets the DisplayName attribute of the entity record
 		/// </summary>
-		public string DisplayName { get; private set; }
+		public string DisplayName { get; }
 
 		public string Description
 		{
@@ -60,22 +60,22 @@ namespace Adxstudio.Xrm.Cms
 			get { return ViewEntity.EntityReference; }
 		}
 
-		public IPortalViewAttribute Copy { get; private set; }
+		public IPortalViewAttribute Copy { get; }
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public IPortalViewAttribute Title { get; private set; }
+		public IPortalViewAttribute Title { get; }
 
 		public string Url
 		{
 			get { return null; }
 		}
 
-		public IEnumerable<IWebLink> WebLinks { get; private set; }
+		public IEnumerable<IWebLink> WebLinks { get; }
 
-		protected IPortalViewEntity ViewEntity { get; private set; }
+		protected IPortalViewEntity ViewEntity { get; }
 
 		public IPortalViewAttribute GetAttribute(string attributeLogicalName)
 		{

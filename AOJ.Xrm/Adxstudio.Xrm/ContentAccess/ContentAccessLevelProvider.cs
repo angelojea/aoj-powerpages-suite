@@ -9,11 +9,11 @@ namespace Adxstudio.Xrm.ContentAccess
     using System.Collections.Generic;
     using System.Linq;
     using Microsoft.Xrm.Portal;
-    using Adxstudio.Xrm.Security;
+    using Security;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
-    using Adxstudio.Xrm.Services.Query;
+    using Services.Query;
 
     /// <summary>
     /// Implementation of <see cref="ContentAccessLevelProvider"/>. Provides filtering based on Content Access Level associations.
@@ -41,7 +41,7 @@ namespace Adxstudio.Xrm.ContentAccess
         /// <param name="configuration">Configuration for FetchXML attributes</param>
         public ContentAccessLevelProvider(ContentAccessConfiguration configuration) : base(configuration)
         {
-			this.CurrentUserRoleNames = new Lazy<string[]>(() => CrmEntityPermissionProvider.GetRolesForUser(this.Portal.ServiceContext, this.Portal.Website.ToEntityReference()));
+			CurrentUserRoleNames = new Lazy<string[]>(() => CrmEntityPermissionProvider.GetRolesForUser(Portal.ServiceContext, Portal.Website.ToEntityReference()));
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Adxstudio.Xrm.ContentAccess
         public ContentAccessLevelProvider(IPortalContext portalContext, string[] currentUserRoleNames, EntityMetadata calEntityMetadata, Dictionary<string, string> siteSettingDictionary)
             : base(ContentAccessConfiguration.DefaultContentAccessLevelConfiguration(), portalContext, siteSettingDictionary)
         {
-            this.CurrentUserRoleNames = new Lazy<string[]>(() => currentUserRoleNames);
+            CurrentUserRoleNames = new Lazy<string[]>(() => currentUserRoleNames);
             this.calEntityMetadata = calEntityMetadata;
         }
 
@@ -77,22 +77,22 @@ namespace Adxstudio.Xrm.ContentAccess
         public override void TryApplyRecordLevelFiltersToFetch(CrmEntityPermissionRight right, Fetch fetchIn)
         {
             // Apply filter only if Entity is "Knowledge Article" and Right is "Read"
-            if (!this.IsRightEntityAndPermissionRight(right, fetchIn, this.Config.SourceEntityName, CrmEntityPermissionRight.Read))
+            if (!IsRightEntityAndPermissionRight(right, fetchIn, Config.SourceEntityName, CrmEntityPermissionRight.Read))
             {
                 return;
             }
 
             // If CAL is not enabled
-            if (!this.IsEnabled())
+            if (!IsEnabled())
             {
                 return;
             }
 
             // Retrieve CAL IDs
-            var userCALIDs = this.RetrieveCurrentUserContentAccessLevels();
+            var userCALIDs = RetrieveCurrentUserContentAccessLevels();
 
             // Inject CAL IDs filter into FetchXML
-            this.TryRecordLevelFiltersToFetch(fetchIn, userCALIDs);
+            TryRecordLevelFiltersToFetch(fetchIn, userCALIDs);
         }
         #endregion
         
@@ -104,11 +104,11 @@ namespace Adxstudio.Xrm.ContentAccess
         /// <returns>True if config's site setting exists and is enabled</returns>
         public override bool IsEnabled()
         {
-            if (this.calEntityMetadata == null)
+            if (calEntityMetadata == null)
             {
                 try
                 {
-                    this.calEntityMetadata = ContentAccessProvider.GetEntityMetadata(this.Portal.ServiceContext, "adx_contentaccesslevel", EntityFilters.Entity);
+                    calEntityMetadata = GetEntityMetadata(Portal.ServiceContext, "adx_contentaccesslevel", EntityFilters.Entity);
                 }
                 catch
                 {
@@ -125,7 +125,7 @@ namespace Adxstudio.Xrm.ContentAccess
         /// <returns>Content Access Level collection</returns>
         public IEnumerable<Entity> GetContentAccessLevels()
         {
-            if (!this.IsEnabled())
+            if (!IsEnabled())
             {
                 return Enumerable.Empty<Entity>();
             }
@@ -160,13 +160,13 @@ namespace Adxstudio.Xrm.ContentAccess
 				</fetch>";
 
             // Only inject this join if the WebRole for the current user is not empty
-            var webRoleFetchXmlFormat = this.CurrentUserRoleNames.Value.Any()
+            var webRoleFetchXmlFormat = CurrentUserRoleNames.Value.Any()
                 ? @"<link-entity name='adx_webrolecontentaccesslevel' from='adx_contentaccesslevelid' to='adx_contentaccesslevelid' visible='false' intersect='true' link-type='outer' alias='cal2webroleintersect'>
                         <link-entity name='adx_webrole' from='adx_webroleid' to='adx_webroleid' visible='false' link-type='outer' alias='cal2webrole'>
 						    <attribute name='adx_webroleid' />
                             <filter type='and'>
 							    <condition attribute='adx_name' operator='in'>
-                                    " + this.FormattedCurrentUserRoleNames + @"
+                                    " + FormattedCurrentUserRoleNames + @"
                                 </condition>
 						    </filter>
                         </link-entity>
@@ -174,15 +174,15 @@ namespace Adxstudio.Xrm.ContentAccess
                 : string.Empty;
 
             // Only inject this join if the WebRole for the current user is not empty
-            var webRoleFilteringFetchXmlFormat = this.CurrentUserRoleNames.Value.Any()
+            var webRoleFilteringFetchXmlFormat = CurrentUserRoleNames.Value.Any()
                 ? @"<condition entityname='cal2webrole' attribute='adx_webroleid' operator='not-null' />"
                 : string.Empty;
 
             // Inject into FetchXml the User's Id, ParentCustomerId, and associated WebRoles
-            var filteredContentAccessLevelsFetchXmlFormat = string.Format(ContentAccessLevelsFetchXmlFormat, this.CurrentUserId, this.ParentCustomerId, this.ParentCustomerId, webRoleFetchXmlFormat, webRoleFilteringFetchXmlFormat);
+            var filteredContentAccessLevelsFetchXmlFormat = string.Format(ContentAccessLevelsFetchXmlFormat, CurrentUserId, ParentCustomerId, ParentCustomerId, webRoleFetchXmlFormat, webRoleFilteringFetchXmlFormat);
 
             var fetchContentAccessLevels = Fetch.Parse(filteredContentAccessLevelsFetchXmlFormat);
-            var contentAccessLevelCollection = fetchContentAccessLevels.Execute(this.Portal.ServiceContext as IOrganizationService);
+            var contentAccessLevelCollection = fetchContentAccessLevels.Execute(Portal.ServiceContext as IOrganizationService);
 
             return contentAccessLevelCollection.Entities;
         }
@@ -198,9 +198,9 @@ namespace Adxstudio.Xrm.ContentAccess
         {
             var link = new Link
             {
-                Name = this.Config.IntersectEntityName,
-                FromAttribute = this.Config.IntersectFromAttribute,
-                ToAttribute = this.Config.IntersectToAttribute,
+                Name = Config.IntersectEntityName,
+                FromAttribute = Config.IntersectFromAttribute,
+                ToAttribute = Config.IntersectToAttribute,
                 Intersect = true,
                 Visible = false,
                 Filters = new List<Filter>
@@ -210,7 +210,7 @@ namespace Adxstudio.Xrm.ContentAccess
                         Type = LogicalOperator.And,
                         Conditions = new[]
                         {
-                            new Condition { Attribute = this.Config.TargetFromAttribute, Operator = ConditionOperator.In, Values = userCALIDs }
+                            new Condition { Attribute = Config.TargetFromAttribute, Operator = ConditionOperator.In, Values = userCALIDs }
                         }
                     }
                 }
@@ -230,13 +230,13 @@ namespace Adxstudio.Xrm.ContentAccess
         /// <returns>Content Access Level IDs</returns>
         private ICollection<object> RetrieveCurrentUserContentAccessLevels()
         {
-            var userCALs = this.GetContentAccessLevels().Select(x => x.Id).Cast<object>().ToList();
+            var userCALs = GetContentAccessLevels().Select(x => x.Id).Cast<object>().ToList();
 
             var userCALIDs = new List<object>();
 
             if (!userCALs.Any())
             {
-                userCALIDs.Add((object)Guid.Empty);
+                userCALIDs.Add(Guid.Empty);
             }
             else
             {
@@ -249,7 +249,7 @@ namespace Adxstudio.Xrm.ContentAccess
         /// <summary>
         /// String array of current User's associated Webroles
         /// </summary>
-        private Lazy<string[]> CurrentUserRoleNames { get; set; }
+        private Lazy<string[]> CurrentUserRoleNames { get; }
 
         /// <summary>
         /// Flattened and formatted representation of <see cref="CurrentUserRoleNames"/> for use in FetchXML
@@ -258,7 +258,7 @@ namespace Adxstudio.Xrm.ContentAccess
         {
             get
             {
-                return string.Format("<value>{0}</value>", string.Join("</value><value>", this.CurrentUserRoleNames.Value));
+                return string.Format("<value>{0}</value>", string.Join("</value><value>", CurrentUserRoleNames.Value));
             }
         }
         #endregion Helper Methods

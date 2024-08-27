@@ -14,31 +14,16 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 {
 	internal class UnsupportedControlTemplate : Microsoft.Xrm.Portal.Web.UI.CrmEntityFormView.UnsupportedControlTemplate
 	{
-		private readonly int? _colSpan;
-		private readonly int? _rowSpan;
-		
-		public override int? ColumnSpan
-		{
-		  get
-		  {
-			return _colSpan;
-		  }
-		}
+		public override int? ColumnSpan { get; }
 
-		public override int? RowSpan
-		{
-		  get
-		  {
-			return _rowSpan;
-		  }
-		}
+		public override int? RowSpan { get; }
 
 		public UnsupportedControlTemplate(ICellMetadata metadata, string validationGroup,
 			IDictionary<string, CellBinding> bindings, bool enabled)
 			: base(metadata, validationGroup, bindings, enabled)
 		{
-			_colSpan = metadata.ColumnSpan;
-			_rowSpan = metadata.RowSpan;
+			ColumnSpan = metadata.ColumnSpan;
+			RowSpan = metadata.RowSpan;
 		}
 	}
 }

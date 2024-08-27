@@ -10,11 +10,11 @@ namespace Adxstudio.Xrm.Cms.Security
 	using System.Linq;
 	using System.Web;
 	using System.Web.Security;
-	using Adxstudio.Xrm.Configuration;
+	using Configuration;
 	using Adxstudio.Xrm.Security;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
-	using Adxstudio.Xrm.Web;
+	using Services;
+	using Services.Query;
+	using Web;
 	using Microsoft.Xrm.Client.Security;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Client;
@@ -61,7 +61,7 @@ namespace Adxstudio.Xrm.Cms.Security
 
 		public bool TryAssert(OrganizationServiceContext serviceContext, WebsiteRight right)
 		{
-			return this.ContentMapProvider.Using(map =>
+			return ContentMapProvider.Using(map =>
 			{
 				WebsiteNode site;
 				Func<WebsiteAccessNode, bool?> selectFlag;
@@ -75,7 +75,7 @@ namespace Adxstudio.Xrm.Cms.Security
 		protected override bool TryAssert(OrganizationServiceContext context, Entity entity, CrmEntityRight right, CrmEntityCacheDependencyTrace dependencies, ContentMap map)
 		{
 			var entityName = entity.LogicalName;
-			this.AddDependencies(
+			AddDependencies(
 				dependencies,
 				entity,
 				new[] { "adx_webrole", "adx_webrole_contact", "adx_webrole_account", "adx_websiteaccess" });
@@ -138,7 +138,7 @@ namespace Adxstudio.Xrm.Cms.Security
                 return false;
 			}
 
-			var userRoles = this.GetUserRoles();
+			var userRoles = GetUserRoles();
 
 			if (!userRoles.Any())
 			{
@@ -198,7 +198,7 @@ namespace Adxstudio.Xrm.Cms.Security
 
 			dependencies.AddEntityDependency(_website);
 
-			var userRoles = this.GetUserRoles();
+			var userRoles = GetUserRoles();
 
 			if (!userRoles.Any())
 			{
@@ -221,7 +221,7 @@ namespace Adxstudio.Xrm.Cms.Security
 									new Condition(
 										"adx_websiteid",
 										ConditionOperator.Equal,
-										this._website.Id),
+										_website.Id),
 								}
 							}
 						}

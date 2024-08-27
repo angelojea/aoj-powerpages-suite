@@ -9,7 +9,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Text.RegularExpressions;
-	using Adxstudio.Xrm.Web.Mvc.Html;
+	using Html;
 	using DotLiquid;
 	using DotLiquid.Exceptions;
 	using DotLiquid.Util;
@@ -42,9 +42,9 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 
 			if (syntaxMatch.Success)
 			{
-				this.attributes = new Dictionary<string, string>(Template.NamingConvention.StringComparer);
+				attributes = new Dictionary<string, string>(Template.NamingConvention.StringComparer);
 
-				R.Scan(markup, DotLiquid.Liquid.TagAttributes, (key, value) => this.attributes[key] = value);
+				R.Scan(markup, Liquid.TagAttributes, (key, value) => attributes[key] = value);
 			}
 			else
 			{
@@ -71,14 +71,14 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 			string id;
 			Guid parsedId;
 
-			if (!this.TryGetAttributeValue(context, "id", out id) || !Guid.TryParse(id, out parsedId))
+			if (!TryGetAttributeValue(context, "id", out id) || !Guid.TryParse(id, out parsedId))
 			{
 				throw new SyntaxException("Syntax Error in 'rating' tag. Missing required attribute 'id:[string]'");
 			}
 
 			string entity;
 
-			if (!this.TryGetAttributeValue(context, "entity", out entity) || string.IsNullOrWhiteSpace(entity))
+			if (!TryGetAttributeValue(context, "entity", out entity) || string.IsNullOrWhiteSpace(entity))
 			{
 				entity = "adx_webpage";
 			}
@@ -86,7 +86,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 			string readonlyString;
 			var parsedReadonly = false;
 
-			if (this.TryGetAttributeValue(context, "readonly", out readonlyString))
+			if (TryGetAttributeValue(context, "readonly", out readonlyString))
 			{
 				bool.TryParse(readonlyString, out parsedReadonly);
 			}
@@ -94,31 +94,31 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 			string panel;
 			var parsedPanel = false;
 
-			if (this.TryGetAttributeValue(context, "panel", out panel))
+			if (TryGetAttributeValue(context, "panel", out panel))
 			{
 				bool.TryParse(panel, out parsedPanel);
 			}
 
 			string panelSnippet;
 
-			this.TryGetAttributeValue(context, "snippet", out panelSnippet);
+			TryGetAttributeValue(context, "snippet", out panelSnippet);
 
 			string step;
 
-			this.TryGetAttributeValue(context, "step", out step);
+			TryGetAttributeValue(context, "step", out step);
 
 			string min;
 
-			this.TryGetAttributeValue(context, "min", out min);
+			TryGetAttributeValue(context, "min", out min);
 
 			string max;
 
-			this.TryGetAttributeValue(context, "max", out max);
+			TryGetAttributeValue(context, "max", out max);
 
 			string round;
 			var parsedRound = true;
 
-			if (this.TryGetAttributeValue(context, "round", out round))
+			if (TryGetAttributeValue(context, "round", out round))
 			{
 				bool.TryParse(round, out parsedRound);
 			}
@@ -143,7 +143,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 
 			string variable;
 
-			if (!this.attributes.TryGetValue(name, out variable))
+			if (!attributes.TryGetValue(name, out variable))
 			{
 				return false;
 			}

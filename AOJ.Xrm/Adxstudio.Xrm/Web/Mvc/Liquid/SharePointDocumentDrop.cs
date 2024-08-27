@@ -15,22 +15,15 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 {
 	public class SharePointDocumentDrop : PortalDrop
 	{
-		private readonly long _length;
-		private readonly string _name;
-		private readonly DateTime _timeCreated;
-		private readonly DateTime _timeLastModified;
-		private readonly string _title;
-		private readonly string _url;
-
 		public SharePointDocumentDrop(IPortalLiquidContext portalLiquidContext, File file, Entity documentLocation) : base(portalLiquidContext)
 		{
 			if (file == null) throw new ArgumentNullException("file");
 
-			_name = file.Name;
-			_length = file.Length;
-			_timeCreated = file.TimeCreated;
-			_timeLastModified = file.TimeLastModified;
-			_title = file.Title;
+			Name = file.Name;
+			Length = file.Length;
+			TimeCreated = file.TimeCreated;
+			TimeLastModified = file.TimeLastModified;
+			Title = file.Title;
 
 
 			var portalContext = PortalCrmConfigurationManager.CreatePortalContext();
@@ -55,39 +48,21 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 						{ "file", file.Name }
 					});
 
-			_url = virtualPath == null
+			Url = virtualPath == null
 				? null
 				: VirtualPathUtility.ToAbsolute(virtualPath.VirtualPath);
 		}
 
-		public virtual long Length
-		{
-			get { return _length; }
-		}
+		public virtual long Length { get; }
 
-		public virtual string Name
-		{
-			get { return _name; }
-		}
+		public virtual string Name { get; }
 
-		public virtual DateTime TimeCreated
-		{
-			get { return _timeCreated; }
-		}
+		public virtual DateTime TimeCreated { get; }
 
-		public virtual DateTime TimeLastModified
-		{
-			get { return _timeLastModified; }
-		}
+		public virtual DateTime TimeLastModified { get; }
 
-		public virtual string Title
-		{
-			get { return _title; }
-		}
+		public virtual string Title { get; }
 
-		public virtual string Url
-		{
-			get { return _url; }
-		}
+		public virtual string Url { get; }
 	}
 }

@@ -208,7 +208,7 @@ namespace Adxstudio.Xrm.AspNet.Identity
 		where TUser : class, IUser<TKey>
 		where TKey : IEquatable<TKey>
 	{
-		public virtual CrmIdentityErrorDescriber IdentityErrors { get; private set; }
+		public virtual CrmIdentityErrorDescriber IdentityErrors { get; }
 
 		public InternalUserManager(IUserStore<TUser, TKey> store, CrmIdentityErrorDescriber identityErrors)
 			: base(store)
@@ -432,9 +432,9 @@ namespace Adxstudio.Xrm.AspNet.Identity
 		where TUser : class, IUser<TKey>
 		where TKey : IEquatable<TKey>
 	{
-		private InternalUserManager<TUser, TKey> Manager { get; set; }
+		private InternalUserManager<TUser, TKey> Manager { get; }
 
-		public virtual CrmIdentityErrorDescriber IdentityErrors { get; private set; }
+		public virtual CrmIdentityErrorDescriber IdentityErrors { get; }
 
 		public InternalUserValidator(InternalUserManager<TUser, TKey> manager, CrmIdentityErrorDescriber identityErrors)
 			: base(manager)

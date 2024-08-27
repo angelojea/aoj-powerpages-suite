@@ -66,7 +66,7 @@ namespace Adxstudio.Xrm
 			where TEnum : struct, IComparable, IFormattable, IConvertible
 		{
 			var option = GetAttributeAliasedValue<OptionSetValue>(entity, attributeLogicalName, alias);
-			return option != null ? option.Value.ToEnum<TEnum>() : (TEnum?)null;
+			return option != null ? option.Value.ToEnum<TEnum>() : null;
 		}
 
 		/// <summary>

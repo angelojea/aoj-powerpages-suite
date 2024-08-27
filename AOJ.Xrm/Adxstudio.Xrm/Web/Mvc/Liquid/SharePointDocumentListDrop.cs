@@ -23,21 +23,17 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 {
 	public class SharePointDocumentListDrop : PortalDrop
 	{
-		private readonly string _entityLogicalName;
 		private readonly string _folderName;
 
 		public SharePointDocumentListDrop(IPortalLiquidContext portalLiquidContext, string entityLogicalName, string folderName) : base(portalLiquidContext)
 		{
 			if (entityLogicalName == null) throw new ArgumentNullException("entityLogicalName");
 
-			_entityLogicalName = entityLogicalName;
+			LogicalName = entityLogicalName;
 			_folderName = folderName;
 		}
 
-		public string LogicalName
-		{
-			get { return _entityLogicalName; }
-		}
+		public string LogicalName { get; }
 
 		public override object BeforeMethod(string method)
 		{

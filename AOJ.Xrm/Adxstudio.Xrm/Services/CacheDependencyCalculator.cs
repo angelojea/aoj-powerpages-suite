@@ -10,9 +10,9 @@ namespace Adxstudio.Xrm.Services
 	using System.Diagnostics.CodeAnalysis;
 	using System.Linq;
 
-	using Adxstudio.Xrm.Diagnostics.Trace;
-	using Adxstudio.Xrm.EventHubBasedInvalidation;
-	using Adxstudio.Xrm.Services.Query;
+	using Diagnostics.Trace;
+	using EventHubBasedInvalidation;
+	using Query;
 
 	using Microsoft.Crm.Sdk.Messages;
 	using Microsoft.Xrm.Client;
@@ -52,7 +52,7 @@ namespace Adxstudio.Xrm.Services
 		/// <param name="cacheEntryChangeMonitorPrefix">The cache entry change monitor prefix.</param>
 		public CacheDependencyCalculator(string cacheEntryChangeMonitorPrefix)
 		{
-			this.CacheEntryChangeMonitorPrefix = cacheEntryChangeMonitorPrefix;
+			CacheEntryChangeMonitorPrefix = cacheEntryChangeMonitorPrefix;
 		}
 
 		/// <summary>The is cached request.</summary>
@@ -86,28 +86,28 @@ namespace Adxstudio.Xrm.Services
 		public IEnumerable<string> GetDependenciesForObject(object query, bool isSingle = false, IEnumerable<object> path = null)
 		{
 			// Below block is for empty dependencies.
-			if (query is IncrementKnowledgeArticleViewCountRequest) return this.GetDependenciesEmpty(); // Requests of type 'IncrementKnowledgeArticleViewCountRequest' have no dependencies to invalidate.
+			if (query is IncrementKnowledgeArticleViewCountRequest) return GetDependenciesEmpty(); // Requests of type 'IncrementKnowledgeArticleViewCountRequest' have no dependencies to invalidate.
 
 			// The below block performs an un-wrapping of the queries with any inner requests.
-			if (query is CachedOrganizationRequest) return this.GetDependencies(query as CachedOrganizationRequest, isSingle, path ?? new List<object> { query });
-			if (query is KeyedRequest) return this.GetDependencies(query as KeyedRequest, isSingle, path ?? new List<object> { query });
-			if (query is RetrieveSingleRequest) return this.GetDependencies(query as RetrieveSingleRequest, true, path ?? new List<object> { query });
-			if (query is RetrieveSingleResponse) return this.GetDependencies(query as RetrieveSingleResponse, path ?? new List<object> { query });
-			if (query is RetrieveRequest) return this.GetDependencies(query as RetrieveRequest, path ?? new List<object> { query });
-			if (query is RetrieveResponse) return this.GetDependencies(query as RetrieveResponse, path ?? new List<object> { query });
-			if (query is OrganizationRequest) return this.GetDependencies(query as OrganizationRequest, isSingle, path ?? new List<object> { query });
-			if (query is OrganizationResponse) return this.GetDependencies(query as OrganizationResponse, isSingle, path ?? new List<object> { query });
+			if (query is CachedOrganizationRequest) return GetDependencies(query as CachedOrganizationRequest, isSingle, path ?? new List<object> { query });
+			if (query is KeyedRequest) return GetDependencies(query as KeyedRequest, isSingle, path ?? new List<object> { query });
+			if (query is RetrieveSingleRequest) return GetDependencies(query as RetrieveSingleRequest, true, path ?? new List<object> { query });
+			if (query is RetrieveSingleResponse) return GetDependencies(query as RetrieveSingleResponse, path ?? new List<object> { query });
+			if (query is RetrieveRequest) return GetDependencies(query as RetrieveRequest, path ?? new List<object> { query });
+			if (query is RetrieveResponse) return GetDependencies(query as RetrieveResponse, path ?? new List<object> { query });
+			if (query is OrganizationRequest) return GetDependencies(query as OrganizationRequest, isSingle, path ?? new List<object> { query });
+			if (query is OrganizationResponse) return GetDependencies(query as OrganizationResponse, isSingle, path ?? new List<object> { query });
 
-			if (query is Fetch) return this.GetDependencies(query as Fetch, isSingle);
-			if (query is QueryBase) return this.GetDependencies(query as QueryBase, isSingle);
-			if (query is IEnumerable<Entity>) return this.GetDependencies(query as IEnumerable<Entity>, isSingle);
-			if (query is IEnumerable<EntityReference>) return this.GetDependencies(query as IEnumerable<EntityReference>, isSingle);
-			if (query is EntityCollection) return this.GetDependencies(query as EntityCollection, isSingle);
-			if (query is Entity) return this.GetDependencies(query as Entity, isSingle);
-			if (query is EntityReference) return this.GetDependencies(query as EntityReference, isSingle);
-			if (query is RelationshipQueryCollection) return this.GetDependencies(query as RelationshipQueryCollection, isSingle);
+			if (query is Fetch) return GetDependencies(query as Fetch, isSingle);
+			if (query is QueryBase) return GetDependencies(query as QueryBase, isSingle);
+			if (query is IEnumerable<Entity>) return GetDependencies(query as IEnumerable<Entity>, isSingle);
+			if (query is IEnumerable<EntityReference>) return GetDependencies(query as IEnumerable<EntityReference>, isSingle);
+			if (query is EntityCollection) return GetDependencies(query as EntityCollection, isSingle);
+			if (query is Entity) return GetDependencies(query as Entity, isSingle);
+			if (query is EntityReference) return GetDependencies(query as EntityReference, isSingle);
+			if (query is RelationshipQueryCollection) return GetDependencies(query as RelationshipQueryCollection, isSingle);
 
-			return this.GetDependenciesEmpty();
+			return GetDependenciesEmpty();
 		}
 
 		/// <summary>The get dependencies empty.</summary>
@@ -123,7 +123,7 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>The dependencies.</returns>
 		internal IEnumerable<string> GetDependencies(Entity entity, bool isSingle)
 		{
-			foreach (var dependency in this.GetDependencies(entity.ToEntityReference(), isSingle))
+			foreach (var dependency in GetDependencies(entity.ToEntityReference(), isSingle))
 			{
 				yield return dependency;
 			}
@@ -133,23 +133,23 @@ namespace Adxstudio.Xrm.Services
 			var attributesLookups = entity.Attributes.Values.OfType<EntityReference>();
 			foreach (var lookup in attributesLookups)
 			{
-				foreach (var related in this.GetDependencies(lookup, true))
+				foreach (var related in GetDependencies(lookup, true))
 				{
 					yield return related;
 				}
 			}
 
 			// walk the related entities
-			foreach (var related in this.GetDependencies(entity.RelatedEntities, isSingle))
+			foreach (var related in GetDependencies(entity.RelatedEntities, isSingle))
 			{
 				yield return related;
 			}
 
 			// If the entity is also an Activity, then add dependency to activitypointer.
 			EntityReference activityDependency;
-			if (this.IsActivityEntity(entity, out activityDependency))
+			if (IsActivityEntity(entity, out activityDependency))
 			{
-				foreach (var dependency in this.GetDependencies(activityDependency, isSingle))
+				foreach (var dependency in GetDependencies(activityDependency, isSingle))
 				{
 					yield return dependency;
 				}
@@ -164,10 +164,10 @@ namespace Adxstudio.Xrm.Services
 		{
 			if (!isSingle)
 			{
-				yield return this.GetDependency(entity.LogicalName);
+				yield return GetDependency(entity.LogicalName);
 			}
 
-			yield return this.GetDependency(entity.LogicalName, entity.Id);
+			yield return GetDependency(entity.LogicalName, entity.Id);
 		}
 
 		/// <summary>The get dependency.</summary>
@@ -181,7 +181,7 @@ namespace Adxstudio.Xrm.Services
 				WebAppConfigurationProvider.PortalUsedEntities.TryAdd(entityName, true);
 			}
 
-			return DependencyEntityClassFormat.FormatWith(this.CacheEntryChangeMonitorPrefix, entityName);
+			return DependencyEntityClassFormat.FormatWith(CacheEntryChangeMonitorPrefix, entityName);
 		}
 
 		/// <summary>The get dependency.</summary>
@@ -196,7 +196,7 @@ namespace Adxstudio.Xrm.Services
 				WebAppConfigurationProvider.PortalUsedEntities.TryAdd(entityName, true);
 			}
 
-			return DependencyEntityObjectFormat.FormatWith(this.CacheEntryChangeMonitorPrefix, entityName, id);
+			return DependencyEntityObjectFormat.FormatWith(CacheEntryChangeMonitorPrefix, entityName, id);
 		}
 
 		/// <summary>The cached requests content.</summary>
@@ -252,7 +252,7 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>The dependencies.</returns>
 		private IEnumerable<string> GetDependencies(CachedOrganizationRequest request, bool isSingle, IEnumerable<object> path)
 		{
-			return this.GetDependenciesForObject(request.Request, isSingle, path);
+			return GetDependenciesForObject(request.Request, isSingle, path);
 		}
 
 		/// <summary>The get dependencies.</summary>
@@ -262,7 +262,7 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>The dependencies.</returns>
 		private IEnumerable<string> GetDependencies(KeyedRequest request, bool isSingle, IEnumerable<object> path)
 		{
-			return this.GetDependenciesForObject(request.Request, isSingle, path);
+			return GetDependenciesForObject(request.Request, isSingle, path);
 		}
 
 		/// <summary>The get dependencies.</summary>
@@ -272,19 +272,19 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>The dependencies.</returns>
 		private IEnumerable<string> GetDependencies(RetrieveSingleRequest request, bool isSingle, IEnumerable<object> path)
 		{
-			yield return this.GetTag(TagSingle);
+			yield return GetTag(TagSingle);
 
 			if (request.Fetch != null)
 			{
-				yield return this.GetTag("fetch");
+				yield return GetTag("fetch");
 
-				foreach (var dependency in this.GetDependencies(request.Fetch, isSingle))
+				foreach (var dependency in GetDependencies(request.Fetch, isSingle))
 				{
 					yield return dependency;
 				}
 			}
 
-			foreach (var dependency in this.GetDependenciesForObject(request.Request, isSingle, path))
+			foreach (var dependency in GetDependenciesForObject(request.Request, isSingle, path))
 			{
 				yield return dependency;
 			}
@@ -296,23 +296,23 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>The dependencies.</returns>
 		private IEnumerable<string> GetDependencies(RetrieveSingleResponse response, IEnumerable<object> path)
 		{
-			yield return this.GetTag(TagSingle);
+			yield return GetTag(TagSingle);
 
 			var empty = response.Entity == null;
 
 			if (empty)
 			{
-				yield return this.GetTag("empty");
+				yield return GetTag("empty");
 
 				// recalculate the dependencies for an empty result
 
-				foreach (var dependency in this.GetDependencies(response.Request, false, path))
+				foreach (var dependency in GetDependencies(response.Request, false, path))
 				{
 					yield return dependency;
 				}
 			}
 
-			foreach (var dependency in this.GetDependenciesForObject(response.Entity, true, path))
+			foreach (var dependency in GetDependenciesForObject(response.Entity, true, path))
 			{
 				yield return dependency;
 			}
@@ -324,18 +324,18 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>The dependencies.</returns>
 		private IEnumerable<string> GetDependencies(RetrieveRequest request, IEnumerable<object> path)
 		{
-			yield return this.GetTag(TagSingle);
+			yield return GetTag(TagSingle);
 
 			// retrieve is guaranteed to have an entity result
 
-			foreach (var dependency in this.GetDependenciesForObject(request.Target, true, path))
+			foreach (var dependency in GetDependenciesForObject(request.Target, true, path))
 			{
 				yield return dependency;
 			}
 
 			// disable single dependency mode for related entities
 
-			foreach (var dependency in this.GetDependenciesForObject(request.RelatedEntitiesQuery, false, path))
+			foreach (var dependency in GetDependenciesForObject(request.RelatedEntitiesQuery, false, path))
 			{
 				yield return dependency;
 			}
@@ -347,9 +347,9 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>The dependencies.</returns>
 		private IEnumerable<string> GetDependencies(RetrieveResponse response, IEnumerable<object> path)
 		{
-			yield return this.GetTag(TagSingle);
+			yield return GetTag(TagSingle);
 
-			foreach (var dependency in this.GetDependenciesForObject(response.Entity, true, path))
+			foreach (var dependency in GetDependenciesForObject(response.Entity, true, path))
 			{
 				yield return dependency;
 			}
@@ -364,20 +364,20 @@ namespace Adxstudio.Xrm.Services
 		{
 			if (IsContentRequest(request))
 			{
-				yield return DependencyContentFormat.FormatWith(this.CacheEntryChangeMonitorPrefix);
+				yield return DependencyContentFormat.FormatWith(CacheEntryChangeMonitorPrefix);
 			}
 			else if (IsMetadataRequest(request))
 			{
-				yield return DependencyMetadataFormat.FormatWith(this.CacheEntryChangeMonitorPrefix);
+				yield return DependencyMetadataFormat.FormatWith(CacheEntryChangeMonitorPrefix);
 			}
 
 			if (request is FetchMultipleRequest)
 			{
-				yield return this.GetTag("fetch");
+				yield return GetTag("fetch");
 
 				var fetch = ((FetchMultipleRequest)request).Fetch;
 
-				foreach (var dependency in this.GetDependencies(fetch, isSingle))
+				foreach (var dependency in GetDependencies(fetch, isSingle))
 				{
 					yield return dependency;
 				}
@@ -390,7 +390,7 @@ namespace Adxstudio.Xrm.Services
 
 					if (value != null && !path.Contains(value))
 					{
-						foreach (var child in this.GetDependenciesForObject(value, isSingle, path.Concat(new[] { value })))
+						foreach (var child in GetDependenciesForObject(value, isSingle, path.Concat(new[] { value })))
 						{
 							yield return child;
 						}
@@ -412,7 +412,7 @@ namespace Adxstudio.Xrm.Services
 
 				if (value != null && !path.Contains(value))
 				{
-					foreach (var child in this.GetDependenciesForObject(value, isSingle, path.Concat(new[] { value })))
+					foreach (var child in GetDependenciesForObject(value, isSingle, path.Concat(new[] { value })))
 					{
 						yield return child;
 					}
@@ -430,23 +430,23 @@ namespace Adxstudio.Xrm.Services
 			{
 				if (query is QueryExpression)
 				{
-					yield return this.GetDependency((query as QueryExpression).EntityName);
+					yield return GetDependency((query as QueryExpression).EntityName);
 
-					foreach (var linkEntity in this.GetLinkEntities(query as QueryExpression))
+					foreach (var linkEntity in GetLinkEntities(query as QueryExpression))
 					{
-						yield return this.GetDependency(linkEntity.LinkToEntityName);
-						yield return this.GetDependency(linkEntity.LinkFromEntityName);
+						yield return GetDependency(linkEntity.LinkToEntityName);
+						yield return GetDependency(linkEntity.LinkFromEntityName);
 					}
 				}
 				else if (query is QueryByAttribute)
 				{
-					yield return this.GetDependency((query as QueryByAttribute).EntityName);
+					yield return GetDependency((query as QueryByAttribute).EntityName);
 				}
 				else if (query is FetchExpression)
 				{
 					var fetch = Fetch.Parse((query as FetchExpression).Query);
 
-					foreach (var dependency in this.GetDependencies(fetch, isSingle))
+					foreach (var dependency in GetDependencies(fetch, isSingle))
 					{
 						yield return dependency;
 					}
@@ -469,23 +469,23 @@ namespace Adxstudio.Xrm.Services
 					yield break;
 				}
 
-				yield return this.GetDependency(fetch.Entity.Name);
+				yield return GetDependency(fetch.Entity.Name);
 
 				if (fetch.Entity.Links == null)
 				{
 					yield break;
 				}
 
-				foreach (var linkEntity in this.GetLinkEntities(fetch.Entity.Links))
+				foreach (var linkEntity in GetLinkEntities(fetch.Entity.Links))
 				{
 					if (linkEntity.IsUnique == true)
 					{
-						yield return this.GetTag(TagSingle);
-						yield return this.GetSingleEntityTag(linkEntity.Name);
+						yield return GetTag(TagSingle);
+						yield return GetSingleEntityTag(linkEntity.Name);
 					}
 					else
 					{
-						yield return this.GetDependency(linkEntity.Name);
+						yield return GetDependency(linkEntity.Name);
 					}
 				}
 			}
@@ -499,7 +499,7 @@ namespace Adxstudio.Xrm.Services
 		{
 			foreach (var relatedEntitiesQuery in collection)
 			{
-				foreach (var dependency in this.GetDependencies(relatedEntitiesQuery.Value, isSingle))
+				foreach (var dependency in GetDependencies(relatedEntitiesQuery.Value, isSingle))
 				{
 					yield return dependency;
 				}
@@ -514,37 +514,37 @@ namespace Adxstudio.Xrm.Services
 		{
 			if (!isSingle)
 			{
-				yield return this.GetDependency(entities.EntityName);
+				yield return GetDependency(entities.EntityName);
 			}
 
 			// try to get any aliased dependencies
 			Dictionary<string, Guid> related;
-			if (this.TryGetAliasedGuids(entities, out related))
+			if (TryGetAliasedGuids(entities, out related))
 			{
 				foreach (var value in related)
 				{
-					yield return this.GetSingleEntityTag(value.Key);
-					yield return this.GetDependency(value.Key, value.Value);
+					yield return GetSingleEntityTag(value.Key);
+					yield return GetDependency(value.Key, value.Value);
 				}
 			}
 
 			// Try to see if these entities are custom Activity entities, and if so generate additional dependencies on activitypointer.
 			IEnumerable<EntityReference> activityDependencies;
-			if (this.TryGetActivityDependencies(entities, out activityDependencies))
+			if (TryGetActivityDependencies(entities, out activityDependencies))
 			{
 				foreach (var value in activityDependencies)
 				{
-					yield return this.GetDependency(value.LogicalName, value.Id);
+					yield return GetDependency(value.LogicalName, value.Id);
 				}
 
 				// Also add dependency on the entity logical name
 				foreach (var value in activityDependencies.Select(a => a.LogicalName).Distinct())
 				{
-					yield return this.GetDependency(value);
+					yield return GetDependency(value);
 				}
 			}
 
-			foreach (var dependency in this.GetDependencies(entities.Entities, isSingle))
+			foreach (var dependency in GetDependencies(entities.Entities, isSingle))
 			{
 				yield return dependency;
 			}
@@ -556,7 +556,7 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>The dependencies.</returns>
 		private IEnumerable<string> GetDependencies(IEnumerable<Entity> entities, bool isSingle)
 		{
-			return entities.SelectMany(e => this.GetDependencies(e, isSingle));
+			return entities.SelectMany(e => GetDependencies(e, isSingle));
 		}
 
 		/// <summary>The get dependencies.</summary>
@@ -565,7 +565,7 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>The dependencies.</returns>
 		private IEnumerable<string> GetDependencies(IEnumerable<EntityReference> entities, bool isSingle)
 		{
-			return entities.SelectMany(e => this.GetDependencies(e, isSingle));
+			return entities.SelectMany(e => GetDependencies(e, isSingle));
 		}
 
 		/// <summary>The get dependencies.</summary>
@@ -574,7 +574,7 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>The dependencies.</returns>
 		private IEnumerable<string> GetDependencies(RelatedEntityCollection relationships, bool isSingle)
 		{
-			return relationships.SelectMany(e => this.GetDependencies(e, isSingle));
+			return relationships.SelectMany(e => GetDependencies(e, isSingle));
 		}
 
 		/// <summary>The get dependencies.</summary>
@@ -585,10 +585,10 @@ namespace Adxstudio.Xrm.Services
 		{
 			if (!isSingle)
 			{
-				yield return this.GetDependency(pair.Key.SchemaName);
+				yield return GetDependency(pair.Key.SchemaName);
 			}
 
-			foreach (var entity in this.GetDependencies(pair.Value, isSingle))
+			foreach (var entity in GetDependencies(pair.Value, isSingle))
 			{
 				yield return entity;
 			}
@@ -599,7 +599,7 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>The <see cref="string"/>.</returns>
 		private string GetSingleEntityTag(string name)
 		{
-			return TagSingleEntityFormat.FormatWith(this.CacheEntryChangeMonitorPrefix, name);
+			return TagSingleEntityFormat.FormatWith(CacheEntryChangeMonitorPrefix, name);
 		}
 
 		/// <summary>The get tag.</summary>
@@ -607,7 +607,7 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>The <see cref="string"/>.</returns>
 		private string GetTag(string tag)
 		{
-			return DependencyTagFormat.FormatWith(this.CacheEntryChangeMonitorPrefix, tag);
+			return DependencyTagFormat.FormatWith(CacheEntryChangeMonitorPrefix, tag);
 		}
 
 		/// <summary>The get link entities.</summary>
@@ -615,7 +615,7 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>The dependencies.</returns>
 		private IEnumerable<LinkEntity> GetLinkEntities(QueryExpression query)
 		{
-			return this.GetLinkEntities(query.LinkEntities);
+			return GetLinkEntities(query.LinkEntities);
 		}
 
 		/// <summary>The get link entities.</summary>
@@ -629,7 +629,7 @@ namespace Adxstudio.Xrm.Services
 				{
 					yield return linkEntity;
 
-					foreach (var child in this.GetLinkEntities(linkEntity.LinkEntities))
+					foreach (var child in GetLinkEntities(linkEntity.LinkEntities))
 					{
 						yield return child;
 					}
@@ -653,7 +653,7 @@ namespace Adxstudio.Xrm.Services
 				{
 					yield return linkEntity;
 
-					foreach (var child in this.GetLinkEntities(linkEntity.Links))
+					foreach (var child in GetLinkEntities(linkEntity.Links))
 					{
 						yield return child;
 					}
@@ -696,7 +696,7 @@ namespace Adxstudio.Xrm.Services
 			foreach (var entity in entities.Entities)
 			{
 				EntityReference activityEntity;
-				if (this.IsActivityEntity(entity, out activityEntity))
+				if (IsActivityEntity(entity, out activityEntity))
 				{
 					activityDependenciesList.Add(activityEntity);
 				}

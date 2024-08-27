@@ -10,10 +10,10 @@ namespace Adxstudio.Xrm.Services.Cache
 	using System.Linq;
 	using System.Runtime.Caching;
 	using System.Threading;
-	using Adxstudio.Xrm.AspNet;
-	using Adxstudio.Xrm.EventHubBasedInvalidation;
-	using Adxstudio.Xrm.Json;
-	using Adxstudio.Xrm.Web;
+	using AspNet;
+	using EventHubBasedInvalidation;
+	using Json;
+	using Web;
 	using FluentScheduler;
 	using global::Owin;
 	using Microsoft.Owin.BuilderProperties;

@@ -30,7 +30,7 @@ namespace Adxstudio.Xrm.Blogs
 
 		public TagWebsiteBlogAggregationDataAdapter(string tag, string portalName = null) : this(tag, new PortalConfigurationDataAdapterDependencies(portalName)) { }
 
-		protected string Tag { get; private set; }
+		protected string Tag { get; }
 
 		public override IEnumerable<IBlogPost> SelectPosts(int startRowIndex, int maximumRows = -1)
 		{

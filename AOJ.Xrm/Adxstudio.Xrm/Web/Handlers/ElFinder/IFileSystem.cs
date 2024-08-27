@@ -49,15 +49,15 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 
 		public abstract IDictionary<string, DirectoryType> EntityDirectoryTypes { get; }
 
-		public ICrmEntitySecurityProvider SecurityProvider { get; private set; }
+		public ICrmEntitySecurityProvider SecurityProvider { get; }
 
-		public OrganizationServiceContext ServiceContext { get; private set; }
+		public OrganizationServiceContext ServiceContext { get; }
 
-		public IEntityUrlProvider UrlProvider { get; private set; }
+		public IEntityUrlProvider UrlProvider { get; }
 
-		public EntityReference Website { get; private set; }
+		public EntityReference Website { get; }
 		
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
 		public abstract T Using<T>(Func<IFileSystemContext, T> action);
 

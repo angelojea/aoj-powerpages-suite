@@ -36,16 +36,16 @@ namespace Adxstudio.Xrm
 		/// <summary>
 		/// Divides <paramref name="source"/> into partitions of a given <paramref name="size"/>, and applies a projection to each partition.
 		/// </summary>
-		public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size, Func<IEnumerable<TSource>, TResult> @select)
+		public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size, Func<IEnumerable<TSource>, TResult> select)
 		{
 			if (source == null) throw new ArgumentNullException("source");
 			if (size <= 0) throw new ArgumentException("Value must be positive and non-zero.", "size");
-			if (@select == null) throw new ArgumentNullException("select");
+			if (select == null) throw new ArgumentNullException("select");
 
-			return BatchIterator(source, size, @select);
+			return BatchIterator(source, size, select);
 		}
 
-		private static IEnumerable<TResult> BatchIterator<TSource, TResult>(this IEnumerable<TSource> source, int size, Func<IEnumerable<TSource>, TResult> @select)
+		private static IEnumerable<TResult> BatchIterator<TSource, TResult>(this IEnumerable<TSource> source, int size, Func<IEnumerable<TSource>, TResult> select)
 		{
 			TSource[] partition = null;
 			var count = 0;
@@ -64,7 +64,7 @@ namespace Adxstudio.Xrm
 					continue;
 				}
 
-				yield return @select(partition.Select(x => x));
+				yield return select(partition.Select(x => x));
 			   
 				partition = null;
 				count = 0;
@@ -73,7 +73,7 @@ namespace Adxstudio.Xrm
 			// Return the last bucket with whatever elements are left.
 			if (partition != null && count > 0)
 			{
-				yield return @select(partition.Take(count));
+				yield return select(partition.Take(count));
 			}
 		}
 	}

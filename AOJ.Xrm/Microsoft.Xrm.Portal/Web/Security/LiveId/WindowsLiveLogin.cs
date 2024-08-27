@@ -367,7 +367,7 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 
 				try
 				{
-					timestampInt = System.Convert.ToInt32(value);
+					timestampInt = Convert.ToInt32(value);
 				}
 				catch (Exception)
 				{
@@ -402,19 +402,12 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 			}
 		}
 
-		bool forceDelAuthNonProvisioned = false;
-
 		/// <summary>
 		/// Sets or gets a flag that indicates whether Delegated Authentication
 		/// is non-provisioned (i.e. does not use an application ID or secret
 		/// key).
 		/// </summary>
-		public bool ForceDelAuthNonProvisioned
-		{
-			set { forceDelAuthNonProvisioned = value; }
-
-			get { return forceDelAuthNonProvisioned; }
-		}
+		public bool ForceDelAuthNonProvisioned { set; get; }
 
 		string policyUrl;
 
@@ -668,12 +661,10 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 				setToken(token);
 			}
 
-			DateTime timestamp;
-
 			/// <summary>
 			///  Returns the timestamp as obtained from the SSO token.
 			/// </summary>
-			public DateTime Timestamp { get { return timestamp; } }
+			public DateTime Timestamp { get; private set; }
 
 			/// <summary>
 			/// Sets the Unix timestamp.
@@ -690,7 +681,7 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 
 				try
 				{
-					timestampInt = System.Convert.ToInt32(timestamp);
+					timestampInt = Convert.ToInt32(timestamp);
 				}
 				catch (Exception)
 				{
@@ -699,15 +690,13 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 				}
 
 				DateTime refTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-				this.timestamp = refTime.AddSeconds(timestampInt);
+				Timestamp = refTime.AddSeconds(timestampInt);
 			}
-
-			string id;
 
 			/// <summary>
 			/// Returns the pairwise unique ID for the user.
 			/// </summary>
-			public string Id { get { return id; } }
+			public string Id { get; private set; }
 
 			/// <summary>
 			/// Sets the pairwise unique ID for the user.
@@ -726,17 +715,15 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 					throw new ArgumentException("Error: User: Invalid id: " + id);
 				}
 
-				this.id = id;
+				Id = id;
 			}
-
-			bool usePersistentCookie;
 
 			/// <summary>
 			/// Indicates whether the application
 			/// is expected to store the user token in a session or
 			/// persistent cookie.
 			/// </summary>
-			public bool UsePersistentCookie { get { return usePersistentCookie; } }
+			public bool UsePersistentCookie { get; private set; }
 
 			/// <summary>
 			/// Sets the usePersistentCookie flag for the user.
@@ -744,14 +731,14 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 			/// <param name="flags"></param>
 			private void setFlags(string flags)
 			{
-				this.usePersistentCookie = false;
+				UsePersistentCookie = false;
 
 				if (!string.IsNullOrEmpty(flags))
 				{
 					try
 					{
-						int flagsInt = System.Convert.ToInt32(flags);
-						this.usePersistentCookie = ((flagsInt % 2) == 1);
+						int flagsInt = Convert.ToInt32(flags);
+						UsePersistentCookie = ((flagsInt % 2) == 1);
 					}
 					catch (Exception)
 					{
@@ -761,13 +748,11 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 				}
 			}
 
-			LiveIdLoginContext _context;
-
 			/// <summary>
 			/// Returns the application context that was originally passed
 			/// to the sign-in request, if any.
 			/// </summary>
-			public LiveIdLoginContext Context { get { return _context; } }
+			public LiveIdLoginContext Context { get; private set; }
 
 			/// <summary>
 			/// Sets the the Application context.
@@ -775,7 +760,7 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 			/// <param name="context"></param>
 			private void setContext(string context)
 			{
-				_context = new LiveIdLoginContext(context);
+				Context = new LiveIdLoginContext(context);
 			}
 
 			public class LiveIdLoginContext
@@ -803,14 +788,12 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 				public string RegistrationDestinationPath { get; set; }
 			}
 
-			string token;
-
 			/// <summary>
 			/// Returns the encrypted Web Authentication token containing 
 			/// the UID. This can be cached in a cookie and the UID can be
 			/// retrieved by calling the ProcessToken method.
 			/// </summary>
-			public string Token { get { return token; } }
+			public string Token { get; private set; }
 
 			/// <summary>
 			/// Sets the the User token.
@@ -818,7 +801,7 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 			/// <param name="token"></param>
 			private void setToken(string token)
 			{
-				this.token = token;
+				Token = token;
 			}
 		}
 
@@ -945,7 +928,7 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 			const string gif =
 				"R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7";
 			type = "image/gif";
-			content = System.Convert.FromBase64String(gif);
+			content = Convert.FromBase64String(gif);
 		}
 
 		/* Methods for Delegated Authentication support. */
@@ -1130,7 +1113,7 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 		/// </summary>
 		public class ConsentToken
 		{
-			WindowsLiveLogin wll;
+			readonly WindowsLiveLogin wll;
 
 			/// <summary>
 			/// Initialize the ConsentToken.
@@ -1159,12 +1142,10 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 				setToken(token);
 			}
 
-			string delegationToken;
-
 			/// <summary>
 			/// Gets the Delegation token.
 			/// </summary>
-			public string DelegationToken { get { return delegationToken; } }
+			public string DelegationToken { get; private set; }
 
 			/// <summary>
 			/// Sets the Delegation token.
@@ -1177,15 +1158,13 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 					throw new ArgumentException("Error: ConsentToken: Null delegation token.");
 				}
 
-				this.delegationToken = delegationToken;
+				DelegationToken = delegationToken;
 			}
-
-			string refreshToken;
 
 			/// <summary>
 			/// Gets the refresh token.
 			/// </summary>
-			public string RefreshToken { get { return refreshToken; } }
+			public string RefreshToken { get; private set; }
 
 			/// <summary>
 			/// Sets the refresh token.
@@ -1193,15 +1172,13 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 			/// <param name="refreshToken">Refresh token</param>
 			private void setRefreshToken(string refreshToken)
 			{
-				this.refreshToken = refreshToken;
+				RefreshToken = refreshToken;
 			}
-
-			byte[] sessionKey;
 
 			/// <summary>
 			/// Gets the session key.
 			/// </summary>
-			public byte[] SessionKey { get { return sessionKey; } }
+			public byte[] SessionKey { get; private set; }
 
 			/// <summary>
 			/// Sets the session key.
@@ -1214,15 +1191,13 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 					throw new ArgumentException("Error: ConsentToken: Null session key.");
 				}
 
-				this.sessionKey = WindowsLiveLogin.u64(sessionKey);
+				SessionKey = u64(sessionKey);
 			}
-
-			DateTime expiry;
 
 			/// <summary>
 			/// Gets the expiry time of delegation token.
 			/// </summary>
-			public DateTime Expiry { get { return expiry; } }
+			public DateTime Expiry { get; private set; }
 
 			/// <summary>
 			/// Sets the expiry time of delegation token.
@@ -1239,7 +1214,7 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 
 				try
 				{
-					expiryInt = System.Convert.ToInt32(expiry);
+					expiryInt = Convert.ToInt32(expiry);
 				}
 				catch (Exception)
 				{
@@ -1248,23 +1223,19 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 				}
 
 				DateTime refTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-				this.expiry = refTime.AddSeconds(expiryInt);
+				Expiry = refTime.AddSeconds(expiryInt);
 			}
-
-			IList offers;
 
 			/// <summary>
 			/// Gets the list of offers/actions for which the user granted consent.
 			/// </summary>
-			public IList Offers { get { return offers; } }
-
-			string offersString;
+			public IList Offers { get; private set; }
 
 			/// <summary>
 			/// Gets the string representation of all the offers/actions for which 
 			/// the user granted consent.
 			/// </summary>
-			public string OffersString { get { return offersString; } }
+			public string OffersString { get; private set; }
 
 			/// <summary>
 			/// Sets the offers/actions for which user granted consent.
@@ -1279,40 +1250,38 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 
 				offers = HttpUtility.UrlDecode(offers);
 
-				this.offersString = string.Empty;
-				this.offers = new ArrayList();
+				OffersString = string.Empty;
+				Offers = new ArrayList();
 
-				string[] offersList = offers.Split(new char[] { ';' });
+				string[] offersList = offers.Split(';');
 
 				foreach (string offer in offersList)
 				{
-					if (!(this.offersString == string.Empty))
+					if (!(OffersString == string.Empty))
 					{
-						this.offersString += ",";
+						OffersString += ",";
 					}
 
 					int separator = offer.IndexOf(':');
 					if (separator == -1)
 					{
 						debug("Warning: ConsentToken: offer may be invalid: " + offer);
-						this.offers.Add(offer);
-						this.offersString += offer;
+						Offers.Add(offer);
+						OffersString += offer;
 					}
 					else
 					{
 						string o = offer.Substring(0, separator);
-						this.offers.Add(o);
-						this.offersString += o;
+						Offers.Add(o);
+						OffersString += o;
 					}
 				}
 			}
 
-			string locationID;
-
 			/// <summary>
 			/// Gets the location ID.
 			/// </summary>
-			public string LocationID { get { return locationID; } }
+			public string LocationID { get; private set; }
 
 			/// <summary>
 			/// Sets the location ID.
@@ -1320,16 +1289,14 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 			/// <param name="locationID">Location ID</param>
 			private void setLocationID(string locationID)
 			{
-				this.locationID = locationID;
+				LocationID = locationID;
 			}
-
-			string context;
 
 			/// <summary>
 			/// Returns the application context that was originally passed 
 			/// to the consent request, if any.
 			/// </summary>
-			public string Context { get { return context; } }
+			public string Context { get; private set; }
 
 			/// <summary>
 			/// Sets the application context.
@@ -1337,15 +1304,13 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 			/// <param name="context">Application context</param>
 			private void setContext(string context)
 			{
-				this.context = context;
+				Context = context;
 			}
-
-			string decodedToken;
 
 			/// <summary>
 			/// Gets the decoded token.
 			/// </summary>
-			public string DecodedToken { get { return decodedToken; } }
+			public string DecodedToken { get; private set; }
 
 			/// <summary>
 			/// Sets the decoded token.
@@ -1353,15 +1318,13 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 			/// <param name="decodedToken">Decoded token</param>
 			private void setDecodedToken(string decodedToken)
 			{
-				this.decodedToken = decodedToken;
+				DecodedToken = decodedToken;
 			}
-
-			string token;
 
 			/// <summary>
 			/// Gets the raw token.
 			/// </summary>
-			public string Token { get { return token; } }
+			public string Token { get; private set; }
 
 			/// <summary>
 			/// Sets the raw token.
@@ -1369,7 +1332,7 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 			/// <param name="token">Raw token</param>
 			private void setToken(string token)
 			{
-				this.token = token;
+				Token = token;
 			}
 
 			/// <summary>
@@ -1416,15 +1379,15 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 			/// <param name="consentToken"></param>
 			void copy(ConsentToken consentToken)
 			{
-				this.delegationToken = consentToken.delegationToken;
-				this.refreshToken = consentToken.refreshToken;
-				this.sessionKey = consentToken.sessionKey;
-				this.expiry = consentToken.expiry;
-				this.offers = consentToken.offers;
-				this.locationID = consentToken.locationID;
-				this.offersString = consentToken.offersString;
-				this.decodedToken = consentToken.decodedToken;
-				this.token = consentToken.token;
+				DelegationToken = consentToken.DelegationToken;
+				RefreshToken = consentToken.RefreshToken;
+				SessionKey = consentToken.SessionKey;
+				Expiry = consentToken.Expiry;
+				Offers = consentToken.Offers;
+				LocationID = consentToken.LocationID;
+				OffersString = consentToken.OffersString;
+				DecodedToken = consentToken.DecodedToken;
+				Token = consentToken.Token;
 			}
 		}
 
@@ -2247,7 +2210,7 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 
 			NameValueCollection pairs = new NameValueCollection();
 
-			string[] kvs = input.Split(new char[] { '&' });
+			string[] kvs = input.Split('&');
 			foreach (string kv in kvs)
 			{
 				int separator = kv.IndexOf('=');
@@ -2285,7 +2248,7 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 
 			try
 			{
-				s = System.Convert.ToBase64String(b);
+				s = Convert.ToBase64String(b);
 				s = Microsoft.Security.Application.Encoder.UrlEncode(s);
 			}
 			catch (Exception e)
@@ -2307,7 +2270,7 @@ namespace Microsoft.Xrm.Portal.Web.Security.LiveId
 
 			try
 			{
-				b = System.Convert.FromBase64String(s);
+				b = Convert.FromBase64String(s);
 			}
 			catch (Exception e)
 			{

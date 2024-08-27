@@ -56,11 +56,11 @@ namespace Adxstudio.Xrm.Products
 			get { return Entity.GetAttributeValue<string>("adx_createdbyusername"); }
 		}
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public EntityReference EntityReference { get; private set; }
+		public EntityReference EntityReference { get; }
 
-		public EntityReference Product { get; private set; }
+		public EntityReference Product { get; }
 
 		public bool PublishToWeb
 		{
@@ -87,7 +87,7 @@ namespace Adxstudio.Xrm.Products
 			get { return Entity.GetAttributeValue<bool?>("adx_recommend").GetValueOrDefault(false); }
 		}
 
-		public EntityReference ReviewerContact { get; private set; }
+		public EntityReference ReviewerContact { get; }
 
 		public string ReviewerEmail
 		{

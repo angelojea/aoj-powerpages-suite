@@ -37,7 +37,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// Form field.
 		/// </summary>
-		public new CrmEntityFormViewField Field { get; private set; }
+		public new CrmEntityFormViewField Field { get; }
 
 		protected override void InstantiateControlIn(Control container)
 		{
@@ -46,7 +46,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			textbox.Style.Add("text-decoration", "underline");
 			textbox.Attributes["type"] = "email";
 			textbox.Attributes["ondblclick"] = "launchEmail(this.value);";
-			textbox.Attributes["onchange"] = string.Format("setIsDirty(this.id);");
+			textbox.Attributes["onchange"] = "setIsDirty(this.id);";
 
 			if (Metadata.MaxLength > 0)
 			{

@@ -6,7 +6,7 @@
 namespace Adxstudio.Xrm.ContentAccess
 {
     using System;
-    using Adxstudio.Xrm.Services.Query;
+    using Services.Query;
 
     /// <summary>
     /// Represents configuration details for customizing the link entities used by Content Access Providers
@@ -77,16 +77,16 @@ namespace Adxstudio.Xrm.ContentAccess
         public ContentAccessConfiguration(string siteSettingName, string sourceEntityName, string targetEntityName, string targetFromAttribute, string targetToAttribute, string intersectEntityName, string intersectFromAttribute, string intersectToAttribute)
         {
             var linkEntityAliasGenerator = LinkEntityAliasGenerator.CreateInstance();
-            this.SiteSettingName = siteSettingName;
-            this.SourceEntityName = sourceEntityName;
-            this.TargetEntityName = targetEntityName;
-            this.TargetFromAttribute = targetFromAttribute;
-            this.TargetToAttribute = targetToAttribute;
-            this.TargetAlias = linkEntityAliasGenerator.CreateUniqueAlias(targetEntityName);
-            this.IntersectEntityName = intersectEntityName;
-            this.IntersectFromAttribute = intersectFromAttribute;
-            this.IntersectToAttribute = intersectToAttribute;
-            this.IntersectAlias = linkEntityAliasGenerator.CreateUniqueAlias(intersectEntityName);
+            SiteSettingName = siteSettingName;
+            SourceEntityName = sourceEntityName;
+            TargetEntityName = targetEntityName;
+            TargetFromAttribute = targetFromAttribute;
+            TargetToAttribute = targetToAttribute;
+            TargetAlias = linkEntityAliasGenerator.CreateUniqueAlias(targetEntityName);
+            IntersectEntityName = intersectEntityName;
+            IntersectFromAttribute = intersectFromAttribute;
+            IntersectToAttribute = intersectToAttribute;
+            IntersectAlias = linkEntityAliasGenerator.CreateUniqueAlias(intersectEntityName);
         }
 
         /// <summary>

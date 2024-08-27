@@ -25,7 +25,7 @@ namespace Adxstudio.Xrm.AspNet.Identity
 		/// <summary>
 		/// Collection of error message text.
 		/// </summary>
-		public virtual CrmIdentityErrorDescriber IdentityErrors { get; private set; }
+		public virtual CrmIdentityErrorDescriber IdentityErrors { get; }
 
 		public CrmPasswordValidator(CrmIdentityErrorDescriber identityErrors)
 		{

@@ -63,7 +63,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			}
 		}
 
-		public IDictionary<string, object> Attributes { get; private set; }
+		public IDictionary<string, object> Attributes { get; }
 
 		public string CssClass { get; private set; }
 
@@ -95,7 +95,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 			return bool.TryParse(value.ToString(), out parsed)
 				? parsed
-				: (bool?)null;
+				: null;
 		}
 	}
 }

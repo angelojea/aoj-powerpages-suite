@@ -62,15 +62,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 			
 			var builder = new StringBuilder(0x400);
 
-			builder.Append("<table cellspacing=0 cellpadding=0 border=0 style=\"display:inline-block\">\r\n                <tr>\r\n                    <td nowrap align=center valign=middle style=\"color:{0}; background-color:{1}; \">{2}</td>\r\n                </tr>\r\n                <tr>\r\n                    <td style=\"vertical-align:top;\" {3}='0'>{4}</td>\r\n                </tr>\r\n          </table>".FormatWith(
-				new object[] 
-				{ 
-					ColorTranslator.ToHtml(SystemColors.ControlText), 
-					ColorTranslator.ToHtml(SystemColors.Control), 
-					Microsoft.Security.Application.Encoder.HtmlEncode(_entityRightsView.ID ?? "EntityRightsView"), 
-					Microsoft.Security.Application.Encoder.HtmlAttributeEncode(DesignerRegion.DesignerRegionAttributeName), 
-					string.Empty 
-				}));
+			builder.Append("<table cellspacing=0 cellpadding=0 border=0 style=\"display:inline-block\">\r\n                <tr>\r\n                    <td nowrap align=center valign=middle style=\"color:{0}; background-color:{1}; \">{2}</td>\r\n                </tr>\r\n                <tr>\r\n                    <td style=\"vertical-align:top;\" {3}='0'>{4}</td>\r\n                </tr>\r\n          </table>".FormatWith(ColorTranslator.ToHtml(SystemColors.ControlText), ColorTranslator.ToHtml(SystemColors.Control), Microsoft.Security.Application.Encoder.HtmlEncode(_entityRightsView.ID ?? "EntityRightsView"), Microsoft.Security.Application.Encoder.HtmlAttributeEncode(DesignerRegion.DesignerRegionAttributeName), string.Empty));
 
 			return builder.ToString();
 		}
@@ -334,35 +326,20 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 		private class EntityRightsViewDesignerRegion : TemplatedEditableDesignerRegion
 		{
-			private readonly object _object;
-			private readonly PropertyDescriptor _prop;
-
 			public EntityRightsViewDesignerRegion(object obj, ITemplate template, PropertyDescriptor descriptor, TemplateDefinition definition) : base(definition)
 			{
 				Template = template;
 
-				_object = obj;
+				Object = obj;
 
-				_prop = descriptor;
+				PropertyDescriptor = descriptor;
 
 				EnsureSize = true;
 			}
 
-			public object Object
-			{
-				get
-				{
-					return _object;
-				}
-			}
+			public object Object { get; }
 
-			public PropertyDescriptor PropertyDescriptor
-			{
-				get
-				{
-					return _prop;
-				}
-			}
+			public PropertyDescriptor PropertyDescriptor { get; }
 
 			public ITemplate Template { get; set; }
 		}

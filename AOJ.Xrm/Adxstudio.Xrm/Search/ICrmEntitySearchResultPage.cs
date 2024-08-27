@@ -6,7 +6,7 @@
 namespace Adxstudio.Xrm.Search
 {
 	using System.Collections.Generic;
-	using Adxstudio.Xrm.Search.Facets;
+	using Facets;
 
 	/// <summary>
 	/// Interface for CRM entity result page

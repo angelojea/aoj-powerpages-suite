@@ -9,11 +9,11 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Web;
-	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.ContentAccess;
-	using Adxstudio.Xrm.Security;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
+	using Cms;
+	using ContentAccess;
+	using Security;
+	using Services;
+	using Services.Query;
 	using Microsoft.Xrm.Portal.Configuration;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Query;

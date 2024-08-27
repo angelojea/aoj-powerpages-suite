@@ -19,8 +19,8 @@ namespace Adxstudio.Xrm.Cases
 			Accounts = accounts ?? Enumerable.Empty<IAccountCaseAccessPermissions>();
 		}
 
-		public IEnumerable<IAccountCaseAccessPermissions> Accounts { get; private set; }
+		public IEnumerable<IAccountCaseAccessPermissions> Accounts { get; }
 
-		public ICaseAccessPermissions Self { get; private set; }
+		public ICaseAccessPermissions Self { get; }
 	}
 }

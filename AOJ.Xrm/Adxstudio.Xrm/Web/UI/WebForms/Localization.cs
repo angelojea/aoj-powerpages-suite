@@ -14,7 +14,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 	using System.Threading;
 	using System.Globalization;
 	using System.Web;
-	using Adxstudio.Xrm.Globalization;
+	using Globalization;
 
 	/// <summary>
 	/// Class used to localize a resourse string.

@@ -25,18 +25,13 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 	/// </summary>
 	public class WebLinks : EditableCrmEntityDataBoundControl // MSBug #120119: Won't seal, Inheritance is expected extension point.
 	{
-		private bool _showCopy = true;
-		private bool _showLinkDescriptions = true;
-		private bool _showImage = true;
-		private bool _showTitle = true;
-
 		/// <summary>
 		/// Gets or sets a CSS class value to be added to the hyperlink if the target node of
 		/// the hyperlink is the current site map node.
 		/// </summary>
 		[Description("A CSS class value to be added to a weblink if the target node of the weblink is the current site map node")]
 		[Category("Data")]
-		[DefaultValue((string)null)]
+		[DefaultValue(null)]
 		public string CurrentSiteMapNodeCssClass { get; set; }
 
 		/// <summary>
@@ -45,34 +40,18 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		/// </summary>
 		[Description("A CSS class value to be added to a weblink if the current site map node is a descendant of the target node of the weblink")]
 		[Category("Data")]
-		[DefaultValue((string)null)]
+		[DefaultValue(null)]
 		public string ParentOfCurrentSiteMapNodeCssClass { get; set; }
 
 		public string DescriptionCssClass { get; set; }
 
-		public bool ShowCopy
-		{
-			get { return _showCopy; }
-			set { _showCopy = value; }
-		}
+		public bool ShowCopy { get; set; } = true;
 
-		public bool ShowImage
-		{
-			get { return _showImage; }
-			set { _showImage = value; }
-		}
+		public bool ShowImage { get; set; } = true;
 
-		public bool ShowLinkDescriptions
-		{
-			get { return _showLinkDescriptions; }
-			set { _showLinkDescriptions = value; }
-		}
+		public bool ShowLinkDescriptions { get; set; } = true;
 
-		public bool ShowTitle
-		{
-			get { return _showTitle; }
-			set { _showTitle = value; }
-		}
+		public bool ShowTitle { get; set; } = true;
 
 		protected override HtmlTextWriterTag TagKey
 		{

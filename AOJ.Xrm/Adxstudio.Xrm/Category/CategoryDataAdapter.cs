@@ -8,7 +8,7 @@ namespace Adxstudio.Xrm.Category
 	using System;
 	using System.Linq;
 	using System.Collections.Generic;
-	using Adxstudio.Xrm.Services;
+	using Services;
 	using ContentAccess;
 	using Security;
 	using Services.Query;
@@ -54,8 +54,8 @@ namespace Adxstudio.Xrm.Category
 			category.AssertLogicalName("knowledgearticle");
 			dependencies.ThrowOnNull("dependencies");
 
-			this.Category = category;
-			this.Dependencies = dependencies;
+			Category = category;
+			Dependencies = dependencies;
 		}
 
 		/// <summary>
@@ -64,11 +64,11 @@ namespace Adxstudio.Xrm.Category
 		/// <returns>Category Interface reference</returns>
 		public virtual ICategory Select()
 		{
-			var category = this.GetCategoryEntity(this.Dependencies.GetServiceContext());
+			var category = GetCategoryEntity(Dependencies.GetServiceContext());
 
 			return category == null
 				? null
-				: new CategoryFactory(this.Dependencies).Create(new[] { category }).FirstOrDefault();
+				: new CategoryFactory(Dependencies).Create(new[] { category }).FirstOrDefault();
 		}
 
 		/// <summary>
@@ -78,7 +78,7 @@ namespace Adxstudio.Xrm.Category
 		/// <returns>Category as an Entity</returns>
 		private Entity GetCategoryEntity(OrganizationServiceContext serviceContext)
 		{
-			var category = serviceContext.RetrieveSingle("category", "categoryid", this.Category.Id, FetchAttribute.All);
+			var category = serviceContext.RetrieveSingle("category", "categoryid", Category.Id, FetchAttribute.All);
 
 			return category;
 		}
@@ -99,7 +99,7 @@ namespace Adxstudio.Xrm.Category
 		/// <returns>IEnumerable of Related Article</returns>
 		public IEnumerable<RelatedArticle> SelectRelatedArticles()
 		{
-			var category = this.Select();
+			var category = Select();
 
 			var relatedArticlesFetch = new Fetch
 			{
@@ -107,7 +107,7 @@ namespace Adxstudio.Xrm.Category
 				Entity = new FetchEntity
 				{
 					Name = "knowledgearticle",
-					Attributes = new List<FetchAttribute>()
+					Attributes = new List<FetchAttribute>
 					{
 						new FetchAttribute("articlepublicnumber"),
 						new FetchAttribute("knowledgearticleid"),
@@ -121,12 +121,12 @@ namespace Adxstudio.Xrm.Category
 						new FetchAttribute("isprimary"),
 						new FetchAttribute("knowledgearticleviews")
 					},
-					Filters = new List<Filter>()
+					Filters = new List<Filter>
 					{
 						new Filter
 						{
 							Type = LogicalOperator.And,
-							Conditions = new List<Condition>()
+							Conditions = new List<Condition>
 							{
 								new Condition("isrootarticle", ConditionOperator.Equal, 0),
 								new Condition("statecode", ConditionOperator.Equal, 3),
@@ -136,7 +136,7 @@ namespace Adxstudio.Xrm.Category
 						},
 
 					},
-					Links = new List<Link>()
+					Links = new List<Link>
 					{
 						new Link
 						{
@@ -145,12 +145,12 @@ namespace Adxstudio.Xrm.Category
 							ToAttribute = "knowledgearticleid",
 							Intersect = true,
 							Visible = false,
-							Filters = new List<Filter>()
+							Filters = new List<Filter>
 							{
 								new Filter
 								{
 									Type = LogicalOperator.And,
-									Conditions = new List<Condition>()
+									Conditions = new List<Condition>
 									{
 										new Condition("categoryid", ConditionOperator.Equal, category.Id)
 									}
@@ -164,9 +164,9 @@ namespace Adxstudio.Xrm.Category
 
 			var relatedArticles = Enumerable.Empty<RelatedArticle>();
 
-			var serviceContext = this.Dependencies.GetServiceContext();
-			var securityProvider = this.Dependencies.GetSecurityProvider();
-			var urlProvider = this.Dependencies.GetUrlProvider();
+			var serviceContext = Dependencies.GetServiceContext();
+			var securityProvider = Dependencies.GetSecurityProvider();
+			var urlProvider = Dependencies.GetUrlProvider();
 
 			// Apply Content Access Level filtering
 			var contentAccessProvider = new ContentAccessLevelProvider();
@@ -199,10 +199,10 @@ namespace Adxstudio.Xrm.Category
 		{
 			var childCategories = Enumerable.Empty<ChildCategory>();
 
-			var serviceContext = this.Dependencies.GetServiceContext();
-			var urlProvider = this.Dependencies.GetUrlProvider();
+			var serviceContext = Dependencies.GetServiceContext();
+			var urlProvider = Dependencies.GetUrlProvider();
 
-			var category = this.Select();
+			var category = Select();
 
 			var categoryFetch = GetCategoryFetchUnderParent(category.Id, null);
 

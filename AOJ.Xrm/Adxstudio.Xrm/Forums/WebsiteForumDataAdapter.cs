@@ -11,7 +11,7 @@ namespace Adxstudio.Xrm.Forums
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Client;
 	using Microsoft.Xrm.Sdk.Query;
-	using Adxstudio.Xrm.Services.Query;
+	using Services.Query;
 
 	/// <summary>
 	/// Provides query access to all Forums (adx_communityforum) in a given Website (adx_website). Also provides

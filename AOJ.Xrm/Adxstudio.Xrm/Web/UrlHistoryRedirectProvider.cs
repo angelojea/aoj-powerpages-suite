@@ -24,8 +24,8 @@ namespace Adxstudio.Xrm.Web
 	/// </summary>
 	public class UrlHistoryRedirectProvider : IRedirectProvider
 	{
-		private static readonly string[] _homePaths = new[] { "~", "/", "~/" };
-		public string PortalName { get; private set; }
+		private static readonly string[] _homePaths = { "~", "/", "~/" };
+		public string PortalName { get; }
 
 		public UrlHistoryRedirectProvider(string portalName)
 		{
@@ -235,7 +235,7 @@ namespace Adxstudio.Xrm.Web
 			var homePage = context.GetPageBySiteMarkerName(website, "Home");
 
 			return homePage == null
-				? (IMatch)new FailedMatch()
+				? new FailedMatch()
 				: new NonHistoryMatch(homePage);
 		}
 
@@ -284,9 +284,9 @@ namespace Adxstudio.Xrm.Web
 				get { return true; }
 			}
 
-			public bool UsedHistory { get; private set; }
+			public bool UsedHistory { get; }
 
-			public Entity WebPage { get; private set; }
+			public Entity WebPage { get; }
 		}
 
 		private class HistoryMatch : SuccessfulMatch

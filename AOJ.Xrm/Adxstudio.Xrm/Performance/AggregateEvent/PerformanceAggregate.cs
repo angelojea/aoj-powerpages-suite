@@ -12,7 +12,7 @@ namespace Adxstudio.Xrm.Performance
 	internal class PerformanceAggregate : IPerformanceAggregate
 	{
 		
-		public double[] AggregatesInMilliseconds { get; private set; }
+		public double[] AggregatesInMilliseconds { get; }
 		public DateTime FirstTimestamp { get; private set; }
 		public string RequestId { get; private set; }
 		public string SessionId { get; private set; }

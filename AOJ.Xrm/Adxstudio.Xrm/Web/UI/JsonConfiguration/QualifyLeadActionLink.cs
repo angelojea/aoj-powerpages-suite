@@ -13,8 +13,8 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
 	public class QualifyLeadActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-check fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Qualify_Button_Label_Text");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Qualify_Button_Label_Text");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-check fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Qualify_Button_Label_Text");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Qualify_Button_Label_Text");
 
 		public ViewQualifyLeadModal Modal { get; set; }
 

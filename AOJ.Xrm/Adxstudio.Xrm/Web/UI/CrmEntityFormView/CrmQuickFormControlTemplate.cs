@@ -47,7 +47,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// Dictionary of the cell bindings
 		/// </summary>
-		protected IDictionary<string, CellBinding> Bindings { get; private set; }
+		protected IDictionary<string, CellBinding> Bindings { get; }
 
 		/// <summary>
 		/// Control instantiation

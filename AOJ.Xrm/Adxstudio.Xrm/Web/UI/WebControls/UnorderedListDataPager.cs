@@ -97,9 +97,9 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			ListItemCssClass = listItemCssClass;
 		}
 
-		protected bool LabelsAreDisabled { get; private set; }
+		protected bool LabelsAreDisabled { get; }
 
-		protected string ListItemCssClass { get; private set; }
+		protected string ListItemCssClass { get; }
 
 		protected override void RenderChildren(HtmlTextWriter writer)
 		{

@@ -116,12 +116,7 @@ namespace Adxstudio.Xrm.Search
 						// bypass cache and go straight to CRM in case cache hasn't been updated yet
 						var response = serviceContext.Execute(new RetrieveRequest {
 							Target =  new EntityReference(message.Target.LogicalName, message.Target.Id),
-							ColumnSet = new ColumnSet(new string[] {
-								"adx_parentpageid",
-								"adx_websiteid",
-								"adx_publishingstateid",
-								"adx_partialurl"
-							})
+							ColumnSet = new ColumnSet("adx_parentpageid", "adx_websiteid", "adx_publishingstateid", "adx_partialurl")
 						}) as RetrieveResponse;
 
 						if (response != null && response.Entity != null)

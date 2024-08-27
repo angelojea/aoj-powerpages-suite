@@ -15,9 +15,9 @@ namespace Adxstudio.Xrm.Search.Index
 	using System.Collections.Generic;
 	using System.Linq;
 
-	using Adxstudio.Xrm.Cms;
+	using Cms;
 	using Adxstudio.Xrm.Forums.Security;
-	using Adxstudio.Xrm.Web.Providers;
+	using Web.Providers;
 
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Portal.Configuration;
@@ -315,14 +315,14 @@ namespace Adxstudio.Xrm.Search.Index
 		/// </returns>
 		public static IEnumerable<Guid> GetDescendantLocalizedWebpagesForWebpage(IContentMapProvider contentMapProvider, Guid entityId, int? lcid = null)
 		{
-			var predicates = new List<Predicate<WebPageNode>>() { IsContentPage };
+			var predicates = new List<Predicate<WebPageNode>> { IsContentPage };
 
 			if (lcid.HasValue)
 			{
-				Predicate<WebPageNode> isLocalized = new Predicate<WebPageNode>((WebPageNode webPageNode) =>
+				Predicate<WebPageNode> isLocalized = webPageNode =>
 				{
 					return webPageNode.WebPageLanguage.PortalLanguage.Lcid == lcid.Value;
-				});
+				};
 				predicates.Add(isLocalized);
 			}
 
@@ -343,7 +343,7 @@ namespace Adxstudio.Xrm.Search.Index
 		/// </returns>
 		public static IEnumerable<Guid> GetDescendantRootWebpagesForWebpage(IContentMapProvider contentMapProvider, Guid entityId)
 		{
-			return contentMapProvider.Using(contentMap => SelectAllDescendantWebpagesWithPredicates(entityId, contentMap, new List<Predicate<WebPageNode>>() { IsRootWebPage }));
+			return contentMapProvider.Using(contentMap => SelectAllDescendantWebpagesWithPredicates(entityId, contentMap, new List<Predicate<WebPageNode>> { IsRootWebPage }));
 		}
 
         /// <summary>
@@ -560,7 +560,7 @@ namespace Adxstudio.Xrm.Search.Index
 				if (rootWebpage.RootWebPage == null)
 				{
 					// just return this web page, can't reach any others
-					return new List<Guid>() { rootWebpage.Id };
+					return new List<Guid> { rootWebpage.Id };
 				}
 
 				rootWebpage = rootWebpage.RootWebPage;

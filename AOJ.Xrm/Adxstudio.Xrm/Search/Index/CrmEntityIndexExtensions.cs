@@ -7,11 +7,11 @@ namespace Adxstudio.Xrm.Search.Index
 {
 	using System.Linq;
 	using System.Web;
-	using Adxstudio.Xrm.Search.Analysis;
+	using Analysis;
 	using Lucene.Net.Analysis;
 	using Lucene.Net.Util;
-	using Adxstudio.Xrm.Web;
-	using Adxstudio.Xrm.Cms;
+	using Web;
+	using Cms;
 
 	/// <summary>
 	/// Contains useful extension methods for working with entity indexes

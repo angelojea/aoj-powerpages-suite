@@ -34,7 +34,7 @@ namespace Adxstudio.Xrm.Decorators
 		/// <param name="context">HttpContext to decorate</param>
 		private CookieInspector(HttpContextBase context)
 		{
-			this.Context = context;
+			Context = context;
 		}
 
 		/// <summary>
@@ -65,7 +65,7 @@ namespace Adxstudio.Xrm.Decorators
 		/// <returns>string value of the cookie</returns>
 		public string GetCookieValue(string key)
 		{
-			var cookie = this.CheckCookie(key);
+			var cookie = CheckCookie(key);
 			return (cookie == null || string.IsNullOrEmpty(cookie.Value))
 				? null
 				: cookie.Value;
@@ -78,16 +78,16 @@ namespace Adxstudio.Xrm.Decorators
 		/// <returns>HttpCookie from the CookieCollection</returns>
 		private HttpCookie CheckCookie(string key)
 		{
-			if (this.Context == null)
+			if (Context == null)
 			{
 				return null;
 			}
 
 			// Attempt to find this key in the Response, if not there search the request
-			return this.Context.Response.Cookies.AllKeys.Contains(key)
-						? this.Context.Response.Cookies.Get(key)
-						: this.Context.Request.Cookies.AllKeys.Contains(key)
-							? this.Context.Request.Cookies.Get(key)
+			return Context.Response.Cookies.AllKeys.Contains(key)
+						? Context.Response.Cookies.Get(key)
+						: Context.Request.Cookies.AllKeys.Contains(key)
+							? Context.Request.Cookies.Get(key)
 							: null;
 		}
 	}

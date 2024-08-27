@@ -42,7 +42,7 @@ namespace Adxstudio.Xrm.Core.Telemetry
 		/// <returns>elapsed time in miliseconds</returns>
 		public long ElapsedTime()
 		{
-			return this.stopwatch.ElapsedMilliseconds;
+			return stopwatch.ElapsedMilliseconds;
 		}
 
 		/// <summary>
@@ -50,7 +50,7 @@ namespace Adxstudio.Xrm.Core.Telemetry
 		/// </summary>
 		public void Dispose()
 		{
-			this.stopwatch.Stop();
+			stopwatch.Stop();
 		}
 
 		/// <summary>
@@ -58,8 +58,8 @@ namespace Adxstudio.Xrm.Core.Telemetry
 		/// </summary>
 		private RequestElapsedTimeContext()
 		{
-			this.stopwatch = new Stopwatch();
-			this.stopwatch.Start();
+			stopwatch = new Stopwatch();
+			stopwatch.Start();
 		}
 	}
 }

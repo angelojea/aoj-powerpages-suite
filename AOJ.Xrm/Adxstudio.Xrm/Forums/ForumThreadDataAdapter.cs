@@ -17,11 +17,11 @@ namespace Adxstudio.Xrm.Forums
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Client;
 	using Microsoft.Xrm.Sdk.Query;
-	using Adxstudio.Xrm.Core.Flighting;
-	using Adxstudio.Xrm.Notes;
-	using Adxstudio.Xrm.Web.Mvc;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
+	using Core.Flighting;
+	using Notes;
+	using Web.Mvc;
+	using Services;
+	using Services.Query;
 
 	public class ForumThreadDataAdapter : IForumThreadDataAdapter
 	{
@@ -49,9 +49,9 @@ namespace Adxstudio.Xrm.Forums
 		public ForumThreadDataAdapter(IForumThread forumThread, IDataAdapterDependencies dependencies)
 			: this(forumThread.EntityReference, dependencies) { }
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
-		protected EntityReference ForumThread { get; private set; }
+		protected EntityReference ForumThread { get; }
 
 		public IForumThread Select()
 		{
@@ -286,7 +286,7 @@ namespace Adxstudio.Xrm.Forums
 						Conditions = new[]
 						{
 							new Condition("adx_communityforumpostid", ConditionOperator.Equal, forumPost.Id),
-							new Condition("adx_forumthreadid", ConditionOperator.Equal, this.ForumThread.Id)
+							new Condition("adx_forumthreadid", ConditionOperator.Equal, ForumThread.Id)
 						} } }
 				}
 			});
@@ -440,7 +440,7 @@ namespace Adxstudio.Xrm.Forums
 						Conditions = new[]
 						{
 							new Condition("adx_communityforumpostid", ConditionOperator.Equal, forumPostId),
-							new Condition("adx_forumthreadid", ConditionOperator.Equal, this.ForumThread.Id)
+							new Condition("adx_forumthreadid", ConditionOperator.Equal, ForumThread.Id)
 						}
 					} }
 				}
@@ -485,7 +485,7 @@ namespace Adxstudio.Xrm.Forums
 						Conditions = new[]
 						{
 							new Condition("adx_isanswer", ConditionOperator.Equal, true),
-							new Condition("adx_forumthreadid", ConditionOperator.Equal, this.ForumThread.Id)
+							new Condition("adx_forumthreadid", ConditionOperator.Equal, ForumThread.Id)
 						}
 					} }
 				}
@@ -676,7 +676,7 @@ namespace Adxstudio.Xrm.Forums
 						{
 							Conditions = new[] {
 								new Condition("adx_subscriberid", ConditionOperator.Equal, user.Id),
-								new Condition("adx_threadid", ConditionOperator.Equal, this.ForumThread.Id) }
+								new Condition("adx_threadid", ConditionOperator.Equal, ForumThread.Id) }
 						}
 					}
 				}
@@ -697,7 +697,7 @@ namespace Adxstudio.Xrm.Forums
 						{
 							Conditions = new[] {
 								new Condition("adx_communityforumpostid", ConditionOperator.Equal, forumPostId),
-								new Condition("adx_forumthreadid", ConditionOperator.Equal, this.ForumThread.Id) }
+								new Condition("adx_forumthreadid", ConditionOperator.Equal, ForumThread.Id) }
 						}
 					}
 				}
@@ -737,7 +737,7 @@ namespace Adxstudio.Xrm.Forums
 			var thread = serviceContext.RetrieveSingle(
 				"adx_communityforumthread",
 				"adx_communityforumthreadid",
-				this.ForumThread.Id,
+				ForumThread.Id,
 				new[] { new FetchAttribute("adx_firstpostid") });
 
 			return thread == null || thread.GetAttributeValue<EntityReference>("adx_firstpostid") == null
@@ -752,7 +752,7 @@ namespace Adxstudio.Xrm.Forums
 			var thread = serviceContext.RetrieveSingle(
 				"adx_communityforumthread",
 				"adx_communityforumthreadid",
-				this.ForumThread.Id,
+				ForumThread.Id,
 				new[] { new FetchAttribute("adx_lastpostid") });
 
 			return thread == null || thread.GetAttributeValue<EntityReference>("adx_lastpostid") == null
@@ -765,7 +765,7 @@ namespace Adxstudio.Xrm.Forums
 			var entity = serviceContext.RetrieveSingle(
 				"adx_communityforumthread",
 				"adx_communityforumthreadid",
-				this.ForumThread.Id,
+				ForumThread.Id,
 				FetchAttribute.All);
 
 			return entity;

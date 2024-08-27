@@ -26,7 +26,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		public OnPremCertificateProvider()
 		{
 			// Geting certificate
-			this.GetCert();
+			GetCert();
 		}
 
 		/// <summary>
@@ -36,7 +36,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		{
 			get
 			{
-				return this.certificate.Thumbprint;
+				return certificate.Thumbprint;
 			}
 		}
 
@@ -50,7 +50,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		{
 			get
 			{
-				return this.certificate;
+				return certificate;
 			}
 		}
 
@@ -78,7 +78,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 					throw new NotImplementedException("Not able to get encryption certificate");
 				}
 
-				this.certificate = result[0];
+				certificate = result[0];
 			}
 			finally
 			{

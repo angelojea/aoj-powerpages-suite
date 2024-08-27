@@ -118,7 +118,7 @@ namespace Adxstudio.Xrm.Ideas
 
 		public IEntityUrlProvider GetUrlProvider()
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
 		/// <summary>

@@ -46,13 +46,13 @@ namespace Adxstudio.Xrm.Blogs
 
 		public AuthorBlogDataAdapter(IBlog blog, Guid authorId, string portalName = null) : this(blog, authorId, new PortalConfigurationDataAdapterDependencies(portalName)) { }
 
-		protected Guid AuthorId { get; private set; }
+		protected Guid AuthorId { get; }
 
-		protected EntityReference Blog { get; private set; }
+		protected EntityReference Blog { get; }
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
-		protected BlogSecurityInfo Security { get; private set; }
+		protected BlogSecurityInfo Security { get; }
 
 		public IBlog Select()
 		{

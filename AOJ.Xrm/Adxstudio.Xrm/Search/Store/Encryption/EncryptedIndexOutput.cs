@@ -35,7 +35,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		{
 			get
 			{
-				return this.writer.Position;
+				return writer.Position;
 			}
 		}
 
@@ -46,7 +46,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		{
 			get
 			{
-				return this.writer.Length;
+				return writer.Length;
 			}
 		}
 
@@ -55,7 +55,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </summary>
 		public override void Flush()
 		{
-			this.writer.Flush();
+			writer.Flush();
 		}
 
 		/// <summary>
@@ -66,7 +66,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </param>
 		public override void Seek(long pos)
 		{
-			this.writer.Seek(pos);
+			writer.Seek(pos);
 		}
 
 		/// <summary>
@@ -77,7 +77,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </param>
 		public override void WriteByte(byte b)
 		{
-			this.writer.WriteByte(b);
+			writer.WriteByte(b);
 		}
 
 		/// <summary>
@@ -94,7 +94,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </param>
 		public override void WriteBytes(byte[] b, int offset, int length)
 		{
-			this.writer.WriteBytes(b, offset, length);
+			writer.WriteBytes(b, offset, length);
 		}
 
 		/// <summary>
@@ -110,7 +110,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 				return;
 			}
 
-			this.writer.Dispose();
+			writer.Dispose();
 		}
 	}
 }

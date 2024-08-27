@@ -23,7 +23,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 {
 	public abstract class Expression : IEnumerable<Expression>
 	{
-		public IEnumerable<Expression> Operands { get; private set; }
+		public IEnumerable<Expression> Operands { get; }
 
 		public virtual string Operator
 		{
@@ -691,7 +691,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 		{
 			if (value is string && !string.IsNullOrWhiteSpace((string)value))
 			{
-				value = ((string)value).Trim(new[] { ' ', '\'' });
+				value = ((string)value).Trim(' ', '\'');
 
 				if (((string)value).ToLowerInvariant() == "null")
 				{
@@ -1204,9 +1204,9 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 
 	public class EntityExpressionEvaluator : IExpressionEvaluator
 	{
-		protected Entity EvaluateEntity { get; private set; }
+		protected Entity EvaluateEntity { get; }
 		protected OrganizationServiceContext ServiceContext { get; private set; }
-		protected Dictionary<string, AttributeTypeCode?> AttributeTypeCodeDictionary { get; private set; } 
+		protected Dictionary<string, AttributeTypeCode?> AttributeTypeCodeDictionary { get; } 
 
 		public EntityExpressionEvaluator(OrganizationServiceContext context, Entity entity)
 		{
@@ -1315,60 +1315,60 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 					{
 						throw new InvalidOperationException(string.Format("Attribute {0} specified in the expression is expecting a {1}. The value provided isn't valid.", attributeName, attributeTypeCode));
 					}
-					testValue = expressionValue == null ? (object)null : Convert.ToInt64(expressionValue);
+					testValue = expressionValue == null ? null : Convert.ToInt64(expressionValue);
 					break;
 				case AttributeTypeCode.Boolean:
 					if (expressionValue != null && !(expressionValue is bool))
 					{
 						throw new InvalidOperationException(string.Format("Attribute {0} specified in the expression is expecting a {1}. The value provided isn't valid.", attributeName, attributeTypeCode));
 					}
-					testValue = expressionValue == null ? (object)null : (bool)expressionValue;
+					testValue = expressionValue == null ? null : (bool)expressionValue;
 					break;
 				case AttributeTypeCode.Customer:
 					var entityReference = EvaluateEntity.Attributes.ContainsKey(attributeName) ? (EntityReference)EvaluateEntity.Attributes[attributeName] : null;
-					attributeValue = entityReference != null ? (object)entityReference.Id : null;
+					attributeValue = entityReference != null ? entityReference.Id : null;
 					if (expressionValue != null && !(expressionValue is Guid))
 					{
 						throw new InvalidOperationException(string.Format("Attribute {0} specified in the expression is expecting a {1}. The value provided isn't valid.", attributeName, attributeTypeCode));
 					}
-					testValue = expressionValue == null ? (object)null : (Guid)expressionValue;
+					testValue = expressionValue == null ? null : (Guid)expressionValue;
 					break;
 				case AttributeTypeCode.DateTime:
 					if (expressionValue != null && !(expressionValue is DateTime))
 					{
 						throw new InvalidOperationException(string.Format("Attribute {0} specified in the expression is expecting a {1}. The value provided isn't valid.", attributeName, attributeTypeCode));
 					}
-					testValue = expressionValue == null ? (object)null : ((DateTime)expressionValue).ToUniversalTime();
+					testValue = expressionValue == null ? null : ((DateTime)expressionValue).ToUniversalTime();
 					break;
 				case AttributeTypeCode.Decimal:
 					if (expressionValue != null && !(expressionValue is int | expressionValue is double | expressionValue is decimal))
 					{
 						throw new InvalidOperationException(string.Format("Attribute {0} specified in the expression is expecting a {1}. The value provided isn't valid.", attributeName, attributeTypeCode));
 					}
-					testValue = expressionValue == null ? (object)null : Convert.ToDecimal(expressionValue);
+					testValue = expressionValue == null ? null : Convert.ToDecimal(expressionValue);
 					break;
 				case AttributeTypeCode.Double:
 					if (expressionValue != null && !(expressionValue is int | expressionValue is double))
 					{
 						throw new InvalidOperationException(string.Format("Attribute {0} specified in the expression is expecting a {1}. The value provided isn't valid.", attributeName, attributeTypeCode));
 					}
-					testValue = expressionValue == null ? (object)null : Convert.ToDouble(expressionValue);
+					testValue = expressionValue == null ? null : Convert.ToDouble(expressionValue);
 					break;
 				case AttributeTypeCode.Integer:
 					if (expressionValue != null && !(expressionValue is int | expressionValue is double))
 					{
 						throw new InvalidOperationException(string.Format("Attribute {0} specified in the expression is expecting a {1}. The value provided isn't valid.", attributeName, attributeTypeCode));
 					}
-					testValue = expressionValue == null ? (object)null : Convert.ToInt32(expressionValue);
+					testValue = expressionValue == null ? null : Convert.ToInt32(expressionValue);
 					break;
 				case AttributeTypeCode.Lookup:
 					var lookupEntityReference = EvaluateEntity.Attributes.ContainsKey(attributeName) ? (EntityReference)EvaluateEntity.Attributes[attributeName] : null;
-					attributeValue = lookupEntityReference != null ? (object)lookupEntityReference.Id : null;
+					attributeValue = lookupEntityReference != null ? lookupEntityReference.Id : null;
 					if (expressionValue != null && !(expressionValue is Guid))
 					{
 						throw new InvalidOperationException(string.Format("Attribute {0} specified in the expression is expecting a {1}. The value provided isn't valid.", attributeName, attributeTypeCode));
 					}
-					testValue = expressionValue == null ? (object)null : (Guid)expressionValue;
+					testValue = expressionValue == null ? null : (Guid)expressionValue;
 					break;
 				case AttributeTypeCode.Memo:
 					if (expressionValue != null && !(expressionValue is string))
@@ -1379,39 +1379,39 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 					break;
 				case AttributeTypeCode.Money:
 					var money = EvaluateEntity.Attributes.ContainsKey(attributeName) ? (Money)EvaluateEntity.Attributes[attributeName] : null;
-					attributeValue = money != null ? (object)Convert.ToDecimal(money.Value) : null;
+					attributeValue = money != null ? Convert.ToDecimal(money.Value) : null;
 					if (expressionValue != null && !(expressionValue is int | expressionValue is double | expressionValue is decimal))
 					{
 						throw new InvalidOperationException(string.Format("Attribute {0} specified in the expression is expecting a {1}. The value provided isn't valid.", attributeName, attributeTypeCode));
 					}
-					testValue = expressionValue == null ? (object)null : Convert.ToDecimal(expressionValue);
+					testValue = expressionValue == null ? null : Convert.ToDecimal(expressionValue);
 					break;
 				case AttributeTypeCode.Picklist:
 					var optionSetValue = EvaluateEntity.Attributes.ContainsKey(attributeName) ? (OptionSetValue)EvaluateEntity.Attributes[attributeName] : null;
-					attributeValue = optionSetValue != null ? (object)optionSetValue.Value : null;
+					attributeValue = optionSetValue != null ? optionSetValue.Value : null;
 					if (expressionValue != null && !(expressionValue is int | expressionValue is double))
 					{
 						throw new InvalidOperationException(string.Format("Attribute {0} specified in the expression is expecting a {1}. The value provided isn't valid.", attributeName, attributeTypeCode));
 					}
-					testValue = expressionValue == null ? (object)null : Convert.ToInt32(expressionValue);
+					testValue = expressionValue == null ? null : Convert.ToInt32(expressionValue);
 					break;
 				case AttributeTypeCode.State:
 					var stateOptionSetValue = EvaluateEntity.Attributes.ContainsKey(attributeName) ? (OptionSetValue)EvaluateEntity.Attributes[attributeName] : null;
-					attributeValue = stateOptionSetValue != null ? (object)stateOptionSetValue.Value : null;
+					attributeValue = stateOptionSetValue != null ? stateOptionSetValue.Value : null;
 					if (expressionValue != null && !(expressionValue is int | expressionValue is double))
 					{
 						throw new InvalidOperationException(string.Format("Attribute {0} specified in the expression is expecting a {1}. The value provided isn't valid.", attributeName, attributeTypeCode));
 					}
-					testValue = expressionValue == null ? (object)null : Convert.ToInt32(expressionValue);
+					testValue = expressionValue == null ? null : Convert.ToInt32(expressionValue);
 					break;
 				case AttributeTypeCode.Status:
 					var statusOptionSetValue = EvaluateEntity.Attributes.ContainsKey(attributeName) ? (OptionSetValue)EvaluateEntity.Attributes[attributeName] : null;
-					attributeValue = statusOptionSetValue != null ? (object)statusOptionSetValue.Value : null;
+					attributeValue = statusOptionSetValue != null ? statusOptionSetValue.Value : null;
 					if (expressionValue != null && !(expressionValue is int | expressionValue is double))
 					{
 						throw new InvalidOperationException(string.Format("Attribute {0} specified in the expression is expecting a {1}. The value provided isn't valid.", attributeName, attributeTypeCode));
 					}
-					testValue = expressionValue == null ? (object)null : Convert.ToInt32(expressionValue);
+					testValue = expressionValue == null ? null : Convert.ToInt32(expressionValue);
 					break;
 				case AttributeTypeCode.String:
 					if (expressionValue != null && !(expressionValue is string))
@@ -1425,7 +1425,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 					{
 						throw new InvalidOperationException(string.Format("Attribute {0} specified in the expression is expecting a {1}. The value provided isn't valid.", attributeName, attributeTypeCode));
 					}
-					testValue = expressionValue == null ? (object)null : (Guid)expressionValue;
+					testValue = expressionValue == null ? null : (Guid)expressionValue;
 					break;
 				default:
 					throw new InvalidOperationException(string.Format("Unsupported type of attribute {0} specified in the expression.", attributeName));

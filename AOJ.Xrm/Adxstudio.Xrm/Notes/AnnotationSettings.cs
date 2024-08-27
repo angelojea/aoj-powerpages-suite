@@ -95,16 +95,14 @@ namespace Adxstudio.Xrm.Notes
 		public StorageLocation StorageLocation { get; set; }
 		public string AcceptMimeTypes
 		{
-			get 
-			{ 
+			get
+			{
 				if (string.IsNullOrEmpty(_acceptMimeTypes))
 				{
 					return (IsPortalComment) ? string.Empty : "*/*";
 				}
-				else
-				{
-					return _acceptMimeTypes;
-				}
+
+				return _acceptMimeTypes;
 
 			}
 			set { _acceptMimeTypes = value; }

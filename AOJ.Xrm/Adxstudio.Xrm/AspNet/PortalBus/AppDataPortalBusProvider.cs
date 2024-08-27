@@ -11,9 +11,9 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 	using System.Threading;
 	using System.Threading.Tasks;
 	using System.Threading.Tasks.Dataflow;
-	using Adxstudio.Xrm.AspNet.Cms;
-	using Adxstudio.Xrm.IO;
-	using Adxstudio.Xrm.Web;
+	using Cms;
+	using IO;
+	using Web;
 	using global::Owin;
 	using Microsoft.Owin;
 	using Microsoft.Owin.BuilderProperties;
@@ -35,10 +35,10 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 		{
 			var retryStrategy = new Incremental(5, new TimeSpan(0, 0, 1), new TimeSpan(0, 0, 1));
 
-			this.AppDataPath = "~/App_Data/Adxstudio.Xrm.AspNet.PortalBus/" + typeof(TMessage).Name;
-			this.InstanceId = webAppSettings.InstanceId;
-			this.Timeout = TimeSpan.FromMinutes(5);
-			this.RetryPolicy = retryStrategy.CreateRetryPolicy();
+			AppDataPath = "~/App_Data/Adxstudio.Xrm.AspNet.PortalBus/" + typeof(TMessage).Name;
+			InstanceId = webAppSettings.InstanceId;
+			Timeout = TimeSpan.FromMinutes(5);
+			RetryPolicy = retryStrategy.CreateRetryPolicy();
 		}
 	}
 
@@ -50,19 +50,19 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 	{
 		private static readonly JsonSerializer _serializer = new JsonSerializer { NullValueHandling = NullValueHandling.Ignore };
 
-		protected string AppDataFullPath { get; private set; }
-		protected AppDataPortalBusOptions<TMessage> Options { get; private set; }
+		protected string AppDataFullPath { get; }
+		protected AppDataPortalBusOptions<TMessage> Options { get; }
 
 		public AppDataPortalBusProvider(IAppBuilder app, AppDataPortalBusOptions<TMessage> options)
 			: base(app)
 		{
-			this.AppDataFullPath = options.AppDataPath.StartsWith("~/")
+			AppDataFullPath = options.AppDataPath.StartsWith("~/")
 				? System.Web.Hosting.HostingEnvironment.MapPath(options.AppDataPath)
 				: options.AppDataPath;
-			this.Options = options;
+			Options = options;
 
-			this.RegisterAppDisposing(app);
-			this.Subscribe();
+			RegisterAppDisposing(app);
+			Subscribe();
 		}
 
 		protected void RegisterAppDisposing(IAppBuilder app)
@@ -72,18 +72,18 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 
 			if (token != CancellationToken.None)
 			{
-				token.Register(this.OnAppDisposing);
+				token.Register(OnAppDisposing);
 			}
 		}
 
 		protected virtual void OnAppDisposing()
 		{
-			var subscriptionPath = Path.Combine(this.AppDataFullPath, this.Options.InstanceId);
+			var subscriptionPath = Path.Combine(AppDataFullPath, Options.InstanceId);
 
-			if (this.Options.RetryPolicy.DirectoryExists(subscriptionPath))
+			if (Options.RetryPolicy.DirectoryExists(subscriptionPath))
 			{
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Delete: subscriptionPath={0}", subscriptionPath));
-				this.Options.RetryPolicy.DirectoryDelete(subscriptionPath, true);
+				Options.RetryPolicy.DirectoryDelete(subscriptionPath, true);
 			}
 		}
 
@@ -94,46 +94,46 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 			// watch for renamed files which indicates messages ready for handling
 
 			var buffer = new BufferBlock<string>();
-			var subscriptionPath = this.GetSubscriptionPath();
+			var subscriptionPath = GetSubscriptionPath();
 
 			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Subscribe: subscriptionPath={0}", subscriptionPath));
 
 			try
 			{
-				var watcher = this.Options.RetryPolicy.CreateFileSystemWatcher(subscriptionPath);
+				var watcher = Options.RetryPolicy.CreateFileSystemWatcher(subscriptionPath);
 				watcher.Renamed += (sender, args) => buffer.Post(args.FullPath);
-				watcher.Error += async (sender, args) => await this.OnSubscriptionErrorAsync(args.GetException()).WithCurrentCulture();
+				watcher.Error += async (sender, args) => await OnSubscriptionErrorAsync(args.GetException()).WithCurrentCulture();
 			}
 			catch (Exception e)
 			{
 				WebEventSource.Log.GenericErrorException(e);
 
-				if (this.Options.RetryPolicy.DirectoryExists(subscriptionPath))
+				if (Options.RetryPolicy.DirectoryExists(subscriptionPath))
 				{
 					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Delete: subscriptionPath={0}", subscriptionPath));
-					this.Options.RetryPolicy.DirectoryDelete(subscriptionPath, true);
+					Options.RetryPolicy.DirectoryDelete(subscriptionPath, true);
 				}
 
 				throw;
 			}
 
-			var action = new ActionBlock<string>(this.OnSubscriptionChangedAsync).AsObserver();
+			var action = new ActionBlock<string>(OnSubscriptionChangedAsync).AsObserver();
 
 			buffer.AsObservable().Subscribe(action);
 		}
 
 		protected virtual string GetSubscriptionPath()
 		{
-			var subscriptionPath = Path.Combine(this.AppDataFullPath, this.Options.InstanceId);
+			var subscriptionPath = Path.Combine(AppDataFullPath, Options.InstanceId);
 
-			if (this.Options.RetryPolicy.DirectoryExists(subscriptionPath))
+			if (Options.RetryPolicy.DirectoryExists(subscriptionPath))
 			{
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Exists: subscriptionPath={0}", subscriptionPath));
 			}
 			else
 			{
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Create: subscriptionPath={0}", subscriptionPath));
-				this.Options.RetryPolicy.DirectoryCreate(subscriptionPath);
+				Options.RetryPolicy.DirectoryCreate(subscriptionPath);
 			}
 
 			return subscriptionPath;
@@ -146,7 +146,7 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 
 		protected virtual Task OnSubscriptionErrorAsync(Exception error)
 		{
-			WebEventSource.Log.GenericErrorException(new Exception("Subscription error: InstanceId: " + this.Options.InstanceId, error));
+			WebEventSource.Log.GenericErrorException(new Exception("Subscription error: InstanceId: " + Options.InstanceId, error));
 
 			return Task.FromResult(0);
 		}
@@ -155,12 +155,12 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 		{
 			try
 			{
-				if (!this.Options.RetryPolicy.FileExists(messagePath)) return;
+				if (!Options.RetryPolicy.FileExists(messagePath)) return;
 
-				var context = this.GetOwinContext();
-				var message = this.Deserialize(messagePath) as IPortalBusMessage;
+				var context = GetOwinContext();
+				var message = Deserialize(messagePath) as IPortalBusMessage;
 
-				if (message != null && message.Validate(context, this.Protector))
+				if (message != null && message.Validate(context, Protector))
 				{
 					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("messagePath={0}", messagePath));
 
@@ -169,17 +169,17 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 
 				// clean up the file
 
-				this.Options.RetryPolicy.FileDelete(messagePath);
+				Options.RetryPolicy.FileDelete(messagePath);
 			}
 			catch (Exception e)
 			{
-				WebEventSource.Log.GenericErrorException(new Exception("Subscription error: InstanceId: " + this.Options.InstanceId, e));
+				WebEventSource.Log.GenericErrorException(new Exception("Subscription error: InstanceId: " + Options.InstanceId, e));
 			}
 		}
 
 		protected virtual TMessage Deserialize(string messagePath)
 		{
-			using (var reader = this.Options.RetryPolicy.OpenText(messagePath))
+			using (var reader = Options.RetryPolicy.OpenText(messagePath))
 			using (var jr = new JsonTextReader(reader))
 			{
 				return _serializer.Deserialize<TMessage>(jr);
@@ -192,18 +192,18 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 
 		protected override async Task SendRemoteAsync(IOwinContext context, TMessage message)
 		{
-			if (!this.Options.RetryPolicy.DirectoryExists(this.AppDataFullPath))
+			if (!Options.RetryPolicy.DirectoryExists(AppDataFullPath))
 			{
 				return;
 			}
 
-			var directory = this.Options.RetryPolicy.GetDirectory(this.AppDataFullPath);
-			var subscriptions = this.Options.RetryPolicy.GetDirectories(directory, "*")
-				.Where(subscription => !string.Equals(subscription.Name, this.Options.InstanceId));
+			var directory = Options.RetryPolicy.GetDirectory(AppDataFullPath);
+			var subscriptions = Options.RetryPolicy.GetDirectories(directory, "*")
+				.Where(subscription => !string.Equals(subscription.Name, Options.InstanceId));
 
 			foreach (var subscription in subscriptions)
 			{
-				await this.WriteMessage(this.Options.Timeout, subscription.FullName, message).WithCurrentCulture();
+				await WriteMessage(Options.Timeout, subscription.FullName, message).WithCurrentCulture();
 			}
 		}
 
@@ -211,10 +211,10 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 		{
 			// clean up expired files
 
-			var directory = this.Options.RetryPolicy.GetDirectory(subscriptionPath);
+			var directory = Options.RetryPolicy.GetDirectory(subscriptionPath);
 
 			var expired =
-				this.Options.RetryPolicy.GetFiles(directory, "*.msg")
+				Options.RetryPolicy.GetFiles(directory, "*.msg")
 				.Where(file => file.LastAccessTimeUtc + timeout < DateTime.UtcNow)
 				.ToArray();
 
@@ -222,7 +222,7 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 			{
 				try
 				{
-					this.Options.RetryPolicy.FileDelete(file);
+					Options.RetryPolicy.FileDelete(file);
 				}
 				catch (Exception e)
 				{
@@ -236,7 +236,7 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 
 			// write to a temporary file
 
-			using (var fs = this.Options.RetryPolicy.Open(tempPath, FileMode.CreateNew))
+			using (var fs = Options.RetryPolicy.Open(tempPath, FileMode.CreateNew))
 			using (var sw = new StreamWriter(fs))
 			using (var jw = new JsonTextWriter(sw))
 			{
@@ -247,7 +247,7 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 
 			// rename to the destination file
 
-			this.Options.RetryPolicy.FileMove(tempPath, messagePath);
+			Options.RetryPolicy.FileMove(tempPath, messagePath);
 
 			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("messagePath={0}", messagePath));
 			

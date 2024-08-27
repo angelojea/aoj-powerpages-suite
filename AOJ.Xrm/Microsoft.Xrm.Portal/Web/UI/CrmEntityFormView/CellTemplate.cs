@@ -42,7 +42,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.CrmEntityFormView
 			get { return Metadata.DataFieldName; }
 		}
 
-		protected ICellMetadata Metadata { get; private set; }
+		protected ICellMetadata Metadata { get; }
 
 		public virtual int? RowSpan
 		{

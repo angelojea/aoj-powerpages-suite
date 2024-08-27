@@ -83,7 +83,7 @@ namespace Adxstudio.Xrm.Cms
 			{
 				query.Criteria.AddCondition("adx_approved", ConditionOperator.Equal, true);
 			}
-			query.ColumnSet = new ColumnSet()
+			query.ColumnSet = new ColumnSet
 			{
 				Columns = { "createdbycontact", "adx_createdbycontact", "adx_authorurl", "adx_contactemail", "comments", "createdon", "title", "createdbycontact", "adx_approved" }
 			};
@@ -107,7 +107,7 @@ namespace Adxstudio.Xrm.Cms
 			var pageNumber = 1;
 			if (startRowIndex > 0)
 			{
-				pageNumber = (int)startRowIndex / maximumRows + 1;
+				pageNumber = startRowIndex / maximumRows + 1;
 			}
 			return new PagingInfo
 			{
@@ -233,7 +233,7 @@ namespace Adxstudio.Xrm.Cms
 				}
 				else
 				{
-					averageRating = (double)ratingSum / (double)ratingCount;
+					averageRating = ratingSum / (double)ratingCount;
 				}
 
 				var ratingInfo = new RatingInfo(yesCount, noCount, averageRating, ratingCount, ratingSum);

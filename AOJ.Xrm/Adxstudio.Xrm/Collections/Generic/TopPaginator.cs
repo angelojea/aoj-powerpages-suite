@@ -138,7 +138,7 @@ namespace Adxstudio.Xrm.Collections.Generic
 				TotalUnfilteredItems = totalUnfilteredItems;
 			}
 
-			public int TotalUnfilteredItems { get; private set; }
+			public int TotalUnfilteredItems { get; }
 
 			public IEnumerator<T> GetEnumerator()
 			{

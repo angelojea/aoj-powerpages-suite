@@ -21,11 +21,11 @@ namespace Adxstudio.Xrm.Ideas
 	using Microsoft.Xrm.Sdk.Metadata;
 	using Microsoft.Xrm.Sdk.Query;
 
-	using Adxstudio.Xrm.Core.Flighting;
-	using Adxstudio.Xrm.Resources;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
-	using Adxstudio.Xrm.Web;
+	using Core.Flighting;
+	using Resources;
+	using Services;
+	using Services.Query;
+	using Web;
 
 	/// <summary>
 	/// Provides methods to get and set data for an Adxstudio Portals Idea Forum such as ideas.
@@ -65,9 +65,9 @@ namespace Adxstudio.Xrm.Ideas
 		/// <param name="portalName">The configured name of the portal to get and set data for.</param>
 		public IdeaForumDataAdapter(Entity ideaForum, string portalName = null) : this(ideaForum.ToEntityReference(), new PortalConfigurationDataAdapterDependencies(portalName)) { }
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
-		protected EntityReference IdeaForum { get; private set; }
+		protected EntityReference IdeaForum { get; }
 
 		public DateTime? MaxDate { get; set; }
 
@@ -83,7 +83,7 @@ namespace Adxstudio.Xrm.Ideas
 			get
 			{
 				return this is IRollupFreeIdeaForumDataAdapter
-					? (TimeSpan?)null
+					? null
 					: TimeSpan.FromHours(1);
 			}
 		}
@@ -116,7 +116,8 @@ namespace Adxstudio.Xrm.Ideas
 			{
 				throw new InvalidOperationException(string.Format("Can't find {0} having ID {1}.", "adx_ideaforum", IdeaForum.Id));
 			}
-			else if (!ideaForum.CurrentUserCanSubmitIdeas)
+
+			if (!ideaForum.CurrentUserCanSubmitIdeas)
 			{
 				throw new InvalidOperationException(string.Format("The current user can't create an {0} with the current {0} submission policy.", "Idea"));
 			}
@@ -176,7 +177,7 @@ namespace Adxstudio.Xrm.Ideas
 						{
 							Conditions = new[]
 							{
-								new Condition("adx_ideaforumid", ConditionOperator.Equal, this.IdeaForum.Id),
+								new Condition("adx_ideaforumid", ConditionOperator.Equal, IdeaForum.Id),
 							}
 						}
 					}
@@ -198,7 +199,7 @@ namespace Adxstudio.Xrm.Ideas
 					});
 			}
 
-			var ideaForumEntity = serviceContext.RetrieveSingle("adx_ideaforum", FetchAttribute.All, new Condition("adx_ideaforumid", ConditionOperator.Equal, this.IdeaForum.Id));
+			var ideaForumEntity = serviceContext.RetrieveSingle("adx_ideaforum", FetchAttribute.All, new Condition("adx_ideaforumid", ConditionOperator.Equal, IdeaForum.Id));
 
 			if (ideaForumEntity == null)
 			{
@@ -250,15 +251,15 @@ namespace Adxstudio.Xrm.Ideas
 			var pageInfo = Cms.OrganizationServiceContextExtensions.GetPageInfo(startRowIndex, maximumRows);
 			var orders = new List<Order>
 			{
-				new Order(this.OrderAttribute, OrderType.Descending),
+				new Order(OrderAttribute, OrderType.Descending),
 			};
 
-			if (this.OrderAttribute != "adx_date")
+			if (OrderAttribute != "adx_date")
 			{
 				orders.Add(new Order("adx_date", OrderType.Descending));
 			}
 
-			var fetch = new Fetch()
+			var fetch = new Fetch
 			{
 				Entity = new FetchEntity
 				{
@@ -291,10 +292,10 @@ namespace Adxstudio.Xrm.Ideas
 
 			if (Status.HasValue)
 			{
-				filter.Conditions.Add(new Condition("statuscode", ConditionOperator.Equal, (int)Status.Value));
+				filter.Conditions.Add(new Condition("statuscode", ConditionOperator.Equal, Status.Value));
 			}
 
-			var collection = serviceContext.RetrieveMultiple(fetch, expiration: this.ExpirationDuration);
+			var collection = serviceContext.RetrieveMultiple(fetch, expiration: ExpirationDuration);
 
 			var query = collection.Entities.AsEnumerable();
 
@@ -328,7 +329,7 @@ namespace Adxstudio.Xrm.Ideas
 
 				if (Status.HasValue)
 				{
-					addCondition("statuscode", "eq", "{0}".FormatWith((int)Status.Value));
+					addCondition("statuscode", "eq", "{0}".FormatWith(Status.Value));
 				}
 
 				if (MaxDate.HasValue)
@@ -353,7 +354,7 @@ namespace Adxstudio.Xrm.Ideas
 			var ideaForum = serviceContext.RetrieveSingle(
 				"adx_ideaforum",
 				"adx_ideaforumid",
-				this.IdeaForum.Id,
+				IdeaForum.Id,
 				FetchAttribute.All);
 
 			if (ideaForum == null)

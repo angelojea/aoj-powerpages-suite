@@ -13,7 +13,7 @@ namespace Adxstudio.Xrm.Core.Flighting
 	/// </summary>
 	public class FeatureDetail : IFeatureDetail
 	{
-		private bool isEnabled = false;
+		private bool isEnabled;
 
 		public FeatureDetail()
 		{
@@ -34,14 +34,14 @@ namespace Adxstudio.Xrm.Core.Flighting
 			{
 				// Setting from the configuration manager overrides the hard-coded FCB
 				bool setting;
-				if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings.Get(this.Name))
-				    && bool.TryParse(ConfigurationManager.AppSettings[this.Name], out setting))
+				if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings.Get(Name))
+				    && bool.TryParse(ConfigurationManager.AppSettings[Name], out setting))
 				{
 					return setting;
 				}
-				return this.isEnabled;
+				return isEnabled;
 			}
-			set { this.isEnabled = value; }
+			set { isEnabled = value; }
 		}
 
 		public FeatureLocation FeatureLocation { get; set; }

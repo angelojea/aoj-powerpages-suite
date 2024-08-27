@@ -33,7 +33,7 @@ namespace Adxstudio.Xrm.Events
 			get { return false; }
 		}
 
-		public string PortalName { get; private set; }
+		public string PortalName { get; }
 
 		public void ProcessRequest(HttpContext context)
 		{

@@ -34,32 +34,32 @@ namespace Adxstudio.Xrm.Commerce
 		/// <summary>
 		/// Amount of the discount, either a dollar value or a percentage
 		/// </summary>
-		public decimal Amount { get; private set; }
+		public decimal Amount { get; }
 
 		/// <summary>
 		/// Discount code
 		/// </summary>
-		public string Code { get; private set; }
+		public string Code { get; }
 
 		/// <summary>
 		/// ID of the record
 		/// </summary>
-		public Guid Id { get; private set; }
+		public Guid Id { get; }
 
 		/// <summary>
 		/// Name
 		/// </summary>
-		public string Name { get; private set; }
+		public string Name { get; }
 
 		/// <summary>
 		/// Scope, either Order or Product
 		/// </summary>
-		public DiscountScope? Scope { get; private set; }
+		public DiscountScope? Scope { get; }
 
 		/// <summary>
 		/// Type, either Amount or Percentage
 		/// </summary>
-		public DiscountType? Type { get; private set; }
+		public DiscountType? Type { get; }
 
 		private static DiscountScope? TrySetDiscountScope(int scope)
 		{

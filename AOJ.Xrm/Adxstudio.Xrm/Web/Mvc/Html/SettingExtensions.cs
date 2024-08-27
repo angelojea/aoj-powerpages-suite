@@ -81,7 +81,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			}
 			catch (InvalidOperationException e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Attempt to render partial with setting {0}=""{1}"" resulted in an exception: {2}", settingName, value, e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Attempt to render partial with setting {0}=""{1}"" resulted in an exception: {2}", settingName, value, e));
 
                 if (defaultPartialViewName != null)
 				{

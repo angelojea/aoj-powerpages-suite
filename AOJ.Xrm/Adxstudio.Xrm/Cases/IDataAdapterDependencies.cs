@@ -32,14 +32,14 @@ namespace Adxstudio.Xrm.Cases
 			PortalName = portalName;
 		}
 
-		protected new string PortalName { get; private set; }
+		protected new string PortalName { get; }
 
 		public ICaseAccessPermissionScopesProvider GetPermissionScopesProviderForPortalUser()
 		{
 			var user = GetPortalUser();
 
 			return user == null
-				? (ICaseAccessPermissionScopesProvider)new NoCaseAccessPermissionScopesProvider()
+				? new NoCaseAccessPermissionScopesProvider()
 				: new ContactCaseAccessPermissionScopesProvider(user, this);
 		}
 

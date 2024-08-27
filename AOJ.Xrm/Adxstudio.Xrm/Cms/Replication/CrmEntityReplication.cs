@@ -40,9 +40,9 @@ namespace Adxstudio.Xrm.Cms.Replication
 			Context = context;
 		}
 
-		protected OrganizationServiceContext Context { get; private set; }
+		protected OrganizationServiceContext Context { get; }
 
-		protected Entity Source { get; private set; }
+		protected Entity Source { get; }
 
 		public virtual void Created() { }
 

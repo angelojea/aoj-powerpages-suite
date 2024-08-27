@@ -32,7 +32,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// Form Field
 		/// </summary>
-		public new CrmEntityFormViewField Field { get; private set; }
+		public new CrmEntityFormViewField Field { get; }
 
 		protected override void InstantiateControlIn(Control container)
 		{

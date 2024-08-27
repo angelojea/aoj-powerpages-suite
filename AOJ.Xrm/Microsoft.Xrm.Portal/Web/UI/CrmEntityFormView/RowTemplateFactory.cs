@@ -16,7 +16,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.CrmEntityFormView
 			LanguageCode = languageCode;
 		}
 
-		public int LanguageCode { get; private set; }
+		public int LanguageCode { get; }
 
 		public virtual ITemplate CreateTemplate(XNode rowNode, EntityMetadata entityMetadata, ICellTemplateFactory cellTemplateFactory)
 		{

@@ -15,9 +15,9 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 {
 	public class ForumThreadsDrop : PortalDrop
 	{
-		private Lazy<ForumThreadDrop[]> _threads;
+		private readonly Lazy<ForumThreadDrop[]> _threads;
 
-		private IForumDataAdapter _adapter;
+		private readonly IForumDataAdapter _adapter;
 
 		public ForumThreadsDrop(IPortalLiquidContext portalLiquidContext,
 									IDataAdapterDependencies dependencies,
@@ -69,10 +69,10 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			StartRowIndex = startRowIndex;  PageSize = pageSize; OrderByKey = orderBy; SortDirection = sortDirection;
 		}
 
-		internal IForum Forum { get; private set; }
+		internal IForum Forum { get; }
 
 		internal IPortalLiquidContext PortalLiquidContext { get; private set; }
-		internal IDataAdapterDependencies Dependencies { get; private set; }
+		internal IDataAdapterDependencies Dependencies { get; }
 
 		public int StartRowIndex { get; private set; }
 		public int PageSize { get; private set; }

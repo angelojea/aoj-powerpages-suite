@@ -74,7 +74,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			IDictionary<string, string> htmlAttributes = null)
 		{
 			return html.BoostrapModal(size, title.GetValueOrDefault(DefaultErrorModalTitle),
-				body.GetValueOrDefault(DefaultErrorModalBody), string.Join(" ", new[] { "modal-error", cssClass }).TrimEnd(' '), null,
+				body.GetValueOrDefault(DefaultErrorModalBody), string.Join(" ", "modal-error", cssClass).TrimEnd(' '), null,
 				false, dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, true, false, null,
 				closeButtonText.GetValueOrDefault(DefaultModalCloseButtonText), titleCssClass, primaryButtonCssClass,
 				closeButtonCssClass, htmlAttributes);
@@ -108,7 +108,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			var body = loading + iframe.ToString();
 
 			return html.BoostrapModal(size, title.GetValueOrDefault(DefaultModalCreateFormTitle), body,
-				string.Join(" ", new[] { "modal-form", "modal-form-insert", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-form", "modal-form-insert", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), true, true, true, null, null, titleCssClass,
 				null, null, htmlAttributes);
 		}
@@ -120,7 +120,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 
 			return html.BoostrapModal(size, title.GetValueOrDefault(DefaultModalCreateRelatedRecordTitle), body.GetValueOrDefault(ResourceManager.GetString("CreateRelatedRecord_Text")),
-				string.Join(" ", new[] { "modal-form-createrecord", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-form-createrecord", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(primaryButtonText),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass,
@@ -154,7 +154,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			var body = loading + iframe.ToString();
 
 			return html.BoostrapModal(size, title.GetValueOrDefault(DefaultModalCreateRelatedRecordTitle), body,
-				string.Join(" ", new[] { "modal-form", "modal-form-createrecord", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-form", "modal-form-createrecord", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), true, true, true, null, null, titleCssClass,
 				null, null, htmlAttributes);
 		}
@@ -187,7 +187,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			var body = loading + iframe.ToString();
 
 			return html.BoostrapModal(size, title.GetValueOrDefault(DefaultModalDetailsFormTitle), body,
-				string.Join(" ", new[] { "modal-form", "modal-form-details", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-form", "modal-form-details", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), true, true, true, null, null, titleCssClass,
 				null, null, htmlAttributes);
 		}
@@ -220,7 +220,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			var body = loading + iframe.ToString();
 
 			return html.BoostrapModal(size, title.GetValueOrDefault(DefaultModalEditFormTitle), body,
-				string.Join(" ", new[] { "modal-form", "modal-form-edit", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-form", "modal-form-edit", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), true, true, true, null, null, titleCssClass,
 				null, null, htmlAttributes);
 		}
@@ -247,7 +247,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(DefaultModalDeleteTitle), body.GetValueOrDefault(DefaultModalDeleteBody),
-				string.Join(" ", new[] { "modal-delete", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-delete", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(DefaultModalDeletePrimaryButtonText),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass, primaryButtonCssClass,
@@ -261,7 +261,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(ResourceManager.GetString("Qualify_Lead_Text")), body.GetValueOrDefault(DefaultQualifyLeadBody),
-				string.Join(" ", new[] { "modal-qualify", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-qualify", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Qualify_Button_Label_Text")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass, primaryButtonCssClass,
@@ -277,7 +277,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(ResourceManager.GetString("Resolve_Case_DefaultText")), body.GetValueOrDefault(defaultBody.ToString()),
-				string.Join(" ", new[] { "modal-resolvecase", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-resolvecase", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Resolve_Text")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass,
@@ -292,7 +292,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(ResourceManager.GetString("Close_Case_Button_Text")), body.GetValueOrDefault(DefaultCloseCaseBody),
-                string.Join(" ", new[] { "modal-closecase", cssClass }).TrimEnd(' '), null, false,
+                string.Join(" ", "modal-closecase", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Close_DefaultText")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass,
@@ -307,7 +307,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(ResourceManager.GetString("Reopen_Case_DefaultText")), body.GetValueOrDefault(DefaultReopenCaseBody),
-				string.Join(" ", new[] { "modal-reopencase", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-reopencase", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Reopen_Text")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass,
@@ -321,7 +321,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(ResourceManager.GetString("Cancel_Case_DefaultText")), body.GetValueOrDefault(DefaultCancelCaseBody),
-				string.Join(" ", new[] { "modal-cancelcase", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-cancelcase", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Cancel_Case_DefaultText")),
 				cancelButtonText.GetValueOrDefault(ResourceManager.GetString("Cancel_Confirmation_No")), titleCssClass,
@@ -336,7 +336,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(ResourceManager.GetString("Create_Order_Button_Text")), body.GetValueOrDefault(DefaultConvertQuoteBody),
-				string.Join(" ", new[] { "modal-convert-quote", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-convert-quote", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Create_Order_Button_Text")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass, primaryButtonCssClass,
@@ -350,7 +350,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(ResourceManager.GetString("Create_Invoice_Button_Text")), body.GetValueOrDefault(DefaultConvertOrderBody),
-				string.Join(" ", new[] { "modal-convert-order", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-convert-order", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Create_Invoice_Button_Text")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass, primaryButtonCssClass,
@@ -364,7 +364,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(ResourceManager.GetString("Calculate_Text")), body.GetValueOrDefault(DefaultCalculateBody),
-				string.Join(" ", new[] { "modal-calculate", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-calculate", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Calculate_Text")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass, primaryButtonCssClass,
@@ -378,7 +378,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(ResourceManager.GetString("Deactivate_Button_Text")), body.GetValueOrDefault(DefaultDeactivateBody),
-				string.Join(" ", new[] { "modal-deactivate", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-deactivate", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Deactivate_Button_Text")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass, primaryButtonCssClass,
@@ -392,7 +392,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(ResourceManager.GetString("Activate_Button_Text")), body.GetValueOrDefault(DefaultActivateBody),
-				string.Join(" ", new[] { "modal-activate", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-activate", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Activate_Button_Text")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass, primaryButtonCssClass,
@@ -406,7 +406,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(ResourceManager.GetString("Activate_Quote_Button_Text")), body.GetValueOrDefault(DefaultActivateQuoteBody),
-				string.Join(" ", new[] { "modal-activate-quote", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-activate-quote", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Activate_Button_Text")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass, primaryButtonCssClass,
@@ -420,7 +420,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(ResourceManager.GetString("Set_On_Hold_Button_Label_Text")), body.GetValueOrDefault(DefaultSetOnHoldBody),
-				string.Join(" ", new[] { "modal-set-opportunity-on-hold", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-set-opportunity-on-hold", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Confirm_Text")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass, primaryButtonCssClass,
@@ -434,7 +434,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(ResourceManager.GetString("Reopen_Opportunity_Button_Text")), body.GetValueOrDefault(DefaultReopenOpportunityBody),
-				string.Join(" ", new[] { "modal-reopen-opportunity", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-reopen-opportunity", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Confirm_Text")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass, primaryButtonCssClass,
@@ -448,7 +448,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(string.Format("<span class='fa fa-check-square-o' aria-hidden='true'></span> {0}", ResourceManager.GetString("Close_As_Won_Button_Text"))), body.GetValueOrDefault(DefaultWinOpportunityBody),
-				string.Join(" ", new[] { "modal-win-opportunity", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-win-opportunity", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Close_As_Won_Button_Text")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass,
@@ -463,7 +463,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(string.Format("<span aria-hidden='true' class='fa fa-ban'></span> {0}", ResourceManager.GetString("Close_As_Lost_Button_Label"))), body.GetValueOrDefault(DefaultLoseOpportunityBody),
-				string.Join(" ", new[] { "modal-lose-opportunity", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-lose-opportunity", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Close_As_Lost_Button_Label")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass,
@@ -478,7 +478,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(ResourceManager.GetString("Generate_Quote_Button_Label")), body.GetValueOrDefault(DefaultGenerateQuoteBody),
-				string.Join(" ", new[] { "modal-generate-quote-from-opportunity", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-generate-quote-from-opportunity", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Generate_Text")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass, primaryButtonCssClass,
@@ -494,7 +494,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(ResourceManager.GetString("Update_Pipeline_Phase_Button_Label_Text")), body.GetValueOrDefault(defaultBody.ToString()),
-				string.Join(" ", new[] { "modal-updatepipelinephase", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-updatepipelinephase", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Update_Button_Label_Text")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass,
@@ -509,7 +509,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(ResourceManager.GetString("Run_Workflow_Button_Text")), body.GetValueOrDefault(DefaultModalRunWorkflowBody),
-				string.Join(" ", new[] { "modal-run-workflow", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-run-workflow", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Proceed_Text")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass, primaryButtonCssClass,
@@ -523,7 +523,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			return html.BoostrapModal(size,
 				title.GetValueOrDefault(ResourceManager.GetString("Disassociate_Button_Text")), body.GetValueOrDefault(DefaultModalDisassociateBody),
-				string.Join(" ", new[] { "modal-disassociate", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-disassociate", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(ResourceManager.GetString("Disassociate_Button_Text")),
 				cancelButtonText.GetValueOrDefault(DefaultModalDeleteCancelButtonText), titleCssClass, primaryButtonCssClass,

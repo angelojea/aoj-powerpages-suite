@@ -22,8 +22,8 @@ namespace Adxstudio.Xrm.Blogs
 			ApplicationPath = applicationPath;
 		}
 
-		public ApplicationPath ApplicationPath { get; private set; }
+		public ApplicationPath ApplicationPath { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 	}
 }

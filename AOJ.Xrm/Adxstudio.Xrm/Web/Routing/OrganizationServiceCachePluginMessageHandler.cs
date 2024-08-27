@@ -23,7 +23,7 @@ namespace Adxstudio.Xrm.Web.Routing
 		/// </summary>
 		public virtual string PortalName { get; private set; }
 
-		public OrganizationServiceCachePluginMessage Message { get; private set; }
+		public OrganizationServiceCachePluginMessage Message { get; }
 
 		public OrganizationServiceCachePluginMessageHandler(string portalName, OrganizationServiceCachePluginMessage message)
 		{

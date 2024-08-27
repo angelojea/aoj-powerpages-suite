@@ -172,7 +172,7 @@ namespace Adxstudio.Xrm.Web.Modules
 
 			if (!string.IsNullOrWhiteSpace(excluded))
 			{
-				var parts = excluded.Split(new[] { ',', ';' });
+				var parts = excluded.Split(',', ';');
 
 				foreach (var part in parts)
 				{
@@ -220,7 +220,7 @@ namespace Adxstudio.Xrm.Web.Modules
 			var message = new MailMessage { IsBodyHtml = true, Subject = subject, Body = body };
 
 			if (from != null) message.From = from;
-			if (!string.IsNullOrWhiteSpace(to)) message.To.Add(to.Trim(new[] { ';', ',' }).Replace(';', ','));
+			if (!string.IsNullOrWhiteSpace(to)) message.To.Add(to.Trim(';', ',').Replace(';', ','));
 
 			foreach (var header in GetHeaders(error, context, dropped))
 			{

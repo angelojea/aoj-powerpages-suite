@@ -16,15 +16,8 @@ namespace Microsoft.Xrm.Portal.Web
 	public sealed class UrlBuilder : UriBuilder
 	{
 		private const string _urlBuilderReadOnly = "UrlBuilder is set to read-only.";
-		private bool _isReadOnly;
 
-		private bool IsReadOnly
-		{
-			get
-			{
-				return _isReadOnly;
-			}
-		}
+		private bool IsReadOnly { get; set; }
 
 		private QueryStringCollection _queryString;
 
@@ -341,20 +334,20 @@ namespace Microsoft.Xrm.Portal.Web
 
 		private void _Redirect(bool endResponse)
 		{
-			string uri = this.ToString();
+			string uri = ToString();
 			Tracing.FrameworkInformation("UrlBuilder", "Redirect", "Redirecting to: " + uri);
 			HttpContext.Current.Response.Redirect(uri, endResponse);
 		}
 
 		public UrlBuilder Clone()
 		{
-			return new UrlBuilder(this.ToString());
+			return new UrlBuilder(ToString());
 		}
 
 		public void EnableReadOnly()
 		{
-			this.QueryString.EnableReadOnly();
-			_isReadOnly = true;
+			QueryString.EnableReadOnly();
+			IsReadOnly = true;
 		}
 
 		public new string ToString()

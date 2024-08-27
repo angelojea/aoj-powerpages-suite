@@ -40,7 +40,7 @@ namespace Adxstudio.Xrm.Web.Providers
 			PortalName = portalName;
 		}
 
-		protected virtual string PortalName { get; private set; }
+		protected virtual string PortalName { get; }
 
 		public Entity ExecuteEntityQuery(HttpContext context, IPortalContext portal, OrganizationServiceContext serviceContext, EntityReference entityReference, CmsEntityMetadata entityMetadata)
 		{
@@ -159,7 +159,7 @@ namespace Adxstudio.Xrm.Web.Providers
 						}
 						catch (InvalidOperationException exception)
 						{
-							ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception during Read permission assertion on {0}:{1}: {2}", e.LogicalName, e.Id, exception.ToString()));
+							ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception during Read permission assertion on {0}:{1}: {2}", e.LogicalName, e.Id, exception));
 
 							return false;
 						}
@@ -191,7 +191,7 @@ namespace Adxstudio.Xrm.Web.Providers
 						}
 						catch (InvalidOperationException exception)
 						{
-							ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception during Read permission assertion on {0}:{1}: {2}", e.LogicalName, e.Id, exception.ToString()));
+							ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception during Read permission assertion on {0}:{1}: {2}", e.LogicalName, e.Id, exception));
 
 							return false;
 						}
@@ -261,7 +261,7 @@ namespace Adxstudio.Xrm.Web.Providers
 						}
 						catch (InvalidOperationException exception)
 						{
-							ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception during Read permission assertion on {0}:{1}: {2}", e.LogicalName, e.Id, exception.ToString()));
+							ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception during Read permission assertion on {0}:{1}: {2}", e.LogicalName, e.Id, exception));
 
 							return false;
 						}
@@ -284,7 +284,7 @@ namespace Adxstudio.Xrm.Web.Providers
                     }
                     catch (InvalidOperationException exception)
                     {
-                        ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception during Read permission assertion on {0}:{1}: {2}", e.LogicalName, e.Id, exception.ToString()));
+                        ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception during Read permission assertion on {0}:{1}: {2}", e.LogicalName, e.Id, exception));
 
                         return false;
                     }
@@ -1157,15 +1157,15 @@ namespace Adxstudio.Xrm.Web.Providers
 				WebsiteReferenceAttribute = websiteReferenceAttribute;
 			}
 
-			public string ReferencedAttribute { get; private set; }
+			public string ReferencedAttribute { get; }
 
-			public string ReferencedEntity { get; private set; }
+			public string ReferencedEntity { get; }
 
-			public string ReferencingAttribute { get; private set; }
+			public string ReferencingAttribute { get; }
 
-			public string ReferencingEntity { get; private set; }
+			public string ReferencingEntity { get; }
 
-			public string WebsiteReferenceAttribute { get; private set; }
+			public string WebsiteReferenceAttribute { get; }
 		}
 	}
 }

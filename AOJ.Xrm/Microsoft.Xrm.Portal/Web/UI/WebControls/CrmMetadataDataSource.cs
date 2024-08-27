@@ -33,7 +33,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		[Category("Data")]
 		public string CrmDataContextName { get; set; }
 
-		[Category("Data"), Description(""), DefaultValue((string)null)]
+		[Category("Data"), Description(""), DefaultValue(null)]
 		public string SortExpression
 		{
 			get
@@ -47,7 +47,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 			}
 		}
 
-		[Category("Data"), Description(""), DefaultValue((string)null)]
+		[Category("Data"), Description(""), DefaultValue(null)]
 		public string EntityName
 		{
 			get
@@ -61,7 +61,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 			}
 		}
 
-		[Category("Data"), Description(""), DefaultValue((string)null)]
+		[Category("Data"), Description(""), DefaultValue(null)]
 		public string AttributeName
 		{
 			get
@@ -141,7 +141,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 			return GetView().Select(arguments);
 		}
 
-		[Description(""), Category("Data"), PersistenceMode(PersistenceMode.InnerProperty), DefaultValue((string)null), Editor("System.Web.UI.Design.WebControls.ParameterCollectionEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor)), MergableProperty(false)]
+		[Description(""), Category("Data"), PersistenceMode(PersistenceMode.InnerProperty), DefaultValue(null), Editor("System.Web.UI.Design.WebControls.ParameterCollectionEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor)), MergableProperty(false)]
 		public ParameterCollection SelectParameters
 		{
 			get

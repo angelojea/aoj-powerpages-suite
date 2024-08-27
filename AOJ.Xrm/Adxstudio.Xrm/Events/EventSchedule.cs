@@ -27,16 +27,16 @@ namespace Adxstudio.Xrm.Events
 			EndTime = entity.GetAttributeValue<DateTime>("adx_endtime");
 		}
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public DateTime StartTime { get; private set; }
+		public DateTime StartTime { get; }
 
-		public DateTime EndTime { get; private set; }
+		public DateTime EndTime { get; }
 
-		public Entity Event { get; private set; }
+		public Entity Event { get; }
 
-		public bool IsAllDayEvent { get; private set; }
+		public bool IsAllDayEvent { get; }
 	}
 }

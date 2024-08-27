@@ -61,7 +61,7 @@ namespace Adxstudio.Xrm.Metadata
 		/// <summary>
 		/// Gets currency format metadata for the CRM organization.
 		/// </summary>
-		protected IOrganizationMoneyFormatInfo Organization { get; private set; }
+		protected IOrganizationMoneyFormatInfo Organization { get; }
 
 		/// <summary>
 		/// Gets the configured decimal precision for the current format.

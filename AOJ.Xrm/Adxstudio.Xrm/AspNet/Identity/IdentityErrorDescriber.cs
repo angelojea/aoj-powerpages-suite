@@ -8,9 +8,9 @@ namespace Adxstudio.Xrm.AspNet.Identity
 	using System;
 	using System.Globalization;
 	using System.Runtime.CompilerServices;
-	using Adxstudio.Xrm.AspNet.Cms;
-	using Adxstudio.Xrm.Resources;
-	using Adxstudio.Xrm.Web;
+	using Cms;
+	using Resources;
+	using Web;
 	using Microsoft.Owin;
 	using Xrm.Cms;
 
@@ -22,9 +22,9 @@ namespace Adxstudio.Xrm.AspNet.Identity
 
 	public class IdentityErrorDescriber
 	{
-		public IContentMapProvider ContentMapProvider { get; private set; }
+		public IContentMapProvider ContentMapProvider { get; }
 
-		public ContextLanguageInfo Language { get; private set; }
+		public ContextLanguageInfo Language { get; }
 
 		public IdentityErrorDescriber(IOwinContext context)
 			: this(context.GetContentMapProvider(), context.GetContextLanguageInfo())
@@ -38,8 +38,8 @@ namespace Adxstudio.Xrm.AspNet.Identity
 				throw new ArgumentNullException("contentMapProvider");
 			}
 
-			this.ContentMapProvider = contentMapProvider;
-			this.Language = language;
+			ContentMapProvider = contentMapProvider;
+			Language = language;
 		}
 
 		public virtual IdentityError DefaultError()
@@ -149,9 +149,9 @@ namespace Adxstudio.Xrm.AspNet.Identity
 
 		protected virtual IdentityError GetError(string message, object arg = null, [CallerMemberName] string code = null)
 		{
-			return this.ContentMapProvider.Using(map =>
+			return ContentMapProvider.Using(map =>
 			{
-				var description = map.GetSnippet("Account/Errors/" + code, this.Language) ?? message;
+				var description = map.GetSnippet("Account/Errors/" + code, Language) ?? message;
 
 				return new IdentityError
 				{

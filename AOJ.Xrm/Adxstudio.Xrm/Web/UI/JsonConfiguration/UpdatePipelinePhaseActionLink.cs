@@ -13,10 +13,10 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
 	public class UpdatePipelinePhaseActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-check-circle fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Update_Pipeline_Phase_Button_Label_Text");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Update_Pipeline_Phase_Button_Label_Text");
-		private static string DefaultPipelinePhaseLabel = ResourceManager.GetString("Pipeline_Phase_Label_Text");
-		private static string DefaultDescriptionLabel = ResourceManager.GetString("Description_Of_Update_Label_Text");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-check-circle fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Update_Pipeline_Phase_Button_Label_Text");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Update_Pipeline_Phase_Button_Label_Text");
+		private static readonly string DefaultPipelinePhaseLabel = ResourceManager.GetString("Pipeline_Phase_Label_Text");
+		private static readonly string DefaultDescriptionLabel = ResourceManager.GetString("Description_Of_Update_Label_Text");
 
 		public string PipelinePhaseLabel { get; set; }
 

@@ -39,9 +39,9 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			ContentMapUrlProvider = contentMapUrlProvider;
 		}
 
-		public IContentMapEntityUrlProvider ContentMapUrlProvider { get; private set; }
+		public IContentMapEntityUrlProvider ContentMapUrlProvider { get; }
 
-		protected IContentMapProvider ContentMapProvider { get; private set; }
+		protected IContentMapProvider ContentMapProvider { get; }
 
 		public override IDictionary<string, DirectoryType> EntityDirectoryTypes
 		{
@@ -137,7 +137,6 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 
 	internal class ContentMapFileSystemContext : EntityDirectoryFileSystemContext
 	{
-		private readonly IDirectory _current;
 		private readonly Lazy<DirectoryTreeNode> _tree;
 
 		public ContentMapFileSystemContext(IEntityDirectoryFileSystem fileSystem, ContentMap contentMap, WebPageNode root, IDirectory current) : base(fileSystem)
@@ -148,15 +147,12 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 
 			ContentMap = contentMap;
 			Root = root;
-			_current = current;
+			Current = current;
 
 			_tree = new Lazy<DirectoryTreeNode>(GetTree, LazyThreadSafetyMode.None);
 		}
 
-		public override IDirectory Current
-		{
-			get { return _current; }
-		}
+		public override IDirectory Current { get; }
 
 		public override DirectoryTreeNode Tree
 		{
@@ -170,7 +166,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 
 		protected ContentMap ContentMap { get; private set; }
 
-		protected WebPageNode Root { get; private set; }
+		protected WebPageNode Root { get; }
 
 		private DirectoryTreeNode GetTree()
 		{
@@ -251,7 +247,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			ContentMapUrlProvider = fileSystem.ContentMapUrlProvider;
 		}
 
-		public WebPageNode Node { get; private set; }
+		public WebPageNode Node { get; }
 
 		public override EntityReference EntityReference
 		{
@@ -268,11 +264,11 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			get { return "adx_parentpageid"; }
 		}
 
-		protected ContentMap ContentMap { get; private set; }
+		protected ContentMap ContentMap { get; }
 
-		protected ContentMapFileSystem ContentMapFileSystem { get; private set; }
+		protected ContentMapFileSystem ContentMapFileSystem { get; }
 
-		protected IContentMapEntityUrlProvider ContentMapUrlProvider { get; private set; }
+		protected IContentMapEntityUrlProvider ContentMapUrlProvider { get; }
 
 		protected override DirectoryContent[] GetChildren()
 		{
@@ -350,7 +346,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error getting URL for entity [adx_webpage:{0}]: {1}", Node.Id, e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error getting URL for entity [adx_webpage:{0}]: {1}", Node.Id, e));
 
                 return null;
 			}
@@ -381,7 +377,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error getting URL for entity [adx_webfile:{0}]: {1}", Node.Id, e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error getting URL for entity [adx_webfile:{0}]: {1}", Node.Id, e));
 
                 return null;
 			}
@@ -411,7 +407,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			}
 			catch (InvalidOperationException e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error validating security for entity [adx_webfile:{0}]: {1}", Node.Id, e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error validating security for entity [adx_webfile:{0}]: {1}", Node.Id, e));
 
                 return null;
 			}

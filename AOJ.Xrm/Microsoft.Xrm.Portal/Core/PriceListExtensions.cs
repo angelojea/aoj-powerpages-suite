@@ -29,9 +29,9 @@ namespace Microsoft.Xrm.Portal.Core
 				Max = max;
 			}
 
-			public DateTime? Max { get; set; }
+			public DateTime? Max { get; }
 
-			public DateTime? Min { get; set; }
+			public DateTime? Min { get; }
 
 			public bool Includes(DateTime value)
 			{

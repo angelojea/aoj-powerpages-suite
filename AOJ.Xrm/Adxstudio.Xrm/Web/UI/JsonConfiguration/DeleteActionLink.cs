@@ -16,9 +16,9 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 	/// </summary>
 	public class DeleteActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-trash-o fa-fw' aria-hidden='true'></span>" + ResourceManager.GetString("Delete_Button_Text");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Delete_Button_Text");
-		private static string DefaultConfirmation = ResourceManager.GetString("Record_Deletion_Confirmation_Message");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-trash-o fa-fw' aria-hidden='true'></span>" + ResourceManager.GetString("Delete_Button_Text");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Delete_Button_Text");
+		private static readonly string DefaultConfirmation = ResourceManager.GetString("Record_Deletion_Confirmation_Message");
 
 		public ViewDeleteModal Modal { get; set; }
 

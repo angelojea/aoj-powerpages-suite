@@ -33,7 +33,7 @@ namespace Adxstudio.Xrm.Core.Telemetry
 		[Event((int)EventNames.AuthenticationProvider)]
 		public void LogAuthenticationProvider(Guid organizationId, Guid portalId, string authenticationProvider)
 		{
-			this.WriteEvent((int)EventNames.AuthenticationProvider, organizationId, portalId, authenticationProvider);
+			WriteEvent((int)EventNames.AuthenticationProvider, organizationId, portalId, authenticationProvider);
 		}
 	}
 }

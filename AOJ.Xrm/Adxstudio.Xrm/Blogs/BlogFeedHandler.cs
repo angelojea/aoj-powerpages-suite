@@ -20,7 +20,7 @@ namespace Adxstudio.Xrm.Blogs
 			Id = id;
 		}
 
-		protected virtual Guid? Id { get; private set; }
+		protected virtual Guid? Id { get; }
 
 		protected override IBlogDataAdapter GetDataAdapter(IPortalContext portal, HttpContext context)
 		{

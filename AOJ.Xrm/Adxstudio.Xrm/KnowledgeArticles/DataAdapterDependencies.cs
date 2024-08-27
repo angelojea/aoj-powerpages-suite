@@ -48,6 +48,6 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 			return PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 		}
 
-		protected new string PortalName { get; private set; }
+		protected new string PortalName { get; }
 	}
 }

@@ -11,8 +11,8 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
 	public class SubmitActionLink : ViewActionLink
 	{
-		private static string DefaultButtonLabel = ResourceManager.GetString("Submit_Button_Label_Text");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Submit_Button_Label_Text");
+		private static readonly string DefaultButtonLabel = ResourceManager.GetString("Submit_Button_Label_Text");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Submit_Button_Label_Text");
 		private static readonly string DefaultButtonBusyText = ResourceManager.GetString("Default_Modal_Processing_Text");
 
 		public SubmitActionLink()

@@ -22,7 +22,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 		private readonly Lazy<EventScheduleDrop[]> _schedules;
 
-		private IEventDataAdapter _eventDataAdapter;
+		private readonly IEventDataAdapter _eventDataAdapter;
 
 		public EventDrop(IPortalLiquidContext portalLiquidContext, IDataAdapterDependencies dependencies, IEvent oEvent)
 			: base(portalLiquidContext, oEvent.Entity)
@@ -40,7 +40,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 		}
 
 		[Obsolete]
-		protected IEvent Event { get; private set; }
+		protected IEvent Event { get; }
 
 		public string Name
 		{

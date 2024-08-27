@@ -36,9 +36,9 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// </param>
 		public SearchSavedQuery(Entity entity)
 		{
-			this.SavedQueryId = entity.Id;
-			this.SavedQueryIdUnique = entity.GetAttributeValue<Guid>("savedqueryidunique");
-			this.EntityName = entity.GetAttributeValue<string>("returnedtypecode");
+			SavedQueryId = entity.Id;
+			SavedQueryIdUnique = entity.GetAttributeValue<Guid>("savedqueryidunique");
+			EntityName = entity.GetAttributeValue<string>("returnedtypecode");
 		}
 
 		/// <summary>
@@ -49,7 +49,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// </returns>
 		public override int GetHashCode()
 		{
-			return this.SavedQueryId.GetHashCode();
+			return SavedQueryId.GetHashCode();
 		}
 
 		/// <summary>
@@ -63,13 +63,13 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// </returns>
 		public override bool Equals(object obj)
 		{
-			if (obj == null || this.GetType() != obj.GetType())
+			if (obj == null || GetType() != obj.GetType())
 			{
 				return false;
 			}
 
 			SearchSavedQuery item = obj as SearchSavedQuery;
-			return item.SavedQueryId == this.SavedQueryId;
+			return item.SavedQueryId == SavedQueryId;
 		}
 	}
 }

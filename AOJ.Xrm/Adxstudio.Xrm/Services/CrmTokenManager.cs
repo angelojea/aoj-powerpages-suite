@@ -10,9 +10,9 @@ namespace Adxstudio.Xrm.Services
 	using System.Linq;
 	using System.Security.Cryptography.X509Certificates;
 	using System.Threading.Tasks;
-	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.IdentityModel.ActiveDirectory;
-	using Adxstudio.Xrm.Performance;
+	using Configuration;
+	using IdentityModel.ActiveDirectory;
+	using Performance;
 	using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
 	/// <summary>
@@ -64,9 +64,9 @@ namespace Adxstudio.Xrm.Services
 		/// <param name="resource">The resource.</param>
 		public CrmTokenManager(IAuthenticationSettings authenticationSettings, ICertificateSettings certificateSettings, string resource)
 		{
-			this.AuthenticationSettings = authenticationSettings;
-			this.CertificateSettings = certificateSettings;
-			this.Resource = resource;
+			AuthenticationSettings = authenticationSettings;
+			CertificateSettings = certificateSettings;
+			Resource = resource;
 		}
 
 		/// <summary>
@@ -77,12 +77,12 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>Type: Returns_String Access token</returns>
 		public async Task<string> GetTokenAsync(string authorizationCode = null, Func<AuthenticationResult, Exception> test = null)
 		{
-			if (this.Resource == null)
+			if (Resource == null)
 			{
 				return null;
 			}
 
-			var token = await this.GetAuthenticationResultAsync(authorizationCode, test);
+			var token = await GetAuthenticationResultAsync(authorizationCode, test);
 			return token != null ? token.AccessToken : null;
 		}
 
@@ -94,12 +94,12 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>Type: Returns_String Access token</returns>
 		public string GetToken(string authorizationCode = null, Func<AuthenticationResult, Exception> test = null)
 		{
-			if (this.Resource == null)
+			if (Resource == null)
 			{
 				return null;
 			}
 
-			var token = this.GetAuthenticationResult(authorizationCode, test);
+			var token = GetAuthenticationResult(authorizationCode, test);
 			return token != null ? token.AccessToken : null;
 		}
 
@@ -108,7 +108,7 @@ namespace Adxstudio.Xrm.Services
 		/// </summary>
 		public void Reset()
 		{
-			this.tokenCache = null;
+			tokenCache = null;
 		}
 
 		/// <summary>
@@ -186,7 +186,7 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>'true' if the token is invalid.</returns>
 		private bool TokenIsInvalid()
 		{
-			return this.tokenCache == null || this.tokenCache.ExpiresOn.Subtract(this.AuthenticationSettings.TokenRefreshWindow) <= DateTimeOffset.UtcNow;
+			return tokenCache == null || tokenCache.ExpiresOn.Subtract(AuthenticationSettings.TokenRefreshWindow) <= DateTimeOffset.UtcNow;
 		}
 
 		/// <summary>
@@ -197,27 +197,27 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>Type: Return_AuthenticationResult</returns>
 		private async Task<AuthenticationResult> GetAuthenticationResultAsync(string authorizationCode, Func<AuthenticationResult, Exception> test)
 		{
-			if (this.TokenIsInvalid())
+			if (TokenIsInvalid())
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Get new token required due to: {0}", this.tokenCache == null ? "null token" : "expiring token"));
+				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Get new token required due to: {0}", tokenCache == null ? "null token" : "expiring token"));
 
 				using (PerformanceProfiler.Instance.StartMarker(PerformanceMarkerName.Services, PerformanceMarkerArea.Crm, PerformanceMarkerTagName.GetToken))
 				{
 					// filter out empty thumbprints for the certificate fallback logic to work correctly
-					var certificates = this.CertificateSettings.FindCertificates().ToList();
+					var certificates = CertificateSettings.FindCertificates().ToList();
 
 					if (!certificates.Any())
 					{
 						throw new CertificateNotFoundException();
 					}
 
-					var result = await this.GetAuthenticationResultAsync(certificates, authorizationCode, test);
+					var result = await GetAuthenticationResultAsync(certificates, authorizationCode, test);
 
-					this.ApplyAuthenticationResult(result);
+					ApplyAuthenticationResult(result);
 				}
 			}
 
-			return this.tokenCache;
+			return tokenCache;
 		}
 
 		/// <summary>
@@ -237,8 +237,8 @@ namespace Adxstudio.Xrm.Services
 				try
 				{
 					var token = string.IsNullOrEmpty(authorizationCode)
-						? await certificate.GetTokenAsync(this.AuthenticationSettings, this.Resource)
-						: await certificate.GetTokenOnBehalfOfAsync(this.AuthenticationSettings, this.Resource, authorizationCode);
+						? await certificate.GetTokenAsync(AuthenticationSettings, Resource)
+						: await certificate.GetTokenOnBehalfOfAsync(AuthenticationSettings, Resource, authorizationCode);
 
 					return GetAcquireTokenResult(token, test, index, errors);
 				}
@@ -268,27 +268,27 @@ namespace Adxstudio.Xrm.Services
 		/// <returns>Type: Return_AuthenticationResult</returns>
 		private AuthenticationResult GetAuthenticationResult(string authorizationCode, Func<AuthenticationResult, Exception> test)
 		{
-			if (this.TokenIsInvalid())
+			if (TokenIsInvalid())
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Get new token required due to: {0}", this.tokenCache == null ? "null token" : "expiring token"));
+				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Get new token required due to: {0}", tokenCache == null ? "null token" : "expiring token"));
 
 				using (PerformanceProfiler.Instance.StartMarker(PerformanceMarkerName.Services, PerformanceMarkerArea.Crm, PerformanceMarkerTagName.GetToken))
 				{
 					// filter out empty thumbprints for the certificate fallback logic to work correctly
-					var certificates = this.CertificateSettings.FindCertificates().ToList();
+					var certificates = CertificateSettings.FindCertificates().ToList();
 
 					if (!certificates.Any())
 					{
 						throw new CertificateNotFoundException();
 					}
 
-					var result = this.GetAuthenticationResult(certificates, authorizationCode, test);
+					var result = GetAuthenticationResult(certificates, authorizationCode, test);
 
-					this.ApplyAuthenticationResult(result);
+					ApplyAuthenticationResult(result);
 				}
 			}
 
-			return this.tokenCache;
+			return tokenCache;
 		}
 
 		/// <summary>
@@ -308,8 +308,8 @@ namespace Adxstudio.Xrm.Services
 				try
 				{
 					var token = string.IsNullOrEmpty(authorizationCode)
-						? certificate.GetToken(this.AuthenticationSettings, this.Resource)
-						: certificate.GetTokenOnBehalfOf(this.AuthenticationSettings, this.Resource, authorizationCode);
+						? certificate.GetToken(AuthenticationSettings, Resource)
+						: certificate.GetTokenOnBehalfOf(AuthenticationSettings, Resource, authorizationCode);
 
 					return GetAcquireTokenResult(token, test, index, errors);
 				}
@@ -337,17 +337,17 @@ namespace Adxstudio.Xrm.Services
 		/// <param name="result">The new token.</param>
 		private void ApplyAuthenticationResult(AcquireTokenResult result)
 		{
-			this.tokenCache = result.Token;
+			tokenCache = result.Token;
 
 			if (result.Error != null)
 			{
 				throw result.Error;
 			}
 
-			if (this.tokenCache != null)
+			if (tokenCache != null)
 			{
-				var duration = this.tokenCache.ExpiresOn - DateTimeOffset.UtcNow;
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("New token expires on: {0}: after: {1}", this.tokenCache.ExpiresOn, duration));
+				var duration = tokenCache.ExpiresOn - DateTimeOffset.UtcNow;
+				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("New token expires on: {0}: after: {1}", tokenCache.ExpiresOn, duration));
 			}
 		}
 	}

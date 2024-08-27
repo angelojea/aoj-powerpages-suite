@@ -43,7 +43,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// Form field.
 		/// </summary>
-		public CrmEntityFormViewField Field { get; private set; }
+		public CrmEntityFormViewField Field { get; }
 
 		private string ValidationText
 		{

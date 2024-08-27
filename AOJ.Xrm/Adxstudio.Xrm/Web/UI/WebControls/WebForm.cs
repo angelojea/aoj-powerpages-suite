@@ -28,24 +28,24 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 	using Microsoft.Xrm.Sdk.Query;
 	using Newtonsoft.Json;
 	using CancelEventArgs = System.ComponentModel.CancelEventArgs;
-	using Adxstudio.Xrm.Activity;
-	using Adxstudio.Xrm.Cms;
+	using Activity;
+	using Cms;
 	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.Core;
-	using Adxstudio.Xrm.Diagnostics.Trace;
+	using Core;
+	using Diagnostics.Trace;
 	using Adxstudio.Xrm.EntityForm;
-	using Adxstudio.Xrm.Globalization;
-	using Adxstudio.Xrm.Mapping;
-	using Adxstudio.Xrm.Metadata;
-	using Adxstudio.Xrm.Notes;
-	using Adxstudio.Xrm.Resources;
+	using Globalization;
+	using Mapping;
+	using Metadata;
+	using Notes;
+	using Resources;
 	using Adxstudio.Xrm.Security;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
-	using Adxstudio.Xrm.Web.Mvc.Html;
+	using Services;
+	using Services.Query;
+	using Mvc.Html;
 	using Adxstudio.Xrm.Web.UI.CrmEntityFormView;
-	using Adxstudio.Xrm.Web.UI.JsonConfiguration;
-	using Adxstudio.Xrm.Web.UI.WebForms;
+	using JsonConfiguration;
+	using WebForms;
 
 	/// <summary>
 	/// Web Form control retrieves the Web Form record defined for the Web Page containing this control. Web Form definition record details the entity forms and workflow/logic within the CRM to facilitate data entry forms within the portal without the need for developer intervention.
@@ -481,7 +481,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		public void MoveToPreviousStep()
 		{
 			var prevStepReferenceEntity = GetPreviousStepReferenceEntityDefinition();
-			var prevStepEntitySourceDefinition = new WebForms.WebFormEntitySourceDefinition(prevStepReferenceEntity.LogicalName, prevStepReferenceEntity.PrimaryKeyLogicalName, prevStepReferenceEntity.ID);
+			var prevStepEntitySourceDefinition = new WebFormEntitySourceDefinition(prevStepReferenceEntity.LogicalName, prevStepReferenceEntity.PrimaryKeyLogicalName, prevStepReferenceEntity.ID);
 			var previousStepEventArgs = new WebFormMovePreviousEventArgs(prevStepEntitySourceDefinition, MovePreviousEventKeyName);
 
 			OnMovePrevious(this, previousStepEventArgs);
@@ -497,7 +497,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		public void MoveToNextStep()
 		{
 			var referenceEntity = GetCurrentStepReferenceEntityDefinition();
-			var entitySourceDefinition = new WebForms.WebFormEntitySourceDefinition(referenceEntity.LogicalName, referenceEntity.PrimaryKeyLogicalName, referenceEntity.ID);
+			var entitySourceDefinition = new WebFormEntitySourceDefinition(referenceEntity.LogicalName, referenceEntity.PrimaryKeyLogicalName, referenceEntity.ID);
 			var submitEventArgs = new WebFormSubmitEventArgs(entitySourceDefinition, SubmitEventKeyName);
 
 			OnSubmit(this, submitEventArgs);
@@ -519,7 +519,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		public void MoveToNextStep(Guid entityID)
 		{
 			var referenceEntity = GetCurrentStepReferenceEntityDefinition();
-			var entitySourceDefinition = new WebForms.WebFormEntitySourceDefinition(referenceEntity.LogicalName, referenceEntity.PrimaryKeyLogicalName, referenceEntity.ID);
+			var entitySourceDefinition = new WebFormEntitySourceDefinition(referenceEntity.LogicalName, referenceEntity.PrimaryKeyLogicalName, referenceEntity.ID);
 			var submitEventArgs = new WebFormSubmitEventArgs(entitySourceDefinition, SubmitEventKeyName);
 
 			OnSubmit(this, submitEventArgs);
@@ -542,7 +542,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// Move to the next step
 		/// </summary>
 		/// <param name="entityDefinition">Definition of the entity record created/updated</param>
-		public void MoveToNextStep(WebForms.WebFormEntitySourceDefinition entityDefinition)
+		public void MoveToNextStep(WebFormEntitySourceDefinition entityDefinition)
 		{
 			if (entityDefinition == null)
 			{
@@ -570,7 +570,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// Update the definition of the entity created/updated
 		/// </summary>
 		/// <param name="entityDefinition">Definition of the entity record created/updated</param>
-		public void UpdateEntityDefinition(WebForms.WebFormEntitySourceDefinition entityDefinition)
+		public void UpdateEntityDefinition(WebFormEntitySourceDefinition entityDefinition)
 		{
 			if (entityDefinition == null)
 			{
@@ -589,7 +589,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			{
 				case "MovePrevious":
 					var prevStepReferenceEntity = GetPreviousStepReferenceEntityDefinition();
-					var prevStepEntitySourceDefinition = new WebForms.WebFormEntitySourceDefinition(prevStepReferenceEntity.LogicalName, prevStepReferenceEntity.PrimaryKeyLogicalName, prevStepReferenceEntity.ID);
+					var prevStepEntitySourceDefinition = new WebFormEntitySourceDefinition(prevStepReferenceEntity.LogicalName, prevStepReferenceEntity.PrimaryKeyLogicalName, prevStepReferenceEntity.ID);
 					var previousStepEventArgs = new WebFormMovePreviousEventArgs(prevStepEntitySourceDefinition, MovePreviousEventKeyName);
 					OnMovePrevious(this, previousStepEventArgs);
 					if (previousStepEventArgs.Cancel) return;
@@ -598,7 +598,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				case "MoveNext":
 					if (!Page.IsValid) return;
 					var referenceEntity = GetCurrentStepReferenceEntityDefinition();
-					var entitySourceDefinition = new WebForms.WebFormEntitySourceDefinition(referenceEntity.LogicalName, referenceEntity.PrimaryKeyLogicalName, referenceEntity.ID);
+					var entitySourceDefinition = new WebFormEntitySourceDefinition(referenceEntity.LogicalName, referenceEntity.PrimaryKeyLogicalName, referenceEntity.ID);
 					var submitEventArgs = new WebFormSubmitEventArgs(entitySourceDefinition, SubmitEventKeyName);
 					OnSubmit(this, submitEventArgs);
 					if (submitEventArgs.Cancel) return;
@@ -649,7 +649,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			Controls.Clear();
 
 			Entity record;
-			WebForms.WebFormEntitySourceDefinition entitySourceDefinition = null;
+			WebFormEntitySourceDefinition entitySourceDefinition = null;
 			var portalContext = PortalCrmConfigurationManager.CreatePortalContext(PortalName);
 			var entity = portalContext.Entity;
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
@@ -658,7 +658,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (WebFormReference != null)
 			{
-				webform = context.RetrieveSingle("mspp_webform", "mspp_webformid", this.WebFormReference.Id, FetchAttribute.All);
+				webform = context.RetrieveSingle("mspp_webform", "mspp_webformid", WebFormReference.Id, FetchAttribute.All);
 
 				if (webform == null)
 				{
@@ -698,7 +698,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				RedirectToLoginIfAnonymous();
 			}
 
-			if (LanguageCode <= 0) LanguageCode = this.Context.GetPortalSolutionsDetails().OrganizationBaseLanguageCode;
+			if (LanguageCode <= 0) LanguageCode = Context.GetPortalSolutionsDetails().OrganizationBaseLanguageCode;
 
 			var multipleRecordsPerUserPermitted = webform.GetAttributeValue<bool?>("mspp_multiplerecordsperuserpermitted") ?? false;
 			var editExpired = false;
@@ -826,7 +826,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				}
 				else
 				{
-					step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All)
+					step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", CurrentSessionHistory.CurrentStepId, FetchAttribute.All)
 							?? startStep;
 
 					if (entitySourceDefinition == null || step.Id != startStep.Id)
@@ -836,7 +836,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 					if (entitySourceDefinition == null)
 					{
-						entitySourceDefinition = new WebForms.WebFormEntitySourceDefinition(CurrentSessionHistory.PrimaryRecord.LogicalName, CurrentSessionHistory.PrimaryRecord.PrimaryKeyLogicalName, CurrentSessionHistory.PrimaryRecord.ID);
+						entitySourceDefinition = new WebFormEntitySourceDefinition(CurrentSessionHistory.PrimaryRecord.LogicalName, CurrentSessionHistory.PrimaryRecord.PrimaryKeyLogicalName, CurrentSessionHistory.PrimaryRecord.ID);
 					}
 				}
 			}
@@ -847,7 +847,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			{
 				var html = Mvc.Html.EntityExtensions.GetHtmlHelper(PortalName, Page.Request.RequestContext, Page.Response);
 
-				var control = new HtmlGenericControl() { };
+				var control = new HtmlGenericControl();
 
 				var script = html.ScriptAttribute(context, step, "mspp_registerstartupscript");
 
@@ -936,7 +936,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 					var referenceEntity = GetCurrentStepReferenceEntityDefinition();
 
-					entitySourceDefinition = new WebForms.WebFormEntitySourceDefinition(referenceEntity.LogicalName, referenceEntity.PrimaryKeyLogicalName, referenceEntity.ID);
+					entitySourceDefinition = new WebFormEntitySourceDefinition(referenceEntity.LogicalName, referenceEntity.PrimaryKeyLogicalName, referenceEntity.ID);
 				}
 			}
 			else
@@ -962,7 +962,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		private bool SetupForEditExisting(IEnumerable result, int? editExpiredStateCode, int? editExpiredStatusCode, bool editExpired,
 			OrganizationServiceContext context, Entity startStep, bool multipleRecordsPerUserPermitted, Entity webform, ref Entity step,
-			ref WebForms.WebFormEntitySourceDefinition entitySourceDefinition)
+			ref WebFormEntitySourceDefinition entitySourceDefinition)
 		{
 			var existingRecord = result.Cast<Entity>().FirstOrDefault();
 
@@ -988,7 +988,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				{
 					if (SessionLoaded)
 					{
-						step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All)
+						step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", CurrentSessionHistory.CurrentStepId, FetchAttribute.All)
 							?? startStep;
 					}
 					else
@@ -1073,7 +1073,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			return formViewMode;
 		}
 
-		protected CrmDataSource CreateDataSource(WebForms.WebFormEntitySourceDefinition source)
+		protected CrmDataSource CreateDataSource(WebFormEntitySourceDefinition source)
 		{
 			var dataSource = new CrmDataSource { ID = string.Format("{0}_WebFormDataSource", ID), CrmDataContextName = PortalName, IsSingleSource = true };
 
@@ -1086,7 +1086,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			return dataSource;
 		}
 
-		protected void RenderForm(OrganizationServiceContext context, Entity webform, Entity step, FormViewMode mode, WebForms.WebFormEntitySourceDefinition entitySourceDefinition)
+		protected void RenderForm(OrganizationServiceContext context, Entity webform, Entity step, FormViewMode mode, WebFormEntitySourceDefinition entitySourceDefinition)
 		{
 			var stepObject = new WebFormStepObject(webform, step, LanguageCode, context);
 
@@ -1509,7 +1509,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			return progressControlPosition;
 		}
 
-		protected void RenderUserControl(OrganizationServiceContext context, Entity webform, Entity step, WebForms.WebFormEntitySourceDefinition entitySourceDefinition)
+		protected void RenderUserControl(OrganizationServiceContext context, Entity webform, Entity step, WebFormEntitySourceDefinition entitySourceDefinition)
 		{
 			var stepObject = new WebFormStepObject(webform, step, LanguageCode, context);
 
@@ -1572,7 +1572,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (page == null) throw new ApplicationException(string.Format("Page not available. Failed to load user control  at {0}.", stepObject.UserControlPath));
 
-			var userControl = (WebFormUserControl)page.LoadControl(@stepObject.UserControlPath);
+			var userControl = (WebFormUserControl)page.LoadControl(stepObject.UserControlPath);
 
 			if (userControl == null) throw new ApplicationException(string.Format("The user control at {0} couldn't be loaded.", stepObject.UserControlPath));
 
@@ -1800,7 +1800,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			return sessionHistory != null;
 		}
 
-		protected bool TryGetSessionHistory(OrganizationServiceContext context, Entity webform, Entity startStep, out WebForms.WebFormEntitySourceDefinition entitySourceDefinition, out Entity record, out SessionHistory sessionHistory)
+		protected bool TryGetSessionHistory(OrganizationServiceContext context, Entity webform, Entity startStep, out WebFormEntitySourceDefinition entitySourceDefinition, out Entity record, out SessionHistory sessionHistory)
 		{
 			SessionHistory session = null;
 			if (!TryGetPrimaryEntitySourceDefinition(context, startStep, out entitySourceDefinition, out record))
@@ -1850,7 +1850,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			return sessionHistory != null;
 		}
 
-		protected bool TryGetPrimaryEntitySourceDefinition(OrganizationServiceContext context, Entity step, out WebForms.WebFormEntitySourceDefinition definition, out Entity record)
+		protected bool TryGetPrimaryEntitySourceDefinition(OrganizationServiceContext context, Entity step, out WebFormEntitySourceDefinition definition, out Entity record)
 		{
 			var id = string.Empty;
 
@@ -1911,7 +1911,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					return false;
 				}
 
-				definition = new WebForms.WebFormEntitySourceDefinition(logicalName, primaryKey, id);
+				definition = new WebFormEntitySourceDefinition(logicalName, primaryKey, id);
 
 				record = existingRecord;
 
@@ -1971,7 +1971,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					throw new ApplicationException("mspp_webformstep.adx_entitysourcetype is not valid for the start step.");
 			}
 
-			definition = new WebForms.WebFormEntitySourceDefinition(logicalName, primaryKey, id);
+			definition = new WebFormEntitySourceDefinition(logicalName, primaryKey, id);
 
 			Guid recordId;
 			record = null;
@@ -1988,7 +1988,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			return true;
 		}
 
-		protected WebForms.WebFormEntitySourceDefinition GetStepEntitySourceDefinition(OrganizationServiceContext context, Entity step)
+		protected WebFormEntitySourceDefinition GetStepEntitySourceDefinition(OrganizationServiceContext context, Entity step)
 		{
 			var logicalName = string.Empty;
 			var primaryKey = string.Empty;
@@ -2125,7 +2125,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					break;
 			}
 
-			return new WebForms.WebFormEntitySourceDefinition(logicalName, primaryKey, id);
+			return new WebFormEntitySourceDefinition(logicalName, primaryKey, id);
 		}
 
 		protected bool TryFindExistingRecordByID(OrganizationServiceContext context, string entityLogicalName, string primaryKeyAttributeLogicalName, string id, out Entity existingRecord)
@@ -2234,7 +2234,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 
-			var step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
+			var step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
 
 			if (step == null)
 			{
@@ -2258,7 +2258,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 
-			var step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
+			var step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
 
 			if (step == null)
 			{
@@ -2291,7 +2291,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 								{
 									Entity = new FetchEntity("mspp_webformstep")
 									{
-										Filters = new[] { new Filter { Conditions = new[] { new Condition("mspp_webformstepid", ConditionOperator.Equal, this.CurrentSessionHistory.CurrentStepId) } } }
+										Filters = new[] { new Filter { Conditions = new[] { new Condition("mspp_webformstepid", ConditionOperator.Equal, CurrentSessionHistory.CurrentStepId) } } }
 									}
 								});
 
@@ -2368,7 +2368,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 
-			var step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
+			var step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
 			if (step == null)
 			{
 				throw new ApplicationException(string.Format("Error retrieving adx_webformstep where id equals {0}", CurrentSessionHistory.CurrentStepId));
@@ -2495,7 +2495,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 
-			var currentStep = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
+			var currentStep = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
 
 			if (currentStep == null)
 			{
@@ -2579,7 +2579,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			var context = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 
-			var currentStep = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
+			var currentStep = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
 
 			if (currentStep == null)
 			{
@@ -2645,7 +2645,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		}
 
 		//optionset instead
-		protected void ProcessStep(OrganizationServiceContext context, Entity webform, Entity step, WebForms.WebFormEntitySourceDefinition entitySourceDefinition)
+		protected void ProcessStep(OrganizationServiceContext context, Entity webform, Entity step, WebFormEntitySourceDefinition entitySourceDefinition)
 		{
 			var type = step.GetAttributeValue<OptionSetValue>("mspp_type");
 
@@ -2660,7 +2660,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			SavingEventKeyName = step.GetAttributeValue<string>("mspp_savingeventkeyname") ?? string.Empty;
 			SavedEventKeyName = step.GetAttributeValue<string>("mspp_savedeventkeyname") ?? string.Empty;
 
-			MappingFieldCollection = new MappingFieldMetadataCollection()
+			MappingFieldCollection = new MappingFieldMetadataCollection
 			{
 				AddressLineFieldName = step.GetAttributeValue<string>("mspp_geolocation_addresslinefieldname"),
 				CityFieldName = step.GetAttributeValue<string>("mspp_geolocation_cityfieldname"),
@@ -2818,7 +2818,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				}
 				catch (Exception ex)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to add adx_redirecturlcustomquerystring to the Query String. {0}", ex.ToString()));
+					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to add adx_redirecturlcustomquerystring to the Query String. {0}", ex));
 				}
 			}
 
@@ -3290,7 +3290,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Field value could not be set. {0}", e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Field value could not be set. {0}", e));
 
 				return false;
 			}
@@ -3311,7 +3311,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (field == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Could not find control"));
+					ADXTrace.Instance.TraceError(TraceCategory.Application, "Could not find control");
 					return;
 				}
 
@@ -3727,7 +3727,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 		}
 
-		protected WebForms.WebFormEntitySourceDefinition GetUserControlReferenceEntityDefinition(OrganizationServiceContext context, Entity step)
+		protected WebFormEntitySourceDefinition GetUserControlReferenceEntityDefinition(OrganizationServiceContext context, Entity step)
 		{
 			step.AssertEntityName("mspp_webformstep");
 
@@ -3838,7 +3838,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				ADXTrace.Instance.TraceError(TraceCategory.Application, e.ToString());
 			}
 
-			return new WebForms.WebFormEntitySourceDefinition(entityName, keyName, id);
+			return new WebFormEntitySourceDefinition(entityName, keyName, id);
 		}
 
 		protected void AssociateEntity(OrganizationServiceContext context, Entity step, Guid sourceEntityId)
@@ -4257,7 +4257,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				var numberEntityId = service.Create(numberEntity);
 
-				numberEntity = service.Retrieve("mspp_autonumberingrequest", numberEntityId, new ColumnSet(new[] { "mspp_name", "mspp_formattednumber" }));
+				numberEntity = service.Retrieve("mspp_autonumberingrequest", numberEntityId, new ColumnSet("mspp_name", "mspp_formattednumber"));
 
 				var formattedNumber = numberEntity.GetAttributeValue<string>("mspp_formattednumber");
 
@@ -4583,7 +4583,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			if (entity == null) throw new ArgumentNullException("entity");
 
 
-			var step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
+			var step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
 
 			if (step == null)
 			{
@@ -4686,7 +4686,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				throw new ArgumentNullException("entity");
 			}
 
-			var step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", this.CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
+			var step = context.RetrieveSingle("mspp_webformstep", "mspp_webformstepid", CurrentSessionHistory.CurrentStepId, FetchAttribute.All);
 
 			if (step == null)
 			{
@@ -4809,7 +4809,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to set statecode. {0}", ex.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to set statecode. {0}", ex));
 			}
 		}
 
@@ -4838,25 +4838,25 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				switch (attributeTypeCode)
 				{
 					case AttributeTypeCode.BigInt:
-						newValue = value == null ? (object)null : Convert.ToInt64(value);
+						newValue = value == null ? null : Convert.ToInt64(value);
 						break;
 					case AttributeTypeCode.Boolean:
-						newValue = value == null ? (object)null : Convert.ToBoolean(value);
+						newValue = value == null ? null : Convert.ToBoolean(value);
 						break;
 					case AttributeTypeCode.Customer:
 						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Attribute type '{0}' is unsupported.", attributeTypeCode));
 						return false;
 					case AttributeTypeCode.DateTime:
-						newValue = value == null ? (object)null : Convert.ToDateTime(value).ToUniversalTime();
+						newValue = value == null ? null : Convert.ToDateTime(value).ToUniversalTime();
 						break;
 					case AttributeTypeCode.Decimal:
-						newValue = value == null ? (object)null : Convert.ToDecimal(value);
+						newValue = value == null ? null : Convert.ToDecimal(value);
 						break;
 					case AttributeTypeCode.Double:
-						newValue = value == null ? (object)null : Convert.ToDouble(value);
+						newValue = value == null ? null : Convert.ToDouble(value);
 						break;
 					case AttributeTypeCode.Integer:
-						newValue = value == null ? (object)null : Convert.ToInt32(value);
+						newValue = value == null ? null : Convert.ToInt32(value);
 						break;
 					case AttributeTypeCode.Lookup:
 						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Attribute specified has an unsupported type '{0}'.", attributeTypeCode));
@@ -4865,7 +4865,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						newValue = value as string;
 						break;
 					case AttributeTypeCode.Money:
-						newValue = value == null ? (object)null : Convert.ToDecimal(value);
+						newValue = value == null ? null : Convert.ToDecimal(value);
 						break;
 					case AttributeTypeCode.Picklist:
 						var plMetadata = MetadataHelper.GetEntityMetadata(context, entityName);
@@ -5822,7 +5822,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// </summary>
 		/// <param name="entityDefinition">Entity details that include id, logical name, primary key name.</param>
 		/// <param name="keyName">Custom key associated with the current step that can be referenced to trigger custom code in the event handler.</param>
-		public WebFormLoadEventArgs(WebForms.WebFormEntitySourceDefinition entityDefinition, string keyName)
+		public WebFormLoadEventArgs(WebFormEntitySourceDefinition entityDefinition, string keyName)
 		{
 			KeyName = keyName;
 
@@ -5891,7 +5891,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// <summary>
 		/// Errors occuring during update.
 		/// </summary>
-		public Exception Exception { get; private set; }
+		public Exception Exception { get; }
 
 		/// <summary>
 		/// Indicates if the exception was handled.
@@ -5914,7 +5914,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// </summary>
 		/// <param name="entityDefinition">Entity details that include id, logical name, primary key name.</param>
 		/// <param name="keyName">Custom key associated with the current step that can be referenced to trigger custom code in the event handler.</param>
-		public WebFormMovePreviousEventArgs(WebForms.WebFormEntitySourceDefinition entityDefinition, string keyName)
+		public WebFormMovePreviousEventArgs(WebFormEntitySourceDefinition entityDefinition, string keyName)
 		{
 			if (entityDefinition == null) throw new ArgumentNullException("entityDefinition");
 
@@ -5953,7 +5953,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// <summary>
 		/// WebFormSubmitEventArgs Class Initialization.
 		/// </summary>
-		public WebFormSubmitEventArgs(WebForms.WebFormEntitySourceDefinition entityDefinition, string keyName)
+		public WebFormSubmitEventArgs(WebFormEntitySourceDefinition entityDefinition, string keyName)
 		{
 			if (entityDefinition == null) throw new ArgumentNullException("entityDefinition");
 

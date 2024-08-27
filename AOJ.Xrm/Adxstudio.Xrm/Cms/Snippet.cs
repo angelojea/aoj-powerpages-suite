@@ -8,7 +8,7 @@ namespace Adxstudio.Xrm.Cms
 	using System;
 	using System.Linq;
 	using Adxstudio.Xrm.AspNet.Cms;
-	using Adxstudio.Xrm.Web.Mvc;
+	using Web.Mvc;
 	using Microsoft.Xrm.Sdk;
 
 	internal class Snippet : ISnippet
@@ -36,19 +36,19 @@ namespace Adxstudio.Xrm.Cms
 			DisplayName = entity.GetAttributeValue<string>("adx_display_name");
 
 			// set the language name value - fails if the solutions have not been updated, so set LanguageName to null
-			this.LanguageName = GetLanguageName(entity, language);
+			LanguageName = GetLanguageName(entity, language);
 		}
 
 		/// <summary>
 		/// Gets the DisplayName attribute of the entity record
 		/// </summary>
-		public string DisplayName { get; private set; }
+		public string DisplayName { get; }
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public IPortalViewAttribute Value { get; private set; }
+		public IPortalViewAttribute Value { get; }
 
 		public string LanguageName { get; set; }
 

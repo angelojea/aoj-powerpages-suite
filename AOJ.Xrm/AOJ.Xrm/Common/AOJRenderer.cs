@@ -26,8 +26,8 @@ namespace AOJ.Xrm.Common
 {
     public class AOJRenderer
     {
-        private OrganizationService _client;
-        private PortalViewContext _portalViewContext;
+        private readonly OrganizationService _client;
+        private readonly PortalViewContext _portalViewContext;
 
         public AOJRenderer(OrganizationService client, Guid websiteId, Guid userId)
         {
@@ -220,10 +220,6 @@ namespace AOJ.Xrm.Common
                     HandleChildControls(child);
                 }
             }
-        }
-
-        public MockPage()
-        {
         }
 
         public void AddEntityList(CompositeControl list)

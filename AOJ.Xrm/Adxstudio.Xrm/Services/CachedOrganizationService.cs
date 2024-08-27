@@ -14,10 +14,10 @@ namespace Adxstudio.Xrm.Services
 	using System.ServiceModel.Description;
 	using System.ServiceModel.Dispatcher;
 	using Adxstudio.Xrm.AspNet.Cms;
-	using Adxstudio.Xrm.Diagnostics.Metrics;
-	using Adxstudio.Xrm.Diagnostics.Trace;
-	using Adxstudio.Xrm.Performance;
-	using Adxstudio.Xrm.Web;
+	using Diagnostics.Metrics;
+	using Diagnostics.Trace;
+	using Performance;
+	using Web;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Client.Configuration;
 	using Microsoft.Xrm.Client.Services;
@@ -74,7 +74,7 @@ namespace Adxstudio.Xrm.Services
 		/// <summary>
 		/// The cache.
 		/// </summary>
-		public IOrganizationServiceCache Cache { get; private set; }
+		public IOrganizationServiceCache Cache { get; }
 
 		public CachedOrganizationService(string connectionStringName)
 			: this(new CrmConnection(connectionStringName))
@@ -104,13 +104,13 @@ namespace Adxstudio.Xrm.Services
 		public CachedOrganizationService(CrmConnection connection, IOrganizationServiceCache cache)
 			: base(connection)
 		{
-			this.Cache = cache;
+			Cache = cache;
 		}
 
 		public CachedOrganizationService(IOrganizationService service, IOrganizationServiceCache cache)
 			: base(service)
 		{
-			this.Cache = cache;
+			Cache = cache;
 		}
 
 		private static IOrganizationServiceCache CreateOrganizationServiceCache(string connectionId)
@@ -138,9 +138,9 @@ namespace Adxstudio.Xrm.Services
 				ServicesEventSource.Log.Create(entity, stopwatch.ElapsedMilliseconds);
 			}
 
-			if (this.Cache != null)
+			if (Cache != null)
 			{
-				this.Cache.Remove(entity);
+				Cache.Remove(entity);
 			}
 
 			return guid;
@@ -165,9 +165,9 @@ namespace Adxstudio.Xrm.Services
 				ServicesEventSource.Log.Update(entity, stopwatch.ElapsedMilliseconds);
 			}
 
-			if (this.Cache != null)
+			if (Cache != null)
 			{
-				this.Cache.Remove(entity);
+				Cache.Remove(entity);
 			}
 		}
 
@@ -190,9 +190,9 @@ namespace Adxstudio.Xrm.Services
 				ServicesEventSource.Log.Delete(entityName, id, stopwatch.ElapsedMilliseconds);
 			}
 
-			if (this.Cache != null)
+			if (Cache != null)
 			{
-				this.Cache.Remove(entityName, id);
+				Cache.Remove(entityName, id);
 			}
 		}
 
@@ -246,7 +246,7 @@ namespace Adxstudio.Xrm.Services
 				ColumnSet = columnSet
 			};
 
-			var response = this.Execute<RetrieveResponse>(request);
+			var response = Execute<RetrieveResponse>(request);
 
 			return response != null ? response.Entity : null;
 		}
@@ -256,7 +256,7 @@ namespace Adxstudio.Xrm.Services
 			// telemetry will be handled during InnerExecute for uncached requests
 
 			var request = new RetrieveMultipleRequest { Query = query };
-			var response = this.Execute<RetrieveMultipleResponse>(request);
+			var response = Execute<RetrieveMultipleResponse>(request);
 			return response != null ? response.EntityCollection : null;
 		}
 
@@ -264,7 +264,7 @@ namespace Adxstudio.Xrm.Services
 		{
 			// telemetry will be handled during InnerExecute for uncached requests
 
-			return this.Execute<OrganizationResponse>(request);
+			return Execute<OrganizationResponse>(request);
 		}
 
 		protected override IServiceConfiguration<IOrganizationService> CreateServiceConfiguration(CrmConnection connection)
@@ -298,23 +298,23 @@ namespace Adxstudio.Xrm.Services
 
 		private T Execute<T>(OrganizationRequest request) where T : OrganizationResponse
 		{
-			return this.Execute(request, response => response as T, null);
+			return Execute(request, response => response as T, null);
 		}
 
 		private T Execute<T>(OrganizationRequest request, Func<OrganizationResponse, T> selector, string selectorCacheKey)
 		{
-			var execute = this.Cache != null
-				? this.Cache.Execute
+			var execute = Cache != null
+				? Cache.Execute
 				: (Func<OrganizationRequest, Func<OrganizationRequest, OrganizationResponse>, Func<OrganizationResponse, T>, string, T>)null;
 
-			return this.Execute(request, execute, selector, selectorCacheKey);
+			return Execute(request, execute, selector, selectorCacheKey);
 		}
 
 		private T Execute<T>(OrganizationRequest request, Func<OrganizationRequest, Func<OrganizationRequest, OrganizationResponse>, Func<OrganizationResponse, T>, string, T> execute, Func<OrganizationResponse, T> selector, string selectorCacheKey)
 		{
 			return execute == null
-				? selector(this.InnerExecute(request))
-				: execute(ToCachedOrganizationRequest(request), this.InnerExecute, selector, selectorCacheKey);
+				? selector(InnerExecute(request))
+				: execute(ToCachedOrganizationRequest(request), InnerExecute, selector, selectorCacheKey);
 		}
 
 		private static CachedOrganizationRequest ToCachedOrganizationRequest(OrganizationRequest request)

@@ -56,9 +56,9 @@ namespace Adxstudio.Xrm.Blogs
 
 		protected List<string> ExcludeList; 
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
-		protected EntityReference Website { get; private set; }
+		protected EntityReference Website { get; }
 
 		protected Func<OrganizationServiceContext, IQueryable<Entity>> SelectBlogEntities 
 		{

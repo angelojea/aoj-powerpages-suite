@@ -66,12 +66,12 @@ namespace Adxstudio.Xrm.Tagging
 		/// <summary>
 		/// Gets the number of weight "buckets" from which weights will be assigned to items.
 		/// </summary>
-		public int NumberOfWeights { get; private set; }
+		public int NumberOfWeights { get; }
 
 		/// <summary>
 		/// Gets the <see cref="IEqualityComparer{T}"/> used to compare tag names for equality.
 		/// </summary>
-		public IEqualityComparer<string> TagNameEqualityComparer { get; private set; }
+		public IEqualityComparer<string> TagNameEqualityComparer { get; }
 
 		public IEnumerator<TagCloudDataItem> GetEnumerator()
 		{

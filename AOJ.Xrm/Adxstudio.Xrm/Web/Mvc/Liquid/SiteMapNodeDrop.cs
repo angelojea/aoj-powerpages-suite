@@ -51,7 +51,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			get { return Node.Description; }
 		}
 
-		public EntityDrop Entity { get; private set; }
+		public EntityDrop Entity { get; }
 
 		public SiteMapNodeDrop Parent
 		{
@@ -68,7 +68,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			get { return Node.Url; }
 		}
 
-		protected SiteMapNode Node { get; private set; }
+		protected SiteMapNode Node { get; }
 
 		public string GetEditable(Context context, string key, EditableOptions options)
 		{

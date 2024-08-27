@@ -65,41 +65,41 @@ namespace Adxstudio.Xrm.Commerce
 			};
 		}
 
-		public IPurchaseAddress BillToAddress { get; private set; }
+		public IPurchaseAddress BillToAddress { get; }
 
-		public decimal DiscountAmount { get; private set; }
+		public decimal DiscountAmount { get; }
 
-		public IEnumerable<IDiscount> Discounts { get; private set; }
+		public IEnumerable<IDiscount> Discounts { get; }
 
-		public bool HasOptions { get; private set; }
+		public bool HasOptions { get; }
 
-		public IEnumerable<IPurchasableItem> Items { get; private set; }
+		public IEnumerable<IPurchasableItem> Items { get; }
 
-		public EntityReference PriceList { get; private set; }
+		public EntityReference PriceList { get; }
 
-		public EntityReference Quote { get; private set; }
+		public EntityReference Quote { get; }
 
-		public bool RequiresShipping { get; private set; }
+		public bool RequiresShipping { get; }
 
-		public IPurchaseAddress ShipToAddress { get; private set; }
+		public IPurchaseAddress ShipToAddress { get; }
 
-		public decimal ShippingAmount { get; private set; }
+		public decimal ShippingAmount { get; }
 
-		public bool SupportsQuantities { get; private set; }
+		public bool SupportsQuantities { get; }
 
-		public decimal TotalAmount { get; private set; }
+		public decimal TotalAmount { get; }
 
-		public decimal TotalDiscount { get; private set; }
+		public decimal TotalDiscount { get; }
 
-		public decimal TotalDiscountAmount { get; private set; }
+		public decimal TotalDiscountAmount { get; }
 
-		public decimal TotalLineItemAmount { get; private set; }
+		public decimal TotalLineItemAmount { get; }
 
-		public decimal TotalLineItemDiscountAmount { get; private set; }
+		public decimal TotalLineItemDiscountAmount { get; }
 
-		public decimal TotalPreShippingAmount { get; private set; }
+		public decimal TotalPreShippingAmount { get; }
 
-		public decimal TotalTax { get; private set; }
+		public decimal TotalTax { get; }
 
 		private static decimal GetDecimalFromMoney(Entity quote, string attributeLogicalName, decimal defaultValue = 0)
 		{

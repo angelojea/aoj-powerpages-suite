@@ -10,10 +10,10 @@ namespace Adxstudio.Xrm.Caching
 	using System.Collections.Specialized;
 	using System.Linq;
 	using System.Runtime.Caching;
-	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Threading;
-	using Adxstudio.Xrm.Web.Modules;
+	using Configuration;
+	using Services;
+	using Threading;
+	using Web.Modules;
 	using Microsoft.Xrm.Client.Caching;
 	using Microsoft.Xrm.Client.Configuration;
 
@@ -54,7 +54,7 @@ namespace Adxstudio.Xrm.Caching
 	/// <seealso cref="CrmConfigurationManager"/>
 	public class OutputObjectCache : CompositeObjectCache
 	{
-		private static string[] _excludeKeys =
+		private static readonly string[] _excludeKeys =
 		{
 			typeof(CacheItemDetail).ToString().ToLower(),
 			typeof(CacheItemTelemetry).ToString().ToLower(),

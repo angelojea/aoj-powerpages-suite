@@ -23,7 +23,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </summary>
 		public PortalCertificateProvider()
 		{
-			this.GetCert();
+			GetCert();
 		}
 
 		/// <summary>
@@ -33,7 +33,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		{
 			get
 			{
-				return this.certificate.Thumbprint;
+				return certificate.Thumbprint;
 			}
 		}
 
@@ -47,7 +47,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		{
 			get
 			{
-				return this.certificate;
+				return certificate;
 			}
 		}
 
@@ -73,10 +73,10 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 					throw new NotImplementedException("Not able to get encryption certificate");
 				}
 
-				this.certificate = result[0];
+				certificate = result[0];
 
 
-				if (!this.certificate.HasPrivateKey)
+				if (!certificate.HasPrivateKey)
 				{
 					throw new InvalidOperationException("Certificate does not contain private key");
 				}

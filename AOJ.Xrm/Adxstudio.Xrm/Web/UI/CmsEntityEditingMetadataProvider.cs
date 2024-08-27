@@ -157,7 +157,7 @@ namespace Adxstudio.Xrm.Web.UI
 			PortalName = portalName;
 		}
 
-		protected string PortalName { get; private set; }
+		protected string PortalName { get; }
 
 		public virtual void AddAttributeMetadata(ICmsEntityEditingMetadataContainer container, EntityReference entity, string attributeLogicalName, string attributeDisplayName, string portalName = null)
 		{

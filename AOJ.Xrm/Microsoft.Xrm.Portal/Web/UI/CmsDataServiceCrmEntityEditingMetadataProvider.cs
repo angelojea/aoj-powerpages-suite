@@ -88,17 +88,17 @@ namespace Microsoft.Xrm.Portal.Web.UI
 			PortalName = portalName;
 		}
 
-		protected IDictionary<string, IEnumerable<Relationship>> ChildAssociationsByEntityName { get; private set; }
+		protected IDictionary<string, IEnumerable<Relationship>> ChildAssociationsByEntityName { get; }
 
-		protected IEnumerable<string> DeletableEntityNames { get; private set; }
+		protected IEnumerable<string> DeletableEntityNames { get; }
 
-		protected IEnumerable<string> DependencyEntityNames { get; private set; }
+		protected IEnumerable<string> DependencyEntityNames { get; }
 
-		protected IEnumerable<string> FileAttachmentEntityNames { get; private set; }
+		protected IEnumerable<string> FileAttachmentEntityNames { get; }
 
-		protected IEnumerable<string> UrlEntityNames { get; private set; }
+		protected IEnumerable<string> UrlEntityNames { get; }
 
-		protected string PortalName { get; private set; }
+		protected string PortalName { get; }
 
 		public virtual void AddAttributeMetadata(string portalName, IEditableCrmEntityControl control, Control container, Entity entity, string propertyName, string propertyDisplayName)
 		{

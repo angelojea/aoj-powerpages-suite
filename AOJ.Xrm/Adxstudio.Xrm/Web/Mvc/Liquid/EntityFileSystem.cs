@@ -34,13 +34,13 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			SourceAttributeLogicalName = sourceAttributeLogicalName;
 		}
 
-		public string EntityLogicalName { get; private set; }
+		public string EntityLogicalName { get; }
 
-		public string NameAttributeLogicalName { get; private set; }
+		public string NameAttributeLogicalName { get; }
 
-		public IPortalViewContext PortalViewContext { get; private set; }
+		public IPortalViewContext PortalViewContext { get; }
 
-		public string SourceAttributeLogicalName { get; private set; }
+		public string SourceAttributeLogicalName { get; }
 
 		public IEnumerable<TemplateFileInfo> GetTemplateFiles()
 		{

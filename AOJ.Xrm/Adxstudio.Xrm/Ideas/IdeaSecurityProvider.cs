@@ -16,9 +16,9 @@ namespace Adxstudio.Xrm.Ideas
 	using Microsoft.Xrm.Sdk.Client;
 	using Microsoft.Xrm.Sdk.Query;
 	using Adxstudio.Xrm.Cms.Security;
-	using Adxstudio.Xrm.Security;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
+	using Security;
+	using Services;
+	using Services.Query;
 	using Cms;
 
 	internal class IdeaSecurityProvider : ContentMapAccessProvider
@@ -28,7 +28,7 @@ namespace Adxstudio.Xrm.Ideas
 		public IdeaSecurityProvider(HttpContext context, string portalName = null) 
 			: base(context)
 		{
-			this.PortalName = portalName;
+			PortalName = portalName;
 		}
 
 		protected override bool TryAssert(OrganizationServiceContext serviceContext, Entity entity, CrmEntityRight right, CrmEntityCacheDependencyTrace dependencies, ContentMap map)
@@ -41,13 +41,13 @@ namespace Adxstudio.Xrm.Ideas
 			{
 				case "adx_ideaforum":
 					dependencies.AddEntitySetDependency("adx_webrole");
-					return this.TryAssertIdeaForum(entity, right, dependencies, map);
+					return TryAssertIdeaForum(entity, right, dependencies, map);
 				case "adx_idea":
-					return this.TryAssertIdea(serviceContext, entity, right, dependencies, map);
+					return TryAssertIdea(serviceContext, entity, right, dependencies, map);
 				case "adx_ideacomment":
-					return this.TryAssertIdeaComment(serviceContext, entity, right, dependencies, map);
+					return TryAssertIdeaComment(serviceContext, entity, right, dependencies, map);
 				case "adx_ideavote":
-					return this.TryAssertIdeaVote(serviceContext, entity, right, dependencies, map);
+					return TryAssertIdeaVote(serviceContext, entity, right, dependencies, map);
 				default:
 					throw new NotSupportedException("Entities of type {0} are not supported by this provider.".FormatWith(entity.LogicalName));
 			}
@@ -85,7 +85,7 @@ namespace Adxstudio.Xrm.Ideas
 
 			dependencies.AddEntityDependencies(roles);
 
-			var userRoles = this.GetUserRoles();
+			var userRoles = GetUserRoles();
 
 			return roles.Select(e => e.GetAttributeValue<string>("adx_name")).Intersect(userRoles, StringComparer.InvariantCulture).Any();
 		}
@@ -93,9 +93,9 @@ namespace Adxstudio.Xrm.Ideas
 		private bool TryAssertIdeaForum(Entity ideaForumEntity, CrmEntityRight right, CrmEntityCacheDependencyTrace dependencies, ContentMap map)
 		{
 			return right == CrmEntityRight.Change
-				? this.UserInRole(CrmEntityRight.Change, false, ideaForumEntity, dependencies, map)
-				: this.UserInRole(CrmEntityRight.Read, true, ideaForumEntity, dependencies, map)
-					|| this.UserInRole(CrmEntityRight.Change, false, ideaForumEntity, dependencies, map);
+				? UserInRole(CrmEntityRight.Change, false, ideaForumEntity, dependencies, map)
+				: UserInRole(CrmEntityRight.Read, true, ideaForumEntity, dependencies, map)
+					|| UserInRole(CrmEntityRight.Change, false, ideaForumEntity, dependencies, map);
 		}
 
 		private bool TryAssertIdea(OrganizationServiceContext serviceContext, Entity ideaEntity, CrmEntityRight right, CrmEntityCacheDependencyTrace dependencies, ContentMap map)
@@ -118,10 +118,10 @@ namespace Adxstudio.Xrm.Ideas
 			// If the right being asserted is Read, and the idea is approved, assert whether the idea forum is readable.
 			if (right == CrmEntityRight.Read && approved)
 			{
-				return this.TryAssert(serviceContext, ideaForum, right, dependencies, map);
+				return TryAssert(serviceContext, ideaForum, right, dependencies, map);
 			}
 
-			return this.TryAssert(serviceContext, ideaForum, CrmEntityRight.Change, dependencies, map);
+			return TryAssert(serviceContext, ideaForum, CrmEntityRight.Change, dependencies, map);
 		}
 
 		private bool TryAssertIdeaComment(OrganizationServiceContext serviceContext, Entity entity, CrmEntityRight right, CrmEntityCacheDependencyTrace dependencies, ContentMap map)
@@ -138,16 +138,16 @@ namespace Adxstudio.Xrm.Ideas
 			// If the right being asserted is Read, and the comment is approved, assert whether the idea is readable.
 			if (right == CrmEntityRight.Read && approved)
 			{
-				return this.TryAssert(serviceContext, idea, right, dependencies);
+				return TryAssert(serviceContext, idea, right, dependencies);
 			}
 
-			return this.TryAssert(serviceContext, idea, CrmEntityRight.Change, dependencies, map);
+			return TryAssert(serviceContext, idea, CrmEntityRight.Change, dependencies, map);
 		}
 
 		private bool TryAssertIdeaVote(OrganizationServiceContext serviceContext, Entity entity, CrmEntityRight right, CrmEntityCacheDependencyTrace dependencies, ContentMap map)
 		{
 			var idea = entity.GetRelatedEntity(serviceContext, new Relationship("adx_idea_ideavote"));
-			return idea != null && this.TryAssert(serviceContext, idea, right, dependencies, map);
+			return idea != null && TryAssert(serviceContext, idea, right, dependencies, map);
 		}
 
 	}

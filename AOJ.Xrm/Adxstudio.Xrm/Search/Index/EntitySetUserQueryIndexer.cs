@@ -27,9 +27,9 @@ namespace Adxstudio.Xrm.Search.Index
             Links = links ?? Enumerable.Empty<Link>();
         }
 
-		protected string EntityLogicalName { get; private set; }
-        protected IEnumerable<Filter> Filters { get; private set; }
-        protected IEnumerable<Link> Links { get; private set; }
+		protected string EntityLogicalName { get; }
+        protected IEnumerable<Filter> Filters { get; }
+        protected IEnumerable<Link> Links { get; }
 
         protected override ICrmEntityIndexer GetIndexerForSavedQuery(Entity query)
         {

@@ -13,8 +13,8 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
 	public class WinOpportunityActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-check-square-o fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Close_As_Won_Button_Text");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Close_As_Won_Button_Text");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-check-square-o fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Close_As_Won_Button_Text");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Close_As_Won_Button_Text");
 
 		public ViewWinOpportunityModal Modal { get; set; }
 

@@ -41,9 +41,9 @@ namespace Adxstudio.Xrm.Issues
 		/// <param name="portalName">The configured name of the portal to get and set data for.</param>
 		public WebsiteDataAdapter(string portalName = null) : this(new PortalConfigurationDataAdapterDependencies(portalName)) { }
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
-		protected EntityReference Website { get; private set; }
+		protected EntityReference Website { get; }
 
 		/// <summary>
 		/// Returns issue forums that have been created in the website this adapter applies to.

@@ -27,11 +27,11 @@ namespace Adxstudio.Xrm.Events
 			}
 		}
 
-		public string Description { get; private set; }
+		public string Description { get; }
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
 
 	}

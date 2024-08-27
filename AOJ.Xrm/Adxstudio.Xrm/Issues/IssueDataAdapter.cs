@@ -79,9 +79,9 @@ namespace Adxstudio.Xrm.Issues
 		/// <param name="portalName">The configured name of the portal to get and set data for.</param>
 		public IssueDataAdapter(IIssue issue, string portalName = null) : this(issue.Entity, portalName) { }
 
-		protected EntityReference Issue { get; private set; }
+		protected EntityReference Issue { get; }
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
 		/// <summary>
 		/// Gets or sets whether or not comments should be in chronological order (default false [reverse chronological]).

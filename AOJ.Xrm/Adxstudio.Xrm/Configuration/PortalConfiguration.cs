@@ -58,8 +58,8 @@ namespace Adxstudio.Xrm.Configuration
 
 		public EssSettings()
 		{
-			this.ValidLicenseSkus = "Ess.ValidLicenseSkus".ResolveAppSetting();
-			this.IsEss = "Ess.IsEss".ResolveAppSetting().ToBoolean().GetValueOrDefault();
+			ValidLicenseSkus = "Ess.ValidLicenseSkus".ResolveAppSetting();
+			IsEss = "Ess.IsEss".ResolveAppSetting().ToBoolean().GetValueOrDefault();
 		}
 	}
 
@@ -79,12 +79,12 @@ namespace Adxstudio.Xrm.Configuration
 
 		public AuthenticationSettings()
 		{
-			this.RootUrl = "Azure.Authentication.RootUrl".ResolveAppSetting();
-			this.TenantId = "Azure.Authentication.TenantId".ResolveAppSetting();
-			this.ClientId = "Azure.Authentication.ClientId".ResolveAppSetting();
-			this.RedirectUri = "Azure.Authentication.RedirectUri".ResolveAppSetting();
-			this.Caption = "Azure.Authentication.Caption".ResolveAppSetting();
-			this.TokenRefreshWindow = "Azure.Authentication.TokenRefreshWindow".ResolveAppSetting().ToTimeSpan().GetValueOrDefault(TimeSpan.FromMinutes(20));
+			RootUrl = "Azure.Authentication.RootUrl".ResolveAppSetting();
+			TenantId = "Azure.Authentication.TenantId".ResolveAppSetting();
+			ClientId = "Azure.Authentication.ClientId".ResolveAppSetting();
+			RedirectUri = "Azure.Authentication.RedirectUri".ResolveAppSetting();
+			Caption = "Azure.Authentication.Caption".ResolveAppSetting();
+			TokenRefreshWindow = "Azure.Authentication.TokenRefreshWindow".ResolveAppSetting().ToTimeSpan().GetValueOrDefault(TimeSpan.FromMinutes(20));
 		}
 	}
 
@@ -94,7 +94,7 @@ namespace Adxstudio.Xrm.Configuration
 
 		public GraphSettings()
 		{
-			this.RootUrl = "Azure.Graph.RootUrl".ResolveAppSetting();
+			RootUrl = "Azure.Graph.RootUrl".ResolveAppSetting();
 		}
 	}
 
@@ -120,9 +120,9 @@ namespace Adxstudio.Xrm.Configuration
 		/// </summary>
 		public CertificateSettings()
 		{
-			this.FindByTimeValid = "Azure.Certificate.FindByTimeValid".ResolveAppSetting().ToBoolean().GetValueOrDefault(true);
-			this.ThumbprintPrimary = "Azure.Certificate.ThumbprintPrimary".ResolveAppSetting();
-			this.ThumbprintSecondary = "Azure.Certificate.ThumbprintSecondary".ResolveAppSetting();
+			FindByTimeValid = "Azure.Certificate.FindByTimeValid".ResolveAppSetting().ToBoolean().GetValueOrDefault(true);
+			ThumbprintPrimary = "Azure.Certificate.ThumbprintPrimary".ResolveAppSetting();
+			ThumbprintSecondary = "Azure.Certificate.ThumbprintSecondary".ResolveAppSetting();
 		}
 	}
 
@@ -169,19 +169,19 @@ namespace Adxstudio.Xrm.Configuration
 		/// <summary>
 		/// The current service URL considering the current failover state.
 		/// </summary>
-		public Uri CurrentServiceUrl => this.UseAlternateServiceUrl ? this.FullAlternateServiceUrl : this.FullPrimaryServiceUrl;
+		public Uri CurrentServiceUrl => UseAlternateServiceUrl ? FullAlternateServiceUrl : FullPrimaryServiceUrl;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CrmSettings" /> class.
 		/// </summary>
 		public CrmSettings()
 		{
-			this.CurrentServiceUrlTimeSpan = TimeSpan.FromMinutes(10);
-			this.UseAlternateServiceUrl = "Azure.CrmSettings.UseAlternateServiceUrl".ResolveAppSetting().ToBoolean().GetValueOrDefault();
-			this.PrimaryServiceUrl = "Azure.CrmSettings.PrimaryServiceUrl".ResolveAppSetting() ?? "Azure.CrmSettings.ServiceUrl".ResolveAppSetting();
-			this.FullPrimaryServiceUrl = GetFullServiceUrl(this.PrimaryServiceUrl);
-			this.AlternateServiceUrl = "Azure.CrmSettings.AlternateServiceUrl".ResolveAppSetting() ?? ToAlternateServiceUrl(this.PrimaryServiceUrl);
-			this.FullAlternateServiceUrl = GetFullServiceUrl(this.AlternateServiceUrl);
+			CurrentServiceUrlTimeSpan = TimeSpan.FromMinutes(10);
+			UseAlternateServiceUrl = "Azure.CrmSettings.UseAlternateServiceUrl".ResolveAppSetting().ToBoolean().GetValueOrDefault();
+			PrimaryServiceUrl = "Azure.CrmSettings.PrimaryServiceUrl".ResolveAppSetting() ?? "Azure.CrmSettings.ServiceUrl".ResolveAppSetting();
+			FullPrimaryServiceUrl = GetFullServiceUrl(PrimaryServiceUrl);
+			AlternateServiceUrl = "Azure.CrmSettings.AlternateServiceUrl".ResolveAppSetting() ?? ToAlternateServiceUrl(PrimaryServiceUrl);
+			FullAlternateServiceUrl = GetFullServiceUrl(AlternateServiceUrl);
 		}
 
 		/// <summary>
@@ -189,14 +189,14 @@ namespace Adxstudio.Xrm.Configuration
 		/// </summary>
 		public bool TryToggleCurrentServiceUrl()
 		{
-			if (this.CurrentServiceUrlModifiedOn + this.CurrentServiceUrlTimeSpan > DateTimeOffset.UtcNow)
+			if (CurrentServiceUrlModifiedOn + CurrentServiceUrlTimeSpan > DateTimeOffset.UtcNow)
 			{
 				// subsequent toggle is invoked too early
 				return false;
 			}
 
-			this.UseAlternateServiceUrl = !this.UseAlternateServiceUrl;
-			this.CurrentServiceUrlModifiedOn = DateTimeOffset.UtcNow;
+			UseAlternateServiceUrl = !UseAlternateServiceUrl;
+			CurrentServiceUrlModifiedOn = DateTimeOffset.UtcNow;
 
 			return true;
 		}
@@ -256,22 +256,22 @@ namespace Adxstudio.Xrm.Configuration
 
 		private PortalSettings()
 		{
-			this.Ess = new EssSettings();
-			this.Authentication = new AuthenticationSettings();
-			this.Graph = new GraphSettings();
-			this.Certificate = new CertificateSettings();
-			this.Crm = new CrmSettings();
-			this.UseOnlineSetup = "PortalOnlineSetup".ResolveAppSetting().ToBoolean().GetValueOrDefault();
-			this.DomainName = "PortalDomainName".ResolveAppSetting();
-			this.BingMapsSupported = !"Portal.BingMaps.Disabled".ResolveAppSetting().ToBoolean().GetValueOrDefault();
-			this.WriteToDiagnosticsTrace = "PortalWriteToDiagnosticsTrace".ResolveAppSetting().ToBoolean().GetValueOrDefault();
+			Ess = new EssSettings();
+			Authentication = new AuthenticationSettings();
+			Graph = new GraphSettings();
+			Certificate = new CertificateSettings();
+			Crm = new CrmSettings();
+			UseOnlineSetup = "PortalOnlineSetup".ResolveAppSetting().ToBoolean().GetValueOrDefault();
+			DomainName = "PortalDomainName".ResolveAppSetting();
+			BingMapsSupported = !"Portal.BingMaps.Disabled".ResolveAppSetting().ToBoolean().GetValueOrDefault();
+			WriteToDiagnosticsTrace = "PortalWriteToDiagnosticsTrace".ResolveAppSetting().ToBoolean().GetValueOrDefault();
 		}
 
-		public IEssSettings Ess { private set; get; }
-		public IAuthenticationSettings Authentication { private set; get; }
-		public IGraphSettings Graph { private set; get; }
-		public ICertificateSettings Certificate { private set; get; }
-		public CrmSettings Crm { private set; get; }
+		public IEssSettings Ess { get; }
+		public IAuthenticationSettings Authentication { get; }
+		public IGraphSettings Graph { get; }
+		public ICertificateSettings Certificate { get; }
+		public CrmSettings Crm { get; }
 		public bool UseOnlineSetup { private set; get; }
 		public string DomainName { private set; get; }
 

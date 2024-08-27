@@ -146,8 +146,8 @@ namespace Adxstudio.Xrm.Search.Index
 			var filter = new Fetch.Filter
 			{
 				Type = Microsoft.Xrm.Sdk.Query.LogicalOperator.Or,
-				Conditions = new List<Fetch.Condition>()
-					{
+				Conditions = new List<Fetch.Condition>
+				{
 						new Fetch.Condition
 						{
 							Attribute = entityAttribute,
@@ -178,7 +178,7 @@ namespace Adxstudio.Xrm.Search.Index
 					var localizedWebPagesUnderTargetWebPageFilter = new Fetch.Filter
 					{
 						Type = Microsoft.Xrm.Sdk.Query.LogicalOperator.Or,
-						Conditions = new List<Fetch.Condition>()
+						Conditions = new List<Fetch.Condition>
 						{
 							new Fetch.Condition
 							{
@@ -200,7 +200,7 @@ namespace Adxstudio.Xrm.Search.Index
 					var rootWebPagesUnderTargetWebPageFilter = new Fetch.Filter
 					{
 						Type = Microsoft.Xrm.Sdk.Query.LogicalOperator.Or,
-						Conditions = new List<Fetch.Condition>()
+						Conditions = new List<Fetch.Condition>
 						{
 							new Fetch.Condition
 							{
@@ -216,7 +216,7 @@ namespace Adxstudio.Xrm.Search.Index
 						Name = "adx_webpage",
 						FromAttribute = "adx_webpageid",
 						ToAttribute = "adx_parentpageid",
-						Filters = new List<Fetch.Filter>()
+						Filters = new List<Fetch.Filter>
 						{
 							rootWebPagesUnderTargetWebPageFilter
 						}
@@ -233,7 +233,7 @@ namespace Adxstudio.Xrm.Search.Index
 							ToAttribute = "adx_websitelanguageid",
 							Type = Microsoft.Xrm.Sdk.Query.JoinOperator.Inner,
 							Alias = "websitelangforupdatefilter",
-							Links = new List<Fetch.Link>()
+							Links = new List<Fetch.Link>
 							{
 								new Fetch.Link
 								{
@@ -242,12 +242,12 @@ namespace Adxstudio.Xrm.Search.Index
 									ToAttribute = "adx_portallanguageid",
 									Type = Microsoft.Xrm.Sdk.Query.JoinOperator.Inner,
 									Alias = "portallangforupdatefilter",
-									Filters = new List<Fetch.Filter>()
+									Filters = new List<Fetch.Filter>
 									{
 										new Fetch.Filter
 										{
 											Type = Microsoft.Xrm.Sdk.Query.LogicalOperator.And,
-											Conditions = new List<Fetch.Condition>()
+											Conditions = new List<Fetch.Condition>
 											{
 												new Fetch.Condition
 												{
@@ -263,7 +263,7 @@ namespace Adxstudio.Xrm.Search.Index
 						};
 					}
 
-					var forumBlogLinks = new List<Fetch.Link>() { forumBlogToParentPageLink };
+					var forumBlogLinks = new List<Fetch.Link> { forumBlogToParentPageLink };
 					if (languageFilter != null)
 					{
 						forumBlogLinks.Add(languageFilter);
@@ -272,7 +272,7 @@ namespace Adxstudio.Xrm.Search.Index
 					var forumIndexers = _index.GetIndexers("adx_communityforum", links: forumBlogLinks);
 					UpdateWithIndexers("adx_communityforum", forumIndexers);
 
-					var forumThreadForumLinks = new List<Fetch.Link>() { forumBlogToParentPageLink };
+					var forumThreadForumLinks = new List<Fetch.Link> { forumBlogToParentPageLink };
 					if (languageFilter != null)
 					{
 						forumThreadForumLinks.Add(languageFilter);
@@ -287,7 +287,7 @@ namespace Adxstudio.Xrm.Search.Index
 					};
 
 					var forumThreadIndexers = _index.GetIndexers("adx_communityforumthread",
-						links: new List<Fetch.Link>() { forumThreadToParentPageLink });
+						links: new List<Fetch.Link> { forumThreadToParentPageLink });
 					UpdateWithIndexers("adx_communityforumthread", forumThreadIndexers);
 
 					var forumPostToParentPageLink = new Fetch.Link
@@ -296,21 +296,21 @@ namespace Adxstudio.Xrm.Search.Index
 						FromAttribute = "adx_communityforumthreadid",
 						ToAttribute = "adx_forumthreadid",
 						Alias = "adx_communityforumpost_communityforumthread",
-						Links = new List<Fetch.Link>()
+						Links = new List<Fetch.Link>
 						{
 							forumThreadToParentPageLink
 						}
 					};
 
 					var forumPostIndexers = _index.GetIndexers("adx_communityforumpost",
-						links: new List<Fetch.Link>() { forumPostToParentPageLink });
+						links: new List<Fetch.Link> { forumPostToParentPageLink });
 					UpdateWithIndexers("adx_communityforumpost", forumPostIndexers);
 
 					// -------------------- BLOGS ------------------------------
 					var blogIndexers = _index.GetIndexers("adx_blog", links: forumBlogLinks);
 					UpdateWithIndexers("adx_blog", blogIndexers);
 
-					var blogPostBlogLinks = new List<Fetch.Link>() { forumBlogToParentPageLink };
+					var blogPostBlogLinks = new List<Fetch.Link> { forumBlogToParentPageLink };
 					if (languageFilter != null)
 					{
 						blogPostBlogLinks.Add(languageFilter);
@@ -336,7 +336,7 @@ namespace Adxstudio.Xrm.Search.Index
 				var inForumFilterForThread = new Fetch.Filter
 				{
 					Type = Microsoft.Xrm.Sdk.Query.LogicalOperator.And,
-					Conditions = new List<Fetch.Condition>()
+					Conditions = new List<Fetch.Condition>
 					{
 						new Fetch.Condition
 						{
@@ -356,7 +356,7 @@ namespace Adxstudio.Xrm.Search.Index
 					FromAttribute = "adx_communityforumthreadid",
 					ToAttribute = "adx_forumthreadid",
 					Alias = "adx_communityforumpost_communityforumthread",
-					Filters = new List<Fetch.Filter>()
+					Filters = new List<Fetch.Filter>
 					{
 					   inForumFilterForThread
 					}
@@ -372,7 +372,7 @@ namespace Adxstudio.Xrm.Search.Index
 				var inIdeaForumFilter = new Fetch.Filter
 				{
 					Type = Microsoft.Xrm.Sdk.Query.LogicalOperator.And,
-					Conditions = new List<Fetch.Condition>()
+					Conditions = new List<Fetch.Condition>
 					{
 						new Fetch.Condition
 						{

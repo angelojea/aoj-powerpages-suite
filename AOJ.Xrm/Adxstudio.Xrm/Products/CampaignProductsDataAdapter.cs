@@ -59,7 +59,7 @@ namespace Adxstudio.Xrm.Products
 		/// <param name="portalName">Portal Name</param>
 		public CampaignProductsDataAdapter(Entity campaign, string portalName = null) : this(campaign, new PortalConfigurationDataAdapterDependencies(portalName)) { }
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 		
 		protected EntityReference Campaign { get; set; }
 

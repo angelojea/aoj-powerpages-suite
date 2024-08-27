@@ -35,21 +35,8 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 		public class QueryByAttributeParameters : IStateManager
 		{
-			private string _entityName;
-
 			[DefaultValue(""), Description(""), Category("Data")]
-			public string EntityName
-			{
-				get
-				{
-					return _entityName;
-				}
-
-				set
-				{
-					_entityName = value;
-				}
-			}
+			public string EntityName { get; set; }
 
 			private ListItemCollection _attributes;
 
@@ -63,7 +50,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 					{
 						_attributes = new ListItemCollection();
 
-						if (_tracking)
+						if (IsTrackingViewState)
 						{
 							(_attributes as IStateManager).TrackViewState();
 						}
@@ -85,7 +72,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 					{
 						_values = new ListItemCollection();
 
-						if (_tracking)
+						if (IsTrackingViewState)
 						{
 							(_values as IStateManager).TrackViewState();
 						}
@@ -107,7 +94,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 					{
 						_orders = new ListItemCollection();
 
-						if (_tracking)
+						if (IsTrackingViewState)
 						{
 							(_orders as IStateManager).TrackViewState();
 						}
@@ -129,7 +116,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 					{
 						_columnSet = new ListItemCollection();
 
-						if (_tracking)
+						if (IsTrackingViewState)
 						{
 							(_columnSet as IStateManager).TrackViewState();
 						}
@@ -141,17 +128,12 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 			#region IStateManager Members
 
-			private bool _tracking;
-
 			bool IStateManager.IsTrackingViewState
 			{
 				get	{ return IsTrackingViewState; }
 			}
 
-			public bool IsTrackingViewState
-			{
-				get	{ return _tracking; }
-			}
+			public bool IsTrackingViewState { get; private set; }
 
 			void IStateManager.LoadViewState(object savedState)
 			{
@@ -198,7 +180,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 			protected virtual void TrackViewState()
 			{
-				_tracking = true;
+				IsTrackingViewState = true;
 				((IStateManager)Attributes).TrackViewState();
 				((IStateManager)Values).TrackViewState();
 				((IStateManager)Orders).TrackViewState();
@@ -245,7 +227,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		[Category("Data")]
 		[Description("The QueryByAttribute query.")]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-		[PersistenceMode(PersistenceMode.InnerProperty), MergableProperty(false), DefaultValue((string)null)]
+		[PersistenceMode(PersistenceMode.InnerProperty), MergableProperty(false), DefaultValue(null)]
 		public QueryByAttributeParameters QueryByAttribute
 		{
 			get
@@ -295,7 +277,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		/// <summary>
 		/// Gets the parameters collection that contains the parameters that are used when selecting data.
 		/// </summary>
-		[Description(""), Category("Data"), PersistenceMode(PersistenceMode.InnerProperty), DefaultValue((string)null), Editor("System.Web.UI.Design.WebControls.ParameterCollectionEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor)), MergableProperty(false)]
+		[Description(""), Category("Data"), PersistenceMode(PersistenceMode.InnerProperty), DefaultValue(null), Editor("System.Web.UI.Design.WebControls.ParameterCollectionEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor)), MergableProperty(false)]
 		public ParameterCollection SelectParameters
 		{
 			get
@@ -307,7 +289,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		/// <summary>
 		/// Gets the parameters collection that contains the parameters that are used when querying data.
 		/// </summary>
-		[Description(""), Category("Data"), PersistenceMode(PersistenceMode.InnerProperty), DefaultValue((string)null), Editor("System.Web.UI.Design.WebControls.ParameterCollectionEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor)), MergableProperty(false)]
+		[Description(""), Category("Data"), PersistenceMode(PersistenceMode.InnerProperty), DefaultValue(null), Editor("System.Web.UI.Design.WebControls.ParameterCollectionEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor)), MergableProperty(false)]
 		public ParameterCollection QueryParameters
 		{
 			get
@@ -316,16 +298,10 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 			}
 		}
 
-		private bool _encodeParametersEnabled = true;
-
 		/// <summary>
 		/// Gets or sets the option to HtmlEncode the parameter values when constructing the FetchXml as a means of input validation.
 		/// </summary>
-		public bool EncodeParametersEnabled
-		{
-			get { return _encodeParametersEnabled; }
-			set { _encodeParametersEnabled = value; }
-		}
+		public bool EncodeParametersEnabled { get; set; } = true;
 
 		/// <summary>
 		/// Gets or sets the type name of the static class type to emit. The DynamicEntityWrapper is converted to an object of this type.

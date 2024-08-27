@@ -13,8 +13,8 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
 	public class ConvertOrderToInvoiceActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-clipboard fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Create_Invoice_Button_Text");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Create_Invoice_Button_Text");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-clipboard fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Create_Invoice_Button_Text");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Create_Invoice_Button_Text");
 
 		public ViewConvertOrderModal Modal { get; set; }
 

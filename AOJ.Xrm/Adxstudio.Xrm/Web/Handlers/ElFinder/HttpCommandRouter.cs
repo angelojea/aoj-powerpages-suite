@@ -35,8 +35,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 		/// <summary>
 		/// List of all valid elFinder (1.2) service commands.
 		/// </summary>
-		private static readonly string[] _validCommandNames = new[]
-		{
+		private static readonly string[] _validCommandNames = {
 			"open",
 			"mkdir",
 			"mkfile",

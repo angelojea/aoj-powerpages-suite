@@ -31,9 +31,9 @@ namespace Adxstudio.Xrm.Search.Facets
 		/// <param name="constraintDisplayName">constraint display name for UI</param>
 		public ConstraintHit(string constraintName, int hitCount, string constraintDisplayName)
 		{
-			this.ConstraintValue = constraintName;
-			this.HitCount = hitCount;
-			this.DisplayValue = constraintDisplayName ?? constraintName;
+			ConstraintValue = constraintName;
+			HitCount = hitCount;
+			DisplayValue = constraintDisplayName ?? constraintName;
 		}
 
 		/// <summary>

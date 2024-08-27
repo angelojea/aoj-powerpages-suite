@@ -34,7 +34,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			get { return _root.Value; }
 		}
 
-		protected SiteMapProvider SiteMap { get; private set; }
+		protected SiteMapProvider SiteMap { get; }
 
 		public override object BeforeMethod(string method)
 		{

@@ -15,8 +15,8 @@ namespace Adxstudio.Xrm.Blogs
 			TaggedItemCount = count;
 		}
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public int TaggedItemCount { get; private set; }
+		public int TaggedItemCount { get; }
 	}
 }

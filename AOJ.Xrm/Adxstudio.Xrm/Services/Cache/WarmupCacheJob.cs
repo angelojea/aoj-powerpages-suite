@@ -11,12 +11,12 @@ namespace Adxstudio.Xrm.Services.Cache
 	using System.Text;
 	using System.Web.Hosting;
 	using System.Web.Security;
-	using Adxstudio.Xrm.AspNet;
-	using Adxstudio.Xrm.IO;
-	using Adxstudio.Xrm.Json;
-	using Adxstudio.Xrm.Performance;
-	using Adxstudio.Xrm.Threading;
-	using Adxstudio.Xrm.Web;
+	using AspNet;
+	using IO;
+	using Json;
+	using Performance;
+	using Threading;
+	using Web;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Sdk;
 
@@ -28,17 +28,17 @@ namespace Adxstudio.Xrm.Services.Cache
 		/// <summary>
 		/// The context.
 		/// </summary>
-		public CrmDbContext Context { get; private set; }
+		public CrmDbContext Context { get; }
 
 		/// <summary>
 		/// The settings.
 		/// </summary>
-		public WarmupCacheSettings Settings { get; private set; }
+		public WarmupCacheSettings Settings { get; }
 
 		/// <summary>
 		/// The full path of the input folder.
 		/// </summary>
-		public string AppDataFullPath { get; private set; }
+		public string AppDataFullPath { get; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="WarmupCacheJob" /> class.
@@ -47,9 +47,9 @@ namespace Adxstudio.Xrm.Services.Cache
 		/// <param name="settings">The settings.</param>
 		public WarmupCacheJob(CrmDbContext context, WarmupCacheSettings settings)
 		{
-			this.Context = context;
-			this.Settings = settings;
-			this.AppDataFullPath = settings.AppDataPath.StartsWith("~/")
+			Context = context;
+			Settings = settings;
+			AppDataFullPath = settings.AppDataPath.StartsWith("~/")
 				? HostingEnvironment.MapPath(settings.AppDataPath)
 				: settings.AppDataPath;
 		}
@@ -64,14 +64,14 @@ namespace Adxstudio.Xrm.Services.Cache
 
 			using (PerformanceProfiler.Instance.StartMarker(PerformanceMarkerName.Cache, PerformanceMarkerArea.Cms, PerformanceMarkerTagName.WarmupCache))
 			{
-				if (!this.Settings.AppDataRetryPolicy.DirectoryExists(this.AppDataFullPath))
+				if (!Settings.AppDataRetryPolicy.DirectoryExists(AppDataFullPath))
 				{
 					return;
 				}
 
-				var directory = this.Settings.AppDataRetryPolicy.GetDirectory(this.AppDataFullPath);
-				var files = directory.GetFiles(this.Settings.FilenameFormat.FormatWith("*"));
-				var expiresOn = DateTimeOffset.UtcNow - this.Settings.ExpirationWindow;
+				var directory = Settings.AppDataRetryPolicy.GetDirectory(AppDataFullPath);
+				var files = directory.GetFiles(Settings.FilenameFormat.FormatWith("*"));
+				var expiresOn = DateTimeOffset.UtcNow - Settings.ExpirationWindow;
 
 				foreach (var file in files)
 				{
@@ -83,13 +83,13 @@ namespace Adxstudio.Xrm.Services.Cache
 						{
 							ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Reading: " + file.FullName);
 
-							var bytes = this.Settings.AppDataRetryPolicy.ReadAllBytes(file.FullName);
-							var json = Encoding.UTF8.GetString(MachineKey.Unprotect(bytes, this.Settings.GetType().ToString()));
+							var bytes = Settings.AppDataRetryPolicy.ReadAllBytes(file.FullName);
+							var json = Encoding.UTF8.GetString(MachineKey.Unprotect(bytes, Settings.GetType().ToString()));
 							var request = CrmJsonConvert.DeserializeObject(json) as OrganizationRequest;
 
 							if (request != null)
 							{
-								this.Context.Service.ExecuteRequest(request);
+								Context.Service.ExecuteRequest(request);
 							}
 						}
 					}
@@ -97,7 +97,7 @@ namespace Adxstudio.Xrm.Services.Cache
 					{
 						WebEventSource.Log.GenericWarningException(e);
 
-						if (this.Settings.PropagateExceptions)
+						if (Settings.PropagateExceptions)
 						{
 							exceptions.Add(e);
 						}
@@ -105,7 +105,7 @@ namespace Adxstudio.Xrm.Services.Cache
 				}
 			}
 
-			if (this.Settings.PropagateExceptions && exceptions.Any())
+			if (Settings.PropagateExceptions && exceptions.Any())
 			{
 				throw new AggregateException(exceptions);
 			}

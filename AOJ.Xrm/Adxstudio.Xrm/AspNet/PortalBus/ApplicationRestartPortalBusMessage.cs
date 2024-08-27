@@ -9,8 +9,8 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 	using System.Linq;
 	using System.Text.RegularExpressions;
 	using System.Threading.Tasks;
-	using Adxstudio.Xrm.Core.Telemetry;
-	using Adxstudio.Xrm.Web;
+	using Core.Telemetry;
+	using Web;
 	using Microsoft.Owin;
 	using Microsoft.Xrm.Client.Services.Messages;
 

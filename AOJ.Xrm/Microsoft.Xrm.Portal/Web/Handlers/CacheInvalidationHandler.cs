@@ -101,8 +101,6 @@ namespace Microsoft.Xrm.Portal.Web.Handlers
 					{
 						serviceCache.Remove(entity);
 					}
-
-					return;
 				}
 			}
 			catch (Exception e)

@@ -56,21 +56,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			set { _expiration = value; }
 		}
 
-		private TextCase _challengeTextCase = TextCase.Lower;
-
 		/// <summary>
 		/// Gets or sets the <see cref="TextCase"/> of the generated challenge.
 		/// </summary>
 		[Category("Behavior")]
 		[Description("The text case of the challenge (e.g., upper-case).")]
 		[DefaultValue(TextCase.Lower)]
-		public TextCase ChallengeTextCase
-		{
-			get { return _challengeTextCase; }
-			set { _challengeTextCase = value; }
-		}
-
-		private int _challengeTextLength = 5;
+		public TextCase ChallengeTextCase { get; set; } = TextCase.Lower;
 
 		/// <summary>
 		/// Gets or sets the text length of the challenge.
@@ -81,11 +73,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		[Category("Behavior")]
 		[Description("The text length of the challenge.")]
 		[DefaultValue(5)]
-		public int ChallengeTextLength
-		{
-			get { return _challengeTextLength; }
-			set { _challengeTextLength = value; }
-		}
+		public int ChallengeTextLength { get; set; } = 5;
 
 		/// <summary>
 		/// Selects a word to use in an image.
@@ -225,7 +213,6 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		internal class RandomStringGenerator
 		{
-			private readonly string _characterSet;
 			private readonly Random _random = new Random();
 
 			private const string UpperCaseCharacterSet = "ABCDEFGHJKMNPQRSTUVWXYZ";
@@ -236,13 +223,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			public RandomStringGenerator(string characterSet)
 			{
-				_characterSet = characterSet;
+				CharacterSet = characterSet;
 			}
 
-			public string CharacterSet
-			{
-				get { return _characterSet; }
-			}
+			public string CharacterSet { get; }
 
 			public string Build(int length)
 			{

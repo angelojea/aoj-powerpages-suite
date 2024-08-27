@@ -8,15 +8,15 @@ namespace Adxstudio.Xrm.ContentAccess
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Adxstudio.Xrm.Cms;
-    using Adxstudio.Xrm.Resources;
-    using Adxstudio.Xrm.Security;
-    using Adxstudio.Xrm.Services.Query;
+    using Cms;
+    using Resources;
+    using Security;
+    using Services.Query;
     using Microsoft.Xrm.Portal.Configuration;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Client;
     using Microsoft.Xrm.Sdk.Query;
-    using Adxstudio.Xrm.Web.UI;
+    using Web.UI;
     using Microsoft.Xrm.Portal;
     using Microsoft.Xrm.Sdk.Metadata;
 
@@ -59,7 +59,7 @@ namespace Adxstudio.Xrm.ContentAccess
         /// <summary>
         /// Dictionary of relationship metadata that defines relationship attributes
         /// </summary>
-        private Dictionary<string, ProductAccessProvider.RelationshipMetadata> relationshipMetadataDictionary;
+        private readonly Dictionary<string, RelationshipMetadata> relationshipMetadataDictionary;
         #endregion
 
         #region Constructors
@@ -96,7 +96,7 @@ namespace Adxstudio.Xrm.ContentAccess
         /// <param name="relationshipNamesDictionary">Semicolon delimited string of relationship names</param>
         /// <param name="relationshipMetadataDictionary">Relationship metadata that defines relationship attributes</param>
         /// <param name="siteSettingDictionary">Site Setting for Product Filtering</param>
-        public ProductAccessProvider(IPortalContext portalContext, Dictionary<string, string> relationshipNamesDictionary, Dictionary<string, ProductAccessProvider.RelationshipMetadata> relationshipMetadataDictionary, Dictionary<string, string> siteSettingDictionary)
+        public ProductAccessProvider(IPortalContext portalContext, Dictionary<string, string> relationshipNamesDictionary, Dictionary<string, RelationshipMetadata> relationshipMetadataDictionary, Dictionary<string, string> siteSettingDictionary)
 	        : base(ContentAccessConfiguration.DefaultProductFilteringConfiguration(), portalContext, siteSettingDictionary)
 	    {
 	        this.relationshipNamesDictionary = relationshipNamesDictionary;
@@ -113,22 +113,22 @@ namespace Adxstudio.Xrm.ContentAccess
         public override void TryApplyRecordLevelFiltersToFetch(CrmEntityPermissionRight right, Fetch fetchIn)
         {
             // Apply filter only if Entity is "Knowledge Article" and Right is "Read"
-            if (!this.IsRightEntityAndPermissionRight(right, fetchIn, this.Config.SourceEntityName, CrmEntityPermissionRight.Read))
+            if (!IsRightEntityAndPermissionRight(right, fetchIn, Config.SourceEntityName, CrmEntityPermissionRight.Read))
             {
                 return;
             }
 
             // If Product Filtering is not enabled
-            if (!this.IsEnabled())
+            if (!IsEnabled())
             {
                 return;
             }
 
             // Retrieve Product IDs
-            var userProductIDs = this.GetProducts();
+            var userProductIDs = GetProducts();
 
             // Inject Product IDs filter into FetchXML
-            this.TryRecordLevelFiltersToFetch(fetchIn, userProductIDs);
+            TryRecordLevelFiltersToFetch(fetchIn, userProductIDs);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace Adxstudio.Xrm.ContentAccess
         public List<Guid> GetProducts()
         {
             // If anonymous user, return nothing
-            if (this.CurrentUserEntityReference == null)
+            if (CurrentUserEntityReference == null)
             {
                 return Enumerable.Empty<Guid>().ToList();
             }
@@ -170,28 +170,28 @@ namespace Adxstudio.Xrm.ContentAccess
 
 			// Retrieve Contact to Product relationships and build Entity Permission links
 			var contactToProductRelationshipNamesCollection = 
-				this.GetDelimitedSiteSettingValueCollection(ContactToProductRelationshipNames, ContactToProductFallbackRelationshipName);
-            var contactLink = this.BuildLinksAndFilterChain(
+				GetDelimitedSiteSettingValueCollection(ContactToProductRelationshipNames, ContactToProductFallbackRelationshipName);
+            var contactLink = BuildLinksAndFilterChain(
 				contactToProductRelationshipNamesCollection, productFetch, associatedToAccountOrContactFilter, 
-				this.CurrentUserEntityReference, null, OwningCustomerType.Contact, linkEntityAliasGenerator);
+				CurrentUserEntityReference, null, OwningCustomerType.Contact, linkEntityAliasGenerator);
             productFetch.AddLink(contactLink);
 
-            if (this.ParentCustomerEntityReference != null && this.ParentCustomerEntityReference.LogicalName == "contact")
+            if (ParentCustomerEntityReference != null && ParentCustomerEntityReference.LogicalName == "contact")
             {
                 // Retrieve parent Contact to Product relationships and build Entity Permission links
-                var parentContactLink = this.BuildLinksAndFilterChain(
+                var parentContactLink = BuildLinksAndFilterChain(
 					contactToProductRelationshipNamesCollection, productFetch, associatedToAccountOrContactFilter,
-					this.ParentCustomerEntityReference, null, OwningCustomerType.Contact, linkEntityAliasGenerator);
+					ParentCustomerEntityReference, null, OwningCustomerType.Contact, linkEntityAliasGenerator);
                 productFetch.AddLink(parentContactLink);
             }
-            else if (this.ParentCustomerEntityReference != null && this.ParentCustomerEntityReference.LogicalName == "account")
+            else if (ParentCustomerEntityReference != null && ParentCustomerEntityReference.LogicalName == "account")
             {
                 // Retrieve Account to Product relationships and build Entity Permission links
                 var accountToProductRelationshipNamesCollection = 
-					this.GetDelimitedSiteSettingValueCollection(AccountToProductRelationshipNames, AccountToProductFallbackRelationshipName);
-                var accountLink = this.BuildLinksAndFilterChain(
+					GetDelimitedSiteSettingValueCollection(AccountToProductRelationshipNames, AccountToProductFallbackRelationshipName);
+                var accountLink = BuildLinksAndFilterChain(
 					accountToProductRelationshipNamesCollection, productFetch, associatedToAccountOrContactFilter,
-					null, this.ParentCustomerEntityReference, OwningCustomerType.Account, linkEntityAliasGenerator);
+					null, ParentCustomerEntityReference, OwningCustomerType.Account, linkEntityAliasGenerator);
                 productFetch.AddLink(accountLink);
             }
 
@@ -224,7 +224,7 @@ namespace Adxstudio.Xrm.ContentAccess
                 }
             });
 
-            var productsCollection = productFetch.Execute(this.Portal.ServiceContext as IOrganizationService);
+            var productsCollection = productFetch.Execute(Portal.ServiceContext as IOrganizationService);
             return productsCollection.Entities.Select(x => x.Id).ToList();
         }
 
@@ -236,7 +236,7 @@ namespace Adxstudio.Xrm.ContentAccess
 		/// </returns>
 		public bool DisplayArticlesWithoutAssociatedProductsEnabled()
 	    {
-		    return this.IsSiteSettingEnabled(DisplayArticlesWithoutAssociatedProductsSiteSettingName);
+		    return IsSiteSettingEnabled(DisplayArticlesWithoutAssociatedProductsSiteSettingName);
 	    }
 
         /// <summary>
@@ -351,13 +351,13 @@ namespace Adxstudio.Xrm.ContentAccess
         /// <param name="account">Associated Account</param>
         /// <param name="addCondition">Construct Account/Contact relationship filter</param>
         /// <param name="linkEntityAliasGenerator">LinkEntityAliasGenerator to track and create Aliases</param>
-        private static void BuildLinksAndFilter(OrganizationServiceContext serviceContext, ProductAccessProvider.RelationshipMetadata relationshipMetadata, LinkDetails linkDetails, Fetch fetch, Link link, Filter filter, EntityReference contact, EntityReference account, bool addCondition, LinkEntityAliasGenerator linkEntityAliasGenerator)
+        private static void BuildLinksAndFilter(OrganizationServiceContext serviceContext, RelationshipMetadata relationshipMetadata, LinkDetails linkDetails, Fetch fetch, Link link, Filter filter, EntityReference contact, EntityReference account, bool addCondition, LinkEntityAliasGenerator linkEntityAliasGenerator)
         {
             var alias = linkEntityAliasGenerator.CreateUniqueAlias(relationshipMetadata.Entity2LogicalName);
             Link newLink = null;
 
 
-            if (relationshipMetadata.RelationshipType == ProductAccessProvider.RelationshipType.ManyToManyRelationship)
+            if (relationshipMetadata.RelationshipType == RelationshipType.ManyToManyRelationship)
             {
                 var intersectLinkEntityName = relationshipMetadata.IntersectEntityName;
                 string linkTargetFromAttribute;
@@ -404,7 +404,7 @@ namespace Adxstudio.Xrm.ContentAccess
                         }
                 };
             }
-            else if (relationshipMetadata.RelationshipType == ProductAccessProvider.RelationshipType.ManyToOneRelationship)
+            else if (relationshipMetadata.RelationshipType == RelationshipType.ManyToOneRelationship)
             {
                 var linkFromAttribute = relationshipMetadata.ReferencedEntity == relationshipMetadata.Entity2LogicalName
                     ? relationshipMetadata.ReferencedAttribute
@@ -423,7 +423,7 @@ namespace Adxstudio.Xrm.ContentAccess
                     Alias = alias
                 };
             }
-            else if (relationshipMetadata.RelationshipType == ProductAccessProvider.RelationshipType.OneToManyRelationship)
+            else if (relationshipMetadata.RelationshipType == RelationshipType.OneToManyRelationship)
             {
                 var linkFromAttribute = relationshipMetadata.ReferencedEntity == relationshipMetadata.Entity2LogicalName
                     ? relationshipMetadata.ReferencedAttribute
@@ -447,7 +447,7 @@ namespace Adxstudio.Xrm.ContentAccess
                 throw new ApplicationException(string.Format("Retrieve relationship request failed for relationship name {0}", linkDetails.RelationshipName));
             }
 
-            ContentAccessProvider.AddLink(link, newLink);
+            AddLink(link, newLink);
 
 
             if (addCondition) // Only add the condition if we are at the end of the chain
@@ -492,8 +492,8 @@ namespace Adxstudio.Xrm.ContentAccess
         /// <param name="linkEntityAliasGenerator">LinkEntityAliasGenerator to track and create Aliases</param>
         private void BuildLinksAndFilter(OrganizationServiceContext serviceContext, LinkDetails linkDetails, Fetch fetch, Link link, Filter filter, EntityReference contact, EntityReference account, bool addCondition, LinkEntityAliasGenerator linkEntityAliasGenerator)
         {
-            var relationshipMetadata = this.BuildRelationshipMetadata(serviceContext, linkDetails);
-            ProductAccessProvider.BuildLinksAndFilter(serviceContext, relationshipMetadata, linkDetails, fetch, link, filter, contact, account, addCondition, linkEntityAliasGenerator);
+            var relationshipMetadata = BuildRelationshipMetadata(serviceContext, linkDetails);
+            BuildLinksAndFilter(serviceContext, relationshipMetadata, linkDetails, fetch, link, filter, contact, account, addCondition, linkEntityAliasGenerator);
         }
 
         /// <summary>
@@ -502,20 +502,20 @@ namespace Adxstudio.Xrm.ContentAccess
         /// <param name="serviceContext">Service Context</param>
         /// <param name="linkDetails">Link Details</param>
         /// <returns>Relationshi pMetadata</returns>
-        private ProductAccessProvider.RelationshipMetadata BuildRelationshipMetadata(OrganizationServiceContext serviceContext, LinkDetails linkDetails)
+        private RelationshipMetadata BuildRelationshipMetadata(OrganizationServiceContext serviceContext, LinkDetails linkDetails)
         {
             // This is used for Mocking
-            if (this.relationshipMetadataDictionary != null &&
-                this.relationshipMetadataDictionary.ContainsKey(linkDetails.Entity2Name))
+            if (relationshipMetadataDictionary != null &&
+                relationshipMetadataDictionary.ContainsKey(linkDetails.Entity2Name))
             {
-                return this.relationshipMetadataDictionary[linkDetails.Entity2Name];
+                return relationshipMetadataDictionary[linkDetails.Entity2Name];
             }
 
             // Standard flow
             var entity1Metadata = GetEntityMetadata(serviceContext, linkDetails.Entity1Name);
             var entity2Metadata = linkDetails.Entity2Name == linkDetails.Entity1Name ? entity1Metadata : GetEntityMetadata(serviceContext, linkDetails.Entity2Name);
 
-            var relationshipMetadata = new ProductAccessProvider.RelationshipMetadata();
+            var relationshipMetadata = new RelationshipMetadata();
             relationshipMetadata.Entity1PrimaryIdAttribute = entity1Metadata.PrimaryIdAttribute;
             relationshipMetadata.Entity2PrimaryIdAttribute = entity2Metadata.PrimaryIdAttribute;
             relationshipMetadata.Entity1LogicalName = entity1Metadata.LogicalName;
@@ -524,7 +524,7 @@ namespace Adxstudio.Xrm.ContentAccess
             var relationshipManyToMany = entity1Metadata.ManyToManyRelationships.FirstOrDefault(r => r.SchemaName == linkDetails.RelationshipName);
             if (relationshipManyToMany != null)
             {
-                relationshipMetadata.RelationshipType = ProductAccessProvider.RelationshipType.ManyToManyRelationship;
+                relationshipMetadata.RelationshipType = RelationshipType.ManyToManyRelationship;
                 relationshipMetadata.Entity1LogicalName = relationshipManyToMany.Entity2LogicalName;
                 relationshipMetadata.Entity2LogicalName = relationshipManyToMany.Entity1LogicalName;
                 relationshipMetadata.Entity1IntersectAttribute = relationshipManyToMany.Entity2IntersectAttribute;
@@ -536,7 +536,7 @@ namespace Adxstudio.Xrm.ContentAccess
             var relationshipManyToOne = entity1Metadata.ManyToOneRelationships.FirstOrDefault(r => r.SchemaName == linkDetails.RelationshipName);
             if (relationshipManyToOne != null)
             {
-                relationshipMetadata.RelationshipType = ProductAccessProvider.RelationshipType.ManyToOneRelationship;
+                relationshipMetadata.RelationshipType = RelationshipType.ManyToOneRelationship;
                 relationshipMetadata.ReferencedEntity = relationshipManyToOne.ReferencedEntity;
                 relationshipMetadata.ReferencingAttribute = relationshipManyToOne.ReferencingAttribute;
                 relationshipMetadata.ReferencedAttribute = relationshipManyToOne.ReferencedAttribute;
@@ -546,7 +546,7 @@ namespace Adxstudio.Xrm.ContentAccess
             var relationshipOneToMany = entity1Metadata.OneToManyRelationships.FirstOrDefault(r => r.SchemaName == linkDetails.RelationshipName);
             if (relationshipOneToMany != null)
             {
-                relationshipMetadata.RelationshipType = ProductAccessProvider.RelationshipType.OneToManyRelationship;
+                relationshipMetadata.RelationshipType = RelationshipType.OneToManyRelationship;
                 relationshipMetadata.ReferencedEntity = relationshipOneToMany.ReferencedEntity;
                 relationshipMetadata.ReferencedAttribute = relationshipOneToMany.ReferencedAttribute;
                 relationshipMetadata.ReferencingAttribute = relationshipOneToMany.ReferencingAttribute;
@@ -566,14 +566,14 @@ namespace Adxstudio.Xrm.ContentAccess
         private string[] GetDelimitedSiteSettingValueCollection(string siteSettingName, string fallbackValue = "")
         {
             // Retrieve site setting by name
-            var customerToProductRelationshipNamesString = this.relationshipNamesDictionary != null && this.relationshipNamesDictionary.ContainsKey(siteSettingName)
-                ? this.relationshipNamesDictionary[siteSettingName]
-                : this.Portal.ServiceContext.GetSiteSettingValueByName(this.Portal.Website, siteSettingName);
+            var customerToProductRelationshipNamesString = relationshipNamesDictionary != null && relationshipNamesDictionary.ContainsKey(siteSettingName)
+                ? relationshipNamesDictionary[siteSettingName]
+                : Portal.ServiceContext.GetSiteSettingValueByName(Portal.Website, siteSettingName);
 
             // If site setting doesn't exist, return fallbackValue
             if (string.IsNullOrWhiteSpace(customerToProductRelationshipNamesString))
             {
-                return new string[] { fallbackValue };
+                return new[] { fallbackValue };
             }
 
             // Ensure that the relationship depth is <= 2 (This ensure that only one intersect is between Product and Owning Entity (Contact/Account)
@@ -603,14 +603,14 @@ namespace Adxstudio.Xrm.ContentAccess
 			OwningCustomerType owningCustomerType, LinkEntityAliasGenerator linkEntityAliasGenerator)
         {
             var rootLink = new Link();
-            var linkDetails = this.GetLinkDetails(customerToProductRelationshipNamesCollection, owningCustomerType);
+            var linkDetails = GetLinkDetails(customerToProductRelationshipNamesCollection, owningCustomerType);
             foreach (var linkDetail in linkDetails)
             {
                 var innermostLink = GetInnermostLink(rootLink);
 
                 var currentLinkDetailConnectsToAccountOrContact = (contact != null && (linkDetail.Entity1Name == "contact" || linkDetail.Entity2Name == "contact")) ||
                                                                   (account != null && (linkDetail.Entity1Name == "account" || linkDetail.Entity2Name == "account"));
-                this.BuildLinksAndFilter(this.Portal.ServiceContext, linkDetail, fetch, innermostLink, filter, contact, account, currentLinkDetailConnectsToAccountOrContact, linkEntityAliasGenerator);
+                BuildLinksAndFilter(Portal.ServiceContext, linkDetail, fetch, innermostLink, filter, contact, account, currentLinkDetailConnectsToAccountOrContact, linkEntityAliasGenerator);
             }
 
             return rootLink;
@@ -638,8 +638,8 @@ namespace Adxstudio.Xrm.ContentAccess
             else if (contactToProductRelationshipNamesCollection.Count() == 2)
             {
                 // Retrieve Customer and Product metadata
-                var customerMetadata = GetEntityMetadata(this.Portal.ServiceContext, entityPermissionScopeName);
-                var productMetadata = GetEntityMetadata(this.Portal.ServiceContext, "product");
+                var customerMetadata = GetEntityMetadata(Portal.ServiceContext, entityPermissionScopeName);
+                var productMetadata = GetEntityMetadata(Portal.ServiceContext, "product");
 
                 // Retrieve the intersecting entities schema name for the specified relationship name
                 var customer2IntersectSchemaName = customerMetadata.OneToManyRelationships.FirstOrDefault(metadata => metadata.SchemaName == contactToProductRelationshipNamesCollection[0]);
@@ -689,23 +689,23 @@ namespace Adxstudio.Xrm.ContentAccess
         private void TryRecordLevelFiltersToFetch(Fetch fetchIn, List<Guid> userProductIDs)
         {
             // Build link to Product from Knowledge Article
-            var link = new Link()
+            var link = new Link
             {
-                Alias = this.Config.IntersectAlias,
-                Name = this.Config.IntersectEntityName,
-                FromAttribute = this.Config.IntersectFromAttribute,
-                ToAttribute = this.Config.IntersectToAttribute,
+                Alias = Config.IntersectAlias,
+                Name = Config.IntersectEntityName,
+                FromAttribute = Config.IntersectFromAttribute,
+                ToAttribute = Config.IntersectToAttribute,
                 Visible = false,
                 Type = JoinOperator.LeftOuter,
                 Intersect = true,
                 Links = new List<Link>
                 {
-                    new Link()
+                    new Link
                     {
-                        Alias = this.Config.TargetAlias,
-                        Name = this.Config.TargetEntityName,
-                        FromAttribute = this.Config.TargetFromAttribute,
-                        ToAttribute = this.Config.TargetToAttribute,
+                        Alias = Config.TargetAlias,
+                        Name = Config.TargetEntityName,
+                        FromAttribute = Config.TargetFromAttribute,
+                        ToAttribute = Config.TargetToAttribute,
                         Visible = false,
                         Type = JoinOperator.LeftOuter,
                         Intersect = true,
@@ -721,7 +721,7 @@ namespace Adxstudio.Xrm.ContentAccess
             fetchIn.Entity.Links.Add(link);
 
             // Build and add Filter to the FetchXML
-            var filter = this.BuildFilter(userProductIDs);
+            var filter = BuildFilter(userProductIDs);
             if (fetchIn.Entity.Filters == null)
             {
                 fetchIn.Entity.Filters = new List<Filter>();
@@ -745,21 +745,21 @@ namespace Adxstudio.Xrm.ContentAccess
             }
             else
             {
-                userProductsObjectCollection.Add((object)Guid.Empty);
+                userProductsObjectCollection.Add(Guid.Empty);
             }
 
             var filterConditions = new List<Condition>
             {
-                new Condition { EntityName = this.Config.TargetAlias, Attribute = this.Config.TargetFromAttribute, Operator = ConditionOperator.In, Values = userProductsObjectCollection }
+                new Condition { EntityName = Config.TargetAlias, Attribute = Config.TargetFromAttribute, Operator = ConditionOperator.In, Values = userProductsObjectCollection }
             };
 
             // If User is Authenticated and Site Setting configured for showing unassociated Articles
-            if (this.CurrentUserEntityReference != null && !this.FilterWithMatchingProductsOnly)
+            if (CurrentUserEntityReference != null && !FilterWithMatchingProductsOnly)
             {
-                filterConditions.Add(new Condition { EntityName = this.Config.IntersectAlias, Attribute = this.Config.IntersectFromAttribute, Operator = ConditionOperator.Null });
+                filterConditions.Add(new Condition { EntityName = Config.IntersectAlias, Attribute = Config.IntersectFromAttribute, Operator = ConditionOperator.Null });
             }
 
-            return new Filter()
+            return new Filter
             {
                 Type = LogicalOperator.Or,
                 Conditions = filterConditions

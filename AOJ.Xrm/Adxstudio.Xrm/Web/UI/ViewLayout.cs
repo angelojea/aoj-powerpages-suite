@@ -79,7 +79,7 @@ namespace Adxstudio.Xrm.Web.UI
 		/// <summary>
 		/// The <see cref="ViewConfiguration"/> that defines the settings needed to be able to retrieve a view and configure its display. 
 		/// </summary>
-		public ViewConfiguration Configuration { get; private set; }
+		public ViewConfiguration Configuration { get; }
 
 		/// <summary>
 		/// The ViewConfiguration encrypted and converted to a Base64 string to be passed to service endpoints for secure configuration.
@@ -90,7 +90,7 @@ namespace Adxstudio.Xrm.Web.UI
 		/// The <see cref="EntityView"/> retrieved for the <see cref="ViewConfiguration"/>
 		/// </summary>
 		[JsonIgnore]
-		public EntityView View { get; private set; }
+		public EntityView View { get; }
 
 		/// <summary>
 		/// Name of the view
@@ -105,7 +105,7 @@ namespace Adxstudio.Xrm.Web.UI
 		/// <summary>
 		/// The total width of all columns
 		/// </summary>
-		public int ColumnsTotalWidth { get; private set; }
+		public int ColumnsTotalWidth { get; }
 		
 		/// <summary>
 		/// The sort expression defined by the orderby element of the view's fetchXml

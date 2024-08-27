@@ -37,7 +37,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 		public int Width { get { return Column.Width; } }
 
-		protected SavedQueryView.ViewColumn Column { get; private set; }
+		protected SavedQueryView.ViewColumn Column { get; }
 
 		public override object BeforeMethod(string method)
 		{

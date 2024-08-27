@@ -6,8 +6,8 @@
 namespace Adxstudio.Xrm.EventHubBasedInvalidation
 {
 	using System;
-	using Adxstudio.Xrm.AspNet;
-	using Adxstudio.Xrm.Threading;
+	using AspNet;
+	using Threading;
 
 	/// <summary>
 	/// A continuous job for invalidating cache based on Event Hub messages.
@@ -22,12 +22,12 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// <summary>
 		/// The context.
 		/// </summary>
-		public CrmDbContext Context { get; private set; }
+		public CrmDbContext Context { get; }
 
 		/// <summary>
 		/// Current website id.
 		/// </summary>
-		public Guid WebsiteId { get; private set; }
+		public Guid WebsiteId { get; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CacheInvalidationJob" /> class.
@@ -37,9 +37,9 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// <param name="websiteId">Current website id.</param>
 		public CacheInvalidationJob(CacheInvalidationJobSettings settings, CrmDbContext context, Guid websiteId)
 		{
-			this.Settings = settings;
-			this.Context = context;
-			this.WebsiteId = websiteId;
+			Settings = settings;
+			Context = context;
+			WebsiteId = websiteId;
 		}
 
 		/// <summary>
@@ -48,7 +48,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// <param name="id">The activity id.</param>
 		protected override void ExecuteInternal(Guid id)
 		{
-			PortalCacheInvalidatorThread.Instance.Run(this.Context, this.WebsiteId);
+			PortalCacheInvalidatorThread.Instance.Run(Context, WebsiteId);
 		}
 	}
 }

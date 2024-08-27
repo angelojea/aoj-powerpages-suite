@@ -207,8 +207,6 @@ namespace Adxstudio.Xrm.Web.UI
 				webControl.CssClass = string.IsNullOrEmpty(webControl.CssClass)
 					? cssClass
 					: "{0} {1}".FormatWith(webControl.CssClass, cssClass);
-
-				return;
 			}
 		}
 

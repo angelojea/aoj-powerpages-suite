@@ -26,7 +26,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		private static readonly bool timeTrackingTelemetry = WebAppConfigurationProvider.GetTimeTrackingTelemetryString();
 		private static readonly Lazy<PortalCacheInvalidatorThread> instance = new Lazy<PortalCacheInvalidatorThread>(() => new PortalCacheInvalidatorThread());
 		private readonly Lazy<RetryPolicy> retryPolicy = new Lazy<RetryPolicy>(GetRetryPolicy); 
-		private static object mutexLockObject = new object();
+		private static readonly object mutexLockObject = new object();
 
 		/// <summary>
 		/// Gets the instance of this class
@@ -48,13 +48,13 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		{
 			lock (mutexLockObject)
 			{
-				ADXTrace.Instance.TraceVerbose(TraceCategory.Application, string.Format("Cache Invalidation lock acquired "));
+				ADXTrace.Instance.TraceVerbose(TraceCategory.Application, "Cache Invalidation lock acquired ");
 
 				// we want to happen this in lock state since order of update is important
-				this.InvalidateEntityRecordCache(context, websiteId);
-				this.InvalidateMetadataCache();
+				InvalidateEntityRecordCache(context, websiteId);
+				InvalidateMetadataCache();
 
-				ADXTrace.Instance.TraceVerbose(TraceCategory.Application, string.Format("Cache Invalidation lock released "));
+				ADXTrace.Instance.TraceVerbose(TraceCategory.Application, "Cache Invalidation lock released ");
 			}
 		}
 
@@ -109,7 +109,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			var convertedMessages = NotificationMessageTransformer.Instance.Convert(crmQueryResults.UpdatedEntityRecords, processingRecords);
 
 			// Post to the Adx cache endpoint
-			var entitiesWithSuccessfulInvalidation = this.PostRequest(convertedMessages, false, isSearchIndexInvalidation);
+			var entitiesWithSuccessfulInvalidation = PostRequest(convertedMessages, false, isSearchIndexInvalidation);
 
 			if (processingRecords.Count > 0)
 			{
@@ -117,11 +117,11 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 				NotificationUpdateManager.Instance.CompleteEntityProcessing(crmQueryResults.UpdatedEntitiesWithLastTimestamp, entitiesWithSuccessfulInvalidation, isSearchIndexInvalidation);
 			}
 
-			if (entitiesWithSuccessfulInvalidation.Any() && PortalCacheInvalidatorThread.timeTrackingTelemetry)
+			if (entitiesWithSuccessfulInvalidation.Any() && timeTrackingTelemetry)
 			{
 				// When the values were pushed into the portal cache
 				DateTime pushedToCache = DateTime.UtcNow;
-				this.LogTimeTelemetry(pushedToCache, processingRecords, crmQueryResults, timeStampTable);
+				LogTimeTelemetry(pushedToCache, processingRecords, crmQueryResults, timeStampTable);
 			}
 		}
 
@@ -136,7 +136,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		private void LogTimeTelemetry(DateTime pushedToCache, Dictionary<string, EntityRecordMessage> processingRecords, TimeBasedChangedData crmQueryResults, Dictionary<string, string> timeStampTable)
 		{
 			var filteredProcessingRecords = processingRecords.Where(item => item.Value.MessageType == MessageType.Create || item.Value.MessageType == MessageType.Update);
-			var filteredCrmQueryResults = crmQueryResults.UpdatedEntityRecords.OfType<Microsoft.Xrm.Sdk.NewOrUpdatedItem>()
+			var filteredCrmQueryResults = crmQueryResults.UpdatedEntityRecords.OfType<NewOrUpdatedItem>()
 				// Only add telemetry for non-initial load entities (timestamp already has been recorded.
 				// This will avoid awful timespan values being captured on initial startup
 				.Where(filteredResult => timeStampTable.ContainsKey(filteredResult.NewOrUpdatedEntity.LogicalName)
@@ -177,7 +177,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 				return;
 
 			NotificationUpdateManager.Instance.MetadataDirty = false;
-			this.PostRequest(new[] { NotificationMessageTransformer.Instance.CreateMetadataMessage() }, true);
+			PostRequest(new[] { NotificationMessageTransformer.Instance.CreateMetadataMessage() }, true);
 		}
 
 		/// <summary>
@@ -247,7 +247,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 						else
 						{
 							//logging
-							ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("ChangedItem Record is Null "));
+							ADXTrace.Instance.TraceWarning(TraceCategory.Application, "ChangedItem Record is Null ");
 						}
 					}
 					if (batchedPluginMessage.Count > 0)

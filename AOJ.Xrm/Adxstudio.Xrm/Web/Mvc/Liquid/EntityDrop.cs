@@ -5,7 +5,7 @@
 
 namespace Adxstudio.Xrm.Web.Mvc.Liquid
 {
-	using Adxstudio.Xrm.Services;
+	using Services;
 
 	using System;
 	using System.Collections.Generic;
@@ -14,10 +14,10 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 	using System.Web;
 
 	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.Metadata;
+	using Metadata;
 	using Adxstudio.Xrm.Security;
-	using Adxstudio.Xrm.Services.Query;
-	using Adxstudio.Xrm.Web.Mvc.Html;
+	using Services.Query;
+	using Html;
 
 	using DotLiquid;
 
@@ -101,14 +101,14 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			get { return _url.Value; }
 		}
 
-		protected virtual Entity Entity { get; private set; }
+		protected virtual Entity Entity { get; }
 
 		protected virtual IDictionary<string, EntityAliasedAttributesDrop> EntityAliasedAttributesDrops
 		{
 			get { return _entityAliasedAttributesDrops.Value; }
 		}
 
-		protected virtual EntityReference EntityReference { get; private set; }
+		protected virtual EntityReference EntityReference { get; }
 
 		protected virtual Entity FullEntity
 		{
@@ -405,31 +405,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 					// When we get notes, we want to get most attributes, but NOT documentbody, to avoid having
 					// to load large file contents. We want people to use the handler URL on the note drop if
 					// possible. If not, the note drop can lazy-load the documentbody attribute if requested.
-					ColumnSet = new ColumnSet(new[]
-					{
-						"annotationid",
-						"createdby",
-						"createdon",
-						"createdonbehalfby",
-						"filename",
-						"filesize",
-						"isdocument",
-						"langid",
-						"mimetype",
-						"modifiedby",
-						"modifiedon",
-						"modifiedonbehalfby",
-						"notetext",
-						"objectid",
-						"objecttypecode",
-						"ownerid",
-						"owningbusinessunit",
-						"owningteam",
-						"owninguser",
-						"stepid",
-						"subject",
-						"versionnumber"
-					}),
+					ColumnSet = new ColumnSet("annotationid", "createdby", "createdon", "createdonbehalfby", "filename", "filesize", "isdocument", "langid", "mimetype", "modifiedby", "modifiedon", "modifiedonbehalfby", "notetext", "objectid", "objecttypecode", "ownerid", "owningbusinessunit", "owningteam", "owninguser", "stepid", "subject", "versionnumber"),
 					Criteria = filter
 				};
 
@@ -477,7 +453,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 				var clone = serviceContext.MergeClone(Entity);
 
 				var drops = serviceContext.RetrieveRelatedEntities(clone, relationship).Entities
-					.Select(e => this.CreateEntityDropWithPermission(e))
+					.Select(e => CreateEntityDropWithPermission(e))
 					.ToArray();
 
 				return drops;
@@ -492,7 +468,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 				var entity = serviceContext.RetrieveRelatedEntity(clone, relationship);
 
-				return this.CreateEntityDropWithPermission(entity);
+				return CreateEntityDropWithPermission(entity);
 			}
 		}
 
@@ -549,7 +525,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			get { return _canRead.Value; }
 		}
 
-		protected Entity Entity { get; private set; }
+		protected Entity Entity { get; }
 
 		private bool GetCanChange()
 		{

@@ -10,10 +10,10 @@ namespace Adxstudio.Xrm.Blogs
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
-	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Tagging;
+	using Services;
+	using Services.Query;
+	using Cms;
+	using Tagging;
 	using Microsoft.Xrm.Client.Security;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Query;
@@ -49,11 +49,11 @@ namespace Adxstudio.Xrm.Blogs
 
 		public BlogDataAdapter(IBlog blog, string portalName = null) : this(blog, new PortalConfigurationDataAdapterDependencies(portalName)) { }
 
-		protected EntityReference Blog { get; private set; }
+		protected EntityReference Blog { get; }
 
-		protected IDataAdapterDependencies BlogDependencies { get; private set; }
+		protected IDataAdapterDependencies BlogDependencies { get; }
 
-		protected BlogSecurityInfo Security { get; private set; }
+		protected BlogSecurityInfo Security { get; }
 
 		public IBlog Select()
 		{
@@ -61,7 +61,7 @@ namespace Adxstudio.Xrm.Blogs
 			var security = BlogDependencies.GetSecurityProvider();
 			var urlProvider = BlogDependencies.GetUrlProvider();
 
-			var entity = serviceContext.RetrieveSingle("adx_blog", "adx_blogid", this.Blog.Id, FetchAttribute.All);
+			var entity = serviceContext.RetrieveSingle("adx_blog", "adx_blogid", Blog.Id, FetchAttribute.All);
 
 			if (entity == null || !security.TryAssert(serviceContext, entity, CrmEntityRight.Read))
 			{

@@ -12,8 +12,8 @@ namespace Adxstudio.Xrm.Text
 		public static RegexOptions DefaultRegexOptions = RegexOptions.IgnoreCase;
 
 		private Regex _innerRegex;
-		private RegexOptions _options;
-		private string _pattern;
+		private readonly RegexOptions _options;
+		private readonly string _pattern;
 
 		protected virtual Regex InnerRegex
 		{

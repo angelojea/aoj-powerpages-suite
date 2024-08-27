@@ -13,10 +13,10 @@ namespace Adxstudio.Xrm.Caching
 	using System.ServiceModel.Syndication;
 	using System.Xml;
 	using System.Xml.Linq;
-	using Adxstudio.Xrm.Collections.Generic;
-	using Adxstudio.Xrm.Json;
-	using Adxstudio.Xrm.ServiceModel;
-	using Adxstudio.Xrm.Services;
+	using Collections.Generic;
+	using Json;
+	using ServiceModel;
+	using Services;
 	using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 	using Microsoft.Xrm.Client.Caching;
 	using Microsoft.Xrm.Sdk;
@@ -918,17 +918,17 @@ namespace Adxstudio.Xrm.Caching
 		/// </summary>
 		private class FootprintEntityItem
 		{
-			public Entity Entity { get; private set; }
-			public string CacheItemKey { get; private set; }
-			public Type CacheItemType { get; private set; }
-			public Uri Link { get; private set; }
+			public Entity Entity { get; }
+			public string CacheItemKey { get; }
+			public Type CacheItemType { get; }
+			public Uri Link { get; }
 
 			public FootprintEntityItem(KeyValuePair<string, object> cacheItem, Entity entity, Uri alternateLink, string cacheName)
 			{
-				this.CacheItemKey = cacheItem.Key;
-				this.CacheItemType = cacheItem.Value.GetType();
-				this.Entity = entity;
-				this.Link = ApplyKey(alternateLink, "key", cacheItem.Key, cacheName);
+				CacheItemKey = cacheItem.Key;
+				CacheItemType = cacheItem.Value.GetType();
+				Entity = entity;
+				Link = ApplyKey(alternateLink, "key", cacheItem.Key, cacheName);
 			}
 		}
 
@@ -937,13 +937,13 @@ namespace Adxstudio.Xrm.Caching
 		/// </summary>
 		private class FootprintEntity
 		{
-			public string Name { get; private set; }
-			public List<FootprintEntityItem> Items { get; private set; }
+			public string Name { get; }
+			public List<FootprintEntityItem> Items { get; }
 
 			public FootprintEntity(string name)
 			{
-				this.Name = name;
-				this.Items = new List<FootprintEntityItem>();	
+				Name = name;
+				Items = new List<FootprintEntityItem>();	
 			}
 
 			/// <summary>
@@ -953,7 +953,7 @@ namespace Adxstudio.Xrm.Caching
 			public long GetSize()
 			{
 				long size = 0;
-				foreach (var entity in this.Items)
+				foreach (var entity in Items)
 				{
 					size = size + GetEntitySizeInMemory(entity.Entity);
 				}
@@ -966,7 +966,7 @@ namespace Adxstudio.Xrm.Caching
 			/// <returns></returns>
 			public int GetCount()
 			{
-				return this.Items.Count;
+				return Items.Count;
 			}
 		}
 

@@ -73,9 +73,9 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 		public string Name { get; private set; }
 
-		public string Email { get; private set; }
+		public string Email { get; }
 
-		public Guid UserId { get; private set; }
+		public Guid UserId { get; }
 
 		public string EmailAddress
 		{

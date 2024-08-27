@@ -22,12 +22,12 @@ namespace Microsoft.Xrm.Portal.Web
 		/// <summary>
 		/// Gets the name of the assembly containing the embedded resources.
 		/// </summary>
-		public Assembly Assembly { get; private set; }
+		public Assembly Assembly { get; }
 
 		/// <summary>
 		/// Gets the default namespace.
 		/// </summary>
-		public string Namespace { get; private set; }
+		public string Namespace { get; }
 
 		/// <summary>
 		/// Gets the virtual directory path pattern to match against.
@@ -47,12 +47,12 @@ namespace Microsoft.Xrm.Portal.Web
 		/// <summary>
 		/// Gets the set of resources contained in the assembly.
 		/// </summary>
-		public EmbeddedResourceNode Resources { get; private set; }
+		public EmbeddedResourceNode Resources { get; }
 
 		/// <summary>
 		/// Gets a lookup from resource name to resource node.
 		/// </summary>
-		public IDictionary<string, EmbeddedResourceNode> ResourceLookup { get; private set; }
+		public IDictionary<string, EmbeddedResourceNode> ResourceLookup { get; }
 
 		public EmbeddedResourceAssemblyAttribute(string virtualPathMask, string assembly, string theNamespace)
 		{
@@ -101,7 +101,7 @@ namespace Microsoft.Xrm.Portal.Web
 			return null;
 		}
 
-		private static readonly string[] _directoryDelimiters = new[] { "/", @"\", "~" };
+		private static readonly string[] _directoryDelimiters = { "/", @"\", "~" };
 
 		private static void AddResource(EmbeddedResourceNode resources, IDictionary<string, EmbeddedResourceNode> lookup, string path, string resourceName)
 		{

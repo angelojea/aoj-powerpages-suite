@@ -32,7 +32,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		/// <param name="options">Strict-Transport-Security header optionons.</param>
 		public StrictTransportSecurityMiddleware(OwinMiddleware next, StrictTransportSecurityOptions options) : base(next)
 		{
-			this.settings = options;
+			settings = options;
 		}
 
 		/// <summary>
@@ -44,11 +44,11 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		{
 			if (context.Request.IsSecure)
 			{
-				context.Response.OnSendingHeaders(action => ConstructHeader(this.settings, context), this.settings);
+				context.Response.OnSendingHeaders(action => ConstructHeader(settings, context), settings);
 			}
-			if (this.Next != null)
+			if (Next != null)
 			{
-				await this.Next.Invoke(context);
+				await Next.Invoke(context);
 			}
 		}
 

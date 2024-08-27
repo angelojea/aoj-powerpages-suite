@@ -170,21 +170,20 @@ namespace Adxstudio.Xrm.Web.Profile
 						entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) == null
 						|| entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) <= userInactiveSinceDate.ToUniversalTime());
 			}
-			else if (!string.IsNullOrWhiteSpace(_attributeMapIsDisabled))
+
+			if (!string.IsNullOrWhiteSpace(_attributeMapIsDisabled))
 			{
 				return entity => entity.GetAttributeValue<bool>(_attributeMapIsDisabled) == false
-					&& entity.GetAttributeValue<string>(_attributeMapUsername) == usernameToMatch
-					&& (
-						entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) == null
-						|| entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) <= userInactiveSinceDate.ToUniversalTime());
+				                 && entity.GetAttributeValue<string>(_attributeMapUsername) == usernameToMatch
+				                 && (
+					                 entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) == null
+					                 || entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) <= userInactiveSinceDate.ToUniversalTime());
 			}
-			else
-			{
-				return entity => entity.GetAttributeValue<string>(_attributeMapUsername) == usernameToMatch
-					&& (
-						entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) == null
-						|| entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) <= userInactiveSinceDate.ToUniversalTime());
-			}
+
+			return entity => entity.GetAttributeValue<string>(_attributeMapUsername) == usernameToMatch
+			                 && (
+				                 entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) == null
+				                 || entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) <= userInactiveSinceDate.ToUniversalTime());
 		}
 
 		public override ProfileInfoCollection FindProfilesByUserName(ProfileAuthenticationOption authenticationOption, string usernameToMatch, int pageIndex, int pageSize, out int totalRecords)
@@ -201,15 +200,14 @@ namespace Adxstudio.Xrm.Web.Profile
 				return entity => entity.GetAttributeValue<int>(_attributeMapStateCode) == 0
 					&& entity.GetAttributeValue<string>(_attributeMapUsername) == usernameToMatch;
 			}
-			else if (!string.IsNullOrWhiteSpace(_attributeMapIsDisabled))
+
+			if (!string.IsNullOrWhiteSpace(_attributeMapIsDisabled))
 			{
 				return entity => entity.GetAttributeValue<bool>(_attributeMapIsDisabled) == false
-					&& entity.GetAttributeValue<string>(_attributeMapUsername) == usernameToMatch;
+				                 && entity.GetAttributeValue<string>(_attributeMapUsername) == usernameToMatch;
 			}
-			else
-			{
-				return entity => entity.GetAttributeValue<string>(_attributeMapUsername) == usernameToMatch;
-			}
+
+			return entity => entity.GetAttributeValue<string>(_attributeMapUsername) == usernameToMatch;
 		}
 
 		public override ProfileInfoCollection GetAllProfiles(ProfileAuthenticationOption authenticationOption, int pageIndex, int pageSize, out int totalRecords)
@@ -226,15 +224,14 @@ namespace Adxstudio.Xrm.Web.Profile
 				return entity => entity.GetAttributeValue<int>(_attributeMapStateCode) == 0
 					&& entity.GetAttributeValue<string>(_attributeMapUsername) != null;
 			}
-			else if (!string.IsNullOrWhiteSpace(_attributeMapIsDisabled))
+
+			if (!string.IsNullOrWhiteSpace(_attributeMapIsDisabled))
 			{
 				return entity => entity.GetAttributeValue<bool>(_attributeMapIsDisabled) == false
-					&& entity.GetAttributeValue<string>(_attributeMapUsername) != null;
+				                 && entity.GetAttributeValue<string>(_attributeMapUsername) != null;
 			}
-			else
-			{
-				return entity => entity.GetAttributeValue<string>(_attributeMapUsername) != null;
-			}
+
+			return entity => entity.GetAttributeValue<string>(_attributeMapUsername) != null;
 		}
 
 		public override ProfileInfoCollection GetAllInactiveProfiles(ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate, int pageIndex, int pageSize, out int totalRecords)
@@ -271,21 +268,20 @@ namespace Adxstudio.Xrm.Web.Profile
 						entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) == null
 						|| entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) <= userInactiveSinceDate.ToUniversalTime());
 			}
-			else if (!string.IsNullOrWhiteSpace(_attributeMapIsDisabled))
+
+			if (!string.IsNullOrWhiteSpace(_attributeMapIsDisabled))
 			{
 				return entity => entity.GetAttributeValue<bool>(_attributeMapIsDisabled) == false
-					&& entity.GetAttributeValue<string>(_attributeMapUsername) != null
-					&& (
-						entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) == null
-						|| entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) <= userInactiveSinceDate.ToUniversalTime());
+				                 && entity.GetAttributeValue<string>(_attributeMapUsername) != null
+				                 && (
+					                 entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) == null
+					                 || entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) <= userInactiveSinceDate.ToUniversalTime());
 			}
-			else
-			{
-				return entity => entity.GetAttributeValue<string>(_attributeMapUsername) != null
-					&& (
-						entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) == null
-						|| entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) <= userInactiveSinceDate.ToUniversalTime());
-			}
+
+			return entity => entity.GetAttributeValue<string>(_attributeMapUsername) != null
+			                 && (
+				                 entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) == null
+				                 || entity.GetAttributeValue<DateTime?>(_attributeMapLastActivityDate) <= userInactiveSinceDate.ToUniversalTime());
 		}
 
 		public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext context, SettingsPropertyCollection propertyCollection)

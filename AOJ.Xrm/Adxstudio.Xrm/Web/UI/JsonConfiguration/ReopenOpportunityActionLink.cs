@@ -13,8 +13,8 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
 	public class ReopenOpportunityActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-reply fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Reopen_Opportunity_Button_Text");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Reopen_Opportunity_Button_Text");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-reply fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Reopen_Opportunity_Button_Text");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Reopen_Opportunity_Button_Text");
 
 		public ViewReopenOpportunityModal Modal { get; set; }
 

@@ -14,9 +14,9 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 	{
 		private readonly IEventDataAdapter _adapter;
 
-		private IDataAdapterDependencies _dependencies;
+		private readonly IDataAdapterDependencies _dependencies;
 
-		public EventsDrop(IPortalLiquidContext portalLiquidContext, Adxstudio.Xrm.Cms.IDataAdapterDependencies dependencies)
+		public EventsDrop(IPortalLiquidContext portalLiquidContext, IDataAdapterDependencies dependencies)
 			: base(portalLiquidContext)
 		{
 			if (dependencies == null) throw new ArgumentException("dependencies");

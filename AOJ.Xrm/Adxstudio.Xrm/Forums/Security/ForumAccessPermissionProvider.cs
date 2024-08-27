@@ -9,7 +9,7 @@ namespace Adxstudio.Xrm.Forums.Security
 	using System.Linq;
 	using System.Web;
 	using System.Web.Security;
-	using Adxstudio.Xrm.Cms;
+	using Cms;
 	using Adxstudio.Xrm.Cms.Security;
 	using Adxstudio.Xrm.Security;
 	using Microsoft.Xrm.Client;
@@ -46,7 +46,7 @@ namespace Adxstudio.Xrm.Forums.Security
 
 			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Testing right {0} on forum '{1}' ({2}).", right, forum.GetAttributeValue<string>("adx_name"), forum.Id));
 
-			this.AddDependencies(dependencies, forum, new[] { "adx_webrole", "adx_communityforumaccesspermission" });
+			AddDependencies(dependencies, forum, new[] { "adx_webrole", "adx_communityforumaccesspermission" });
 
 			if (!Roles.Enabled)
 			{
@@ -56,11 +56,11 @@ namespace Adxstudio.Xrm.Forums.Security
 				return (right == CrmEntityRight.Read);
 			}
 
-			var userRoles = this.GetUserRoles();
+			var userRoles = GetUserRoles();
 
 			// Get all rules applicable to the forum, grouping equivalent rules. (Rules that
 			// target the same forum and confer the same right are equivalent.)
-			var ruleGroupings = from rule in this.GetRulesApplicableToForum(forum, dependencies, map)
+			var ruleGroupings = from rule in GetRulesApplicableToForum(forum, dependencies, map)
 								let forumReference = rule.GetAttributeValue<EntityReference>("adx_forumid")
 								let rightOption = rule.GetAttributeValue<OptionSetValue>("adx_right")
 								where forumReference != null && rightOption != null
@@ -118,7 +118,7 @@ namespace Adxstudio.Xrm.Forums.Security
 
 			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "No access control rules apply to the current user and forum. Asserting right on parent web page.");
 
-			return this._webPageAccessControlProvider.TryAssert(context, parentPageNode.ToEntity(), right, dependencies);
+			return _webPageAccessControlProvider.TryAssert(context, parentPageNode.ToEntity(), right, dependencies);
 		}
 
 		private static bool BelongsToWebsite(EntityReference websiteReference, WebRoleNode webRole)

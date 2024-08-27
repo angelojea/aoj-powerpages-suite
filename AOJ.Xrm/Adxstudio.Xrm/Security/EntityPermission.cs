@@ -18,43 +18,43 @@ namespace Adxstudio.Xrm.Security
 		/// <summary>
 		/// Entity Reference <see cref="EntityReference"/>
 		/// </summary>
-		public EntityReference EntityReference { get; private set; }
+		public EntityReference EntityReference { get; }
 		/// <summary>
 		/// Name/Description of the permission
 		/// </summary>
-		public string Name { get; private set; }
+		public string Name { get; }
 		/// <summary>
 		/// Logical name of the entity
 		/// </summary>
-		public string EntityName { get; private set; }
+		public string EntityName { get; }
 		/// <summary>
 		/// Scope of the permissions
 		/// </summary>
-		public EntityPermissionScope? Scope { get; private set; }
+		public EntityPermissionScope? Scope { get; }
 		/// <summary>
 		/// Indicates whether read privilege is granted or not
 		/// </summary>
-		public bool Read { get; private set; }
+		public bool Read { get; }
 		/// <summary>
 		/// Indicates whether write privilege is granted or not
 		/// </summary>
-		public bool Write { get; private set; }
+		public bool Write { get; }
 		/// <summary>
 		/// Indicates whether create privilege is granted or not
 		/// </summary>
-		public bool Create { get; private set; }
+		public bool Create { get; }
 		/// <summary>
 		/// Indicates whether delete privilege is granted or not
 		/// </summary>
-		public bool Delete { get; private set; }
+		public bool Delete { get; }
 		/// <summary>
 		/// Indicates whether append privilege is granted or not.
 		/// </summary>
-		public bool Append { get; private set; }
+		public bool Append { get; }
 		/// <summary>
 		/// Indicates whether append to privilege is granted or not.
 		/// </summary>
-		public bool AppendTo { get; private set; }
+		public bool AppendTo { get; }
 		/// <summary>
 		/// If scope <see cref="Scope"/> is "Account" this is the schema name of the relationship between account and the entity. If scope is "Global" or "Parent" this value is ignored.
 		/// </summary>
@@ -62,15 +62,15 @@ namespace Adxstudio.Xrm.Security
 		/// <summary>
 		/// If scope <see cref="Scope"/> is "Contact" this is the schema name of the relationship between contact and the entity. If scope is "Global" or "Parent" this value is ignored.
 		/// </summary>
-		public string ContactRelationshipName { get; private set; }
+		public string ContactRelationshipName { get; }
 		/// <summary>
 		/// The entity reference to the parent permission. <see cref="EntityReference"/>
 		/// </summary>
-		public EntityReference ParentEntityPermission { get; private set; }
+		public EntityReference ParentEntityPermission { get; }
 		/// <summary>
 		/// If scope <see cref="Scope"/> is "Parent" this is the schema name of the relationship between the parent entity permission's entity and this permission's entity. If scope is "Global" or "Contact" or "Account" this value is ignored.
 		/// </summary>
-		public string ParentRelationshipName { get; private set; }
+		public string ParentRelationshipName { get; }
 		/// <summary>
 		/// Web Roles associated with the permission
 		/// </summary>

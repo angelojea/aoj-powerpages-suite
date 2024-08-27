@@ -31,7 +31,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			get { return "text form-control"; }
 		}
 
-		public CrmEntityFormViewField Field { get; private set; }
+		public CrmEntityFormViewField Field { get; }
 
 		private string ValidationText
 		{
@@ -159,8 +159,6 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			if (text.Length > Metadata.MaxLength)
 			{
 				args.IsValid = false;
-
-				return;
 			}
 		}
 	}

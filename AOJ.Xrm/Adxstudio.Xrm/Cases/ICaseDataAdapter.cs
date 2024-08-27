@@ -6,7 +6,7 @@
 namespace Adxstudio.Xrm.Cases
 {
 	using System.Collections.Generic;
-	using Adxstudio.Xrm.Notes;
+	using Notes;
 	using Microsoft.Xrm.Sdk;
 
 	/// <summary>

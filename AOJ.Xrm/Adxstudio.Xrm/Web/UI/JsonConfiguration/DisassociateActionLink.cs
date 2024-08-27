@@ -18,8 +18,8 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 	/// </summary>
 	public class DisassociateActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-unlink' aria-hidden='true'></span> " + ResourceManager.GetString("Disassociate_Button_Text");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Disassociate_Button_Text");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-unlink' aria-hidden='true'></span> " + ResourceManager.GetString("Disassociate_Button_Text");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Disassociate_Button_Text");
 
 		public ViewDisassociateModal Modal { get; set; }
 		

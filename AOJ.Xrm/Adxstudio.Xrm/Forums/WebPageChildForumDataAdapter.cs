@@ -8,7 +8,7 @@ namespace Adxstudio.Xrm.Forums
 	using System;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Query;
-	using Adxstudio.Xrm.Services.Query;
+	using Services.Query;
 
 	/// <summary>
 	/// Provides query access to all Forums (adx_communityforum) that are children of a given Web Page (adx_webpage).

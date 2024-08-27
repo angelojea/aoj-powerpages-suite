@@ -8,9 +8,9 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 	using System;
 	using System.Threading;
 	using System.Web;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Web;
-	using Adxstudio.Xrm.Feedback;
+	using Services;
+	using Web;
+	using Feedback;
 	using Microsoft.Xrm.Sdk.Query;
 	using Microsoft.Xrm.Portal.Configuration;
 	using Microsoft.Xrm.Portal.Web.Providers;
@@ -37,57 +37,57 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 		private readonly HttpContextBase httpContext;
 
 		/// <summary>Gets the id.</summary>
-		public Guid Id { get; private set; }
+		public Guid Id { get; }
 
 		/// <summary>Gets the title.</summary>
-		public string Title { get; private set; }
+		public string Title { get; }
 
 		/// <summary>Gets the article public number.</summary>
-		public string ArticlePublicNumber { get; private set; }
+		public string ArticlePublicNumber { get; }
 
 		/// <summary>Gets the content.</summary>
-		public string Content { get; private set; }
+		public string Content { get; }
 
 		/// <summary>Gets the keywords.</summary>
-		public string Keywords { get; private set; }
+		public string Keywords { get; }
 
 		/// <summary>Gets the knowledge article views.</summary>
 		public int KnowledgeArticleViews
 		{
-			get { return this.articleViews.Value; }
+			get { return articleViews.Value; }
 		}
 
 		/// <summary>Gets the root article.</summary>
-		public EntityReference RootArticle { get; private set; }
+		public EntityReference RootArticle { get; }
 
 		/// <summary>Gets the entity.</summary>
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
 		/// <summary>Gets the entity reference.</summary>
-		public EntityReference EntityReference { get; private set; }
+		public EntityReference EntityReference { get; }
 
 		/// <summary>Gets the comment count.</summary>
-		public int CommentCount { get; private set; }
+		public int CommentCount { get; }
 
 		/// <summary>Gets the rating.</summary>
 		public decimal Rating
 		{
-			get { return this.articleRating.Value; }
+			get { return articleRating.Value; }
 		}
 
 		/// <summary>Gets a value indicating whether is rating enabled.</summary>
-		public bool IsRatingEnabled { get; private set; }
+		public bool IsRatingEnabled { get; }
 
 		/// <summary>Gets a value indicating whether current user can comment.</summary>
-		public bool CurrentUserCanComment { get; private set; }
+		public bool CurrentUserCanComment { get; }
 
 		/// <summary>Gets the comment policy.</summary>
-		public CommentPolicy CommentPolicy { get; private set; }
+		public CommentPolicy CommentPolicy { get; }
 
 		/// <summary>Gets the url.</summary>
 		public string Url
 		{
-			get { return this.url.Value; }
+			get { return url.Value; }
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="KnowledgeArticle"/> class. Knowledge Article initialization</summary>
@@ -107,24 +107,24 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 			article.AssertEntityName("knowledgearticle");
 
 			this.httpContext = httpContext;
-			this.Entity = article;
-			this.EntityReference = article.ToEntityReference();
-			this.Id = article.Id;
-			this.Title = article.GetAttributeValue<string>("title");
-			this.ArticlePublicNumber = article.GetAttributeValue<string>("articlepublicnumber");
-			this.RootArticle = article.GetAttributeValue<EntityReference>("rootarticleid");
-			this.Content = article.GetAttributeValue<string>("content");
-			this.Keywords = article.GetAttributeValue<string>("keywords");
-			this.CommentCount = commentCount;
-			this.IsRatingEnabled = isRatingEnabled;
-			this.CommentPolicy = commentPolicy;
-			this.CurrentUserCanComment =
+			Entity = article;
+			EntityReference = article.ToEntityReference();
+			Id = article.Id;
+			Title = article.GetAttributeValue<string>("title");
+			ArticlePublicNumber = article.GetAttributeValue<string>("articlepublicnumber");
+			RootArticle = article.GetAttributeValue<EntityReference>("rootarticleid");
+			Content = article.GetAttributeValue<string>("content");
+			Keywords = article.GetAttributeValue<string>("keywords");
+			CommentCount = commentCount;
+			IsRatingEnabled = isRatingEnabled;
+			CommentPolicy = commentPolicy;
+			CurrentUserCanComment =
 				commentPolicy == CommentPolicy.Open ||
 				commentPolicy == CommentPolicy.Moderated ||
 				(commentPolicy == CommentPolicy.OpenToAuthenticatedUsers && httpContext.Request.IsAuthenticated);
-			this.url = new Lazy<string>(this.GetUrl, LazyThreadSafetyMode.None);
-			this.articleViews = new Lazy<int>(this.GetArticleViews);
-			this.articleRating = new Lazy<decimal>(this.GetArticleRating);
+			url = new Lazy<string>(GetUrl, LazyThreadSafetyMode.None);
+			articleViews = new Lazy<int>(GetArticleViews);
+			articleRating = new Lazy<decimal>(GetArticleRating);
 		}
 
 		/// <summary>Get the article rul.</summary>
@@ -134,16 +134,16 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 			var serviceContext = PortalCrmConfigurationManager.CreateServiceContext();
 			var urlProvider = PortalCrmConfigurationManager.CreateDependencyProvider().GetDependency<IEntityUrlProvider>();
 
-			return urlProvider.GetUrl(serviceContext, this.Entity);
+			return urlProvider.GetUrl(serviceContext, Entity);
 		}
 
 		/// <summary>Get the number of article views.</summary>
 		/// <returns>The numbr of views.</returns>
 		private int GetArticleViews()
 		{
-			var service = this.httpContext.GetOrganizationService();
+			var service = httpContext.GetOrganizationService();
 			var attributes = service.RetrieveSingle(
-				this.EntityReference,
+				EntityReference,
 				new ColumnSet("knowledgearticleviews"),
 				RequestFlag.AllowStaleData | RequestFlag.SkipDependencyCalculation,
 				DefaultDuration);
@@ -155,9 +155,9 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 		/// <returns> The article rating. </returns>
 		private decimal GetArticleRating()
 		{
-			var service = this.httpContext.GetOrganizationService();
+			var service = httpContext.GetOrganizationService();
 			var entity = service.RetrieveSingle(
-				this.EntityReference,
+				EntityReference,
 				new ColumnSet("rating"),
 				RequestFlag.AllowStaleData | RequestFlag.SkipDependencyCalculation,
 				DefaultDuration);

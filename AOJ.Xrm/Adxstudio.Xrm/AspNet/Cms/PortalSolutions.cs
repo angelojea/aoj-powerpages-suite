@@ -12,8 +12,8 @@ namespace Adxstudio.Xrm.AspNet.Cms
 	using Microsoft.Crm.Sdk.Messages;
 	using Microsoft.Xrm.Sdk.Query;
 	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
+	using Services;
+	using Services.Query;
 
 	/// <summary>
 	/// Class for Crm Portal Solutions Details
@@ -76,18 +76,18 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		/// </summary>
 		public Version BaseSolutionCrmVersion
 		{
-			get { return this.baseSolutionCrmVersion; }
+			get { return baseSolutionCrmVersion; }
 		}
 
 		/// <summary>
 		/// All available solutions.
 		/// </summary>
-		public IDictionary<string, SolutionInfo> Solutions { get; private set; }
+		public IDictionary<string, SolutionInfo> Solutions { get; }
 
 		/// <summary>
 		/// CRM Version
 		/// </summary>
-		public Version CrmVersion { get; private set; }
+		public Version CrmVersion { get; }
 
 		/// <summary>
 		/// Gets the organization base language code.
@@ -100,13 +100,13 @@ namespace Adxstudio.Xrm.AspNet.Cms
         /// <param name="context">The context.</param>
         public PortalSolutions(CrmDbContext context)
         {
-            this.Solutions = LoadSolutions(context);
-            this.CrmVersion = LoadCrmVersion(context);
-            this.OrganizationBaseLanguageCode = LoadOrganizationBaseLanguage(context);
+            Solutions = LoadSolutions(context);
+            CrmVersion = LoadCrmVersion(context);
+            OrganizationBaseLanguageCode = LoadOrganizationBaseLanguage(context);
 
-            this.baseSolutionCrmVersion = RetrieveSolutionVersion(SolutionNames.BaseSolutionName, this.Solutions);
+            baseSolutionCrmVersion = RetrieveSolutionVersion(SolutionNames.BaseSolutionName, Solutions);
 
-            this.TraceSolutions();
+            TraceSolutions();
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			// Calcule width of each column and write header
 			foreach (var columnDefinition in tableDifinition)
 			{
-				var maxWidth = this.Solutions.Values.Max(solution => tableDifinition[columnDefinition.Key](solution).Length);
+				var maxWidth = Solutions.Values.Max(solution => tableDifinition[columnDefinition.Key](solution).Length);
 				var format = string.Format("{{0, -{0}}}", maxWidth);
 				columnFormat[columnDefinition.Key] = format;
 
@@ -255,7 +255,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			stringBuilder.AppendLine();
 
 			// Render rows
-			foreach (var solution in this.Solutions.Values)
+			foreach (var solution in Solutions.Values)
 			{
 				foreach (var columnDefinition in tableDifinition)
 				{
@@ -265,7 +265,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 				stringBuilder.AppendLine();
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Installed portal solutions on CRM {0}:{1}{2}", this.CrmVersion, Environment.NewLine, stringBuilder));
+			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Installed portal solutions on CRM {0}:{1}{2}", CrmVersion, Environment.NewLine, stringBuilder));
 		}
 
 		/// <summary>

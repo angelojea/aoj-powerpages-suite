@@ -19,7 +19,7 @@ namespace Microsoft.Xrm.Portal.Web
 {
 	internal sealed class NotesFileAttachmentProvider : ICrmEntityFileAttachmentProvider
 	{
-		public string PortalName { get; private set; }
+		public string PortalName { get; }
 
 		public NotesFileAttachmentProvider(string portalName)
 		{

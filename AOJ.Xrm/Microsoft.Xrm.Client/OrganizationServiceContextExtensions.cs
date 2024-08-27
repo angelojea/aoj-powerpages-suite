@@ -179,12 +179,12 @@ namespace Microsoft.Xrm.Client
 			where TSource : Entity
 			where TTarget : Entity
 		{
-			return ForEntityRelationship<TSource, TTarget, bool>(source, propertySelector, target, context.DetachLink);
+			return ForEntityRelationship(source, propertySelector, target, context.DetachLink);
 		}
 
 		public static bool DetachLink(this OrganizationServiceContext context, Entity source, string relationshipSchemaName, Entity target, EntityRole? primaryEntityRole = null)
 		{
-			return ForEntityRelationship<bool>(source, relationshipSchemaName, primaryEntityRole, target, context.DetachLink);
+			return ForEntityRelationship(source, relationshipSchemaName, primaryEntityRole, target, context.DetachLink);
 		}
 
 		public static bool IsAttached<TSource, TTarget>(
@@ -195,7 +195,7 @@ namespace Microsoft.Xrm.Client
 			where TSource : Entity
 			where TTarget : Entity
 		{
-			return ForEntityRelationship<TSource, TTarget, bool>(source, propertySelector, target, context.IsAttached);
+			return ForEntityRelationship(source, propertySelector, target, context.IsAttached);
 		}
 
 		public static bool IsAttached<TSource, TTarget>(
@@ -206,12 +206,12 @@ namespace Microsoft.Xrm.Client
 			where TSource : Entity
 			where TTarget : Entity
 		{
-			return ForEntityRelationship<TSource, TTarget, bool>(source, propertySelector, target, context.IsAttached);
+			return ForEntityRelationship(source, propertySelector, target, context.IsAttached);
 		}
 
 		public static void IsAttached(this OrganizationServiceContext context, Entity source, string relationshipSchemaName, Entity target, EntityRole? primaryEntityRole = null)
 		{
-			ForEntityRelationship<bool>(source, relationshipSchemaName, primaryEntityRole, target, context.IsAttached);
+			ForEntityRelationship(source, relationshipSchemaName, primaryEntityRole, target, context.IsAttached);
 		}
 
 		public static bool IsDeleted<TSource, TTarget>(
@@ -222,12 +222,12 @@ namespace Microsoft.Xrm.Client
 			where TSource : Entity
 			where TTarget : Entity
 		{
-			return ForEntityRelationship<TSource, TTarget, bool>(source, propertySelector, target, context.IsDeleted);
+			return ForEntityRelationship(source, propertySelector, target, context.IsDeleted);
 		}
 
 		public static void IsDeleted(this OrganizationServiceContext context, Entity source, string relationshipSchemaName, Entity target, EntityRole? primaryEntityRole = null)
 		{
-			ForEntityRelationship<bool>(source, relationshipSchemaName, primaryEntityRole, target, context.IsDeleted);
+			ForEntityRelationship(source, relationshipSchemaName, primaryEntityRole, target, context.IsDeleted);
 		}
 
 		public static void AddLink<TSource, TTarget>(

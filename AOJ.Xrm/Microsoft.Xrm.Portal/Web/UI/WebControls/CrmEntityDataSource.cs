@@ -41,7 +41,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 				}
 			}
 
-			protected CrmEntityDataSource Owner { get; private set; }
+			protected CrmEntityDataSource Owner { get; }
 
 			protected override IEnumerable ExecuteSelect(DataSourceSelectArguments arguments)
 			{

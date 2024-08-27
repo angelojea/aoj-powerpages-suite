@@ -278,11 +278,11 @@ namespace Adxstudio.Xrm.Commerce
 		 * Soemthing about the WinQuoteRequest and CloseQuoteRequest does not fuction as expected
 		 * error: "cannot close the entity because it is not in the correct state" always occurs
 		 * ******************/
-		private static void ConvertQuoteToOrder(Microsoft.Xrm.Sdk.Client.OrganizationServiceContext context, Microsoft.Xrm.Sdk.Entity myQuote)
+		private static void ConvertQuoteToOrder(OrganizationServiceContext context, Entity myQuote)
 		{
 
 			// Activate the quote
-			SetStateRequest activateQuote = new SetStateRequest()
+			SetStateRequest activateQuote = new SetStateRequest
 			{
 				EntityMoniker = myQuote.ToEntityReference(),
 				State = new OptionSetValue(1),
@@ -299,7 +299,7 @@ namespace Adxstudio.Xrm.Commerce
 			quoteClose.Attributes["quoteid"] = myQuote.ToEntityReference();
 			quoteClose.Attributes["subject"] = "Won The Quote";
 
-			WinQuoteRequest winQuoteRequest = new WinQuoteRequest()
+			WinQuoteRequest winQuoteRequest = new WinQuoteRequest
 			{
 				QuoteClose = quoteClose,
 				Status = new OptionSetValue(-1)  //2?  -1??
@@ -309,7 +309,7 @@ namespace Adxstudio.Xrm.Commerce
 
 			ColumnSet salesOrderColumns = new ColumnSet("salesorderid", "totalamount");
 
-			var convertOrderRequest = new ConvertQuoteToSalesOrderRequest()
+			var convertOrderRequest = new ConvertQuoteToSalesOrderRequest
 			{
 				QuoteId = quoteId,
 				ColumnSet = salesOrderColumns

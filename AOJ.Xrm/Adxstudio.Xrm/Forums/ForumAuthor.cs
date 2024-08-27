@@ -19,10 +19,10 @@ namespace Adxstudio.Xrm.Forums
 			EmailAddress = emailAddress;
 		}
 
-		public string DisplayName { get; private set; }
+		public string DisplayName { get; }
 
 		public string EmailAddress { get; set; }
 
-		public EntityReference EntityReference { get; private set; }
+		public EntityReference EntityReference { get; }
 	}
 }

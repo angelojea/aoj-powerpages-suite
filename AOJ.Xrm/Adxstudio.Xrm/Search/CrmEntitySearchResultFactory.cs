@@ -29,9 +29,9 @@ namespace Adxstudio.Xrm.Search
 			FragmentProvider = fragmentProvider;
 		}
 
-		protected ICrmEntitySearchResultFragmentProvider FragmentProvider { get; private set; }
+		protected ICrmEntitySearchResultFragmentProvider FragmentProvider { get; }
 
-		protected ICrmEntityIndex Index { get; private set; }
+		protected ICrmEntityIndex Index { get; }
 
 		public virtual ICrmEntitySearchResult GetResult(Document document, float score, int number)
 		{

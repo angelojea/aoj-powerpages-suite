@@ -14,13 +14,13 @@ namespace Adxstudio.Xrm.Web.Handlers
 	using System.Web;
 	using System.Web.Hosting;
 	using System.Web.Routing;
-	using Adxstudio.Xrm.AspNet;
+	using AspNet;
 	using Adxstudio.Xrm.AspNet.Cms;
-	using Adxstudio.Xrm.Caching;
+	using Caching;
 	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.Core.Telemetry.EventSources;
-	using Adxstudio.Xrm.Resources;
-	using Adxstudio.Xrm.Search;
+	using Core.Telemetry.EventSources;
+	using Resources;
+	using Search;
 	using Adxstudio.Xrm.Security;
 	using Microsoft.Xrm.Client.Configuration;
 	using Microsoft.Xrm.Client.Runtime.Serialization;
@@ -31,7 +31,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 	/// </summary>
 	public class WebNotificationHandler : IHttpHandler, IRouteHandler
 	{
-		private static readonly string[] SearchIndexApplicableMessages = new[] { "Build", "Publish", "PublishAll", "Delete", "Create", "Update", "Associate", "Disassociate" };
+		private static readonly string[] SearchIndexApplicableMessages = { "Build", "Publish", "PublishAll", "Delete", "Create", "Update", "Associate", "Disassociate" };
 		private static readonly IEqualityComparer<string> MessageComparer = StringComparer.InvariantCultureIgnoreCase;
 
 		public void ProcessRequest(HttpContext context)
@@ -139,7 +139,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 				return null;
 			}
 
-			return this.GetPluginMessageFromJsonRequest(request.Body);
+			return GetPluginMessageFromJsonRequest(request.Body);
 		}
 
 		private static void ThrowOnNullOrWhiteSpace(string text, string message)
@@ -163,7 +163,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 					return;
 				}
 
-				var message = this.GetMessage(request);
+				var message = GetMessage(request);
 
 				if (message == null)
 				{

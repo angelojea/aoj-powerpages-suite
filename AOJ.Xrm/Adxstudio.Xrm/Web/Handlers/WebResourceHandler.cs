@@ -21,7 +21,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 		/// <summary>
 		/// There does not appear to be anyway to get this Option Set from the CRM so this is the hard-coded list.
 		/// </summary>
-		private Dictionary<int, string> _webResourceTypes = new Dictionary<int, string>
+		private readonly Dictionary<int, string> _webResourceTypes = new Dictionary<int, string>
 		{
 			{ 1, "text/html" }, //Web Page (HTML)
 			{ 2, "text/css" }, //Style Sheet (CSS)

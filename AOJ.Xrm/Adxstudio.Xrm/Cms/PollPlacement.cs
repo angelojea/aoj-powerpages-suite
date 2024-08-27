@@ -27,12 +27,12 @@ namespace Adxstudio.Xrm.Cms
 		}
 
 		[JsonIgnore]
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public IEnumerable<IPoll> Polls { get; private set; }
+		public IEnumerable<IPoll> Polls { get; }
 
-		public EntityReference WebTemplate { get; private set; }
+		public EntityReference WebTemplate { get; }
 	}
 }

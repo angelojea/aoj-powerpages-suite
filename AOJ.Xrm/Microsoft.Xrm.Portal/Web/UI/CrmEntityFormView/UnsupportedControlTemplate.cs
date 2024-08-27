@@ -12,11 +12,9 @@ namespace Microsoft.Xrm.Portal.Web.UI.CrmEntityFormView
 {
 	public class UnsupportedControlTemplate : CellTemplate
 	{
-		private readonly bool _enabled;
-
 		public UnsupportedControlTemplate(ICellMetadata metadata, string validationGroup, IDictionary<string, CellBinding> bindings, bool enabled) : base(metadata, validationGroup, bindings)
 		{
-			_enabled = enabled;
+			Enabled = enabled;
 		}
 
 		public override string CssClass
@@ -24,10 +22,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.CrmEntityFormView
 			get { return "unsupported"; }
 		}
 
-		public override bool Enabled
-		{
-			get { return _enabled; }
-		}
+		public override bool Enabled { get; }
 
 		protected override void InstantiateControlIn(Control container)
 		{

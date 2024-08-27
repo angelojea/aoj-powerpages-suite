@@ -9,7 +9,7 @@ namespace Adxstudio.Xrm.Threading
 	using System.Diagnostics.Tracing;
 	using System.Web.Hosting;
 	using FluentScheduler;
-	using Adxstudio.Xrm.Web;
+	using Web;
 
 	/// <summary>
 	/// A scheduler job.
@@ -32,7 +32,7 @@ namespace Adxstudio.Xrm.Threading
 		public void Execute()
 		{
 			var id = Guid.NewGuid();
-			var name = this.GetType().ToString();
+			var name = GetType().ToString();
 			EventSource.SetCurrentThreadActivityId(id);
 
 			// Register this job with the hosting environment.
@@ -43,23 +43,23 @@ namespace Adxstudio.Xrm.Threading
 			{
 				ADXTrace.Instance.TraceVerbose(TraceCategory.Application, string.Format("Job registered: {0}", name));
 
-				lock (this.shutDownLock)
+				lock (shutDownLock)
 				{
-					if (this.shuttingDown)
+					if (shuttingDown)
 					{
 						return;
 					}
 
 					ADXTrace.Instance.TraceVerbose(TraceCategory.Application, string.Format("Job begin: {0}", name));
 
-					this.ExecuteInternal(id);
+					ExecuteInternal(id);
 
 					ADXTrace.Instance.TraceVerbose(TraceCategory.Application, string.Format("Job end: {0}", name));
 				}
 			}
 			catch (Exception e)
 			{
-				this.OnError(e);
+				OnError(e);
 
 				throw;
 			}
@@ -87,9 +87,9 @@ namespace Adxstudio.Xrm.Threading
 		public void Stop(bool immediate)
 		{
 			// Locking here will wait for the lock in Execute to be released until this code can continue.
-			lock (this.shutDownLock)
+			lock (shutDownLock)
 			{
-				this.shuttingDown = true;
+				shuttingDown = true;
 			}
 		}
 

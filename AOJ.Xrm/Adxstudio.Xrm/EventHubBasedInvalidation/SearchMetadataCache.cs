@@ -8,7 +8,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 	using System;
 	using System.Collections.Generic;
 
-	using Adxstudio.Xrm.Cms;
+	using Cms;
 
 	using Microsoft.Xrm.Portal.Configuration;
 	using Microsoft.Xrm.Sdk;
@@ -57,7 +57,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// </summary>
 		public OrganizationServiceContext OrganizationServiceContext
 		{
-			get { return this.organizationServiceContext ?? (this.organizationServiceContext = PortalCrmConfigurationManager.CreateServiceContext()); }
+			get { return organizationServiceContext ?? (organizationServiceContext = PortalCrmConfigurationManager.CreateServiceContext()); }
 		}
 
 		/// <summary>
@@ -65,8 +65,8 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// </summary>
 		private SearchMetadataCache()
 		{
-			this.SearchEnabledEntities = new HashSet<string>();
-			this.SearchSavedQueries = new HashSet<SearchSavedQuery>();
+			SearchEnabledEntities = new HashSet<string>();
+			SearchSavedQueries = new HashSet<SearchSavedQuery>();
 		}
 
 		/// <summary>
@@ -77,32 +77,32 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// </returns>
 		public HashSet<string> GetPortalSearchEnabledEntities()
 		{
-			this.SearchEnabledEntities = new HashSet<string>();
-			this.SearchSavedQueries = new HashSet<SearchSavedQuery>();
+			SearchEnabledEntities = new HashSet<string>();
+			SearchSavedQueries = new HashSet<SearchSavedQuery>();
 
 			FilterExpression filterExpression = new FilterExpression();
-			filterExpression.AddCondition("name", ConditionOperator.Equal, this.GetSearchSavedQueryViewName());
+			filterExpression.AddCondition("name", ConditionOperator.Equal, GetSearchSavedQueryViewName());
 			filterExpression.AddCondition("componentstate", ConditionOperator.Equal, 0);
-			QueryExpression query = new QueryExpression()
+			QueryExpression query = new QueryExpression
 			{
 				EntityName = "savedquery",
 				ColumnSet = new ColumnSet("returnedtypecode", "savedqueryidunique"),
 				Criteria = filterExpression
 			};
-			var request = new RetrieveMultipleRequest() { Query = query };
-			var response = (RetrieveMultipleResponse)this.OrganizationServiceContext.Execute(request);
+			var request = new RetrieveMultipleRequest { Query = query };
+			var response = (RetrieveMultipleResponse)OrganizationServiceContext.Execute(request);
 			var entities = response.EntityCollection.Entities;
 
 			foreach (Entity entity in entities)
 			{
 				var savedQueryItem = new SearchSavedQuery(entity);
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Entity {0} has Portal Search View Present in CRM ", savedQueryItem.EntityName));
-				this.SearchEnabledEntities.Add(savedQueryItem.EntityName);
-				this.SearchSavedQueries.Add(savedQueryItem);
+				SearchEnabledEntities.Add(savedQueryItem.EntityName);
+				SearchSavedQueries.Add(savedQueryItem);
 			}
 
 			// These entities are not searchable but changes to them can invalidate certain searchable entities
-			List<string> searchAffectingEntities = new List<string>()
+			List<string> searchAffectingEntities = new List<string>
 			{
 				"adx_webpageaccesscontrolrule",
 				"adx_communityforumaccesspermission",
@@ -113,8 +113,8 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 				"adx_website",
 				"savedquery"
 			};
-			searchAffectingEntities.ForEach(x => this.SearchEnabledEntities.Add(x));
-			return this.SearchEnabledEntities;
+			searchAffectingEntities.ForEach(x => SearchEnabledEntities.Add(x));
+			return SearchEnabledEntities;
 		}
 
 		/// <summary>
@@ -123,7 +123,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// <returns>Saved Query view</returns>
 		private string GetSearchSavedQueryViewName()
 		{
-			var searchSavedQueryNameFromSettings = this.OrganizationServiceContext.GetSettingValueByName("Search/IndexQueryName");
+			var searchSavedQueryNameFromSettings = OrganizationServiceContext.GetSettingValueByName("Search/IndexQueryName");
 			var searchSavedQueryView = string.IsNullOrEmpty(searchSavedQueryNameFromSettings)
 											? "Portal Search"
 											: searchSavedQueryNameFromSettings;
@@ -142,7 +142,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		public Guid GetSavedQueryUniqueId(Guid savedqueryId)
 		{
 			var response =
-				this.OrganizationServiceContext.Execute(
+				OrganizationServiceContext.Execute(
 					new RetrieveRequest
 						{
 							Target = new EntityReference("savedquery", savedqueryId),

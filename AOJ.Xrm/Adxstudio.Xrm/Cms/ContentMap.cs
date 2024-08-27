@@ -12,8 +12,8 @@ namespace Adxstudio.Xrm.Cms
 	using System.Runtime.CompilerServices;
 	using System.Threading;
 	using Microsoft.Xrm.Sdk;
-    using Adxstudio.Xrm.Diagnostics.Trace;
-    using Adxstudio.Xrm.Resources;
+    using Diagnostics.Trace;
+    using Resources;
 	using AspNet.Cms;
 
 	public enum ContentMapLockType
@@ -39,7 +39,7 @@ namespace Adxstudio.Xrm.Cms
 
 		public string GetSnippet(string name, ContextLanguageInfo language)
 		{
-			var snippet = this.GetSnippetNode(name, language);
+			var snippet = GetSnippetNode(name, language);
 			return snippet != null ? snippet.Value : null;
 		}
 
@@ -49,7 +49,7 @@ namespace Adxstudio.Xrm.Cms
 			// Note: Content snippets can have a language matching the current language, or they can have no language and apply for all languages
 			var userLanguageEntity = language == null || !language.IsCrmMultiLanguageEnabled ? null : language.ContextLanguage.EntityReference;
 
-			if (this.TryGetValue("adx_contentsnippet", out snippets))
+			if (TryGetValue("adx_contentsnippet", out snippets))
 			{
 				var snippet = GetSnippetNode(snippets.Values.OfType<ContentSnippetNode>(), name, language);
 

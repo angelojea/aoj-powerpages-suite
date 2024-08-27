@@ -27,7 +27,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// </summary>
 		[Category("Behavior")]
 		[Description("The URL path used to render the image to the client.")]
-		[DefaultValue((string)null)]
+		[DefaultValue(null)]
 		public string ImageUrl { get; set; }
 
 		/// <summary>

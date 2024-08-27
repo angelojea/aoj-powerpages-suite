@@ -64,10 +64,10 @@ namespace Adxstudio.Xrm.Data
 
 		public bool HasNextPage { get { return PageNumber < TotalPages; } }
 
-		public int PageNumber { get; private set; }
+		public int PageNumber { get; }
 
-		public int TotalCount { get; private set; }
+		public int TotalCount { get; }
 
-		public int TotalPages { get; private set; }
+		public int TotalPages { get; }
 	}
 }

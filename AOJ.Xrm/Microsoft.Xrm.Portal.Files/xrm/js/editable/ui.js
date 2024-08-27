@@ -4,181 +4,180 @@
 */
 
 
-XRM.onActivate(function() {
+XRM.onActivate(function () {
 
-	var ns = XRM.namespace('ui');
-	var yuiSkinClass = XRM.yuiSkinClass;
-	var overlayManager = new YAHOO.widget.OverlayManager();
-	var JSON = YAHOO.lang.JSON;
-	var $ = XRM.jQuery;
-	
-	ns.registerOverlay = function(overlay) {
-		overlayManager.register(overlay);
-	}
-	
-	ns.showProgressPanel = function(message, options) {
-		// Create a root container so we can apply our YUI skin class.
-		var yuiContainer = $('<div />').addClass(yuiSkinClass).appendTo(document.body);
+    var ns = XRM.namespace('ui');
+    var yuiSkinClass = XRM.yuiSkinClass;
+    var overlayManager = new YAHOO.widget.OverlayManager();
+    var JSON = YAHOO.lang.JSON;
+    var $ = XRM.jQuery;
 
-		// Create the actual container element for the panel, with our desired classes.
-		var panelContainer = $('<div />').addClass('xrm-editable-panel xrm-editable-dialog xrm-editable-wait').appendTo(yuiContainer);
+    ns.registerOverlay = function (overlay) {
+        overlayManager.register(overlay);
+    }
 
-		var panel = new YAHOO.widget.Panel(panelContainer.get(0), options);
+    ns.showProgressPanel = function (message, options) {
+        // Create a root container so we can apply our YUI skin class.
+        var yuiContainer = $('<div />').addClass(yuiSkinClass).appendTo(document.body);
 
-		panel.setHeader(message);
-		panel.setBody(' ');
-		panel.render();
-		panel.show();
+        // Create the actual container element for the panel, with our desired classes.
+        var panelContainer = $('<div />').addClass('xrm-editable-panel xrm-editable-dialog xrm-editable-wait').appendTo(yuiContainer);
 
-		ns.registerOverlay(panel);
-		panel.focus();
+        var panel = new YAHOO.widget.Panel(panelContainer.get(0), options);
 
-		// Return a funtion that will cleanup/remove the panel.
-		return function() {
-			panel.hide();
-			yuiContainer.remove();
-		}
-	}
+        panel.setHeader(message);
+        panel.setBody(' ');
+        panel.render();
+        panel.show();
 
-	ns.showProgressPanelAtXY = function(message, xy) {
-		return ns.showProgressPanel(message, {
-			close: false,
-			draggable: false,
-			zindex: XRM.zindex,
-			visible: false,
-			xy: xy,
-			constraintoviewport: true
-		});
-	}
+        ns.registerOverlay(panel);
+        panel.focus();
 
-	ns.showModalProgressPanel = function(message) {
-		var body = $(document.body);
+        // Return a funtion that will cleanup/remove the panel.
+        return function () {
+            panel.hide();
+            yuiContainer.remove();
+        }
+    }
 
-		var hadClass = body.hasClass(yuiSkinClass);
+    ns.showProgressPanelAtXY = function (message, xy) {
+        return ns.showProgressPanel(message, {
+            close: false,
+            draggable: false,
+            zindex: XRM.zindex,
+            visible: false,
+            xy: xy,
+            constraintoviewport: true
+        });
+    }
 
-		if (!hadClass) {
-			body.addClass(yuiSkinClass);
-		}
+    ns.showModalProgressPanel = function (message) {
+        var body = $(document.body);
 
-		var hideProgressPanel = ns.showProgressPanel(message, {
-			close: false,
-			draggable: false,
-			zindex: XRM.zindex,
-			visible: false,
-			fixedcenter: true,
-			modal: true
-		});
+        var hadClass = body.hasClass(yuiSkinClass);
 
-		return function() {
-			hideProgressPanel();
+        if (!hadClass) {
+            body.addClass(yuiSkinClass);
+        }
 
-			if (!hadClass) {
-				body.removeClass(yuiSkinClass);
-			}
-		}
-	}
-	
-	ns.showError = function(message) {
-		alert(message);
-	}
+        var hideProgressPanel = ns.showProgressPanel(message, {
+            close: false,
+            draggable: false,
+            zindex: XRM.zindex,
+            visible: false,
+            fixedcenter: true,
+            modal: true
+        });
 
-	ns.showDataServiceError = function(xhr, message) {
-		var xhrs = $.isArray(xhr) ? xhr : [xhr];
-		message = message || XRM.localize('error.dataservice.default');
+        return function () {
+            hideProgressPanel();
 
-		$.each(xhrs, function(i, item) {
-			// Try get an ADO.NET DataServicesException message out of the response JSON, and
-			// append it to the error message.
-			try {
-				var errorJSON = JSON.parse(item.responseText);
+            if (!hadClass) {
+                body.removeClass(yuiSkinClass);
+            }
+        }
+    }
 
-				if (errorJSON && errorJSON.error && errorJSON.error.message && errorJSON.error.message.value) {
-					message += '\n\n' + errorJSON.error.message.value;
-				}
-			}
-			catch (e) { }
-		});
+    ns.showError = function (message) {
+        alert(message);
+    }
 
-		ns.showError(message);
-	}
-	
-	ns.getEditLabel = function(containerElement) {
-		return XRM.localize('editable.label');
-	}
-	
-	ns.getEditTooltip = function(containerElement) {
-		return XRM.localize('editable.tooltip')
-	}
-	
-	$.fn.extend({
-		editable: function(serviceUri, options) {
-			var options = options || {};
-			var container = this;
-			var containerElement = container.get(0);
+    ns.showDataServiceError = function (xhr, message) {
+        var xhrs = $.isArray(xhr) ? xhr : [xhr];
+        message = message || XRM.localize('error.dataservice.default');
 
-			var yuiContainer = $('<span />').addClass(yuiSkinClass).appendTo(container);
-			var panelContainer = $('<div />').addClass('xrm-editable-panel xrm-editable-controls').appendTo(yuiContainer);
+        $.each(xhrs, function (i, item) {
+            // Try get an ADO.NET DataServicesException message out of the response JSON, and
+            // append it to the error message.
+            try {
+                var errorJSON = JSON.parse(item.responseText);
 
-			var editPanel = new YAHOO.widget.Panel(panelContainer.get(0), {
-				close: false,
-				draggable: false,
-				constraintoviewport: true,
-				visible: false,
-				zindex: XRM.zindex
-			});
+                if (errorJSON && errorJSON.error && errorJSON.error.message && errorJSON.error.message.value) {
+                    message += '\n\n' + errorJSON.error.message.value;
+                }
+            } catch (e) {
+            }
+        });
 
-			editPanel.setBody('<a class="xrm-editable-edit"></a>');
-			editPanel.render();
-			
-			$('.xrm-editable-edit', editPanel.body).attr('title', XRM.ui.getEditTooltip(containerElement)).text(XRM.ui.getEditLabel(containerElement)).click(function() {
-				var hideProgressPanel = XRM.ui.showProgressPanelAtXY(XRM.localize('editable.loading'), YAHOO.util.Dom.getXY(containerElement));
+        ns.showError(message);
+    }
 
-				// Retrieve the latest value data for the attribute, as JSON, and enter edit mode
-				// when (if) it returns successfully.
-				XRM.data.getJSON(serviceUri, {
-					success: function(data, textStatus) {
-						hideProgressPanel();
+    ns.getEditLabel = function (containerElement) {
+        return XRM.localize('editable.label');
+    }
 
-						if ($.isFunction(options.loadSuccess)) {
-							options.loadSuccess(data);
-						}
-					},
-					error: function(xhr) {
-						hideProgressPanel();
+    ns.getEditTooltip = function (containerElement) {
+        return XRM.localize('editable.tooltip')
+    }
 
-						if ($.isFunction(options.loadError)) {
-							options.loadError(xhr);
-						}
-						else {
-							XRM.ui.showDataServiceError(xhr);
-						}
-					}
-				});
-			});
-			
-			var timeoutID;
+    $.fn.extend({
+        editable: function (serviceUri, options) {
+            var options = options || {};
+            var container = this;
+            var containerElement = container.get(0);
 
-			container.hover(
-				function() {
-					if (timeoutID) {
-						clearTimeout(timeoutID);
-					}
-					container.addClass('xrm-editable-hover');
-					editPanel.cfg.setProperty('xy', YAHOO.util.Dom.getXY(containerElement));
-					editPanel.show();
-				},
-				function() {
-					timeoutID = setTimeout(function() {
-						editPanel.hide();
-						container.removeClass('xrm-editable-hover');
-					}, 800);
-				}
-			);
-		},
+            var yuiContainer = $('<span />').addClass(yuiSkinClass).appendTo(container);
+            var panelContainer = $('<div />').addClass('xrm-editable-panel xrm-editable-controls').appendTo(yuiContainer);
 
-		noneditable: function() {
-			this.unbind('mouseenter').unbind('mouseleave');
-		}
-	});
-	
+            var editPanel = new YAHOO.widget.Panel(panelContainer.get(0), {
+                close: false,
+                draggable: false,
+                constraintoviewport: true,
+                visible: false,
+                zindex: XRM.zindex
+            });
+
+            editPanel.setBody('<a class="xrm-editable-edit"></a>');
+            editPanel.render();
+
+            $('.xrm-editable-edit', editPanel.body).attr('title', XRM.ui.getEditTooltip(containerElement)).text(XRM.ui.getEditLabel(containerElement)).click(function () {
+                var hideProgressPanel = XRM.ui.showProgressPanelAtXY(XRM.localize('editable.loading'), YAHOO.util.Dom.getXY(containerElement));
+
+                // Retrieve the latest value data for the attribute, as JSON, and enter edit mode
+                // when (if) it returns successfully.
+                XRM.data.getJSON(serviceUri, {
+                    success: function (data, textStatus) {
+                        hideProgressPanel();
+
+                        if ($.isFunction(options.loadSuccess)) {
+                            options.loadSuccess(data);
+                        }
+                    },
+                    error: function (xhr) {
+                        hideProgressPanel();
+
+                        if ($.isFunction(options.loadError)) {
+                            options.loadError(xhr);
+                        } else {
+                            XRM.ui.showDataServiceError(xhr);
+                        }
+                    }
+                });
+            });
+
+            var timeoutID;
+
+            container.hover(
+                function () {
+                    if (timeoutID) {
+                        clearTimeout(timeoutID);
+                    }
+                    container.addClass('xrm-editable-hover');
+                    editPanel.cfg.setProperty('xy', YAHOO.util.Dom.getXY(containerElement));
+                    editPanel.show();
+                },
+                function () {
+                    timeoutID = setTimeout(function () {
+                        editPanel.hide();
+                        container.removeClass('xrm-editable-hover');
+                    }, 800);
+                }
+            );
+        },
+
+        noneditable: function () {
+            this.unbind('mouseenter').unbind('mouseleave');
+        }
+    });
+
 });

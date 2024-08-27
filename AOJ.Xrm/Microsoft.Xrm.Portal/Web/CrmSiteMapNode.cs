@@ -82,7 +82,7 @@ namespace Microsoft.Xrm.Portal.Web
 		/// </summary>
 		public DateTime LastModified { get; private set; }
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
 		public virtual HttpStatusCode StatusCode
 		{

@@ -20,7 +20,7 @@ namespace Adxstudio.Xrm.Events
 			Events = events.ToArray();
 		}
 
-		public IEnumerable<VEvent> Events { get; private set; }
+		public IEnumerable<VEvent> Events { get; }
 
 		public override string ToString()
 		{

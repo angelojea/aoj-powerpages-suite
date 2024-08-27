@@ -34,11 +34,11 @@ namespace Adxstudio.Xrm.Forums
 			get { return new IForumPostAttachmentInfo[] { }; }
 		}
 
-		public ICollection<IForumPostAttachment> Attachments { get; private set; }
+		public ICollection<IForumPostAttachment> Attachments { get; }
 
-		public DateTime PostedOn { get; private set; }
+		public DateTime PostedOn { get; }
 
-		public EntityReference ThreadEntity { get; private set; }
+		public EntityReference ThreadEntity { get; }
 
 		EntityReference IPortalViewEntity.EntityReference
 		{
@@ -50,7 +50,7 @@ namespace Adxstudio.Xrm.Forums
 			get { return null; }
 		}
 
-		public string Content { get; private set; }
+		public string Content { get; }
 
 		public bool CanEdit
 		{
@@ -81,7 +81,7 @@ namespace Adxstudio.Xrm.Forums
 
 		public bool CanMarkAsAnswer { get; set; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
 		public IForumThread Thread { get; set; }
 
@@ -95,7 +95,7 @@ namespace Adxstudio.Xrm.Forums
 			get { return false; }
 		}
 
-		public IForumAuthor Author { get; private set; }
+		public IForumAuthor Author { get; }
 
 		EntityReference IForumPostInfo.EntityReference
 		{
@@ -129,11 +129,11 @@ namespace Adxstudio.Xrm.Forums
 			Content = content;
 		}
 
-		public byte[] Content { get; private set; }
+		public byte[] Content { get; }
 
-		public string ContentType { get; private set; }
+		public string ContentType { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 	}
 
 	public class HtmlForumPostUpdate : IForumPostSubmission
@@ -156,7 +156,7 @@ namespace Adxstudio.Xrm.Forums
 			get { return new IForumPostAttachmentInfo[] { }; }
 		}
 
-		public ICollection<IForumPostAttachment> Attachments { get; private set; }
+		public ICollection<IForumPostAttachment> Attachments { get; }
 
 		public DateTime PostedOn
 		{
@@ -178,7 +178,7 @@ namespace Adxstudio.Xrm.Forums
 			get { return null; }
 		}
 
-		public string Content { get; private set; }
+		public string Content { get; }
 
 		public bool CanEdit
 		{
@@ -215,7 +215,7 @@ namespace Adxstudio.Xrm.Forums
 			get { return false; }
 		}
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
 		public IForumThread Thread
 		{

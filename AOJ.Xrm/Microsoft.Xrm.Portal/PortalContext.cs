@@ -42,12 +42,12 @@ namespace Microsoft.Xrm.Portal
 		/// <summary>
 		/// The <see cref="OrganizationServiceContext"/> used to obtain the <see cref="Entity"/> instances of the portal context.
 		/// </summary>
-		public OrganizationServiceContext ServiceContext { get; private set; }
+		public OrganizationServiceContext ServiceContext { get; }
 
 		/// <summary>
 		/// The current request.
 		/// </summary>
-		public RequestContext Request { get; private set; }
+		public RequestContext Request { get; }
 
 		private readonly Lazy<Entity> _website;
 

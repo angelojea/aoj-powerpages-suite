@@ -46,6 +46,6 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			get { return _thread.Value; }
 		}
 
-		protected IForumPost Post { get; private set; }
+		protected IForumPost Post { get; }
 	}
 }

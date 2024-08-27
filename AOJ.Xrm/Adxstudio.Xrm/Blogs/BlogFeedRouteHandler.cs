@@ -18,7 +18,7 @@ namespace Adxstudio.Xrm.Blogs
 			PortalName = portalName;
 		}
 
-		public virtual string PortalName { get; private set; }
+		public virtual string PortalName { get; }
 
 		public IHttpHandler GetHttpHandler(RequestContext requestContext)
 		{

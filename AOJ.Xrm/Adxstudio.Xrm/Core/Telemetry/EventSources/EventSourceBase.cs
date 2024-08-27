@@ -10,9 +10,9 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 	using System.Globalization;
 	using System.Web;
 	using Adxstudio.Xrm.AspNet.Cms;
-	using Adxstudio.Xrm.Decorators;
-	using Adxstudio.Xrm.Diagnostics.Trace;
-	using Adxstudio.Xrm.Web;
+	using Decorators;
+	using Diagnostics.Trace;
+	using Web;
 	using Microsoft.AspNet.Identity.Owin;
 	using Microsoft.Owin;
 	public abstract class EventSourceBase : EventSource
@@ -28,7 +28,7 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 			{
 				try
 				{
-					var context = this.HttpContext;
+					var context = HttpContext;
 					if (context == null)
 						return string.Empty;
 
@@ -54,7 +54,7 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 	        {
 	            try
 	            {
-                    var context = this.HttpContextBase;
+                    var context = HttpContextBase;
 
 	                if (context == null)
 	                    return string.Empty;
@@ -79,7 +79,7 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 			{
 				try
 				{
-					var inspector = CookieInspector.GetInstance(this.HttpContextBase);
+					var inspector = CookieInspector.GetInstance(HttpContextBase);
 					var cookieValue = inspector.AreCookiesEnabled
 						? inspector.GetCookieValue(CookieInspector.AnalyticsCookieKey)
 						: "cookies are disabled";
@@ -129,26 +129,26 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 			{
 				try
 				{
-					var context = this.HttpContext;
+					var context = HttpContext;
 					if (context == null)
-						return EventSourceBase.DefaultLcid;
+						return DefaultLcid;
 
-					if (this.OwinContext == null)
-						return EventSourceBase.DefaultLcid;
+					if (OwinContext == null)
+						return DefaultLcid;
 
-					var language = this.OwinContext.Get<ContextLanguageInfo>();
+					var language = OwinContext.Get<ContextLanguageInfo>();
 					if (language == null)
-						return EventSourceBase.DefaultLcid;
+						return DefaultLcid;
 
 					return language.IsCrmMultiLanguageEnabled
 						? language.ContextLanguage.Lcid
-						: EventSourceBase.DefaultLcid;
+						: DefaultLcid;
 				}
 				catch
 				{
 					// eat exception expecting it to possibly happen in scenarios without context
 					// i.g., background worker threads
-					return EventSourceBase.DefaultLcid;
+					return DefaultLcid;
 				}
 			}
 		}
@@ -162,26 +162,26 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 			{
 				try
 				{
-					var context = this.HttpContext;
+					var context = HttpContext;
 					if (context == null)
-						return EventSourceBase.DefaultLcid;
+						return DefaultLcid;
 					
-					if (this.OwinContext == null)
-						return EventSourceBase.DefaultLcid;
+					if (OwinContext == null)
+						return DefaultLcid;
 
-					var language = this.OwinContext.Get<ContextLanguageInfo>();
+					var language = OwinContext.Get<ContextLanguageInfo>();
 					if (language == null)
-						return EventSourceBase.DefaultLcid;
+						return DefaultLcid;
 
 					return language.IsCrmMultiLanguageEnabled
 						? language.ContextLanguage.CrmLcid
-						: EventSourceBase.DefaultLcid;
+						: DefaultLcid;
 				}
 				catch
 				{
 					// eat exception expecting it to possibly happen in scenarios without context
 					// i.g., background worker threads
-					return EventSourceBase.DefaultLcid;
+					return DefaultLcid;
 				}
 			}
 		}
@@ -206,12 +206,12 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 		{
 			try
 			{
-				if (this.HttpContext == null)
+				if (HttpContext == null)
 					return string.Empty;
 
-				if (this.OwinContext == null || this.OwinContext.Get<RequestElapsedTimeContext>() == null)
+				if (OwinContext == null || OwinContext.Get<RequestElapsedTimeContext>() == null)
 				{
-					var inspector = ItemDecorator.GetInspectorInstance(this.HttpContextBase);
+					var inspector = ItemDecorator.GetInspectorInstance(HttpContextBase);
 					var startTime = inspector[ItemDecorator.RequestStartTime];
 					if (startTime != null)
 					{
@@ -221,10 +221,8 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 
 					return string.Empty;
 				}
-				else
-				{
-					return this.OwinContext.Get<RequestElapsedTimeContext>().ElapsedTime().ToString();
-				}
+
+				return OwinContext.Get<RequestElapsedTimeContext>().ElapsedTime().ToString();
 			}
 			catch
 			{
@@ -251,10 +249,10 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 			{
 				try
 				{
-					if (this.HttpContext == null || !this.HttpContext.Items.Contains("owin.Environment"))
+					if (HttpContext == null || !HttpContext.Items.Contains("owin.Environment"))
 						return null;
 
-					return this.HttpContext.GetOwinContext();
+					return HttpContext.GetOwinContext();
 				}
 				catch
 				{
@@ -270,8 +268,8 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 		{
 			get
 			{
-				if (this.HttpContext == null) return null;
-				return new HttpContextWrapper(this.HttpContext);
+				if (HttpContext == null) return null;
+				return new HttpContextWrapper(HttpContext);
 			}
 		}
 

@@ -27,9 +27,9 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		protected override bool ControlPropertiesValid()
 		{
 			// Is ControlToValidate Set
-			if (this.ControlToValidate.Length == 0)
+			if (ControlToValidate.Length == 0)
 			{
-				throw new HttpException(string.Format(CultureInfo.InvariantCulture, "The ControlToValidate property {0} can't be blank.", this.ID));
+				throw new HttpException(string.Format(CultureInfo.InvariantCulture, "The ControlToValidate property {0} can't be blank.", ID));
 			}
 
 			

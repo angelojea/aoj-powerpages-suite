@@ -27,8 +27,8 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// <param name="isSearchIndexInvalidationMessage">Whether it is a message for search index invalidation or not.</param>
 		public EntityInvalidationMessageAndType(EntityRecordMessage message, bool isSearchIndexInvalidationMessage)
 		{
-			this.Message = message;
-			this.IsSearchIndexInvalidationMessage = isSearchIndexInvalidationMessage;
+			Message = message;
+			IsSearchIndexInvalidationMessage = isSearchIndexInvalidationMessage;
 		}
 	}
 }

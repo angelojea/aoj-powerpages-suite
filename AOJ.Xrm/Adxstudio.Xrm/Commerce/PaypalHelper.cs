@@ -30,9 +30,9 @@ namespace Adxstudio.Xrm.Commerce
 		/// <summary>
 		/// The base Paypal URL
 		/// </summary>
-		public string PayPalBaseUrl { get; private set; }
+		public string PayPalBaseUrl { get; }
 
-		public string PayPalAccountEmail { get; private set; }
+		public string PayPalAccountEmail { get; }
 
 
 		public PayPalHelper(IPortalContext xrm) : this(GetPaypalBaseUrl(xrm), GetPaypalAccountEmail(xrm))
@@ -100,7 +100,7 @@ namespace Adxstudio.Xrm.Commerce
 			newReq.ContentLength = newRequestStr.Length;
 
 			//write out the full parameters into the request
-			var streamOut = new StreamWriter(newReq.GetRequestStream(), System.Text.Encoding.ASCII);
+			var streamOut = new StreamWriter(newReq.GetRequestStream(), Encoding.ASCII);
 			streamOut.Write(newRequestStr);
 			streamOut.Close();
 
@@ -289,9 +289,9 @@ namespace Adxstudio.Xrm.Commerce
 
 		public class PayPalPaymentDataTransferResponse : IPayPalPaymentDataTransferResponse
 		{
-			public PaymentDataTransferStatus Status { get; private set; }
+			public PaymentDataTransferStatus Status { get; }
 
-			public Dictionary<string, string> Details { get; private set; }
+			public Dictionary<string, string> Details { get; }
 
 			public PayPalPaymentDataTransferResponse(string response)
 			{

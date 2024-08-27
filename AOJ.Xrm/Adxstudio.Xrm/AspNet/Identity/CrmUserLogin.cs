@@ -9,7 +9,7 @@ namespace Adxstudio.Xrm.AspNet.Identity
 {
 	public class CrmUserLogin
 	{
-		public virtual Entity Entity { get; private set; }
+		public virtual Entity Entity { get; }
 
 		public virtual string LoginProvider
 		{

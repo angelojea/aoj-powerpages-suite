@@ -18,7 +18,7 @@ namespace Adxstudio.Xrm.AspNet
 
 	public abstract class CrmModel<TKey> : IModel<TKey>
 	{
-		protected virtual string PrimaryNameAttribute { get; private set; }
+		protected virtual string PrimaryNameAttribute { get; }
 
 		public virtual Entity Entity { get; private set; }
 

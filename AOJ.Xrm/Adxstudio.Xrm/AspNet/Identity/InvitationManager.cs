@@ -13,7 +13,7 @@ namespace Adxstudio.Xrm.AspNet.Identity
 		where TInvitation : class, IInvitation<TKey>
 		where TKey : IEquatable<TKey>
 	{
-		public virtual CrmIdentityErrorDescriber IdentityErrors { get; private set; }
+		public virtual CrmIdentityErrorDescriber IdentityErrors { get; }
 
 		public InvitationManager(IInvitationStore<TInvitation, TKey> store, CrmIdentityErrorDescriber identityErrors)
 			: base(store)

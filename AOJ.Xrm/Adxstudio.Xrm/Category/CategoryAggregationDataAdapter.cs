@@ -16,7 +16,7 @@ namespace Adxstudio.Xrm.Category
 	using Services.Query;
 	using Microsoft.Xrm.Sdk.Client;
 	using Metadata;
-	using Adxstudio.Xrm.Web;
+	using Web;
 	using Services;
 
 	/// <summary>
@@ -33,7 +33,7 @@ namespace Adxstudio.Xrm.Category
 			if (dependencies == null)
 			{ throw new ArgumentNullException("dependencies"); }
 
-			this.Dependencies = dependencies;
+			Dependencies = dependencies;
 		}
 
 		/// <summary>
@@ -58,7 +58,7 @@ namespace Adxstudio.Xrm.Category
 				}
 			});
 
-			return this.GetCategories(categoryFetch);
+			return GetCategories(categoryFetch);
 		}
 
 		/// <summary>
@@ -72,9 +72,9 @@ namespace Adxstudio.Xrm.Category
 
 			var order = new Order("modifiedon", OrderType.Descending);
 
-			this.AddOrderToFetch(categoryFetch, order);
+			AddOrderToFetch(categoryFetch, order);
 
-			return this.GetCategories(categoryFetch);
+			return GetCategories(categoryFetch);
 		}
 
 		/// <summary>
@@ -86,7 +86,7 @@ namespace Adxstudio.Xrm.Category
 		{
 			var categoryFetch = GetCategoryFetch(pageSize);
 
-			return this.GetCategories(categoryFetch);
+			return GetCategories(categoryFetch);
 		}
 
 		/// <summary>
@@ -107,7 +107,7 @@ namespace Adxstudio.Xrm.Category
 				}
 			});
 
-			return this.GetCategories(categoryFetch);
+			return GetCategories(categoryFetch);
 		}
 
 		/// <summary>
@@ -117,9 +117,9 @@ namespace Adxstudio.Xrm.Category
 		/// <returns>ICategory with corresponding <paramref name="categoryNumber"/></returns>
 		public ICategory SelectByCategoryNumber(string categoryNumber)
 		{
-			var service = this.Dependencies.GetServiceContext();
+			var service = Dependencies.GetServiceContext();
 
-			var categoryFetch = this.GetCategoryFetch(1);
+			var categoryFetch = GetCategoryFetch(1);
 
 			categoryFetch.Entity.Filters.Add(new Filter
 			{
@@ -135,9 +135,9 @@ namespace Adxstudio.Xrm.Category
 			{
 				// Localize the Category Label if the current user's language is not the org's base language
 				int lcid;
-				if (this.CategoryLocalizationShouldOccur(categoryFetch, out lcid))
+				if (CategoryLocalizationShouldOccur(categoryFetch, out lcid))
 				{
-					this.LocalizeCategoryLabel(service, lcid, result);
+					LocalizeCategoryLabel(service, lcid, result);
 				}
 
 				return new Category(result);
@@ -153,7 +153,7 @@ namespace Adxstudio.Xrm.Category
 		/// <returns>Ienumerable of Category</returns>
 		private IEnumerable<ICategory> GetCategories(Fetch fetch)
 		{
-			var context = this.Dependencies.GetServiceContext();
+			var context = Dependencies.GetServiceContext();
 
 			var categoryCollection = fetch.Execute(context as IOrganizationService);
 
@@ -164,12 +164,12 @@ namespace Adxstudio.Xrm.Category
 
 			// Localize the Category Labels if the current user's language is not the org's base language
 			int lcid;
-			if (this.CategoryLocalizationShouldOccur(fetch, out lcid))
+			if (CategoryLocalizationShouldOccur(fetch, out lcid))
 			{
-				this.LocalizeCategoryLabels(context, lcid, categoryCollection);
+				LocalizeCategoryLabels(context, lcid, categoryCollection);
 			}
 
-			return new CategoryFactory(this.Dependencies).Create(categoryCollection.Entities);
+			return new CategoryFactory(Dependencies).Create(categoryCollection.Entities);
 		}
 
 		/// <summary>
@@ -193,13 +193,13 @@ namespace Adxstudio.Xrm.Category
 			var contextLanguageInfo = HttpContext.Current.GetContextLanguageInfo();
 
 			// If CRM version is prior to 8.2, Category Title wasn't exposed to localization
-			if (!this.CategoryTitleLocalizableCrmVersion || !contextLanguageInfo.IsCrmMultiLanguageEnabled)
+			if (!CategoryTitleLocalizableCrmVersion || !contextLanguageInfo.IsCrmMultiLanguageEnabled)
 			{
 				return false;
 			}
 
 			// If the user's ContextLanguage is not different than the base language, do not localize since the localization would return same Title's anyways.
-			var context = this.Dependencies.GetRequestContext().HttpContext;
+			var context = Dependencies.GetRequestContext().HttpContext;
 			var organizationBaseLanguageCode = context.GetPortalSolutionsDetails().OrganizationBaseLanguageCode;
 			if (contextLanguageInfo.ContextLanguage.CrmLcid == organizationBaseLanguageCode)
 			{
@@ -220,7 +220,7 @@ namespace Adxstudio.Xrm.Category
 			{
 				var portalDetails = HttpContext.Current.GetPortalSolutionsDetails();
 				return portalDetails != null &&
-						portalDetails.CrmVersion.CompareTo(Adxstudio.Xrm.Cms.SolutionVersions.BaseSolutionVersions.CentaurusVersion) 
+						portalDetails.CrmVersion.CompareTo(Cms.SolutionVersions.BaseSolutionVersions.CentaurusVersion) 
 						>= 0;
 			}
 		}
@@ -234,7 +234,7 @@ namespace Adxstudio.Xrm.Category
 		private void LocalizeCategoryLabels(OrganizationServiceContext context, int languageCode, EntityCollection categoryEntityCollection)
 		{
 			// Execute the request in parallel to improve performance
-			Parallel.For(0, categoryEntityCollection.Entities.Count, index => this.LocalizeCategoryLabel(context, languageCode, categoryEntityCollection[index]));
+			Parallel.For(0, categoryEntityCollection.Entities.Count, index => LocalizeCategoryLabel(context, languageCode, categoryEntityCollection[index]));
 		}
 
 		/// <summary>

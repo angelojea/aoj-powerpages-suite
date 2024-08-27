@@ -7,7 +7,7 @@ namespace Adxstudio.Xrm.Diagnostics.Trace
 {
 	using System;
 	using System.Reflection;
-	using Adxstudio.Xrm.Configuration;
+	using Configuration;
 
 	/// <summary>
 	/// Cloud hosted portal details.
@@ -128,15 +128,15 @@ namespace Adxstudio.Xrm.Diagnostics.Trace
 		/// </summary>
 		private PortalDetail()
 		{
-			this.PortalId = PortalDetailName.PortalId.ResolveAppSetting() ?? string.Empty;
-			this.TenantId = PortalDetailName.Tenant.ResolveAppSetting() ?? string.Empty;
-			this.OrgId = PortalDetailName.OrgId.ResolveAppSetting() ?? string.Empty;
-			this.Geo = PortalDetailName.Geo.ResolveAppSetting() ?? string.Empty;
-			this.PortalApp = PortalDetailName.PortalApp.ResolveAppSetting() ?? string.Empty;
-			this.PortalType = PortalDetailName.PortalType.ResolveAppSetting() ?? string.Empty;
-			this.AzurePortalUrl = PortalDetailName.AzurePortalUrl.ResolveAppSetting() ?? string.Empty;
-			this.PortalVersion = PortalDetailName.PortalVersion.ResolveAppSetting().GetValueOrDefault(Assembly.GetExecutingAssembly().GetName().Version.ToString());
-			this.PortalProductionOrTrialType = PortalDetailName.PortalProductionOrTrialType.ResolveAppSetting() ?? string.Empty;
+			PortalId = PortalDetailName.PortalId.ResolveAppSetting() ?? string.Empty;
+			TenantId = PortalDetailName.Tenant.ResolveAppSetting() ?? string.Empty;
+			OrgId = PortalDetailName.OrgId.ResolveAppSetting() ?? string.Empty;
+			Geo = PortalDetailName.Geo.ResolveAppSetting() ?? string.Empty;
+			PortalApp = PortalDetailName.PortalApp.ResolveAppSetting() ?? string.Empty;
+			PortalType = PortalDetailName.PortalType.ResolveAppSetting() ?? string.Empty;
+			AzurePortalUrl = PortalDetailName.AzurePortalUrl.ResolveAppSetting() ?? string.Empty;
+			PortalVersion = PortalDetailName.PortalVersion.ResolveAppSetting().GetValueOrDefault(Assembly.GetExecutingAssembly().GetName().Version.ToString());
+			PortalProductionOrTrialType = PortalDetailName.PortalProductionOrTrialType.ResolveAppSetting() ?? string.Empty;
 		}
 	}
 }

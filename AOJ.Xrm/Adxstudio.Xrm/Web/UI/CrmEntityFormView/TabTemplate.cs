@@ -40,7 +40,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 			string description;
 
-			if (tabNode.TryGetLanguageSpecificLabelValue(this.LanguageCode, out description))
+			if (tabNode.TryGetLanguageSpecificLabelValue(LanguageCode, out description))
 			{
 				Label = description;
 			}
@@ -56,12 +56,12 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// Text of the element's label.
 		/// </summary>
-		public string Label { get; private set; }
+		public string Label { get; }
 
 		/// <summary>
 		/// Indicates if the label should be shown.
 		/// </summary>
-		public bool ShowLabel { get; private set; }
+		public bool ShowLabel { get; }
 
 		public MappingFieldMetadataCollection MappingFieldCollection { get; set; }
 

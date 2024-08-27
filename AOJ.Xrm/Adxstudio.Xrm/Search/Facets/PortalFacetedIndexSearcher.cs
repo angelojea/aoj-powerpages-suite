@@ -27,17 +27,17 @@ namespace Adxstudio.Xrm.Search.Facets
 	using System.Web;
 	using System.Web.Security;
 	using System.Text.RegularExpressions;
-	using Adxstudio.Xrm.ContentAccess;
-	using Adxstudio.Xrm.Core.Flighting;
+	using ContentAccess;
+	using Core.Flighting;
 	using BoboBrowse.Net;
 	using BoboBrowse.Net.Facets;
 	using BoboBrowse.Net.Facets.Impl;
 	using BoboBrowse.Net.Support;
 	using BoboBrowse.Net.Facets.Data;
-	using Adxstudio.Xrm.Resources;
-	using Adxstudio.Xrm.Search.Sorting;
-	using Adxstudio.Xrm.Security;
-	using Adxstudio.Xrm.Web;
+	using Resources;
+	using Sorting;
+	using Security;
+	using Web;
 	using BoboBrowse.Net.Util;
 	using Lucene.Net.Search;
 	using Lucene.Net.Documents;
@@ -109,26 +109,26 @@ namespace Adxstudio.Xrm.Search.Facets
 		public PortalFacetedIndexSearcher(ICrmEntityIndex index, Guid websiteID)
 			: base(index, websiteID)
 		{
-			this.config = new FixedFacetsConfiguration();
+			config = new FixedFacetsConfiguration();
 
 			// The facet engine requires you to define handlers (these just tell BoboBrowse how to handle 
 			// the field's data) and specs (these tell BoboBrowse how to return the facets during a search)
 			// for each faceted field. Since our facets are preconfigured, we'll just maintain these in
 			// the faceted searcher instance
-			this.specs = new Dictionary<string, FacetSpec>();
+			specs = new Dictionary<string, FacetSpec>();
 
 			var handlers = new List<IFacetHandler>();
 
-			foreach (var facetConfiguration in this.config.GetConfiguredFacets())
+			foreach (var facetConfiguration in config.GetConfiguredFacets())
 			{
 				if (facetConfiguration.FacetHandlerType == FacetHandlerType.Static)
 				{
 					handlers.Add(facetConfiguration.FacetHandler);
 				}
-				this.specs.Put(facetConfiguration.FieldName, facetConfiguration.Spec);
+				specs.Put(facetConfiguration.FieldName, facetConfiguration.Spec);
 			}
 			//// The BoboIndexReader is just a wrapper around the lucene IndexReader
-			this.boboReader = BoboIndexReader.GetInstance(this.Searcher.IndexReader, handlers);
+			boboReader = BoboIndexReader.GetInstance(Searcher.IndexReader, handlers);
 		}
 
 		/// <summary>
@@ -136,7 +136,7 @@ namespace Adxstudio.Xrm.Search.Facets
 		/// </summary>
 		public override void Dispose()
 		{
-			this.boboReader.Dispose();
+			boboReader.Dispose();
 			base.Dispose();
 		}
 
@@ -154,8 +154,8 @@ namespace Adxstudio.Xrm.Search.Facets
 			if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.CmsEnabledSearching))
 			{
 				var baseQuery = base.CreateQuery(query);
-				var compositeQuery = new BooleanQuery()
-									 {
+				var compositeQuery = new BooleanQuery
+				{
 										 { baseQuery, Occur.MUST }
 									 };
 				var contentAccessLevelProvider = new ContentAccessLevelProvider();
@@ -187,7 +187,7 @@ namespace Adxstudio.Xrm.Search.Facets
 											{
 												{
 													new TermQuery(
-														new Term(FixedFacetsConfiguration.ProductFieldFacetName, this.Index.ProductAccessNonKnowledgeArticleDefaultValue)),
+														new Term(FixedFacetsConfiguration.ProductFieldFacetName, Index.ProductAccessNonKnowledgeArticleDefaultValue)),
 															Occur.SHOULD
 												}
 											};
@@ -207,7 +207,7 @@ namespace Adxstudio.Xrm.Search.Facets
 						if (productAccessProvider.DisplayArticlesWithoutAssociatedProductsEnabled())
 						{
 							productFilteringQuery.Add(
-								new TermQuery(new Term(FixedFacetsConfiguration.ProductFieldFacetName, this.Index.ProductAccessDefaultValue)),
+								new TermQuery(new Term(FixedFacetsConfiguration.ProductFieldFacetName, Index.ProductAccessDefaultValue)),
 								Occur.SHOULD);
 						}
 					}
@@ -221,13 +221,13 @@ namespace Adxstudio.Xrm.Search.Facets
 					compositeQuery.Add(productFilteringQuery, Occur.MUST);
 				}
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("Adding User WebRoleDefaultValue to Lucene query: {0}", this.Index.WebRoleDefaultValue));
+				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("Adding User WebRoleDefaultValue to Lucene query: {0}", Index.WebRoleDefaultValue));
 
 				var cmsQuery = new BooleanQuery
 							{
 								{
 									new TermQuery(
-										new Term(this.Index.WebRoleFieldName, this.Index.WebRoleDefaultValue)),
+										new Term(Index.WebRoleFieldName, Index.WebRoleDefaultValue)),
 											Occur.SHOULD
 								}
 							};
@@ -244,7 +244,7 @@ namespace Adxstudio.Xrm.Search.Facets
 				foreach (var role in userRoles)
 				{
 					ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("User role: {0}", role));
-					cmsQuery.Add(new TermQuery(new Term(this.Index.WebRoleFieldName, role)), Occur.SHOULD);
+					cmsQuery.Add(new TermQuery(new Term(Index.WebRoleFieldName, role)), Occur.SHOULD);
 				}
 
 				compositeQuery.Add(cmsQuery, Occur.MUST);
@@ -254,7 +254,7 @@ namespace Adxstudio.Xrm.Search.Facets
 							{
 								{
 									new TermQuery(
-										new Term(this.Index.IsUrlDefinedFieldName, bool.TrueString)),
+										new Term(Index.IsUrlDefinedFieldName, bool.TrueString)),
 											Occur.SHOULD
 								}
 							};
@@ -267,10 +267,8 @@ namespace Adxstudio.Xrm.Search.Facets
 
 				return compositeQuery;
 			}
-			else
-			{
-				return base.CreateQuery(query);
-			}
+
+			return base.CreateQuery(query);
 		}
 
 		/// <summary>
@@ -287,21 +285,21 @@ namespace Adxstudio.Xrm.Search.Facets
 
 			var br = new BrowseRequest();
 			br.Count = searchLimit;
-			br.Sort = this.GetSortField(query);
-			br.Query = this.CreateQuery(query);
+			br.Sort = GetSortField(query);
+			br.Query = CreateQuery(query);
 			br.Offset = offset;
 
-			this.AddFacetConstraints(br, query.FacetConstraints);
+			AddFacetConstraints(br, query.FacetConstraints);
 
 			// add preconfigured facet specs
-			foreach (var fieldToSpec in this.specs)
+			foreach (var fieldToSpec in specs)
 			{
 				br.SetFacetSpec(fieldToSpec.Key, fieldToSpec.Value);
 			}
 
 			// execute the query
-			IBrowsable browser = new BoboBrowser(this.boboReader);
-			foreach (var facetConfiguration in this.config.GetConfiguredFacets())
+			IBrowsable browser = new BoboBrowser(boboReader);
+			foreach (var facetConfiguration in config.GetConfiguredFacets())
 			{
 				if (facetConfiguration.FacetHandlerType == FacetHandlerType.Dynamic)
 				{
@@ -316,7 +314,7 @@ namespace Adxstudio.Xrm.Search.Facets
 
             PortalFeatureTrace.TraceInstance.LogSearch(FeatureTraceCategory.Search, browseResult.NumHits, stopwatch.ElapsedMilliseconds, string.Format("Lucene(faceted/BoboBrowse): {0} total hits ({1}ms)", browseResult.NumHits, stopwatch.ElapsedMilliseconds));
 
-			return this.ConvertBoboBrowseResultsToRawSearchResultSet(browseResult, offset, query.FacetConstraints);
+			return ConvertBoboBrowseResultsToRawSearchResultSet(browseResult, offset, query.FacetConstraints);
 		}
 
 		/// <summary>
@@ -337,7 +335,7 @@ namespace Adxstudio.Xrm.Search.Facets
 			br.Offset = offset;
 
 			// execute the query
-			IBrowsable browser = new BoboBrowser(this.boboReader);
+			IBrowsable browser = new BoboBrowser(boboReader);
 
 			var browseResult = browser.Browse(br);
 
@@ -347,7 +345,7 @@ namespace Adxstudio.Xrm.Search.Facets
 
             PortalFeatureTrace.TraceInstance.LogSearch(FeatureTraceCategory.Search, browseResult.NumHits, stopwatch.ElapsedMilliseconds, string.Format("Lucene(faceted/BoboBrowse): {0} total hits ({1}ms)", browseResult.NumHits, stopwatch.ElapsedMilliseconds));
 
-            return this.ConvertBoboBrowseResultsToRawSearchResultSet(browseResult, offset, Enumerable.Empty<FacetConstraints>());
+            return ConvertBoboBrowseResultsToRawSearchResultSet(browseResult, offset, Enumerable.Empty<FacetConstraints>());
 		}
 
 		/// <summary>
@@ -384,9 +382,9 @@ namespace Adxstudio.Xrm.Search.Facets
 			}
 
 			// transform the BoboBrowse-specific facet map to our more general data structure
-			var facetViews = this.FacetMapToFacetViews(browseResults, facetConstraints ?? Enumerable.Empty<FacetConstraints>());
+			var facetViews = FacetMapToFacetViews(browseResults, facetConstraints ?? Enumerable.Empty<FacetConstraints>());
 
-			var sortingOptions = this.GetSortingOptions(facetViews, facetConstraints);
+			var sortingOptions = GetSortingOptions(facetViews, facetConstraints);
 
 			return new RawSearchResultSet(rawSearchResults, browseResults.NumHits, facetViews, sortingOptions);
 		}
@@ -401,7 +399,7 @@ namespace Adxstudio.Xrm.Search.Facets
 			// add facet constraints specified in query to the browse request
 			foreach (var facetConstraints in facetConstraintsSet)
 			{
-				if (this.config.IsFacetConfigured(facetConstraints.FacetName))
+				if (config.IsFacetConfigured(facetConstraints.FacetName))
 				{
 					var bs = br.GetSelection(facetConstraints.FacetName) ?? new BrowseSelection(facetConstraints.FacetName);
 					foreach (var constraint in facetConstraints.Constraints)
@@ -426,7 +424,7 @@ namespace Adxstudio.Xrm.Search.Facets
 
 			foreach (var facet in browseResults.FacetMap)
 			{
-				var facetConstraints = this.FacetToConstraintHits(facet, clientFacetConstraints, browseResults);
+				var facetConstraints = FacetToConstraintHits(facet, clientFacetConstraints, browseResults);
 
 				if (facetConstraints.Any())
 				{
@@ -459,9 +457,9 @@ namespace Adxstudio.Xrm.Search.Facets
 		{
 			if (facet.Key == FixedFacetsConfiguration.RecordTypeFacetFieldName)
 			{
-				return this.GroupRecordTypeFacet(facet, clientFacetConstraints);
+				return GroupRecordTypeFacet(facet, clientFacetConstraints);
 			}
-			return this.BrowseFacetsToConstraintHits(facet, clientFacetConstraints, browseResults);
+			return BrowseFacetsToConstraintHits(facet, clientFacetConstraints, browseResults);
 		}
 
 		/// <summary>
@@ -473,7 +471,7 @@ namespace Adxstudio.Xrm.Search.Facets
 		/// <returns>a list of constraint hits</returns>
 		private IEnumerable<ConstraintHit> BrowseFacetsToConstraintHits(KeyValuePair<string, IFacetAccessible> currentFacet, IEnumerable<FacetConstraints> clientFacetConstraints, BrowseResult browseResults = null)
 		{
-			var currentFacetConfiguration = this.config.GetConfiguredFacets().FirstOrDefault(configuration => configuration.FieldName == currentFacet.Key);
+			var currentFacetConfiguration = config.GetConfiguredFacets().FirstOrDefault(configuration => configuration.FieldName == currentFacet.Key);
 			if (currentFacetConfiguration == null)
 			{
 				return Enumerable.Empty<ConstraintHit>();
@@ -498,10 +496,10 @@ namespace Adxstudio.Xrm.Search.Facets
 							.Select(browseFacet => new ConstraintHit(browseFacet.Value, browseFacet.FacetValueHitCount, ModifiedOnDateRange.GetRangeDisplayName(browseFacet.Value)));
 					break;
 				case FixedFacetsConfiguration.RecordTypeFacetFieldName:
-					currentFacetConstraintHits = facetsToDisplay.Select(browseFacet => new ConstraintHit(browseFacet.Value, browseFacet.FacetValueHitCount, this.LocalizeRecordTypeName(browseFacet.Value.Split(',')[0])));
+					currentFacetConstraintHits = facetsToDisplay.Select(browseFacet => new ConstraintHit(browseFacet.Value, browseFacet.FacetValueHitCount, LocalizeRecordTypeName(browseFacet.Value.Split(',')[0])));
 					break;
 				case FixedFacetsConfiguration.ProductFieldFacetName:
-					facetsToDisplay = facetsToDisplay.Where(facet => facet.Value != this.Index.ProductAccessNonKnowledgeArticleDefaultValue && facet.Value != this.Index.ProductAccessDefaultValue);
+					facetsToDisplay = facetsToDisplay.Where(facet => facet.Value != Index.ProductAccessNonKnowledgeArticleDefaultValue && facet.Value != Index.ProductAccessDefaultValue);
 					if (!facetsToDisplay.Any())
 					{
 						return Enumerable.Empty<ConstraintHit>();
@@ -539,14 +537,14 @@ namespace Adxstudio.Xrm.Search.Facets
 		{
 			var entityToRecordMap = new Dictionary<string, string>();
 			var groupedFacets = new Dictionary<string, int>();
-			var settingsString = this.RecordTypeFacetsEntities;
+			var settingsString = RecordTypeFacetsEntities;
 			var result = new List<ConstraintHit>();
 
-			settingsString = this.RemoveDuplicates(settingsString);
+			settingsString = RemoveDuplicates(settingsString);
 
 			if (string.IsNullOrEmpty(settingsString))
 			{
-				return this.BrowseFacetsToConstraintHits(currentFacet, clientFacetConstraints);
+				return BrowseFacetsToConstraintHits(currentFacet, clientFacetConstraints);
 			}
 
 			foreach (var groupName in Web.Mvc.Html.SettingExtensions.SplitSearchFilterOptions(settingsString))
@@ -667,10 +665,10 @@ namespace Adxstudio.Xrm.Search.Facets
 
 			if (sortingOption == SortingFields.Rating || sortingOption == SortingFields.ViewCount)
 			{
-				return new SortField[] { new SortField(sortingOption, SortField.DOUBLE, true) };
+				return new[] { new SortField(sortingOption, SortField.DOUBLE, true) };
 			}
 
-			return new SortField[] { SortField.FIELD_SCORE };
+			return new[] { SortField.FIELD_SCORE };
 		}
 
 		/// <summary>
@@ -733,12 +731,12 @@ namespace Adxstudio.Xrm.Search.Facets
 						new FetchAttribute(entityFieldNameForGuid),
 						new FetchAttribute(entityFieldName)
 					},
-					Filters = new List<Xrm.Services.Query.Filter>()
+					Filters = new List<Xrm.Services.Query.Filter>
 					{
-						new Xrm.Services.Query.Filter()
+						new Xrm.Services.Query.Filter
 						{
 							Type = LogicalOperator.And,
-							Conditions = new List<Condition>()
+							Conditions = new List<Condition>
 							{
 								new Condition
 								{

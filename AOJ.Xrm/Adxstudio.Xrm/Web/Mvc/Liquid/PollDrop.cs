@@ -33,7 +33,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			_submitUrl = new Lazy<string>(GetSubmitUrl, LazyThreadSafetyMode.None);
 		}
 
-		protected IPoll Poll { get; private set; }
+		protected IPoll Poll { get; }
 
 		public string Name
 		{

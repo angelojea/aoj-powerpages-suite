@@ -31,15 +31,15 @@ namespace Adxstudio.Xrm.Search
 			SortingOptions = sortingOptions;
 		}
 
-		public int ApproximateTotalHits { get; private set; }
+		public int ApproximateTotalHits { get; }
 
-		public int PageNumber { get; private set; }
+		public int PageNumber { get; }
 
-		public int PageSize { get; private set; }
+		public int PageSize { get; }
 
-		public IEnumerable<FacetView> FacetViews { get; private set; }
+		public IEnumerable<FacetView> FacetViews { get; }
 
-		public IEnumerable<string> SortingOptions { get; private set; }
+		public IEnumerable<string> SortingOptions { get; }
 
 		public IEnumerator<ICrmEntitySearchResult> GetEnumerator()
 		{

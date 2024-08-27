@@ -13,8 +13,8 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
 	public class CalculateOpportunityActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-calculator fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Calculate_Value_Button_Text");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Calculate_Value_Button_Text");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-calculator fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Calculate_Value_Button_Text");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Calculate_Value_Button_Text");
 		
 		/// <summary>
 		/// Setting used to configure the modal

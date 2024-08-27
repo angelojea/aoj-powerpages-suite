@@ -11,11 +11,11 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 	using System.Text.RegularExpressions;
 	using System.Threading;
 	using System.Web;
-	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Core.Flighting;
-	using Adxstudio.Xrm.Feedback;
-	using Adxstudio.Xrm.Resources;
-	using Adxstudio.Xrm.Services.Query;
+	using Cms;
+	using Core.Flighting;
+	using Feedback;
+	using Resources;
+	using Services.Query;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Client.Messages;
 	using Microsoft.Xrm.Client.Security;
@@ -24,15 +24,15 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 	using Microsoft.Xrm.Sdk.Client;
 	using Microsoft.Xrm.Sdk.Messages;
 	using Microsoft.Xrm.Sdk.Metadata;
-	using Adxstudio.Xrm.Text;
+	using Text;
 	using Microsoft.Crm.Sdk.Messages;
 	using Microsoft.Xrm.Portal.Web;
 	using Microsoft.Xrm.Sdk.Query;
-	using Adxstudio.Xrm.Metadata;
-	using Adxstudio.Xrm.Notes;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Web;
-	using Adxstudio.Xrm.Web.UI.WebForms;
+	using Metadata;
+	using Notes;
+	using Services;
+	using Web;
+	using Web.UI.WebForms;
 
 	/// <summary>
 	/// Provides data operations for a single knowledge article, as represented by a KnowledgeArticle entity.
@@ -69,9 +69,9 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 			article.AssertLogicalName("knowledgearticle");
 			dependencies.ThrowOnNull("dependencies");
 
-			this.KnowledgeArticle = article;
-			this.Dependencies = dependencies;
-			this.LanguageCode = code;
+			KnowledgeArticle = article;
+			Dependencies = dependencies;
+			LanguageCode = code;
 		}
 
 		public virtual IKnowledgeArticle Select()
@@ -86,23 +86,23 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 		public IEnumerable<IRelatedArticle> SelectRelatedArticles(IEnumerable<EntityCollection> entityCollections)
 		{
 			var articleCollection = entityCollections.FirstOrDefault(e => e.EntityName.Equals("knowledgearticle"));
-			return this.ToRelatedArticles(articleCollection);
+			return ToRelatedArticles(articleCollection);
 		}
 
 		public virtual IEnumerable<IRelatedProduct> SelectRelatedProducts(IEnumerable<EntityCollection> entityCollections)
 			{
 			var productCollection = entityCollections.FirstOrDefault(e => e.EntityName.Equals("product"));
-			return this.ToRelatedProducts(productCollection);
+			return ToRelatedProducts(productCollection);
 			}
 
 		public IEnumerable<EntityCollection> GetRelatedProductsAndArticles(IKnowledgeArticle article)
 		{
-			var serviceContext = this.Dependencies.GetServiceContext();
+			var serviceContext = Dependencies.GetServiceContext();
 			Fetch fetchRelatedProducts = null;
 			Fetch fetchRelatedArticles = null;
 
-			var articleConnectionRole = GetArticleConnectionRole(serviceContext, this.KnowledgeArticleConnectionRoleId);
-			var relatedProductConnectionRole = GetArticleConnectionRole(serviceContext, this.RelatedProductConnectionRoleId);
+			var articleConnectionRole = GetArticleConnectionRole(serviceContext, KnowledgeArticleConnectionRoleId);
+			var relatedProductConnectionRole = GetArticleConnectionRole(serviceContext, RelatedProductConnectionRoleId);
 
 			if (articleConnectionRole != null && relatedProductConnectionRole != null)
 			{
@@ -115,13 +115,13 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 			}
 
 			var languageCondition = string.Empty;
-			if (!string.IsNullOrWhiteSpace(this.LanguageCode))
+			if (!string.IsNullOrWhiteSpace(LanguageCode))
 			{
-				languageCondition = "<condition entityname='language_locale' attribute='code' operator='eq' value = '" + this.LanguageCode + "' />";
+				languageCondition = "<condition entityname='language_locale' attribute='code' operator='eq' value = '" + LanguageCode + "' />";
 			}
 
-			var primaryArticleConnectionRole = GetArticleConnectionRole(serviceContext, this.PrimaryArticleConnectionRoleId);
-			var relatedArticleConnectionRole = GetArticleConnectionRole(serviceContext, this.RelatedArticleConnectionRoleId);
+			var primaryArticleConnectionRole = GetArticleConnectionRole(serviceContext, PrimaryArticleConnectionRoleId);
+			var relatedArticleConnectionRole = GetArticleConnectionRole(serviceContext, RelatedArticleConnectionRoleId);
 
 			if (primaryArticleConnectionRole != null && relatedArticleConnectionRole != null)
 			{
@@ -152,19 +152,19 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 
 		private IEnumerable<IRelatedProduct> ToRelatedProducts(EntityCollection relatedProductsCollection)
 			{
-			var serviceContext = this.Dependencies.GetServiceContext();
-			var urlProvider = this.Dependencies.GetUrlProvider();
+			var serviceContext = Dependencies.GetServiceContext();
+			var urlProvider = Dependencies.GetUrlProvider();
 			var relatedProducts = Enumerable.Empty<RelatedProduct>();
 			if (relatedProductsCollection != null && relatedProductsCollection.Entities.Count > 0)
 			{
 				int lcid = 0;
-				this.ProductLocalizationShouldOccur(out lcid);
+				ProductLocalizationShouldOccur(out lcid);
 
 				relatedProducts =
 					relatedProductsCollection.Entities
-					.Select(e => new { Id = e.Id, Name = e.GetAttributeValue<string>("name"), Url = urlProvider.GetUrl(serviceContext, e) })
+					.Select(e => new { e.Id, Name = e.GetAttributeValue<string>("name"), Url = urlProvider.GetUrl(serviceContext, e) })
 						.Where(e => !(string.IsNullOrEmpty(e.Name)))
-						.Select(e => new RelatedProduct(e.Id, this.LocalizeProductLabels(serviceContext, lcid, e.Id, e.Name), e.Url))
+						.Select(e => new RelatedProduct(e.Id, LocalizeProductLabels(serviceContext, lcid, e.Id, e.Name), e.Url))
 						.OrderBy(e => e.Name)
 						.AsParallel();
 			}
@@ -174,14 +174,14 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 
 		private IEnumerable<IRelatedArticle> ToRelatedArticles(EntityCollection relatedArticlesCollection)
 		{
-			var serviceContext = this.Dependencies.GetServiceContext();
-			var securityProvider = this.Dependencies.GetSecurityProvider();
-			var urlProvider = this.Dependencies.GetUrlProvider();
+			var serviceContext = Dependencies.GetServiceContext();
+			var securityProvider = Dependencies.GetSecurityProvider();
+			var urlProvider = Dependencies.GetUrlProvider();
 			var relatedArticles = Enumerable.Empty<RelatedArticle>();
 			if (relatedArticlesCollection != null && relatedArticlesCollection.Entities.Count > 0)
 			{
 				int lcid = 0;
-				this.ProductLocalizationShouldOccur(out lcid);
+				ProductLocalizationShouldOccur(out lcid);
 
 				relatedArticles =
 					relatedArticlesCollection.Entities.Where(e => securityProvider.TryAssert(serviceContext, e, CrmEntityRight.Read))
@@ -201,7 +201,7 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 				return null;
 			}
 
-			var annotationDataAdapter = new AnnotationDataAdapter(this.Dependencies);
+			var annotationDataAdapter = new AnnotationDataAdapter(Dependencies);
 			var webPrefix = GetNotesFilterPrefix;
 
 			var relatedNotes = annotationDataAdapter.GetDocuments(article.EntityReference, webPrefix: webPrefix);
@@ -222,7 +222,7 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 			}
 			else
 			{
-				var request = new IncrementKnowledgeArticleViewCountRequest()
+				var request = new IncrementKnowledgeArticleViewCountRequest
 				{
 					Source = KnowledgeArticle,
 					Count = 1,
@@ -252,7 +252,7 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 			}
 
 			// If the user's ContextLanguage is not different than the base language, do not localize since the localization would return same Title's anyways.
-			var context = this.Dependencies.GetRequestContext().HttpContext;
+			var context = Dependencies.GetRequestContext().HttpContext;
 			var organizationBaseLanguageCode = context.GetPortalSolutionsDetails().OrganizationBaseLanguageCode;
 			if (contextLanguageInfo.ContextLanguage.CrmLcid == organizationBaseLanguageCode)
 			{
@@ -929,7 +929,7 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 		{
 			var context = Dependencies.GetServiceContext();
 
-			var metadataRequest = new RetrieveEntityRequest()
+			var metadataRequest = new RetrieveEntityRequest
 			{
 				EntityFilters = EntityFilters.All,
 				LogicalName = KnowledgeArticle.LogicalName,
@@ -970,10 +970,10 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 
 		private const int MinRating = 0;
 
-		private Guid KnowledgeArticleConnectionRoleId = new Guid("81BB2655-F19B-42B2-9C4B-D45B84C3F61C");
-		private Guid RelatedProductConnectionRoleId = new Guid("131F5D06-9F36-4B59-B8B7-A1F7D6C5C5EF");
-		private Guid PrimaryArticleConnectionRoleId = new Guid("5A18DFC8-0B8B-40C7-9381-CCE1C485822D");
-		private Guid RelatedArticleConnectionRoleId = new Guid("CFFE4A59-CE11-4FCA-B132-5985D3917D26");
+		private readonly Guid KnowledgeArticleConnectionRoleId = new Guid("81BB2655-F19B-42B2-9C4B-D45B84C3F61C");
+		private readonly Guid RelatedProductConnectionRoleId = new Guid("131F5D06-9F36-4B59-B8B7-A1F7D6C5C5EF");
+		private readonly Guid PrimaryArticleConnectionRoleId = new Guid("5A18DFC8-0B8B-40C7-9381-CCE1C485822D");
+		private readonly Guid RelatedArticleConnectionRoleId = new Guid("CFFE4A59-CE11-4FCA-B132-5985D3917D26");
 		private const string RelatedProductsFetchXmlFormat = @"
 				<fetch version='1.0' output-format='xml-platform' mapping='logical' distinct='true'>
 					<entity name='product'>

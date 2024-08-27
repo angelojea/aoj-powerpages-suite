@@ -141,8 +141,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.CrmEntityFormView
 			args.IsValid = DateTime.TryParse(args.Value, out value);
 		}
 
-		private static readonly string[] ScriptIncludes = new[]
-		{
+		private static readonly string[] ScriptIncludes = {
 			PortalContextElement.DefaultXrmFilesBaseUri + "/js/crmentityformview.js"
 		};
 

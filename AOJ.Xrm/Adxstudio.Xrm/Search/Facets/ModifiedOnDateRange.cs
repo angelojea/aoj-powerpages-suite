@@ -102,8 +102,8 @@ namespace Adxstudio.Xrm.Search.Facets
 		/// <param name="displayName">display name</param>
 		public ModifiedOnDateRange(string name, string displayName)
 		{
-			this.Name = name;
-			this.DisplayName = displayName;
+			Name = name;
+			DisplayName = displayName;
 		}
 	}
 }

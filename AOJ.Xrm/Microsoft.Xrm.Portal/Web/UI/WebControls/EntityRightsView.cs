@@ -73,13 +73,13 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 		[PersistenceMode(PersistenceMode.InnerProperty)]
 		[Browsable(false)]
-		[DefaultValue((string)null)]
+		[DefaultValue(null)]
 		[TemplateContainer(typeof(EntityRightsView))]
 		public ITemplate NoRightsTemplate { get; set; }
 
 		[PersistenceMode(PersistenceMode.InnerProperty)]
 		[Browsable(false)]
-		[DefaultValue((string)null)]
+		[DefaultValue(null)]
 		[TemplateContainer(typeof(EntityRightsView))]
 		public ITemplate RightsTemplate { get; set; }
 

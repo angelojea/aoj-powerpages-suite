@@ -27,15 +27,15 @@ namespace Microsoft.Xrm.Portal.Cms
 			StatusPropertyName = statusPropertyName;
 		}
 
-		public string EntityName { get; private set; }
+		public string EntityName { get; }
 
 		public int InactiveState { get; private set; }
 
-		public int InactiveStatus { get; private set; }
+		public int InactiveStatus { get; }
 
 		public string StatePropertyName { get; private set; }
 
-		public string StatusPropertyName { get; private set; }
+		public string StatusPropertyName { get; }
 
 		public bool IsInactive(Entity entity)
 		{

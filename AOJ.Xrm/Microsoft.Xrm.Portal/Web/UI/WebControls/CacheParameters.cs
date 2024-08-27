@@ -37,41 +37,17 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 			}
 		}
 
-		private TimeSpan _slidingExpiration;
-
 		[TypeConverter(typeof(SlidingExpirationConverter))]
 		[DefaultValue("NoSlidingExpiration")]
-		public TimeSpan SlidingExpiration
-		{
-			get { return _slidingExpiration; }
-			set { _slidingExpiration = value; }
-		}
-
-		private CacheItemPriority _priority;
+		public TimeSpan SlidingExpiration { get; set; }
 
 		[DefaultValue(CacheItemPriority.Default)]
-		public CacheItemPriority Priority
-		{
-			get { return _priority; }
-			set { _priority = value; }
-		}
+		public CacheItemPriority Priority { get; set; }
 
-		private TimeSpan _duration;
-
-		public TimeSpan Duration
-		{
-			get { return _duration; }
-			set { _duration = value; }
-		}
-
-		private bool _enabled;
+		public TimeSpan Duration { get; set; }
 
 		[DefaultValue(true)]
-		public bool Enabled
-		{
-			get { return _enabled; }
-			set { _enabled = value; }
-		}
+		public bool Enabled { get; set; }
 
 		private CacheKey _cacheKey;
 
@@ -95,7 +71,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 		private StateManagedCollection<CacheKeyDependency> _dependencies;
 
-		[Description(""), Category("Data"), PersistenceMode(PersistenceMode.InnerProperty), DefaultValue((string)null), Editor("System.Web.UI.Design.WebControls.ParameterCollectionEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor)), MergableProperty(false)]
+		[Description(""), Category("Data"), PersistenceMode(PersistenceMode.InnerProperty), DefaultValue(null), Editor("System.Web.UI.Design.WebControls.ParameterCollectionEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor)), MergableProperty(false)]
 		public StateManagedCollection<CacheKeyDependency> Dependencies
 		{
 			get
@@ -116,7 +92,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 		private StateManagedCollection<CacheKeyDependency> _itemDependencies;
 
-		[Description(""), Category("Data"), PersistenceMode(PersistenceMode.InnerProperty), DefaultValue((string)null), Editor("System.Web.UI.Design.WebControls.ParameterCollectionEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor)), MergableProperty(false)]
+		[Description(""), Category("Data"), PersistenceMode(PersistenceMode.InnerProperty), DefaultValue(null), Editor("System.Web.UI.Design.WebControls.ParameterCollectionEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor)), MergableProperty(false)]
 		public StateManagedCollection<CacheKeyDependency> ItemDependencies
 		{
 			get
@@ -159,25 +135,18 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 			{
 				return DateTime.Now + Duration;
 			}
-			else
-			{
-				return AbsoluteExpiration;
-			}
+
+			return AbsoluteExpiration;
 		}
 
 		#region IStateManager Members
-
-		private bool _tracking;
 
 		bool IStateManager.IsTrackingViewState
 		{
 			get { return IsTrackingViewState; }
 		}
 
-		public bool IsTrackingViewState
-		{
-			get { return _tracking; }
-		}
+		public bool IsTrackingViewState { get; private set; }
 
 		void IStateManager.LoadViewState(object savedState)
 		{
@@ -220,7 +189,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 		private void TrackViewState()
 		{
-			_tracking = true;
+			IsTrackingViewState = true;
 			((IStateManager)Dependencies).TrackViewState();
 			((IStateManager)ItemDependencies).TrackViewState();
 		}

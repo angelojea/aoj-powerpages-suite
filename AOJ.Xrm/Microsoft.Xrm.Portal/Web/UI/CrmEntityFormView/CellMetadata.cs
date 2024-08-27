@@ -58,9 +58,9 @@ namespace Microsoft.Xrm.Portal.Web.UI.CrmEntityFormView
 			get { return AttributeMetadata == null ? null : AttributeMetadata.AttributeType.Value.ToString(); }
 		}
 
-		public int? ColumnSpan { get; private set; }
+		public int? ColumnSpan { get; }
 
-		public string DataFieldName { get; private set; }
+		public string DataFieldName { get; }
 
 		public bool Disabled { get; protected set; }
 
@@ -89,7 +89,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.CrmEntityFormView
 
 		public abstract string Label { get; }
 
-		public int LanguageCode { get; private set; }
+		public int LanguageCode { get; }
 
 		public decimal? MaxValue { get; private set; }
 
@@ -107,13 +107,13 @@ namespace Microsoft.Xrm.Portal.Web.UI.CrmEntityFormView
 			}
 		}
 
-		public int? RowSpan { get; private set; }
+		public int? RowSpan { get; }
 
 		public abstract bool ShowLabel { get; }
 
 		public string ToolTip { get; private set; }
 
-		protected AttributeMetadata AttributeMetadata { get; private set; }
+		protected AttributeMetadata AttributeMetadata { get; }
 
 		protected EntityMetadata EntityMetadata { get; private set; }
 

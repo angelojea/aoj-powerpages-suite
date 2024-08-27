@@ -71,11 +71,11 @@ namespace Adxstudio.Xrm.Feedback
 			}
 		}
 
-		public IRatingInfo RatingInfo { get; private set; }
+		public IRatingInfo RatingInfo { get; }
 
-		public bool RatingEnabled { get; private set; }
+		public bool RatingEnabled { get; }
 
-		public IAuthor Author { get; private set; }
+		public IAuthor Author { get; }
 
 		public ApplicationPath DeletePath
 		{
@@ -92,13 +92,13 @@ namespace Adxstudio.Xrm.Feedback
 			get { return _editable != null && _editable.Value; }
 		}
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public bool IsApproved { get; private set; }
+		public bool IsApproved { get; }
 
-		public string Content { get; private set; }
+		public string Content { get; }
 
-		public DateTime Date { get; private set; }
+		public DateTime Date { get; }
 
 		public string Name { get; private set; }
 	}

@@ -44,7 +44,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 		protected string ContextName { get; set; }
 
-		protected IDictionary<string, CellBinding> Bindings { get; private set; }
+		protected IDictionary<string, CellBinding> Bindings { get; }
 
 		protected FileUpload FileUpload { get; private set; }
 

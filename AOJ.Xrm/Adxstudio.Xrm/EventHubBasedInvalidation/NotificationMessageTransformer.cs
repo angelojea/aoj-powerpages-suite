@@ -34,8 +34,8 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		{
 			get
 			{
-				return NotificationMessageTransformer.notificationMessageTransformer ??
-						(NotificationMessageTransformer.notificationMessageTransformer = new NotificationMessageTransformer());
+				return notificationMessageTransformer ??
+						(notificationMessageTransformer = new NotificationMessageTransformer());
 			}
 		}
 
@@ -54,7 +54,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		{
 			// Convert IChangedItems to type PluginMessage
 			// This is the type of Message that is expected in the axd handlers
-			return changes.Select(change => this.CreateMessage(change, entityRecordMessages));
+			return changes.Select(change => CreateMessage(change, entityRecordMessages));
 		}
 
 		/// <summary>
@@ -91,7 +91,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 						break;
 					}
 
-					return this.CreateMessageForNewOrUpdatedItem(newOrUpdated, entityRecordMessages[newOrUpdated.NewOrUpdatedEntity.LogicalName]);
+					return CreateMessageForNewOrUpdatedItem(newOrUpdated, entityRecordMessages[newOrUpdated.NewOrUpdatedEntity.LogicalName]);
 				case ChangeType.RemoveOrDeleted:
 
 					var removedOrDeleted = changedItem as RemovedOrDeletedItem;
@@ -104,7 +104,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 						break;
 					}
 
-					return this.CreateMessageForRemovedOrDeletedItem(removedOrDeleted, entityRecordMessages[removedOrDeleted.RemovedItem.LogicalName]);
+					return CreateMessageForRemovedOrDeletedItem(removedOrDeleted, entityRecordMessages[removedOrDeleted.RemovedItem.LogicalName]);
 				default:
 					ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("While casting the changed item to specific type, found unhandled ChangeType: {0}", changedItem.Type.ToString()));
 					break;
@@ -141,7 +141,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 
 			PluginMessage message;
 			AssociateDisassociateMessage associateDisassociateMessage = entityRecordMessage as AssociateDisassociateMessage;
-			string name = this.TryGetTargetName(changedItem.NewOrUpdatedEntity);
+			string name = TryGetTargetName(changedItem.NewOrUpdatedEntity);
 
 			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Converting ChangedItem with EntityName: {0} and Type:{1} to Portal Cache Message ", changedItem.NewOrUpdatedEntity.LogicalName, changedItem.Type.ToString()));
 

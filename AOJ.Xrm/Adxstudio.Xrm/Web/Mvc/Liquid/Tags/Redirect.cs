@@ -12,8 +12,8 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 	using DotLiquid.Util;
 	using Microsoft.Xrm.Sdk;
 	using DotLiquid.Exceptions;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
+	using Services;
+	using Services.Query;
 	using Microsoft.Xrm.Sdk.Client;
 	using Microsoft.Xrm.Sdk.Query;
 	using OrganizationServiceContextExtensions = Cms.OrganizationServiceContextExtensions;
@@ -36,9 +36,9 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 		/// <param name="tokens">Token Collection</param>
 		public override void Initialize(string tagName, string markup, List<string> tokens)
 		{
-			this.attributes = new Dictionary<string, string>(Template.NamingConvention.StringComparer);
+			attributes = new Dictionary<string, string>(Template.NamingConvention.StringComparer);
 
-			R.Scan(markup, DotLiquid.Liquid.TagAttributes, (key, value) => this.attributes[key] = value);
+			R.Scan(markup, Liquid.TagAttributes, (key, value) => attributes[key] = value);
 
 			base.Initialize(tagName, markup, tokens);
 		}
@@ -52,7 +52,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 		{
 			string siteMarkerVariable;
 
-			if (!this.attributes.TryGetValue("sitemarker", out siteMarkerVariable))
+			if (!attributes.TryGetValue("sitemarker", out siteMarkerVariable))
 			{
 				throw new SyntaxException("Syntax Error in 'redirect' tag. Missing required attribute 'sitemarker:[string]'");
 			}
@@ -82,7 +82,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 			}
 
 			// Redirect to Sitemarker's URL path
-			this.RedirectToUrl(context, sitemarkerPath);
+			RedirectToUrl(context, sitemarkerPath);
 		}
 
 		/// <summary>

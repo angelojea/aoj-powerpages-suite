@@ -77,92 +77,92 @@ namespace Adxstudio.Xrm.Issues
 		/// <summary>
 		/// The email of the author for this issue.
 		/// </summary>
-		public string AuthorEmail { get; private set; }
+		public string AuthorEmail { get; }
 
 		/// <summary>
 		/// The ID of the author for this issue.
 		/// </summary>
-		public Guid? AuthorId { get; private set; }
+		public Guid? AuthorId { get; }
 
 		/// <summary>
 		/// The name of the author for this issue.
 		/// </summary>
-		public string AuthorName { get; private set; }
+		public string AuthorName { get; }
 
 		/// <summary>
 		/// The number of comments for this issue.
 		/// </summary>
-		public int CommentCount { get; private set; }
+		public int CommentCount { get; }
 
 		/// <summary>
 		/// The comment policy for this issue.
 		/// </summary>
-		public IssueForumCommentPolicy CommentPolicy { get; private set; }
+		public IssueForumCommentPolicy CommentPolicy { get; }
 
 		/// <summary>
 		/// The copy/description for this issue.
 		/// </summary>
-		public string Copy { get; private set; }
+		public string Copy { get; }
 
 		/// <summary>
 		/// Whether or not the current user is allowed to comment on this issue.
 		/// </summary>
-		public bool CurrentUserCanComment { get; private set; }
+		public bool CurrentUserCanComment { get; }
 
 		/// <summary>
 		/// An adx_issue entity.
 		/// </summary>
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
 		/// <summary>
 		/// The unique identifier for this issue.
 		/// </summary>
-		public Guid Id { get; private set; }
+		public Guid Id { get; }
 
 		/// <summary>
 		/// The URL slug for the parent issue forum of this issue.
 		/// </summary>
-		public string IssueForumPartialUrl { get; private set; }
+		public string IssueForumPartialUrl { get; }
 
 		/// <summary>
 		/// The title for the parent issue forum of this issue.
 		/// </summary>
-		public string IssueForumTitle { get; private set; }
+		public string IssueForumTitle { get; }
 
 		/// <summary>
 		/// Whether or not this issue should be visible in the portal.
 		/// </summary>
-		public bool IsApproved { get; private set; }
+		public bool IsApproved { get; }
 
 		/// <summary>
 		/// The URL slug for this issue.
 		/// </summary>
-		public string PartialUrl { get; private set; }
+		public string PartialUrl { get; }
 
 		/// <summary>
 		/// The issue's current status.
 		/// </summary>
-		public int Status { get; private set; }
+		public int Status { get; }
 
 		/// <summary>
 		/// Comments on the issue's current status.
 		/// </summary>
-		public string StatusComment { get; private set; }
+		public string StatusComment { get; }
 
 		/// <summary>
 		/// When the issue was submitted.
 		/// </summary>
-		public DateTime SubmittedOn { get; private set; }
+		public DateTime SubmittedOn { get; }
 
 		/// <summary>
 		/// An abstract for this issue.
 		/// </summary>
-		public string Summary { get; private set; }
+		public string Summary { get; }
 
 		/// <summary>
 		/// The title for this issue.
 		/// </summary>
-		public string Title { get; private set; }
+		public string Title { get; }
 
 		private static void ThrowOnNegative(int value, string parameterName)
 		{

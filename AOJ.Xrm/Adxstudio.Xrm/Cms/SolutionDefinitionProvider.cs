@@ -11,11 +11,11 @@ namespace Adxstudio.Xrm.Cms
 {
 	public class SolutionDefinitionProvider : ISolutionDefinitionProvider
 	{
-		protected PortalSolutions PortalSolutions { get; private set; }
+		protected PortalSolutions PortalSolutions { get; }
 
 		public SolutionDefinitionProvider(PortalSolutions portalSolutions)
 		{
-			this.PortalSolutions = portalSolutions;
+			PortalSolutions = portalSolutions;
 		}
 
 		public virtual IDictionary<string, object> GetQueryParameters()
@@ -25,10 +25,10 @@ namespace Adxstudio.Xrm.Cms
 
 		public virtual SolutionDefinition GetSolution()
 		{
-			var crmSolutionInfos = this.PortalSolutions.Solutions;
+			var crmSolutionInfos = PortalSolutions.Solutions;
 			var solutionNames = crmSolutionInfos.Keys.ToList();
-			var defaults = this.GetDefaultSolutions(solutionNames);
-			var customs = this.GetCustomSolutions();
+			var defaults = GetDefaultSolutions(solutionNames);
+			var customs = GetCustomSolutions();
 			var solutions = defaults.Concat(customs);
 
 			var solution = solutions.Aggregate(Solutions.Base, (current, extension) => current.Union(extension));

@@ -533,7 +533,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 			var associateModal = html.AssociateModal(source, relationship, viewConfigurations,
 				(defaultViewConfiguration.AssociateActionLink.URL != null) ? defaultViewConfiguration.AssociateActionLink.URL.PathWithQueryString : null, serviceUrl, user, null,
-				string.Join(" ", new[] { "associate-lookup", modalAssociateCssClass }).TrimEnd(' '), modalAssociateTitle,
+				string.Join(" ", "associate-lookup", modalAssociateCssClass).TrimEnd(' '), modalAssociateTitle,
 				modalAssociateSelectedRecordsTitle, modalAssociatePrimaryButtonText, modalAssociateCancelButtonText,
 				modalAssociateDismissButtonSrText, modalAssociateGridContainerCssClass, modalAssociateGridCssClass,
 				modalAssociateGridLoadingMessage, modalAssociateGridErrorMessage, modalAssociateGridAccessDeniedMessage,
@@ -957,7 +957,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 			var json = JsonConvert.SerializeObject(layouts);
 			var container = new TagBuilder("div");
-			container.AddCssClass(string.Join(" ", new[] { "entity-grid", cssClass }).TrimEnd(' '));
+			container.AddCssClass(string.Join(" ", "entity-grid", cssClass).TrimEnd(' '));
 			container.MergeAttribute("data-view-layouts", json);
 			container.MergeAttribute("data-grid-class", gridCssClass);
 			container.MergeAttribute("data-get-url", serviceUrl);
@@ -1221,7 +1221,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 				modalErrorBody.GetValueOrDefault(_defaultErrorModalBody),
 				modalErrorDismissButtonSrText.GetValueOrDefault(_defaultModalDismissButtonSrText),
 				modalErrorCloseButtonText.GetValueOrDefault(_defaultModalCloseButtonText),
-				string.Join(" ", new[] { "text-danger", modalErrorTitleCssClass }).TrimEnd(' '));
+				string.Join(" ", "text-danger", modalErrorTitleCssClass).TrimEnd(' '));
 
 			container.InnerHtml += modalError.ToString();
 

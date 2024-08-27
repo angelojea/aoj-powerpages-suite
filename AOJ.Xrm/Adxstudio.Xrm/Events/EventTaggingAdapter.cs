@@ -34,11 +34,11 @@ namespace Adxstudio.Xrm.Events
 			ServiceContext = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 		}
 
-		public Entity Event { get; private set; }
+		public Entity Event { get; }
 
-		public string PortalName { get; private set; }
+		public string PortalName { get; }
 
-		public OrganizationServiceContext ServiceContext { get; private set; }
+		public OrganizationServiceContext ServiceContext { get; }
 
 		public IEnumerable<Entity> Tags
 		{

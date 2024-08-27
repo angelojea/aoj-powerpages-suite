@@ -5,8 +5,8 @@
 
 namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
-	using Adxstudio.Xrm.Resources;
-	using Adxstudio.Xrm.Web.UI.WebForms;
+	using Resources;
+	using WebForms;
 	using Microsoft.Xrm.Portal;
 	using Microsoft.Xrm.Portal.Web;
 	using Microsoft.Xrm.Sdk;
@@ -51,7 +51,7 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 		/// </summary>
 		public CreateRelatedRecordActionLink()
 		{
-			this.Modal = new ViewCreateRelatedRecordModal();
+			Modal = new ViewCreateRelatedRecordModal();
 		}
 
 		/// <summary>
@@ -67,7 +67,7 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 			string queryStringIdParameterName = "id")
 			: base(LinkActionType.CreateRelatedRecord, enabled, url, label, tooltip, queryStringIdParameterName)
 		{
-			this.Initialize();
+			Initialize();
 		}
 
 		/// <summary>
@@ -82,7 +82,7 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 			string tooltip = null, string queryStringIdParameterName = "id")
 			: base(entityForm, LinkActionType.CreateRelatedRecord, enabled, label, tooltip, queryStringIdParameterName)
 		{
-			this.Initialize();
+			Initialize();
 		}
 
 		/// <summary>
@@ -101,9 +101,9 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 					bool enabled = false, string portalName = null, string label = null, string tooltip = null, string queryStringIdParameterName = "id")
 					: base(portalContext, languageCode, action, LinkActionType.CreateRelatedRecord, enabled, portalName, label, tooltip)
 		{
-			this.Initialize();
+			Initialize();
 
-			this.QueryStringIdParameterName = !string.IsNullOrWhiteSpace(action.RecordIdQueryStringParameterName)
+			QueryStringIdParameterName = !string.IsNullOrWhiteSpace(action.RecordIdQueryStringParameterName)
 				? action.RecordIdQueryStringParameterName
 				: queryStringIdParameterName;
 
@@ -112,21 +112,21 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 				return;
 			}
 
-			this.Modal.CloseButtonCssClass = gridMetadata.CreateRelatedRecordDialog.CloseButtonCssClass;
-			this.Modal.CloseButtonText = gridMetadata.CreateRelatedRecordDialog.CloseButtonText.GetLocalizedString(languageCode);
-			this.Modal.CssClass = gridMetadata.CreateRelatedRecordDialog.CssClass;
-			this.Modal.DismissButtonSrText = gridMetadata.CreateRelatedRecordDialog.DismissButtonSrText.GetLocalizedString(languageCode);
-			this.Modal.LoadingMessage = gridMetadata.CreateRelatedRecordDialog.LoadingMessage.GetLocalizedString(languageCode);
-			this.Modal.PrimaryButtonCssClass = gridMetadata.CreateRelatedRecordDialog.PrimaryButtonCssClass;
-			this.Modal.PrimaryButtonText = this.Tooltip;
-			this.Modal.Size = gridMetadata.CreateRelatedRecordDialog.Size;
-			this.Modal.Title = this.Label;
-			this.Modal.TitleCssClass = gridMetadata.CreateRelatedRecordDialog.TitleCssClass;
+			Modal.CloseButtonCssClass = gridMetadata.CreateRelatedRecordDialog.CloseButtonCssClass;
+			Modal.CloseButtonText = gridMetadata.CreateRelatedRecordDialog.CloseButtonText.GetLocalizedString(languageCode);
+			Modal.CssClass = gridMetadata.CreateRelatedRecordDialog.CssClass;
+			Modal.DismissButtonSrText = gridMetadata.CreateRelatedRecordDialog.DismissButtonSrText.GetLocalizedString(languageCode);
+			Modal.LoadingMessage = gridMetadata.CreateRelatedRecordDialog.LoadingMessage.GetLocalizedString(languageCode);
+			Modal.PrimaryButtonCssClass = gridMetadata.CreateRelatedRecordDialog.PrimaryButtonCssClass;
+			Modal.PrimaryButtonText = Tooltip;
+			Modal.Size = gridMetadata.CreateRelatedRecordDialog.Size;
+			Modal.Title = Label;
+			Modal.TitleCssClass = gridMetadata.CreateRelatedRecordDialog.TitleCssClass;
 
-			this.FilterCriteria = action.FilterCriteria;
-			this.EntityName = action.EntityName;
-			this.ParentRecord = action.ParentRecord;
-			this.Relationship = action.Relationship;
+			FilterCriteria = action.FilterCriteria;
+			EntityName = action.EntityName;
+			ParentRecord = action.ParentRecord;
+			Relationship = action.Relationship;
 		}
 
 
@@ -142,31 +142,31 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 		public CreateRelatedRecordActionLink(IPortalContext portalContext, FormActionMetadata formMetadata, int languageCode, CreateRelatedRecordAction action, bool enabled = true, string portalName = null)
 			: base(portalContext, languageCode, action, LinkActionType.CreateRelatedRecord, enabled, portalName)
 		{
-			this.Initialize();
+			Initialize();
 
 			if (formMetadata.CreateRelatedRecordDialog == null)
 			{
 				return;
 			}
-			this.Modal.CloseButtonCssClass = formMetadata.CreateRelatedRecordDialog.CloseButtonCssClass;
-			this.Modal.CloseButtonText = formMetadata.CreateRelatedRecordDialog.CloseButtonText.GetLocalizedString(languageCode);
-			this.Modal.CssClass = formMetadata.CreateRelatedRecordDialog.CssClass;
-			this.Modal.DismissButtonSrText = formMetadata.CreateRelatedRecordDialog.DismissButtonSrText.GetLocalizedString(languageCode);
-			this.Modal.LoadingMessage = formMetadata.CreateRelatedRecordDialog.LoadingMessage.GetLocalizedString(languageCode);
-			this.Modal.PrimaryButtonCssClass = formMetadata.CreateRelatedRecordDialog.PrimaryButtonCssClass;
-			this.Modal.PrimaryButtonText = this.Tooltip;
-			this.Modal.Size = formMetadata.CreateRelatedRecordDialog.Size;
-			this.Modal.Title = this.Label;
-			this.Modal.TitleCssClass = formMetadata.CreateRelatedRecordDialog.TitleCssClass;
+			Modal.CloseButtonCssClass = formMetadata.CreateRelatedRecordDialog.CloseButtonCssClass;
+			Modal.CloseButtonText = formMetadata.CreateRelatedRecordDialog.CloseButtonText.GetLocalizedString(languageCode);
+			Modal.CssClass = formMetadata.CreateRelatedRecordDialog.CssClass;
+			Modal.DismissButtonSrText = formMetadata.CreateRelatedRecordDialog.DismissButtonSrText.GetLocalizedString(languageCode);
+			Modal.LoadingMessage = formMetadata.CreateRelatedRecordDialog.LoadingMessage.GetLocalizedString(languageCode);
+			Modal.PrimaryButtonCssClass = formMetadata.CreateRelatedRecordDialog.PrimaryButtonCssClass;
+			Modal.PrimaryButtonText = Tooltip;
+			Modal.Size = formMetadata.CreateRelatedRecordDialog.Size;
+			Modal.Title = Label;
+			Modal.TitleCssClass = formMetadata.CreateRelatedRecordDialog.TitleCssClass;
 
 			if (action.ShowModal != null)
 			{
-				this.ShowModal = action.ShowModal.Value;
+				ShowModal = action.ShowModal.Value;
 			}
-			this.EntityName = action.EntityName;
-			this.ParentRecord = action.ParentRecord;
-			this.Relationship = action.Relationship;
-			this.FilterCriteria = action.FilterCriteria;
+			EntityName = action.EntityName;
+			ParentRecord = action.ParentRecord;
+			Relationship = action.Relationship;
+			FilterCriteria = action.FilterCriteria;
 		}
 
 		/// <summary>
@@ -176,17 +176,17 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 		{
 			var createText = ResourceManager.GetString("CreateRelatedRecord_Text");
 
-			if (string.IsNullOrEmpty(this.Label))
+			if (string.IsNullOrEmpty(Label))
 			{
-				this.Label = string.Format("<span class='fa fa-plus-circle' aria-hidden='true'></span> {0}", createText);
+				Label = string.Format("<span class='fa fa-plus-circle' aria-hidden='true'></span> {0}", createText);
 			}
 
-			if (this.Tooltip == null)
+			if (Tooltip == null)
 			{
-				this.Tooltip = createText;
+				Tooltip = createText;
 			}
 
-			this.Modal = new ViewCreateRelatedRecordModal();
+			Modal = new ViewCreateRelatedRecordModal();
 		}
 
 		

@@ -48,14 +48,14 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			get { return _results.Value; }
 		}
 
-		protected ICrmEntityQuery Query { get; private set; }
+		protected ICrmEntityQuery Query { get; }
 
 		protected ICrmEntitySearchResultPage ResultPage
 		{
 			get { return _resultPage.Value; }
 		}
 
-		protected SearchProvider SearchProvider { get; private set; }
+		protected SearchProvider SearchProvider { get; }
 
 		private ICrmEntitySearchResultPage GetResultPage()
 		{

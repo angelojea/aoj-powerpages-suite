@@ -9,7 +9,7 @@ namespace Adxstudio.Xrm.Diagnostics.Metrics
 	using System.Collections.Concurrent;
 	using System.Globalization;
 	using System.Threading;
-	using Adxstudio.Xrm.Configuration;
+	using Configuration;
 #if CLOUDINSTRUMENTATION
 	using Microsoft.Cloud.InstrumentationFramework;
 #endif
@@ -22,10 +22,10 @@ namespace Adxstudio.Xrm.Diagnostics.Metrics
 		public AdxMetric(string metricName)
 		{
 			metricName.ThrowOnNullOrWhitespace("metricName");
-			this.MetricName = metricName;
+			MetricName = metricName;
 		}
 
-		public string MetricName { get; private set; }
+		public string MetricName { get; }
 
 		public void LogValue(long rawValue)
 		{
@@ -45,17 +45,17 @@ namespace Adxstudio.Xrm.Diagnostics.Metrics
 			{
 				return true;
 			}
-			return string.Equals(this.MetricName, other.MetricName);
+			return string.Equals(MetricName, other.MetricName);
 		}
 
 		public override bool Equals(object obj)
 		{
-			return this.Equals(obj as AdxMetric);
+			return Equals(obj as AdxMetric);
 		}
 
 		public override int GetHashCode()
 		{
-			return (this.MetricName != null ? this.MetricName.GetHashCode() : 0);
+			return (MetricName != null ? MetricName.GetHashCode() : 0);
 		}
 	}
 
@@ -65,7 +65,7 @@ namespace Adxstudio.Xrm.Diagnostics.Metrics
 	/// </summary>
 	internal sealed class IfxMetricsReporter
 	{
-		static Lazy<IfxMetricsReporter> _lazyInstance = new Lazy<IfxMetricsReporter>(() => new IfxMetricsReporter());
+		static readonly Lazy<IfxMetricsReporter> _lazyInstance = new Lazy<IfxMetricsReporter>(() => new IfxMetricsReporter());
 
 		public static IfxMetricsReporter Instance
 		{
@@ -120,25 +120,25 @@ namespace Adxstudio.Xrm.Diagnostics.Metrics
 #if CLOUDINSTRUMENTATION
 			try
 			{
-				this._mdmAccountName = GetCloudConfigurationSettingWithValue(SettingNames.MdmAccountName);
-				this._mdmNamespace = GetCloudConfigurationSettingWithValue(SettingNames.MdmNamespace);
-				this._geo = GetCloudConfigurationSettingWithValue(SettingNames.Geo);
-				this._tenant = GetCloudConfigurationSettingWithValue(SettingNames.Tenant);
-				this._role = GetCloudConfigurationSettingWithValue(SettingNames.Role);
-				this._roleInstance = GetCloudConfigurationSettingWithValue(SettingNames.RoleInstance);
-				this._org = GetCloudConfigurationSettingWithValue(SettingNames.Org);
-				this._portalType = GetCloudConfigurationSettingWithValue(SettingNames.PortalType);
-				this._portalId = GetCloudConfigurationSettingWithValue(SettingNames.PortalId);
-				this._portalApp = GetCloudConfigurationSettingWithValue(SettingNames.PortalApp);
-				this._portalUrl = GetCloudConfigurationSettingWithValue(SettingNames.PortalUrl);
-				this._portalVersion = GetCloudConfigurationSettingWithValue(SettingNames.PortalVersion);
+				_mdmAccountName = GetCloudConfigurationSettingWithValue(SettingNames.MdmAccountName);
+				_mdmNamespace = GetCloudConfigurationSettingWithValue(SettingNames.MdmNamespace);
+				_geo = GetCloudConfigurationSettingWithValue(SettingNames.Geo);
+				_tenant = GetCloudConfigurationSettingWithValue(SettingNames.Tenant);
+				_role = GetCloudConfigurationSettingWithValue(SettingNames.Role);
+				_roleInstance = GetCloudConfigurationSettingWithValue(SettingNames.RoleInstance);
+				_org = GetCloudConfigurationSettingWithValue(SettingNames.Org);
+				_portalType = GetCloudConfigurationSettingWithValue(SettingNames.PortalType);
+				_portalId = GetCloudConfigurationSettingWithValue(SettingNames.PortalId);
+				_portalApp = GetCloudConfigurationSettingWithValue(SettingNames.PortalApp);
+				_portalUrl = GetCloudConfigurationSettingWithValue(SettingNames.PortalUrl);
+				_portalVersion = GetCloudConfigurationSettingWithValue(SettingNames.PortalVersion);
 
 				if (IfxInitializer.IfxInitializeStatus == IfxInitializer.IfxInitState.IfxUninitalized)
 				{
-					IfxInitializer.Initialize(this._tenant, this._role, this._roleInstance, "NO_DISK_LOGS");
+					IfxInitializer.Initialize(_tenant, _role, _roleInstance);
 				}
 
-				this._initializationFailed = false;
+				_initializationFailed = false;
 			}
 			catch (Exception ex)
 			{
@@ -147,7 +147,7 @@ namespace Adxstudio.Xrm.Diagnostics.Metrics
 					throw;
 				}
 				MetricsReportingEvents.Instance.MetricInitializationFailed(ex.ToString());
-				this._initializationFailed = true;
+				_initializationFailed = true;
 			}
 #endif
 		}
@@ -164,13 +164,13 @@ namespace Adxstudio.Xrm.Diagnostics.Metrics
 		public void LogValueForMetric(IAdxMetric metric, long rawValue)
 		{
 #if CLOUDINSTRUMENTATION
-			if (this._initializationFailed) return;
-			var ifxMetric = _metricsCache.GetOrAdd(metric, this.CreateMetric);
+			if (_initializationFailed) return;
+			var ifxMetric = _metricsCache.GetOrAdd(metric, CreateMetric);
 
 			try
 			{
 				ErrorContext errorContext = new ErrorContext();
-				ifxMetric.LogValue(rawValue, this._geo, this._tenant, this._role, this._roleInstance, this._org, this._portalType, this._portalId, this._portalApp, this._portalUrl, this._portalVersion, ref errorContext);
+				ifxMetric.LogValue(rawValue, _geo, _tenant, _role, _roleInstance, _org, _portalType, _portalId, _portalApp, _portalUrl, _portalVersion, ref errorContext);
 				if (errorContext.ErrorCode != 0)
 				{
 					MetricsReportingEvents.Instance.MetricReportingFailed(metric.MetricName, "LogValue failed: " + errorContext.ErrorMessage);
@@ -192,8 +192,8 @@ namespace Adxstudio.Xrm.Diagnostics.Metrics
 		{
 			ErrorContext errorContext = new ErrorContext();
 			MeasureMetric10D instance = MeasureMetric10D.Create(
-				this._mdmAccountName,
-				this._mdmNamespace,
+				_mdmAccountName,
+				_mdmNamespace,
 				metric.MetricName,
 				MdmDimensionNames.Geo,
 				MdmDimensionNames.Tenant,

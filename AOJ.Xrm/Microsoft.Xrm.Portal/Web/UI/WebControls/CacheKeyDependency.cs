@@ -40,70 +40,40 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 	/// </summary>
 	public class CacheKey : IStateManager
 	{
-		private static readonly char[] _varySeparator = new char[] { ';' };
-
-		private string _name;
+		private static readonly char[] _varySeparator = { ';' };
 
 		/// <summary>
 		/// Gets or sets the name used for applying a property as a parameter.
 		/// </summary>
-		public string Name
-		{
-			get { return _name; }
-			set { _name = value; }
-		}
-
-		private string _propertyName;
+		public string Name { get; set; }
 
 		/// <summary>
 		/// Gets or sets the name of the property from which to obtain the value.
 		/// </summary>
-		public string PropertyName
-		{
-			get { return _propertyName; }
-			set { _propertyName = value; }
-		}
-
-		private string _keyFormat;
+		public string PropertyName { get; set; }
 
 		/// <summary>
 		/// Gets or sets the format string describing the cache key.
 		/// </summary>
-		[DefaultValue((string)null)]
-		public string KeyFormat
-		{
-			get { return _keyFormat; }
-			set { _keyFormat = value; }
-		}
-
-		private bool _varyByUser;
+		[DefaultValue(null)]
+		public string KeyFormat { get; set; }
 
 		/// <summary>
 		/// Gets or sets the flag for caching by user.
 		/// </summary>
-		public bool VaryByUser
-		{
-			get { return _varyByUser; }
-			set { _varyByUser = value; }
-		}
-
-		private string _varyByParam;
+		public bool VaryByUser { get; set; }
 
 		/// <summary>
 		/// Gets or sets the set of querystring parameter names. The names are separated by a semi-colon character.
 		/// </summary>
-		public string VaryByParam
-		{
-			get { return _varyByParam; }
-			set { _varyByParam = value; }
-		}
+		public string VaryByParam { get; set; }
 
 		private ParameterCollection _parameters;
 
 		/// <summary>
 		/// Gets the parameters collection that contains the parameters that are used by the KeyFormat property.
 		/// </summary>
-		[Description(""), Category("Data"), PersistenceMode(PersistenceMode.InnerProperty), DefaultValue((string)null), Editor("System.Web.UI.Design.WebControls.ParameterCollectionEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor)), MergableProperty(false)]
+		[Description(""), Category("Data"), PersistenceMode(PersistenceMode.InnerProperty), DefaultValue(null), Editor("System.Web.UI.Design.WebControls.ParameterCollectionEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor)), MergableProperty(false)]
 		public ParameterCollection Parameters
 		{
 			get
@@ -129,7 +99,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		/// <param name="control"></param>
 		/// <param name="container"></param>
 		/// <returns></returns>
-		public string GetCacheKey(System.Web.HttpContext context, System.Web.UI.Control control, object container)
+		public string GetCacheKey(HttpContext context, Control control, object container)
 		{
 			return GetCacheKey(context, control, container, null);
 		}
@@ -142,7 +112,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		/// <param name="container"></param>
 		/// <param name="getDefaultKey"></param>
 		/// <returns></returns>
-		public string GetCacheKey(System.Web.HttpContext context, System.Web.UI.Control control, object container, Converter<string, string> getDefaultKey)
+		public string GetCacheKey(HttpContext context, Control control, object container, Converter<string, string> getDefaultKey)
 		{
 			string cacheKey = KeyFormat;
 
@@ -280,17 +250,12 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 		#region IStateManager Members
 
-		private bool _tracking;
-
 		bool IStateManager.IsTrackingViewState
 		{
 			get { return IsTrackingViewState; }
 		}
 
-		public bool IsTrackingViewState
-		{
-			get { return _tracking; }
-		}
+		public bool IsTrackingViewState { get; private set; }
 
 		void IStateManager.LoadViewState(object savedState)
 		{
@@ -331,7 +296,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 		protected virtual void TrackViewState()
 		{
-			_tracking = true;
+			IsTrackingViewState = true;
 			((IStateManager)Parameters).TrackViewState();
 		}
 

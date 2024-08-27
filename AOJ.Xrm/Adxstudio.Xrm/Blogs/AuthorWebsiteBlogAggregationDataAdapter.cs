@@ -25,7 +25,7 @@ namespace Adxstudio.Xrm.Blogs
 
 		public AuthorWebsiteBlogAggregationDataAdapter(Guid authorId, string portalName = null) : this(authorId, new PortalConfigurationDataAdapterDependencies(portalName)) { }
 
-		protected Guid AuthorId { get; private set; }
+		protected Guid AuthorId { get; }
 
 		public override IEnumerable<IBlogPost> SelectPosts(int startRowIndex, int maximumRows = -1)
 		{

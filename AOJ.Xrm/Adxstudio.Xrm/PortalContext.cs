@@ -23,20 +23,11 @@ namespace Adxstudio.Xrm
     /// </summary>
     public class PortalContext : Microsoft.Xrm.Portal.PortalContext
     {
-        private readonly Entity _user;
         private readonly OrganizationServiceContext _svc;
 
-        public override Entity User
-        {
-            get { return _user; }
-        }
+        public override Entity User { get; }
 
-        private readonly Entity _entity;
-
-        public override Entity Entity
-        {
-            get { return _entity; }
-        }
+        public override Entity Entity { get; }
 
         private readonly CrmSiteMapNode _node;
 
@@ -50,40 +41,35 @@ namespace Adxstudio.Xrm
             get { return _node != null ? _node.RewriteUrl : null; }
         }
 
-        private readonly Entity _website;
-
-        public override Entity Website
-        {
-            get { return _website; }
-        }
+        public override Entity Website { get; }
 
         public PortalContext(string contextName)
             : base(contextName)
         {
             // Lazy-load context information.
-            _user = GetUser();
+            User = GetUser();
             _node = GetNode(Request);
-            _entity = GetEntity(ServiceContext, _node);
-            _website = GetWebsite();
+            Entity = GetEntity(ServiceContext, _node);
+            Website = GetWebsite();
         }
 
         public PortalContext(OrganizationServiceContext request, IOrganizationService svc, Guid portalId, Guid userId)
             : base(request)
         {
-            _user = svc.Retrieve("contact", userId, new ColumnSet(true));
+            User = svc.Retrieve("contact", userId, new ColumnSet(true));
             _node = null;
-            _entity = null;
-            _website = svc.Retrieve("mspp_website", portalId, new ColumnSet(true));
+            Entity = null;
+            Website = svc.Retrieve("mspp_website", portalId, new ColumnSet(true));
         }
 
         public PortalContext(string contextName, RequestContext request)
             : base(contextName, request)
         {
             // Lazy-load context information.
-            _user = GetUser();
+            User = GetUser();
             _node = GetNode(Request);
-            _entity = GetEntity(ServiceContext, _node);
-            _website = GetWebsite();
+            Entity = GetEntity(ServiceContext, _node);
+            Website = GetWebsite();
         }
 
         private Entity GetWebsite()

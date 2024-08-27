@@ -232,7 +232,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Controllers
 			var dataAdapterDependencies = new PortalConfigurationDataAdapterDependencies(requestContext: Request.RequestContext);
 
 			return contentMapProvider == null || contentMapUrlProvider == null
-				? (IFileSystem)new EntityFileSystem(dataAdapterDependencies)
+				? new EntityFileSystem(dataAdapterDependencies)
 				: new ContentMapFileSystem(contentMapProvider, contentMapUrlProvider, dataAdapterDependencies);
 		}
 

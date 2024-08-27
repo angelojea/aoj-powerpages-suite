@@ -93,7 +93,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			}
 		}
 
-		private static IDictionary<string, Func<HtmlHelper, object>> _globalVariableFactories = new Dictionary<string, Func<HtmlHelper, object>>();
+		private static readonly IDictionary<string, Func<HtmlHelper, object>> _globalVariableFactories = new Dictionary<string, Func<HtmlHelper, object>>();
 
 		/// <summary>
 		/// Add a named variable value to be included in the global rendering scope.
@@ -116,9 +116,9 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 				Registers = registers;
 			}
 
-			public Hash Globals { get; private set; }
+			public Hash Globals { get; }
 
-			public Hash Registers { get; private set; }
+			public Hash Registers { get; }
 		}
 
 		private static LiquidEnvironment GetLiquidEnvironment(this HtmlHelper html)
@@ -466,7 +466,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			}
 			catch (SyntaxException e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Liquid parse error{0}: {1}", sourceIdentifier, e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Liquid parse error{0}: {1}", sourceIdentifier, e));
 				output.Write(e.Message);
 				return;
 			}
@@ -480,7 +480,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 			foreach (var error in template.Errors)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Liquid rendering error{0}: {1}", sourceIdentifier, error.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Liquid rendering error{0}: {1}", sourceIdentifier, error));
 			}
 		}
 	}

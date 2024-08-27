@@ -11,8 +11,8 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
 	public class NextActionLink : ViewActionLink
 	{
-		private static string DefaultButtonLabel = ResourceManager.GetString("Next_Button_Text");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Next_Button_Text");
+		private static readonly string DefaultButtonLabel = ResourceManager.GetString("Next_Button_Text");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Next_Button_Text");
 
 		public NextActionLink()
 		{

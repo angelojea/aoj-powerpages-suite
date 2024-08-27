@@ -21,11 +21,11 @@ namespace Adxstudio.Xrm.Commerce
 {
 	public class ShoppingCart : IShoppingCart
 	{
-		private OrganizationServiceContext _context;
+		private readonly OrganizationServiceContext _context;
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public Guid Id { get; private set; }
+		public Guid Id { get; }
 
 		public ShoppingCart(Entity cart, OrganizationServiceContext context)
 		{

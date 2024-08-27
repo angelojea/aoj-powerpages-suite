@@ -8,7 +8,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 	using System;
 	using System.Text.RegularExpressions;
 	using System.Web.Hosting;
-	using Adxstudio.Xrm.Configuration;
+	using Configuration;
 
 	/// <summary>
 	/// Azure web app settings.
@@ -60,12 +60,12 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		/// </summary>
 		public WebAppSettings()
 		{
-			this.StartedOn = DateTimeOffset.UtcNow;
-			this.InstanceId = GetInstanceId();
-			this.SiteName = GetWebsiteName();
-			this.AzureWebAppEnabled = GetAzureWebAppEnabled();
-			this.AzureWebRoleEnabled = GetAzureWebRoleEnabled();
-			this.AppDataCachingEnabled = GetAppDataCachingEnabled();
+			StartedOn = DateTimeOffset.UtcNow;
+			InstanceId = GetInstanceId();
+			SiteName = GetWebsiteName();
+			AzureWebAppEnabled = GetAzureWebAppEnabled();
+			AzureWebRoleEnabled = GetAzureWebRoleEnabled();
+			AppDataCachingEnabled = GetAppDataCachingEnabled();
 		}
 
 		/// <summary>

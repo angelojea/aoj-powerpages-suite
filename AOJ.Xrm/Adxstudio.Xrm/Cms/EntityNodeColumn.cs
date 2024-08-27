@@ -29,8 +29,8 @@ namespace Adxstudio.Xrm.Cms
 		/// <param name="version">Introduced version of the column</param>
 		public EntityNodeColumn(string name, Version version)
 		{
-			this.Name = name;
-			this.IntroducedVersion = version;
+			Name = name;
+			IntroducedVersion = version;
 		}
 	}
 }

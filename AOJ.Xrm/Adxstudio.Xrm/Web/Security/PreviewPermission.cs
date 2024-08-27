@@ -68,7 +68,7 @@ namespace Adxstudio.Xrm.Web.Security
 			get { return TryAssert(); }
 		}
 
-		public OrganizationServiceContext ServiceContext { get; private set; }
+		public OrganizationServiceContext ServiceContext { get; }
 
 		public void Disable()
 		{

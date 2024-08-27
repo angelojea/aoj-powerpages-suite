@@ -25,19 +25,19 @@ namespace Adxstudio.Xrm.Forums
 			LatestPost = latestPost;
 		}
 
-		public IForumAuthor Author { get; private set; }
+		public IForumAuthor Author { get; }
 
-		public IForumPostInfo LatestPost { get; private set; }
+		public IForumPostInfo LatestPost { get; }
 
 		public string LatestPostUrl
 		{
 			get { return null; }
 		}
 
-		public DateTime PostedOn { get; private set; }
+		public DateTime PostedOn { get; }
 
-		public IEnumerable<IForumThreadTag> Tags { get; private set; }
+		public IEnumerable<IForumThreadTag> Tags { get; }
 
-		public IForumThreadType ThreadType { get; private set; }
+		public IForumThreadType ThreadType { get; }
 	}
 }

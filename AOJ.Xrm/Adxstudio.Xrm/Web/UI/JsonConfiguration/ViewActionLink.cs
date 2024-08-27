@@ -130,7 +130,7 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 			ButtonCssClass = action.ButtonCssClass;
 			Confirmation = action.Confirmation.GetLocalizedString(languageCode);
 			Enabled = enabled;
-			this.FilterCriteria = action.FilterCriteria;
+			FilterCriteria = action.FilterCriteria;
 			Label = !string.IsNullOrWhiteSpace(buttonLabel) ? buttonLabel : label == null ? GetDefaultButtonLabel() : label;
 			SuccessMessage = action.SuccessMessage.GetLocalizedString(languageCode);
 			ShowModal = action.ShowModal ?? ShowModal.No;

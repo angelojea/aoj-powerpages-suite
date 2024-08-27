@@ -14,7 +14,7 @@ namespace Adxstudio.Xrm.Cms
 {
 	public class RatingDataAdapterFactory : IRatingDataAdapterFactory
 	{
-		private EntityReference _entity;
+		private readonly EntityReference _entity;
 
 		public RatingDataAdapterFactory(EntityReference entityReference)
 		{

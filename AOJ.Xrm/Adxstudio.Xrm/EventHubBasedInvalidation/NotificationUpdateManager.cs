@@ -22,16 +22,12 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		private static readonly string FromCacheSubscription = "FromCacheSubscription";
 
 		private static volatile NotificationUpdateManager instance;
-		private static object syncRoot = new object();
-		private static object mutexLock = new object();
-		private static object metadataFlagLock = new object();
-		private bool metadataFlag;
+		private static readonly object syncRoot = new object();
+		private static readonly object mutexLock = new object();
+		private static readonly object metadataFlagLock = new object();
+
 		// Construct the dictionary with the desired concurrencyLevel and initialCapacity(Recommended Prime Number)
 		private ConcurrentDictionary<string, bool> portalUsedEntities = new ConcurrentDictionary<string, bool>(Environment.ProcessorCount * 2, 10009);
-		private ConcurrentDictionary<string, EntityInvalidationMessageAndType> dirtyTableDictionary = new ConcurrentDictionary<string, EntityInvalidationMessageAndType>(Environment.ProcessorCount * 2, 10009);
-		private ConcurrentDictionary<string, EntityRecordMessage> processingTableDictionary = new ConcurrentDictionary<string, EntityRecordMessage>(Environment.ProcessorCount * 2, 10009);
-		private ConcurrentDictionary<string, string> timeStampTableDictionaryForCache = new ConcurrentDictionary<string, string>(Environment.ProcessorCount * 2, 10009);
-		private ConcurrentDictionary<string, string> timeStampTableDictionaryForSearchIndex = new ConcurrentDictionary<string, string>(Environment.ProcessorCount * 2, 10009);
 
 		#region unsafe thread accessors
 
@@ -44,7 +40,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// <returns>String of the timestamp representation</returns>
 		private string GetEntityVersionNumber(string entityName, bool isSearchIndexInvalidation = false)
 		{
-			var timeStampTable = isSearchIndexInvalidation ? this.TimeStampTableForSearchIndex : this.TimeStampTableForCache;
+			var timeStampTable = isSearchIndexInvalidation ? TimeStampTableForSearchIndex : TimeStampTableForCache;
 			string timestamp;
 			if (!timeStampTable.TryGetValue(entityName, out timestamp))
 			{
@@ -60,73 +56,31 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// Gets the Dirty table from the Cache
 		/// Should be called within a thread safe location
 		/// </summary>
-		private ConcurrentDictionary<string, EntityInvalidationMessageAndType> DirtyTable
-		{
-			get
-			{
-				return dirtyTableDictionary;
-			}
-			set
-			{
-				dirtyTableDictionary = value;
-			}
-		}
+		private ConcurrentDictionary<string, EntityInvalidationMessageAndType> DirtyTable { get; } = new ConcurrentDictionary<string, EntityInvalidationMessageAndType>(Environment.ProcessorCount * 2, 10009);
 
 		/// <summary>
 		/// Gets the Processing table from the Cache
 		/// Should be called within a thread safe location
 		/// </summary>
-		private ConcurrentDictionary<string, EntityRecordMessage> ProcessingTable
-		{
-			get
-			{
-				return processingTableDictionary;
-			}
-			set
-			{
-				processingTableDictionary = value;
-			}
-		}
+		private ConcurrentDictionary<string, EntityRecordMessage> ProcessingTable { get; } = new ConcurrentDictionary<string, EntityRecordMessage>(Environment.ProcessorCount * 2, 10009);
 
 		/// <summary>
 		/// Gets the TimeStamp table from the Cache
 		/// Should be called within a thread safe location
 		/// </summary>
-		private ConcurrentDictionary<string, string> TimeStampTableForCache
-		{
-			get
-			{
-				return timeStampTableDictionaryForCache;
-			}
-		}
+		private ConcurrentDictionary<string, string> TimeStampTableForCache { get; } = new ConcurrentDictionary<string, string>(Environment.ProcessorCount * 2, 10009);
 
 		/// <summary>
 		/// Gets the TimeStamp table for SearchIndex from the Cache
 		/// Should be called within a thread safe location
 		/// </summary>
-		private ConcurrentDictionary<string, string> TimeStampTableForSearchIndex
-		{
-			get
-			{
-				return timeStampTableDictionaryForSearchIndex;
-			}
-		}
+		private ConcurrentDictionary<string, string> TimeStampTableForSearchIndex { get; } = new ConcurrentDictionary<string, string>(Environment.ProcessorCount * 2, 10009);
 
 		/// <summary>
 		/// Gets the Metadata Dirty entry from the Cache
 		/// Should be called from a thread safe location
 		/// </summary>
-		private bool MetadataDirtyEntry
-		{
-			get
-			{
-				return metadataFlag;
-			}
-			set
-			{
-				metadataFlag = value;
-			}
-		}
+		private bool MetadataDirtyEntry { get; set; }
 
 		#endregion unsafe thread accessors
 
@@ -139,7 +93,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		{
 			get
 			{
-				return new Dictionary<string, string>(this.TimeStampTableForSearchIndex.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+				return new Dictionary<string, string>(TimeStampTableForSearchIndex.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
 			}
 		}
 
@@ -150,7 +104,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		{
 			get
 			{
-				return new Dictionary<string, string>(this.TimeStampTableForCache.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+				return new Dictionary<string, string>(TimeStampTableForCache.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
 			}
 		}
 
@@ -165,7 +119,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 				//reading value under read lock
 				lock (metadataFlagLock)
 				{
-					_isMetadataDirty = this.MetadataDirtyEntry;
+					_isMetadataDirty = MetadataDirtyEntry;
 				}
 				return _isMetadataDirty;
 			}
@@ -173,7 +127,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			{
 				lock (metadataFlagLock)
 				{
-					this.MetadataDirtyEntry = value;
+					MetadataDirtyEntry = value;
 				}
 			}
 		}
@@ -193,16 +147,16 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		{
 			get
 			{
-				if (NotificationUpdateManager.instance == null)
+				if (instance == null)
 				{
 					lock (syncRoot)
 					{
-						if (NotificationUpdateManager.instance == null)
-							NotificationUpdateManager.instance = new NotificationUpdateManager();
+						if (instance == null)
+							instance = new NotificationUpdateManager();
 					}
 				}
 
-				return NotificationUpdateManager.instance;
+				return instance;
 			}
 		}
 
@@ -221,7 +175,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Found a MetaData Change {0} in messageId: {1}.", crmSubscriptionMessage.MessageName, crmSubscriptionMessage.MessageId));
 				lock (metadataFlagLock)
 				{
-					this.MetadataDirtyEntry = true;
+					MetadataDirtyEntry = true;
 				}
 				return;
 			}
@@ -234,10 +188,10 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Pushing MessageId: {0} CRMSubscriptionMessage with entity: {1} and message name: {2} into the Cache.", message.MessageId, message.EntityName, message.MessageName));
 				var entityKey = string.Format(EntityKey, message.EntityName,
 						isSearchIndexInvalidationMessage ? FromSearchSubscription : FromCacheSubscription);
-				if (!this.DirtyTable.TryAdd(entityKey, new EntityInvalidationMessageAndType(message, isSearchIndexInvalidationMessage)))
+				if (!DirtyTable.TryAdd(entityKey, new EntityInvalidationMessageAndType(message, isSearchIndexInvalidationMessage)))
 				{
 					EntityInvalidationMessageAndType val = null;
-					var success = this.DirtyTable.TryGetValue(message.EntityName, out val);
+					var success = DirtyTable.TryGetValue(message.EntityName, out val);
 					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Dirty Table already contains entity: {0} and message name: {1} in the Cache with MessageId: {2}. Dropping MessageId: {3} ", message.EntityName, message.MessageName, success ? val.Message.MessageId : Guid.Empty, message.MessageId));
 				}
 			}
@@ -256,7 +210,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			lock (mutexLock)
 			{
 				// Copy Dirty table into Processing table
-				var dirtyTable = this.DirtyTable.Where(message => message.Value.IsSearchIndexInvalidationMessage == isSearchIndexInvalidation).ToList();
+				var dirtyTable = DirtyTable.Where(message => message.Value.IsSearchIndexInvalidationMessage == isSearchIndexInvalidation).ToList();
 				if (!dirtyTable.Any())
 				{
 					return false;
@@ -264,8 +218,8 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 				foreach (var entity in dirtyTable)
 				{
 					EntityInvalidationMessageAndType record;
-					this.ProcessingTable.TryAdd(GetEntityNameFromKey(entity.Key), entity.Value.Message);
-					this.DirtyTable.TryRemove(entity.Key, out record);
+					ProcessingTable.TryAdd(GetEntityNameFromKey(entity.Key), entity.Value.Message);
+					DirtyTable.TryRemove(entity.Key, out record);
 				}
 				return true;
 			}
@@ -282,8 +236,8 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		internal Dictionary<string, string> GetEntitiesWithTimeStamps(bool isSearchIndexInvalidation)
 		{
 			// Return a dictionary of type [entity - timestamp]
-			Dictionary<string, string> preppedEntityList = this.ProcessingTable.Keys
-				.Select(key => new KeyValuePair<string, string>(key, this.GetEntityVersionNumber(key, isSearchIndexInvalidation)))
+			Dictionary<string, string> preppedEntityList = ProcessingTable.Keys
+				.Select(key => new KeyValuePair<string, string>(key, GetEntityVersionNumber(key, isSearchIndexInvalidation)))
 				.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
 			return preppedEntityList;
@@ -298,7 +252,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// </returns>
 		internal Dictionary<string, EntityRecordMessage> ProcessingEntitiesTable()
 		{
-			return new Dictionary<string, EntityRecordMessage>(this.ProcessingTable.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+			return new Dictionary<string, EntityRecordMessage>(ProcessingTable.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
 		}
 
 		/// <summary>
@@ -323,7 +277,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 					}
 					// remove from the processing table
 					EntityRecordMessage record;
-					this.ProcessingTable.TryRemove(updatedEntity.Key, out record);
+					ProcessingTable.TryRemove(updatedEntity.Key, out record);
 					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Updated Entity: {0} at Timestamp: {1} and cleared the MessageId:{2} from the Processing table.", updatedEntity.Key, updatedEntity.Value, record.MessageId));
 				}
 
@@ -334,11 +288,11 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 					// Any items left in processing table add back into Dirty table
 					var entityKey = string.Format(EntityKey, keyValuePair.Key,
 						isSearchIndexInvalidation ? FromSearchSubscription : FromCacheSubscription);
-					this.DirtyTable.TryAdd(entityKey, new EntityInvalidationMessageAndType(keyValuePair.Value, isSearchIndexInvalidation));
+					DirtyTable.TryAdd(entityKey, new EntityInvalidationMessageAndType(keyValuePair.Value, isSearchIndexInvalidation));
 				}
 
 				// Clear the Processing table
-				this.ProcessingTable.Clear();
+				ProcessingTable.Clear();
 			}
 		}
 

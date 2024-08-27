@@ -104,7 +104,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 				return true;
 			}
 
-			var contentMapProvider = AdxstudioCrmConfigurationManager.CreateContentMapProvider(this.PortalViewContext.PortalName);
+			var contentMapProvider = AdxstudioCrmConfigurationManager.CreateContentMapProvider(PortalViewContext.PortalName);
 
 			if (contentMapProvider == null)
 			{

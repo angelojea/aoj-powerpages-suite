@@ -10,9 +10,9 @@ namespace Adxstudio.Xrm.Cms
 	using System.Globalization;
 	using System.Threading;
 	using Adxstudio.Xrm.AspNet.Cms;
-	using Adxstudio.Xrm.Core.Telemetry.EventSources;
-	using Adxstudio.Xrm.Diagnostics.Metrics;
-	using Adxstudio.Xrm.EventHubBasedInvalidation;
+	using Core.Telemetry.EventSources;
+	using Diagnostics.Metrics;
+	using EventHubBasedInvalidation;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Sdk;
 
@@ -91,11 +91,11 @@ namespace Adxstudio.Xrm.Cms
 				contentMapLock.WaitingReadCount,
 				contentMapLock.WaitingUpgradeCount,
 				contentMapLock.WaitingWriteCount,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 		}
 
 		/// <summary>
@@ -138,11 +138,11 @@ namespace Adxstudio.Xrm.Cms
 				lockType.ToString(),
 				status,
 				duration,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 		}
 
 		/// <summary>
@@ -175,11 +175,11 @@ namespace Adxstudio.Xrm.Cms
 				reference.LogicalName,
 				reference.Id,
 				attributeLogicalName,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 		}
 
 		[Event((int)EventName.ContentMapReferenceNodeAccess, Message = "Reference Entity Name : {0} Entity Id : {1} Attribute Name : {2} PortalUrl : {3} PortalVersion : {4} PortalProductionOrTrial : {5}  SessionId : {6} ElapsedTime : {7}", Level = EventLevel.Error, Version = 3)]
@@ -202,11 +202,11 @@ namespace Adxstudio.Xrm.Cms
 			HomeSiteMarkerNotFound(
 				website.Name,
 				website.Id,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			MdmMetrics.CmsHomeSiteMarkerNotFoundMetric.LogValue(1);
 		}
@@ -230,11 +230,11 @@ namespace Adxstudio.Xrm.Cms
 
 			WebsiteBindingNotFound(
 				@"HostingEnvironment(SiteName=""{0}"" ApplicationVirtualPath=""{1}""). Current website binding is not present in database.".FormatWith(environment.SiteName, environment.ApplicationVirtualPath),
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			MdmMetrics.CmsWebsiteBindingNotFoundMetric.LogValue(1);
 		}
@@ -247,11 +247,11 @@ namespace Adxstudio.Xrm.Cms
 		{
 			WebsiteBindingNotFound(
 				@"WebsiteName=""{0}""".FormatWith(websiteName),
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			MdmMetrics.CmsWebsiteBindingNotFoundMetric.LogValue(1);
 		}
@@ -273,11 +273,11 @@ namespace Adxstudio.Xrm.Cms
 				oldCapacity ?? string.Empty,
 				newCapacity ?? string.Empty,
 				resourceId ?? string.Empty,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 		}
 
 		[Event((int)EventName.ScaleOutNotification, Message = "Status : {0} Operation : {1} NotificationTimeStamp : {2} Details : {3} OldCapacity : {4} NewCapacity : {5} ResourceId : {6} PortalUrl : {7} PortalVersion : {8} PortalProductionOrTrial : {9} SessionId : {10} ElapsedTime : {11}", Level = EventLevel.Critical, Version = 3)]
@@ -324,9 +324,9 @@ namespace Adxstudio.Xrm.Cms
 				eventHubLatency.TotalSeconds.ToString(CultureInfo.InvariantCulture),
 				topicLatency.TotalSeconds.ToString(CultureInfo.InvariantCulture),
 				(topicLatency.TotalSeconds + eventHubLatency.TotalSeconds).ToString(CultureInfo.InvariantCulture),
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial);
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial);
 
 			return GetActivityId();
 		}

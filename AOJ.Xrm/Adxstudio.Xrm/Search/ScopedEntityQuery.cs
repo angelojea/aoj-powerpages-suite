@@ -34,6 +34,6 @@ namespace Adxstudio.Xrm.Search
 			Scopes = scopes.ToArray();
 		}
 
-		public IEnumerable<string> Scopes { get; private set; }
+		public IEnumerable<string> Scopes { get; }
 	}
 }

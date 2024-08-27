@@ -27,7 +27,7 @@ namespace Adxstudio.Xrm.Blogs
 			Dependencies = dependencies;
 		}
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
 		public ApplicationPath GetAuthorPath(Guid authorId, EntityReference blog)
 		{

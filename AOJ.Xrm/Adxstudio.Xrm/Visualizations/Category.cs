@@ -8,7 +8,7 @@ namespace Adxstudio.Xrm.Visualizations
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Xml.Linq;
-	using Adxstudio.Xrm.Services.Query;
+	using Services.Query;
 
 	/// <summary>
 	/// Category parsed from Category XML defined in datadescription of a CRM chart visualization.

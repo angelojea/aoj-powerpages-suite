@@ -13,7 +13,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 	using System.ServiceModel.Syndication;
 	using System.Web;
 	using System.Xml;
-	using Adxstudio.Xrm.Caching;
+	using Caching;
 	using Adxstudio.Xrm.Configuration;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Client.Caching;
@@ -248,9 +248,9 @@ namespace Adxstudio.Xrm.Web.Handlers
 					using (StreamWriter writer = new StreamWriter(response.OutputStream))
 					{
 						var footprint = caches.First().GetCacheFootprintJson(expanded, httpContext.Request.Url);
-						using (Newtonsoft.Json.JsonTextWriter jsonWriter = new Newtonsoft.Json.JsonTextWriter(writer) { QuoteName = false, Formatting = Newtonsoft.Json.Formatting.Indented })
+						using (JsonTextWriter jsonWriter = new JsonTextWriter(writer) { QuoteName = false, Formatting = Newtonsoft.Json.Formatting.Indented })
 						{
-							Newtonsoft.Json.JsonSerializer serializer = new Newtonsoft.Json.JsonSerializer();
+							JsonSerializer serializer = new JsonSerializer();
 							serializer.Serialize(jsonWriter, footprint);
 							jsonWriter.Flush();
 						}

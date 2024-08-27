@@ -53,9 +53,9 @@ namespace Adxstudio.Xrm.Web.Handlers
 		/// <summary>
 		/// The name of the <see cref="PortalContextElement"/> specifying the current portal.
 		/// </summary>
-		public virtual string PortalName { get; private set; }
+		public virtual string PortalName { get; }
 
-		public virtual Guid? PortalScopeId { get; private set; }
+		public virtual Guid? PortalScopeId { get; }
 
 		protected virtual Encoding ContentEncoding
 		{
@@ -70,7 +70,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 		/// <summary>
 		/// The CRM logical name of the entity whose attribute is being requested.
 		/// </summary>
-		protected virtual string EntityLogicalName { get; private set; }
+		protected virtual string EntityLogicalName { get; }
 
 		public virtual void ProcessRequest(HttpContext context)
 		{
@@ -211,7 +211,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 
 			foreach (var relationship in entityMetadata.Relationships)
 			{
-				json[relationship.ToSchemaName(".")] = new JObject
+				json[relationship.ToSchemaName()] = new JObject
 				{
 					{
 						"__deferred", new JObject
@@ -395,7 +395,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 						{
 							"message", new JObject
 							{
-								{ "value", new JValue(string.Format(Resources.ResourceManager.GetString("Generic_Error_Message"), guid)) }
+								{ "value", new JValue(string.Format(ResourceManager.GetString("Generic_Error_Message"), guid)) }
 							}
 						},
 					}

@@ -23,7 +23,7 @@ namespace Microsoft.Xrm.Client.Metadata
 		/// <summary>
 		/// The type of the <see cref="Entity"/>.
 		/// </summary>
-		public Type EntityType { get; private set; }
+		public Type EntityType { get; }
 
 		/// <summary>
 		/// The entity set annotation of the <see cref="Entity"/>.

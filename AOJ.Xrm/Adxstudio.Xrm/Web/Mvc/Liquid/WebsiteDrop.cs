@@ -30,11 +30,11 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 		private readonly Lazy<LanguageDrop[]> _languages;
 
-		private IEventAggregationDataAdapter _eventAggregationDataAdapter;
+		private readonly IEventAggregationDataAdapter _eventAggregationDataAdapter;
 
-		private IBlogAggregationDataAdapter _blogAggregationDataAdapter;
+		private readonly IBlogAggregationDataAdapter _blogAggregationDataAdapter;
 
-		private IDataAdapterDependencies _dependencies;
+		private readonly IDataAdapterDependencies _dependencies;
 	   
 		public WebsiteDrop(IPortalLiquidContext portalLiquidContext, IPortalViewEntity viewEntity)
 			: base(portalLiquidContext, viewEntity)
@@ -65,20 +65,20 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 			if (!contextLanguageInfo.IsCrmMultiLanguageEnabled)
 			{
-				this._languages = new Lazy<LanguageDrop[]>(() => new LanguageDrop[0]);  // Initialize _languages as an empty collection.
+				_languages = new Lazy<LanguageDrop[]>(() => new LanguageDrop[0]);  // Initialize _languages as an empty collection.
 			}
 			else
 			{
 				var previewPermission = new PreviewPermission(PortalContext.Current.ServiceContext, PortalContext.Current.Website);
 				if (previewPermission.IsEnabledAndPermitted)
 				{
-					this._languages = new Lazy<LanguageDrop[]>(() => contextLanguageInfo.ActiveWebsiteLanguages.Select(websiteLanguage => new LanguageDrop(this, websiteLanguage)).ToArray());
+					_languages = new Lazy<LanguageDrop[]>(() => contextLanguageInfo.ActiveWebsiteLanguages.Select(websiteLanguage => new LanguageDrop(this, websiteLanguage)).ToArray());
 				}
 				else
 				{
-					this._languages = new Lazy<LanguageDrop[]>(() => contextLanguageInfo.ActiveWebsiteLanguages.Where(lang => lang.IsPublished).Select(websiteLanguage => new LanguageDrop(this, websiteLanguage)).ToArray());
+					_languages = new Lazy<LanguageDrop[]>(() => contextLanguageInfo.ActiveWebsiteLanguages.Where(lang => lang.IsPublished).Select(websiteLanguage => new LanguageDrop(this, websiteLanguage)).ToArray());
 				}
-				this.SelectedLanguage = new LanguageDrop(this, contextLanguageInfo.ContextLanguage);
+				SelectedLanguage = new LanguageDrop(this, contextLanguageInfo.ContextLanguage);
 			}
 		}
 
@@ -110,7 +110,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 		/// </summary>
 		public IEnumerable<LanguageDrop> Languages
 		{
-			get { return this._languages.Value.AsEnumerable(); }
+			get { return _languages.Value.AsEnumerable(); }
 		}
 
 		/// <summary>

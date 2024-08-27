@@ -26,13 +26,13 @@ namespace Adxstudio.Xrm.Forums
 			PostedOn = entity.GetAttributeValue<DateTime?>("adx_date");
 		}
 
-		public string Content { get; private set; }
+		public string Content { get; }
 
 		public Entity Entity { get; set; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public DateTime? PostedOn { get; private set; }
+		public DateTime? PostedOn { get; }
 
 		public string Description
 		{

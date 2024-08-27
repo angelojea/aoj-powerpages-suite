@@ -101,7 +101,6 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 
 	internal class EntityFileSystemContext : EntityDirectoryFileSystemContext
 	{
-		private readonly IDirectory _current;
 		private readonly Lazy<DirectoryTreeNode> _tree;
 
 		public EntityFileSystemContext(IEntityDirectoryFileSystem fileSystem, Entity root, DirectoryType rootDirectoryType, IDirectory current) : base(fileSystem)
@@ -112,15 +111,12 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 
 			Root = root;
 			RootDirectoryType = rootDirectoryType;
-			_current = current;
+			Current = current;
 
 			_tree = new Lazy<DirectoryTreeNode>(GetTree, LazyThreadSafetyMode.None);
 		}
 
-		public override IDirectory Current
-		{
-			get { return _current; }
-		}
+		public override IDirectory Current { get; }
 
 		public override DirectoryTreeNode Tree
 		{
@@ -132,7 +128,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			return GetTree(Root, RootDirectoryType, GetTreeParentLookups(type));
 		}
 
-		protected Entity Root { get; private set; }
+		protected Entity Root { get; }
 
 		protected DirectoryType RootDirectoryType { get; set; }
 
@@ -165,14 +161,13 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 	internal class EntityDirectory : Directory
 	{
 		private readonly Entity _entity;
-		private readonly EntityReference _entityReference;
 
 		public EntityDirectory(IEntityDirectoryFileSystem fileSystem, EntityReference entityReference, DirectoryType directoryType) : base(fileSystem)
 		{
 			if (entityReference == null) throw new ArgumentNullException("entityReference");
 			if (directoryType == null) throw new ArgumentNullException("directoryType");
 
-			_entityReference = entityReference;
+			EntityReference = entityReference;
 			DirectoryType = directoryType;
 		}
 
@@ -182,14 +177,11 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			if (directoryType == null) throw new ArgumentNullException("directoryType");
 
 			_entity = entity;
-			_entityReference = entity.ToEntityReference();
+			EntityReference = entity.ToEntityReference();
 			DirectoryType = directoryType;
 		}
 
-		public override EntityReference EntityReference
-		{
-			get { return _entityReference; }
-		}
+		public override EntityReference EntityReference { get; }
 
 		public override bool SupportsUpload
 		{
@@ -201,7 +193,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			get { return DirectoryType.WebFileForeignKeyAttribute; }
 		}
 
-		protected DirectoryType DirectoryType { get; private set; }
+		protected DirectoryType DirectoryType { get; }
 
 		protected override DirectoryContent[] GetChildren()
 		{
@@ -258,7 +250,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error getting URL for entity [{0}:{1}]: {2}", EntityReference.LogicalName, EntityReference.Id, e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error getting URL for entity [{0}:{1}]: {2}", EntityReference.LogicalName, EntityReference.Id, e));
 
                 return null;
 			}

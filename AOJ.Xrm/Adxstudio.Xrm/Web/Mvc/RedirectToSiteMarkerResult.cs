@@ -14,9 +14,9 @@ namespace Adxstudio.Xrm.Web.Mvc
 {
 	public class RedirectToSiteMarkerResult : ActionResult
 	{
-		public string SiteMarker { get; private set; }
-		public NameValueCollection Query { get; private set; }
-		public bool RestrictRead { get; private set; }
+		public string SiteMarker { get; }
+		public NameValueCollection Query { get; }
+		public bool RestrictRead { get; }
 
 		public RedirectToSiteMarkerResult(string siteMarker)
 			: this(siteMarker, null)
@@ -47,7 +47,7 @@ namespace Adxstudio.Xrm.Web.Mvc
 			{
 				var portalViewContext = viewData as IPortalViewContext;
 
-				this.ExecuteResult(portalViewContext, context.HttpContext);
+				ExecuteResult(portalViewContext, context.HttpContext);
 			}
 		}
 
@@ -58,7 +58,7 @@ namespace Adxstudio.Xrm.Web.Mvc
 			if (contextViewData != null && contextViewData.TryGetValue(PortalExtensions.PortalViewContextKey, out viewData))
 			{
 				var portalViewContext = viewData as IPortalViewContext;
-				this.ExecuteResult(portalViewContext, context);
+				ExecuteResult(portalViewContext, context);
 			}
 		}
 
@@ -66,14 +66,14 @@ namespace Adxstudio.Xrm.Web.Mvc
 		{
 			if (portalViewContext != null)
 			{
-				var siteMarker = this.RestrictRead
-					? portalViewContext.SiteMarkers.SelectWithReadAccess(this.SiteMarker)
-					: portalViewContext.SiteMarkers.Select(this.SiteMarker);
+				var siteMarker = RestrictRead
+					? portalViewContext.SiteMarkers.SelectWithReadAccess(SiteMarker)
+					: portalViewContext.SiteMarkers.Select(SiteMarker);
 
 				if (siteMarker != null)
 				{
-					var url = this.Query != null
-						? siteMarker.Url.AppendQueryString(this.Query)
+					var url = Query != null
+						? siteMarker.Url.AppendQueryString(Query)
 						: siteMarker.Url;
 
 					context.RedirectAndEndResponse(url);

@@ -20,7 +20,7 @@ namespace Adxstudio.Xrm.Commerce
 			VistorId = vistorId;
 		}
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
 		protected string VistorId { get; set; }
 

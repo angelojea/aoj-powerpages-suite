@@ -24,15 +24,15 @@ namespace Adxstudio.Xrm.Notes
 
 		public IAnnotation Annotation { get; set; }
 
-		public bool CanAppend { get; private set; }
+		public bool CanAppend { get; }
 
-		public bool CanAppendTo { get; private set; }
+		public bool CanAppendTo { get; }
 
-		public bool CanCreate { get; private set; }
+		public bool CanCreate { get; }
 
-		public bool PermissionsExist { get; private set; }
+		public bool PermissionsExist { get; }
 
-		public bool PermissionGranted { get; private set; }
+		public bool PermissionGranted { get; }
 	}
 
 	public class AnnotationUpdateResult : IAnnotationResult
@@ -45,11 +45,11 @@ namespace Adxstudio.Xrm.Notes
 			PermissionGranted = provider.TryAssert(context, CrmEntityPermissionRight.Write, note.Entity, entityMetadata, regarding: note.Regarding);
 		}
 
-		public IAnnotation Annotation { get; private set; }
+		public IAnnotation Annotation { get; }
 
-		public bool PermissionsExist { get; private set; }
+		public bool PermissionsExist { get; }
 
-		public bool PermissionGranted { get; private set; }
+		public bool PermissionGranted { get; }
 	}
 
 	public class AnnotationDeleteResult : IAnnotationResult
@@ -62,10 +62,10 @@ namespace Adxstudio.Xrm.Notes
 			PermissionGranted = provider.TryAssert(context, CrmEntityPermissionRight.Delete, note.Entity, entityMetadata, regarding: note.Regarding);
 		}
 
-		public IAnnotation Annotation { get; private set; }
+		public IAnnotation Annotation { get; }
 
-		public bool PermissionsExist { get; private set; }
+		public bool PermissionsExist { get; }
 
-		public bool PermissionGranted { get; private set; }
+		public bool PermissionGranted { get; }
 	}
 }

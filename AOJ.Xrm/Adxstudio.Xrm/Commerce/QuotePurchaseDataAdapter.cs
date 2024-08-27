@@ -29,11 +29,11 @@ namespace Adxstudio.Xrm.Commerce
 			RequiresShipping = requiresShipping;
 		}
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
-		protected EntityReference Quote { get; private set; }
+		protected EntityReference Quote { get; }
 
-		protected bool RequiresShipping { get; private set; }
+		protected bool RequiresShipping { get; }
 
 		public void CompletePurchase(bool fulfillOrder = false, bool createInvoice = false)
 		{
@@ -69,7 +69,7 @@ namespace Adxstudio.Xrm.Commerce
 			
 			if (createInvoice)
 			{
-                var convertOrderRequest = new ConvertSalesOrderToInvoiceRequest()
+                var convertOrderRequest = new ConvertSalesOrderToInvoiceRequest
                 {
                     ColumnSet = new ColumnSet("invoiceid"),
                     SalesOrderId = order.Id
@@ -79,7 +79,7 @@ namespace Adxstudio.Xrm.Commerce
 
                 var invoice = convertOrderResponse.Entity;
 
-                var setStateRequest = new SetStateRequest()
+                var setStateRequest = new SetStateRequest
                 {
                     EntityMoniker = invoice.ToEntityReference(),
                     State = new OptionSetValue(2),

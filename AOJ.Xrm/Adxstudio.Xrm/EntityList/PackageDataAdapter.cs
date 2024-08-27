@@ -33,15 +33,15 @@ namespace Adxstudio.Xrm.EntityList
 			GetPackageImageUrl = getPackageImageUrl;
 		}
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 		
-		protected Func<Guid, Guid, string> GetPackageImageUrl { get; private set; }
+		protected Func<Guid, Guid, string> GetPackageImageUrl { get; }
 
-		protected Func<Guid, Guid, string> GetPackageRepositoryUrl { get; private set; }
+		protected Func<Guid, Guid, string> GetPackageRepositoryUrl { get; }
 
-		protected Func<Guid, Guid, string> GetPackageVersionUrl { get; private set; }
+		protected Func<Guid, Guid, string> GetPackageVersionUrl { get; }
 
-		protected EntityReference Package { get; private set; }
+		protected EntityReference Package { get; }
 
 		public Package SelectPackage()
 		{

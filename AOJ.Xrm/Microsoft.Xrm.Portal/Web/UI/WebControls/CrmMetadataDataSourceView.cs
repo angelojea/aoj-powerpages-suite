@@ -30,67 +30,27 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		private static readonly string _entityFlagsParameterName = "EntityFlags";
 		private static readonly string _sortExpressionParameterName = "SortExpression";
 
-		private readonly CrmMetadataDataSource _owner;
+		protected CrmMetadataDataSource Owner { get; }
 
-		protected CrmMetadataDataSource Owner
-		{
-			get { return _owner; }
-		}
+		protected HttpContext Context { get; }
 
-		private readonly HttpContext _context;
-
-		protected HttpContext Context
-		{
-			get { return _context; }
-		}
-		
 		public CrmMetadataDataSourceView(CrmMetadataDataSource owner, string name, HttpContext context)
 			: base(owner, name)
 		{
 			_cancelSelectOnNullParameter = false;
-			_owner = owner;
-			_context = context;
+			Owner = owner;
+			Context = context;
 		}
 
-		private string  _sortExpression;
+		public string SortExpression { get; set; }
 
-		public string SortExpression
-		{
-			get { return _sortExpression; }
-			set { _sortExpression = value; }
-		}
+		public EntityFilters MetadataFlags { get; set; }
 
-		private EntityFilters _metadataFlags;
+		public EntityFilters EntityFlags { get; set; }
 
-		public EntityFilters MetadataFlags
-		{
-			get { return _metadataFlags; }
-			set { _metadataFlags = value; }
-		}
+		public string EntityName { get; set; }
 
-		private EntityFilters _entityFlags;
-
-		public EntityFilters EntityFlags
-		{
-			get { return _entityFlags; }
-			set { _entityFlags = value; }
-		}
-
-		private string _entityName;
-
-		public string EntityName
-		{
-			get { return _entityName; }
-			set { _entityName = value; }
-		}
-
-		private string  _attributeName;
-
-		public string  AttributeName
-		{
-			get { return _attributeName; }
-			set { _attributeName = value; }
-		}
+		public string  AttributeName { get; set; }
 
 		private bool _cancelSelectOnNullParameter;
 
@@ -111,13 +71,13 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 		public event EventHandler<CrmMetadataDataSourceStatusEventArgs> Selected
 		{
-			add { base.Events.AddHandler(EventSelected, value); }
-			remove { base.Events.RemoveHandler(EventSelected, value); }
+			add { Events.AddHandler(EventSelected, value); }
+			remove { Events.RemoveHandler(EventSelected, value); }
 		}
 
 		protected virtual void OnSelected(CrmMetadataDataSourceStatusEventArgs e)
 		{
-			EventHandler<CrmMetadataDataSourceStatusEventArgs> handler = base.Events[EventSelected] as EventHandler<CrmMetadataDataSourceStatusEventArgs>;
+			EventHandler<CrmMetadataDataSourceStatusEventArgs> handler = Events[EventSelected] as EventHandler<CrmMetadataDataSourceStatusEventArgs>;
 
 			if (handler != null)
 			{
@@ -129,13 +89,13 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 		public event EventHandler<CrmMetadataDataSourceSelectingEventArgs> Selecting
 		{
-			add { base.Events.AddHandler(EventSelecting, value); }
-			remove { base.Events.RemoveHandler(EventSelecting, value); }
+			add { Events.AddHandler(EventSelecting, value); }
+			remove { Events.RemoveHandler(EventSelecting, value); }
 		}
 
 		protected virtual void OnSelecting(CrmMetadataDataSourceSelectingEventArgs args)
 		{
-			EventHandler<CrmMetadataDataSourceSelectingEventArgs> handler = base.Events[EventSelecting] as EventHandler<CrmMetadataDataSourceSelectingEventArgs>;
+			EventHandler<CrmMetadataDataSourceSelectingEventArgs> handler = Events[EventSelecting] as EventHandler<CrmMetadataDataSourceSelectingEventArgs>;
 
 			if (handler != null)
 			{
@@ -154,7 +114,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 					_selectParameters = new ParameterCollection();
 					_selectParameters.ParametersChanged += SelectParametersChangedEventHandler;
 
-					if (_tracking)
+					if (IsTrackingViewState)
 					{
 						((IStateManager)_selectParameters).TrackViewState();
 					}
@@ -507,12 +467,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 		#region IStateManager Members
 
-		private bool _tracking;
-
-		public bool IsTrackingViewState
-		{
-			get { return _tracking; }
-		}
+		public bool IsTrackingViewState { get; private set; }
 
 		void IStateManager.LoadViewState(object savedState)
 		{
@@ -545,8 +500,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 		protected virtual object SaveViewState()
 		{
-			object[] state = new object[]
-			{
+			object[] state = {
 				(SelectParameters != null) ? ((IStateManager)SelectParameters).SaveViewState() : null,
 				EntityName,
 				AttributeName,
@@ -573,7 +527,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 
 		public void TrackViewState()
 		{
-			_tracking = true;
+			IsTrackingViewState = true;
 
 			if (_selectParameters != null)
 			{

@@ -35,9 +35,9 @@ namespace Adxstudio.Xrm.Configuration
 		/// <param name="validOnly">Only returns valid certificates.</param>
 		public X509FindCondition(X509FindType findType, object findValue, bool validOnly = false)
 		{
-			this.FindType = findType;
-			this.FindValue = findValue;
-			this.ValidOnly = validOnly;
+			FindType = findType;
+			FindValue = findValue;
+			ValidOnly = validOnly;
 		}
 	}
 }

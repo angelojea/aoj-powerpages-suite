@@ -6,8 +6,8 @@
 namespace Adxstudio.Xrm.Cms
 {
 	using System.Collections.Generic;
-	using Adxstudio.Xrm.Services.Query;
-	using Adxstudio.Xrm.Cms.SolutionVersions;
+	using Services.Query;
+	using SolutionVersions;
 	using Adxstudio.Xrm.AspNet.Cms;
 
 	public static class Solutions

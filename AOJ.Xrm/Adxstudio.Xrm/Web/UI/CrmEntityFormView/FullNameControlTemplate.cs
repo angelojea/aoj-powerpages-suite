@@ -18,10 +18,10 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 	using System.Web.UI;
 	using System.Web.UI.HtmlControls;
 	using System.Web.UI.WebControls;
-	using Adxstudio.Xrm.Resources;
-	using Adxstudio.Xrm.Web.UI.WebControls;
-	using Adxstudio.Xrm.Web.UI.WebForms;
-	using Adxstudio.Xrm.Globalization;
+	using Resources;
+	using WebControls;
+	using WebForms;
+	using Globalization;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Portal.Web.UI.CrmEntityFormView;
 	using Microsoft.Xrm.Sdk;
@@ -72,8 +72,8 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			FormViewMode? mode)
 			: base(metadata, validationGroup, bindings)
 		{
-			this.Field = field;
-			this.isEditable = (mode == FormViewMode.ReadOnly) ? false : true;
+			Field = field;
+			isEditable = (mode == FormViewMode.ReadOnly) ? false : true;
 			this.entityMetadata = entityMetadata;
 		}
 
@@ -94,7 +94,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <value>
 		/// The field.
 		/// </value>
-		public CrmEntityFormViewField Field { get; private set; }
+		public CrmEntityFormViewField Field { get; }
 
 		/// <summary>
 		/// Gets the validation text.
@@ -106,7 +106,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		{
 			get
 			{
-				return this.Metadata.ValidationText;
+				return Metadata.ValidationText;
 			}
 		}
 
@@ -120,7 +120,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		{
 			get
 			{
-				return string.IsNullOrWhiteSpace(this.ValidationText) ? ValidatorDisplay.None : ValidatorDisplay.Dynamic;
+				return string.IsNullOrWhiteSpace(ValidationText) ? ValidatorDisplay.None : ValidatorDisplay.Dynamic;
 			}
 		}
 
@@ -131,20 +131,20 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		protected override void InstantiateControlIn(Control container)
 		{
 			var contentId = Guid.NewGuid();
-			if (this.Metadata.ReadOnly)
+			if (Metadata.ReadOnly)
 			{
-				this.isEditable = false;
+				isEditable = false;
 			}
 			var textboxFullname = new TextBox
 									{
-										ID = this.ControlID, 
-										CssClass = string.Join(" ", "trigger", this.CssClass, this.Metadata.CssClass, "fullNameCompositeControl"), 
-										ToolTip = this.Metadata.ToolTip
+										ID = ControlID, 
+										CssClass = string.Join(" ", "trigger", CssClass, Metadata.CssClass, "fullNameCompositeControl"), 
+										ToolTip = Metadata.ToolTip
 									};
 
 			textboxFullname.Attributes.Add("data-composite-control", string.Empty);
 			textboxFullname.Attributes.Add("data-content-id", contentId.ToString());
-			textboxFullname.Attributes.Add("data-editable", this.isEditable.ToString());
+			textboxFullname.Attributes.Add("data-editable", isEditable.ToString());
 
 			switch (CultureInfo.CurrentUICulture.LCID)
 			{
@@ -157,8 +157,8 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 					break;
 			}
 
-			var firstNameAttribute = this.entityMetadata.Attributes.FirstOrDefault(a => a.LogicalName == FirstName);
-			var lastNameAttribute = this.entityMetadata.Attributes.FirstOrDefault(a => a.LogicalName == LastName);
+			var firstNameAttribute = entityMetadata.Attributes.FirstOrDefault(a => a.LogicalName == FirstName);
+			var lastNameAttribute = entityMetadata.Attributes.FirstOrDefault(a => a.LogicalName == LastName);
 
 			// Creating container for all popover elements 
 			var divContainer = new HtmlGenericControl("div");
@@ -168,14 +168,14 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			var labelFirstname = new Label
 									{
 										ID = "FirstNameLabel", 
-										Text = this.GetLocalizedLabel(firstNameAttribute, "First_Name_DefaultText"), 
+										Text = GetLocalizedLabel(firstNameAttribute, "First_Name_DefaultText"), 
 										CssClass = "content "
 									};
 
 			var labelLastname = new Label
 									{
 										ID = "LastNameLabel", 
-										Text = this.GetLocalizedLabel(lastNameAttribute, "Last_Name_DefaultText"), 
+										Text = GetLocalizedLabel(lastNameAttribute, "Last_Name_DefaultText"), 
 										CssClass = "content "
 									};
 
@@ -184,13 +184,13 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			// Creating textboxes for First ans Last name respectfully to localization
 			if (Localization.IsWesternType())
 			{
-				this.Generatefield(FirstName, firstNameAttribute, divContainer, labelFirstname);
-				this.Generatefield(LastName, lastNameAttribute, divContainer, labelLastname);
+				Generatefield(FirstName, firstNameAttribute, divContainer, labelFirstname);
+				Generatefield(LastName, lastNameAttribute, divContainer, labelLastname);
 			}
 			else
 			{
-				this.Generatefield(LastName, lastNameAttribute, divContainer, labelLastname);
-				this.Generatefield(FirstName, firstNameAttribute, divContainer, labelFirstname);
+				Generatefield(LastName, lastNameAttribute, divContainer, labelLastname);
+				Generatefield(FirstName, firstNameAttribute, divContainer, labelFirstname);
 			}
 
 			var buttonFullname = new HtmlGenericControl("input");
@@ -202,19 +202,19 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 			textboxFullname.Attributes.Add("onchange", "setIsDirty(this.id);");
 
-			if (this.Metadata.MaxLength > 0)
+			if (Metadata.MaxLength > 0)
 			{
-				textboxFullname.MaxLength = this.Metadata.MaxLength;
+				textboxFullname.MaxLength = Metadata.MaxLength;
 			}
 
-			if (this.Metadata.IsRequired || this.Metadata.WebFormForceFieldIsRequired)
+			if (Metadata.IsRequired || Metadata.WebFormForceFieldIsRequired)
 			{
 				textboxFullname.Attributes.Add("required", string.Empty);
 			}
 
-			if (this.isEditable)
+			if (isEditable)
 			{
-				textboxFullname.Attributes.Add("aria-label", string.Format("{0}*. {1}", this.Metadata.Label, ResourceManager.GetString("Narrator_Label_For_Composite_Controls")));
+				textboxFullname.Attributes.Add("aria-label", string.Format("{0}*. {1}", Metadata.Label, ResourceManager.GetString("Narrator_Label_For_Composite_Controls")));
 				divContainer.Controls.Add(buttonFullname);
 				container.Controls.Add(divContainer);
 			}
@@ -223,7 +223,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 				textboxFullname.CssClass = textboxFullname.CssClass += " readonly";
 			}
 
-			this.Bindings["fullname_fullname"] = new CellBinding
+			Bindings["fullname_fullname"] = new CellBinding
 													{
 														Get = () =>
 															{
@@ -250,18 +250,18 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <param name="container">The container.</param>
 		protected override void InstantiateValidatorsIn(Control container)
 		{
-			if (this.Metadata.IsRequired || this.Metadata.WebFormForceFieldIsRequired || this.Metadata.IsFullNameControl)
+			if (Metadata.IsRequired || Metadata.WebFormForceFieldIsRequired || Metadata.IsFullNameControl)
 			{
-				container.Controls.Add(this.ConfigureFieldValidator(this.ControlID, this.Metadata.Label));
+				container.Controls.Add(ConfigureFieldValidator(ControlID, Metadata.Label));
 			}
 
-			if (this.IsAttributeNeedRequiredValidation(this.entityMetadata.Attributes.FirstOrDefault(a => a.LogicalName == LastName)))
+			if (IsAttributeNeedRequiredValidation(entityMetadata.Attributes.FirstOrDefault(a => a.LogicalName == LastName)))
 			{
-				container.Controls.Add(this.ConfigureFieldValidator(this.ControlID + LastName, this.GetLocalizedLabel(LastName)));
+				container.Controls.Add(ConfigureFieldValidator(ControlID + LastName, GetLocalizedLabel(LastName)));
 			}
-			if (this.IsAttributeNeedRequiredValidation(this.entityMetadata.Attributes.FirstOrDefault(a => a.LogicalName == FirstName)))
+			if (IsAttributeNeedRequiredValidation(entityMetadata.Attributes.FirstOrDefault(a => a.LogicalName == FirstName)))
 			{
-				container.Controls.Add(this.ConfigureFieldValidator(this.ControlID + FirstName, this.GetLocalizedLabel(FirstName)));
+				container.Controls.Add(ConfigureFieldValidator(ControlID + FirstName, GetLocalizedLabel(FirstName)));
 			}
 
 			this.InstantiateCustomValidatorsIn(container);
@@ -274,7 +274,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <returns>Returns true if control is editable and attribute is required</returns>
 		private bool IsAttributeNeedRequiredValidation(AttributeMetadata attributeMetadata)
 		{
-			return attributeMetadata != null && this.isEditable &&
+			return attributeMetadata != null && isEditable &&
 					(attributeMetadata.RequiredLevel.Value == AttributeRequiredLevel.ApplicationRequired ||
 					attributeMetadata.RequiredLevel.Value == AttributeRequiredLevel.SystemRequired);
 		}
@@ -291,16 +291,16 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			{
 				ID = string.Format("RequiredFieldValidator{0}", controlId),
 				ControlToValidate = controlId,
-				ValidationGroup = this.ValidationGroup,
-				Display = this.ValidatorDisplay,
+				ValidationGroup = ValidationGroup,
+				Display = ValidatorDisplay,
 				ErrorMessage =
-								this.ValidationSummaryMarkup(
-									string.IsNullOrWhiteSpace(this.Metadata.RequiredFieldValidationErrorMessage)
-										? (this.Metadata.Messages == null || !this.Metadata.Messages.ContainsKey("Required"))
+								ValidationSummaryMarkup(
+									string.IsNullOrWhiteSpace(Metadata.RequiredFieldValidationErrorMessage)
+										? (Metadata.Messages == null || !Metadata.Messages.ContainsKey("Required"))
 											? ResourceManager.GetString("Required_Field_Error").FormatWith(localizedLabel)
-											: this.Metadata.Messages["Required"].FormatWith(this.Metadata.Label)
-										: this.Metadata.RequiredFieldValidationErrorMessage),
-				Text = this.Metadata.ValidationText
+											: Metadata.Messages["Required"].FormatWith(Metadata.Label)
+										: Metadata.RequiredFieldValidationErrorMessage),
+				Text = Metadata.ValidationText
 			};
 		}
 
@@ -319,13 +319,13 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		{
 			var textBox = new TextBox
 							{
-								ID = this.ControlID + fieldName, 
-								CssClass = string.Join(" content ", " ", this.CssClass, this.Metadata.CssClass), 
-								ToolTip = this.Metadata.ToolTip
+								ID = ControlID + fieldName, 
+								CssClass = string.Join(" content ", " ", CssClass, Metadata.CssClass), 
+								ToolTip = Metadata.ToolTip
 							};
 			labelFirstname.AssociatedControlID = textBox.ID;
 
-			if (this.isEditable)
+			if (isEditable)
 			{
 				// Applying required parameters to first name if it's application required
 				if (fieldMetaData != null
@@ -347,7 +347,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			}
 
 			textBox.Attributes.Add("onchange", "setIsDirty(this.id);");
-			this.Bindings["fullname_" + fieldName] = new CellBinding
+			Bindings["fullname_" + fieldName] = new CellBinding
 														{
 															Get = () =>
 																{
@@ -390,7 +390,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <returns>Localized logical name</returns>
 		private string GetLocalizedLabel(string logicalName)
 		{
-			return this.entityMetadata.Attributes.FirstOrDefault(a => a.LogicalName == logicalName)
+			return entityMetadata.Attributes.FirstOrDefault(a => a.LogicalName == logicalName)
 						.DisplayName.UserLocalizedLabel.Label;
 		}
 	}

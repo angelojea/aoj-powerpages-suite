@@ -12,10 +12,10 @@ namespace Adxstudio.Xrm.Web.UI.EntityList.OData
 	using System.ServiceModel.Security;
 	using System.Web;
 	using System.Web.Http.OData;
-	using Adxstudio.Xrm.Globalization;
-	using Adxstudio.Xrm.Resources;
+	using Globalization;
+	using Resources;
 	using Adxstudio.Xrm.Security;
-	using Adxstudio.Xrm.Services.Query;
+	using Services.Query;
 	using Adxstudio.Xrm.Web.Http.OData;
 	using Adxstudio.Xrm.Web.Http.OData.FetchXml;
 	using Microsoft.Data.Edm;
@@ -60,7 +60,7 @@ namespace Adxstudio.Xrm.Web.UI.EntityList.OData
 			if ((languageCode == null || languageCode == 0) && HttpContext.Current != null)
 			{
 				var languageContext = HttpContext.Current.GetContextLanguageInfo();
-				this.LanguageCode = languageContext.IsCrmMultiLanguageEnabled
+				LanguageCode = languageContext.IsCrmMultiLanguageEnabled
 										? languageContext.ContextLanguage.CrmLcid
 										: (languageCode ?? 0);
 			}
@@ -70,19 +70,19 @@ namespace Adxstudio.Xrm.Web.UI.EntityList.OData
 			}
 		}
 
-		protected string ContainerName { get; private set; }
+		protected string ContainerName { get; }
 
-		protected DataAdapterDependencies Dependencies { get; private set; }
+		protected DataAdapterDependencies Dependencies { get; }
 
 		/// <summary>
 		/// Language code used to return labels for the specified local.
 		/// </summary>
-		public int LanguageCode { get; private set; }
+		public int LanguageCode { get; }
 
 		/// <summary>
 		/// Name used to specify the Namespace for the model.
 		/// </summary>
-		public string NamespaceName { get; private set; }
+		public string NamespaceName { get; }
 
 		protected Entity GetSavedQuery(Guid id)
 		{
@@ -230,7 +230,7 @@ namespace Adxstudio.Xrm.Web.UI.EntityList.OData
 				var entityPermissionsEnabled = entitylist.GetAttributeValue<bool>("mspp_entitypermissionsenabled");
 				if (entitySetNames.Contains(entitySetName))
 				{
-                    ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(string.Format("An Entity Set has already been defined with the name '{0}'. Entity Set could not added to the model. You must not have multiple Entity List records with OData enabled and the same Entity Name specified, otherwise specifiy a unique Entity Set Name and Entity Type Name in the Entity List's OData Settings in CRM.", entitySetName)));
+                    ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("An Entity Set has already been defined with the name '{0}'. Entity Set could not added to the model. You must not have multiple Entity List records with OData enabled and the same Entity Name specified, otherwise specifiy a unique Entity Set Name and Entity Type Name in the Entity List's OData Settings in CRM.", entitySetName));
                     continue;
 				}
 				entitySetNames.Add(entitySetName);
@@ -325,7 +325,7 @@ namespace Adxstudio.Xrm.Web.UI.EntityList.OData
 			var viewColumns = view.Columns.ToList();
 			var fetch = Fetch.Parse(view.FetchXml);
 			queryOptions.ApplyTo(querySettings, fetch);
-			var serviceContext = this.Dependencies.GetServiceContext();
+			var serviceContext = Dependencies.GetServiceContext();
 
 			// If Entity Permissions on the view was enabled then restrict add entity Permissions to Fetch
 			if (entityPermissionsEnabled)

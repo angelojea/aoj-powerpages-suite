@@ -21,8 +21,6 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 	/// </summary>
 	public class WebLinkHyperLink : HyperLink // MSBug #120118: Won't seal, inheritance is expected extension point.
 	{
-		private bool _showImage = true;
-
 		public string PortalName { get; set; }
 
 		/// <summary>
@@ -31,7 +29,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		/// </summary>
 		[Description("A CSS class value to be added to the weblink if the target node of the weblink is the current site map node")]
 		[Category("Data")]
-		[DefaultValue((string)null)]
+		[DefaultValue(null)]
 		public string CurrentSiteMapNodeCssClass { get; set; }
 
 		/// <summary>
@@ -40,18 +38,14 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		/// </summary>
 		[Description("A CSS class value to be added to the weblink if the current site map node is a descendant of the target node of the weblink")]
 		[Category("Data")]
-		[DefaultValue((string)null)]
+		[DefaultValue(null)]
 		public string ParentOfCurrentSiteMapNodeCssClass { get; set; }
 
 		/// <summary>
 		/// Gets or sets a Boolean indicating whether or not this hyperlink should render an image
 		/// link, if an image is associated with the given mspp_weblink.
 		/// </summary>
-		public bool ShowImage
-		{
-			get { return _showImage; }
-			set { _showImage = value; }
-		}
+		public bool ShowImage { get; set; } = true;
 
 		/// <summary>
 		/// Gets or sets the mspp_weblink entity for which a corresponding hyperlink will be rendered.

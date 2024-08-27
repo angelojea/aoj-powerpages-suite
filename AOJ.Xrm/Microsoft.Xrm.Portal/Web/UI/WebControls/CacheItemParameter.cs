@@ -13,27 +13,15 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 	/// </summary>
 	public sealed class CacheItemParameter : Parameter
 	{
-		private string _propertyName;
-
 		/// <summary>
 		/// Gets or sets the name of the property from which to obtain the value.
 		/// </summary>
-		public string PropertyName
-		{
-			get { return _propertyName; }
-			set { _propertyName = value; }
-		}
-
-		private string _format;
+		public string PropertyName { get; set; }
 
 		/// <summary>
 		/// Gets or sets an optional format string for augmenting the value.
 		/// </summary>
-		public string Format
-		{
-			get { return _format; }
-			set { _format = value; }
-		}
+		public string Format { get; set; }
 
 		public object Eval(object container)
 		{
@@ -41,10 +29,8 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 			{
 				return DataBinder.Eval(container, PropertyName);
 			}
-			else
-			{
-				return DataBinder.Eval(container, PropertyName, Format);
-			}
+
+			return DataBinder.Eval(container, PropertyName, Format);
 		}
 	}
 }

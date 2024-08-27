@@ -10,7 +10,7 @@ namespace Adxstudio.Xrm.Cms
 	using System.Web.Routing;
 
 	using Adxstudio.Xrm.AspNet.Cms;
-	using Adxstudio.Xrm.Web;
+	using Web;
 
 	/// <summary> The content map data adapter. </summary>
 	public abstract class ContentMapDataAdapter
@@ -65,9 +65,9 @@ namespace Adxstudio.Xrm.Cms
 			//	throw new ArgumentNullException("dependencies");
 			//}
 
-			this.ContentMapProvider = contentMapProvider;
-			this.Dependencies = dependencies;
-			this.Language = language;
+			ContentMapProvider = contentMapProvider;
+			Dependencies = dependencies;
+			Language = language;
 		}
 	}
 }

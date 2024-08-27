@@ -25,14 +25,14 @@ namespace Adxstudio.Xrm.Forums
 			ThreadEntity = forumThread;
 		}
 
-		public IEnumerable<IForumPostAttachmentInfo> AttachmentInfo { get; private set; }
+		public IEnumerable<IForumPostAttachmentInfo> AttachmentInfo { get; }
 
-		public IForumAuthor Author { get; private set; }
+		public IForumAuthor Author { get; }
 
-		public EntityReference EntityReference { get; private set; }
+		public EntityReference EntityReference { get; }
 
-		public DateTime PostedOn { get; private set; }
+		public DateTime PostedOn { get; }
 
-		public EntityReference ThreadEntity { get; private set; }
+		public EntityReference ThreadEntity { get; }
 	}
 }

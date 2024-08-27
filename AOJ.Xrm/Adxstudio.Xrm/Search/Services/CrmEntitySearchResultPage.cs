@@ -44,7 +44,7 @@ namespace Adxstudio.Xrm.Search.Services
         [DataMember]
         public IEnumerable<FacetView> FacetViews { get; private set; }
 
-		public IEnumerable<string> SortingOptions { get; private set; }
+		public IEnumerable<string> SortingOptions { get; }
 
 		public IEnumerator<ICrmEntitySearchResult> GetEnumerator()
 		{

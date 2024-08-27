@@ -31,23 +31,23 @@ namespace Adxstudio.Xrm.Cms
 			WebTemplate = entity.GetAttributeValue<EntityReference>("adx_webtemplateid");
 		}
 
-		public DateTime? CloseVotingDate { get; private set; }
+		public DateTime? CloseVotingDate { get; }
 
 		[JsonIgnore]
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
 		public Guid Id
 		{
 			get { return Entity.Id; }
 		}
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
 		public IEnumerable<IPollOption> Options { get; set; }
 
-		public string Question { get; private set; }
+		public string Question { get; }
 
-		public string SubmitButtonLabel { get; private set; }
+		public string SubmitButtonLabel { get; }
 
 		public IPollOption UserSelectedOption { get; set; }
 
@@ -57,6 +57,6 @@ namespace Adxstudio.Xrm.Cms
 		}
 
 		[JsonIgnore]
-		public EntityReference WebTemplate { get; private set; }
+		public EntityReference WebTemplate { get; }
 	}
 }

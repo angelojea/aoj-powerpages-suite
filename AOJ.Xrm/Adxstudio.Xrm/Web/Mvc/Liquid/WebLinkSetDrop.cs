@@ -46,7 +46,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			get { return _webLinks.Value.AsEnumerable(); }
 		}
 
-		protected IWebLinkSet WebLinkSet { get; private set; }
+		protected IWebLinkSet WebLinkSet { get; }
 
 		public override string GetEditable(Context context, EditableOptions options)
 		{

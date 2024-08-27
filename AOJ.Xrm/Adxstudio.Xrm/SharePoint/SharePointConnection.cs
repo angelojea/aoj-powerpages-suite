@@ -149,7 +149,7 @@ namespace Adxstudio.SharePoint
 				ValidateOnClient = bool.Parse(validateOnClient);
 			}
 
-			CookieExpiryWindow = !string.IsNullOrWhiteSpace(cookieExpiryWindow) ? TimeSpan.Parse(cookieExpiryWindow) as TimeSpan? : null;
+			CookieExpiryWindow = !string.IsNullOrWhiteSpace(cookieExpiryWindow) ? TimeSpan.Parse(cookieExpiryWindow) : null;
 		}
 
 		private static ConnectionStringSettings GetConnectionStringSettings(string connectionStringName)

@@ -48,9 +48,9 @@ namespace Adxstudio.Xrm.Search.Index
 			}
 		}
 
-		public string LogicalName { get; private set; }
+		public string LogicalName { get; }
 
-		public int Page { get; private set; }
+		public int Page { get; }
 
 		public void AddAttribute(string attributeLogicalName)
 		{
@@ -62,7 +62,7 @@ namespace Adxstudio.Xrm.Search.Index
 
 		public bool ContainsAttribute(string attributeLogicalName)
 		{
-			return this._xml.XPathSelectElements("//fetch/entity/attribute").Any(x => x.GetAttributeValue("name") == attributeLogicalName);
+			return _xml.XPathSelectElements("//fetch/entity/attribute").Any(x => x.GetAttributeValue("name") == attributeLogicalName);
 		}
 
 		/// <summary>

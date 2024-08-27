@@ -34,11 +34,11 @@ namespace Adxstudio.Xrm.Forums
 			ServiceContext = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 		}
 
-		public Entity ForumThread { get; private set; }
+		public Entity ForumThread { get; }
 
-		public string PortalName { get; private set; }
+		public string PortalName { get; }
 		
-		public OrganizationServiceContext ServiceContext { get; private set; }
+		public OrganizationServiceContext ServiceContext { get; }
 
 		public IEnumerable<Entity> Tags
 		{

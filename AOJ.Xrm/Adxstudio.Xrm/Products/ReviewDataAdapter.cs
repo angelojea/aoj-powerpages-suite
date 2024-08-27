@@ -81,7 +81,7 @@ namespace Adxstudio.Xrm.Products
 			da.CreateAnnotation(Review, title, remarks);
 		}
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 		
 		protected EntityReference Review { get; set; }
 	}

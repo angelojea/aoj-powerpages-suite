@@ -86,9 +86,9 @@ namespace Adxstudio.Xrm.Web.Routing
 			_cacheKey = GetCacheKey(GetType(), SiteMarker, PortalName);
 		}
 
-		public string PortalName { get; private set; }
+		public string PortalName { get; }
 
-		public string SiteMarker { get; private set; }
+		public string SiteMarker { get; }
 
 		public string GetPortalContextPath(IPortalContext portalContext, string path)
 		{
@@ -400,19 +400,14 @@ namespace Adxstudio.Xrm.Web.Routing
 
 		private class MockRequestHttpContext : HttpContextBase
 		{
-			private readonly HttpRequestBase _request;
-
 			public MockRequestHttpContext(HttpRequestBase request)
 			{
 				if (request == null) throw new ArgumentNullException("request");
 
-				_request = request;
+				Request = request;
 			}
 
-			public override HttpRequestBase Request
-			{
-				get { return _request; }
-			}
+			public override HttpRequestBase Request { get; }
 
 			public static MockRequestHttpContext FromPath(string path)
 			{
@@ -424,19 +419,14 @@ namespace Adxstudio.Xrm.Web.Routing
 
 		private class MockHttpRequest : HttpRequestBase
 		{
-			private readonly string _appRelativePath;
-
 			public MockHttpRequest(string appRelativePath)
 			{
 				if (appRelativePath == null) throw new ArgumentNullException("appRelativePath");
 
-				_appRelativePath = appRelativePath;
+				AppRelativeCurrentExecutionFilePath = appRelativePath;
 			}
 
-			public override string AppRelativeCurrentExecutionFilePath
-			{
-				get { return _appRelativePath; }
-			}
+			public override string AppRelativeCurrentExecutionFilePath { get; }
 
 			public override string PathInfo
 			{

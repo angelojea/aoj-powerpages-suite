@@ -27,7 +27,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			get { return "state"; }
 		}
 
-		public CrmEntityFormViewField Field { get; private set; }
+		public CrmEntityFormViewField Field { get; }
 
 		protected override void InstantiateControlIn(Control container)
 		{

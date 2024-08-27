@@ -36,9 +36,9 @@ namespace Adxstudio.Xrm.Diagnostics.Trace
 		/// <param name="timeStamp">Time Stamp</param>
 		public JourneyDetail(string interactionName, string interactionJson, DateTime timeStamp)
 		{
-			this.InteractionName = interactionName;
-			this.InteractionJson = interactionJson;
-			this.TimeStamp = timeStamp;
+			InteractionName = interactionName;
+			InteractionJson = interactionJson;
+			TimeStamp = timeStamp;
 		}
 	}
 }

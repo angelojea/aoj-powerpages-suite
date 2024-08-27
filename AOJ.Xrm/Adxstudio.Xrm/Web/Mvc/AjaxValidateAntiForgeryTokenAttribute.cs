@@ -34,7 +34,7 @@ namespace Adxstudio.Xrm.Web.Mvc
                 //  to validating the AntiForgeryToken
                 if (request.IsAjaxRequest())
                 {
-                    this.Validate(filterContext.RequestContext);
+                    Validate(filterContext.RequestContext);
                 }
                 else
                 {

@@ -44,8 +44,7 @@ namespace Adxstudio.Xrm.Web.Modules
 		private const string _prefix = "xrm-adx";
 
 		// For an embedded resource file to be eligible for use in a server-side include, it must be listed here.
-		private static readonly string[] _paths = new[]
-		{
+		private static readonly string[] _paths = {
 			"js/editable/editable.js",
 			"js/editable/utilities.js",
 			"js/editable/attribute.js",
@@ -211,7 +210,7 @@ namespace Adxstudio.Xrm.Web.Modules
 			IEmbeddedResourceRouteHandler embeddedResourceRouteHandler,
 			IEmbeddedResourceRouteHandler scriptHandler)
 		{
-			var entityRouteHandler = new Adxstudio.Xrm.Web.Routing.EntityRouteHandler(PortalName);
+			var entityRouteHandler = new Routing.EntityRouteHandler(PortalName);
 
 			routes.Add(
 				entityRouteHandler.GetType().FullName,
@@ -316,7 +315,7 @@ namespace Adxstudio.Xrm.Web.Modules
 		{
 			// swap out the PortalRouteHandler with a custom dependency (keeping the base script handler)
 
-			var portalRouteHandlerAdx = new Adxstudio.Xrm.Web.Routing.PortalRouteHandler(PortalName);
+			var portalRouteHandlerAdx = new Routing.PortalRouteHandler(PortalName);
 
 			if (CdnEnabled)
 			{

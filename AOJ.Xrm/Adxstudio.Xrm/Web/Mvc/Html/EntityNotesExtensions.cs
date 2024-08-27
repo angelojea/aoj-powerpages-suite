@@ -401,7 +401,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 			if (deleteNotesEnabled && !string.IsNullOrWhiteSpace(serviceUrlDelete))
 			{
-				var deleteNoteModal = html.DeleteModal(modalDeleteNoteSize, string.Join(" ", new[] { "modal-deletenote", modalDeleteNoteCssClass }).TrimEnd(' '),
+				var deleteNoteModal = html.DeleteModal(modalDeleteNoteSize, string.Join(" ", "modal-deletenote", modalDeleteNoteCssClass).TrimEnd(' '),
 					modalDeleteNoteTitle.GetValueOrDefault(DefaultDeleteNoteModalTitle),
 					modalDeleteNoteConfirmation.GetValueOrDefault(DefaultDeleteNoteModalConfirmation),
 					modalDeleteNoteDismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText),
@@ -543,23 +543,20 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			{
 				return html.BoostrapModal(BootstrapExtensions.BootstrapModalSize.Default,
 					title.GetValueOrDefault(DefaultAddCommentModalTitle), body.ToString(),
-					string.Join(" ", new[] { "modal-addnote", cssClass }).TrimEnd(' '), null, false,
+					string.Join(" ", "modal-addnote", cssClass).TrimEnd(' '), null, false,
 					dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 					primaryButtonText.GetValueOrDefault(DefaultAddCommentModalPrimaryButtonText),
 					cancelButtonText.GetValueOrDefault(DefaultAddCommentModalCancelButtonText), titleCssClass, primaryButtonCssClass,
 					closeButtonCssClass, htmlAttributes);
 			}
-			else
-			{
-				return html.BoostrapModal(BootstrapExtensions.BootstrapModalSize.Default,
-					title.GetValueOrDefault(DefaultAddNoteModalTitle), body.ToString(),
-					string.Join(" ", new[] { "modal-addnote", cssClass }).TrimEnd(' '), null, false,
-					dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
-					primaryButtonText.GetValueOrDefault(DefaultAddNoteModalPrimaryButtonText),
-					cancelButtonText.GetValueOrDefault(DefaultAddNoteModalCancelButtonText), titleCssClass, primaryButtonCssClass,
-					closeButtonCssClass, htmlAttributes);
 
-			}
+			return html.BoostrapModal(BootstrapExtensions.BootstrapModalSize.Default,
+				title.GetValueOrDefault(DefaultAddNoteModalTitle), body.ToString(),
+				string.Join(" ", "modal-addnote", cssClass).TrimEnd(' '), null, false,
+				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
+				primaryButtonText.GetValueOrDefault(DefaultAddNoteModalPrimaryButtonText),
+				cancelButtonText.GetValueOrDefault(DefaultAddNoteModalCancelButtonText), titleCssClass, primaryButtonCssClass,
+				closeButtonCssClass, htmlAttributes);
 		}
 
 		/// <summary>
@@ -683,7 +680,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 			return html.BoostrapModal(BootstrapExtensions.BootstrapModalSize.Default,
 				title.GetValueOrDefault(DefaultEditNoteModalTitle), body.ToString(),
-				string.Join(" ", new[] { "modal-editnote", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-editnote", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(DefaultEditNoteModalPrimaryButtonText),
 				cancelButtonText.GetValueOrDefault(DefaultEditNoteModalCancelButtonText), titleCssClass, primaryButtonCssClass,
@@ -1005,7 +1002,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 </div>
 {{/each}}";
 
-			return template.ToString() + attachmentTemplate.ToString();
+			return template + attachmentTemplate.ToString();
 		}
 	}
 }

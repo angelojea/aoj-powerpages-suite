@@ -16,6 +16,6 @@ namespace Adxstudio.Xrm.Forums
 			LatestPost = latestPost;
 		}
 
-		public IForumPostInfo LatestPost { get; private set; }
+		public IForumPostInfo LatestPost { get; }
 	}
 }

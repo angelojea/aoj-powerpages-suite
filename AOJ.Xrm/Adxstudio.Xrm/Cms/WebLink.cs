@@ -62,38 +62,38 @@ namespace Adxstudio.Xrm.Cms
 			DisplayPageChildLinks = entity.GetAttributeValue<bool?>("adx_displaypagechildlinks").GetValueOrDefault(false);
 		}
 
-		public IPortalViewAttribute Description { get; private set; }
+		public IPortalViewAttribute Description { get; }
 
-		public bool DisplayImageOnly { get; private set; }
+		public bool DisplayImageOnly { get; }
 
-		public bool DisplayPageChildLinks { get; private set; }
+		public bool DisplayPageChildLinks { get; }
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public IPortalViewAttribute Name { get; private set; }
+		public IPortalViewAttribute Name { get; }
 
-		public string ImageAlternateText { get; private set; }
+		public string ImageAlternateText { get; }
 
-		public int? ImageHeight { get; private set; }
+		public int? ImageHeight { get; }
 
-		public string ImageUrl { get; private set; }
+		public string ImageUrl { get; }
 
-		public int? ImageWidth { get; private set; }
+		public int? ImageWidth { get; }
 
-		public bool IsExternal { get; private set; }
+		public bool IsExternal { get; }
 
-		public bool HasImage { get; private set; }
+		public bool HasImage { get; }
 
-		public bool NoFollow { get; private set; }
+		public bool NoFollow { get; }
 
-		public bool OpenInNewWindow { get; private set; }
+		public bool OpenInNewWindow { get; }
 
-		public EntityReference Page { get; private set; }
+		public EntityReference Page { get; }
 
-		public string ToolTip { get; private set; }
+		public string ToolTip { get; }
 
-		public string Url { get; private set; }
+		public string Url { get; }
 
-		public IEnumerable<IWebLink> WebLinks { get; private set; }
+		public IEnumerable<IWebLink> WebLinks { get; }
 	}
 }

@@ -31,7 +31,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 			_enableTracking = entity.GetAttributeValue<bool?>("adx_enabletracking").GetValueOrDefault();
 		}
 
-		protected string PortalName { get; private set; }
+		protected string PortalName { get; }
 
 		public void ProcessRequest(HttpContext context)
 		{

@@ -20,7 +20,7 @@ namespace Adxstudio.Xrm.Search
 {
 	internal class ExtendedAttributeSearchResultInfo
 	{
-		private static readonly int[] _extendedInfoAttributeQueryTypes = new[] { 64, 0 };
+		private static readonly int[] _extendedInfoAttributeQueryTypes = { 64, 0 };
 
 		public ExtendedAttributeSearchResultInfo(OrganizationServiceContext context, string logicalName, IDictionary<string, EntityMetadata> metadataCache)
 		{
@@ -36,15 +36,15 @@ namespace Adxstudio.Xrm.Search
 			AttributeLayoutXml = GetAttributeLayoutXml(context, Metadata, TypeCode);
 		}
 
-		public string DisplayName { get; private set; }
+		public string DisplayName { get; }
 
-		public EntityMetadata Metadata { get; private set; }
+		public EntityMetadata Metadata { get; }
 
-		public int TypeCode { get; private set; }
+		public int TypeCode { get; }
 
-		protected XDocument AttributeLayoutXml { get; private set; }
+		protected XDocument AttributeLayoutXml { get; }
 		
-		protected OrganizationServiceContext Context { get; private set; }
+		protected OrganizationServiceContext Context { get; }
 
 		public IDictionary<string, string> GetAttributes(Entity entity, IDictionary<string, EntityMetadata> metadataCache)
 		{

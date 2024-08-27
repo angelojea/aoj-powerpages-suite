@@ -54,7 +54,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// Dictionary of the cell bindings
 		/// </summary>
-		protected IDictionary<string, CellBinding> Bindings { get; private set; }
+		protected IDictionary<string, CellBinding> Bindings { get; }
 		
 		/// <summary>
 		/// Flag determining whether this is a notes control or a timeline control
@@ -328,7 +328,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 					settings.AttachFileAccept,
 					settings.AttachFileRestrictAccept.GetValueOrDefault(false),
 					Localization.GetLocalizedString(settings.AttachFileRestrictErrorMessage, Metadata.LanguageCode),
-					settings.AttachFileMaximumSize.HasValue ? Convert.ToUInt64(settings.AttachFileMaximumSize.Value) << 10 : (ulong?)null,
+					settings.AttachFileMaximumSize.HasValue ? Convert.ToUInt64(settings.AttachFileMaximumSize.Value) << 10 : null,
 					Localization.GetLocalizedString(settings.AttachFileMaximumSizeErrorMessage, Metadata.LanguageCode),
 					IsTimeline ? ((JsonConfiguration.TimelineMetadata)settings).AttachFileAcceptExtensions : string.Empty,
 					isPortalComment: IsTimeline);
@@ -387,7 +387,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			}
 
 			var entityMetadata = portalContext.ServiceContext.GetEntityMetadata(entityLogicalName, EntityFilters.All);
-			var textAttribute = (MemoAttributeMetadata)entityMetadata.Attributes.Where((att) => { return att.LogicalName == textAttributeName; }).First();
+			var textAttribute = (MemoAttributeMetadata)entityMetadata.Attributes.Where(att => { return att.LogicalName == textAttributeName; }).First();
 
 			var notesHtml = html.Notes(target, getServiceUrl, createEnabled, editEnabled, deleteEnabled, addServiceUrl,
 				updateServiceUrl,  deleteServiceUrl, getAttachmentsServiceUrl, Metadata.NotesPageSize ?? 0,

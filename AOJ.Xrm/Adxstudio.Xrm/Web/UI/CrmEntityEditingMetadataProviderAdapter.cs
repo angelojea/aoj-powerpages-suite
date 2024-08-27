@@ -32,9 +32,9 @@ namespace Adxstudio.Xrm.Web.UI
 			PortalName = portalName;
 		}
 
-		protected string PortalName { get; private set; }
+		protected string PortalName { get; }
 
-		protected ICmsEntityEditingMetadataProvider Provider { get; private set; }
+		protected ICmsEntityEditingMetadataProvider Provider { get; }
 
 		public void AddAttributeMetadata(string portalName, IEditableCrmEntityControl control, Control container, Entity entity, string propertyName, string propertyDisplayName)
 		{

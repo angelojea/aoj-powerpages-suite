@@ -49,9 +49,9 @@ namespace Adxstudio.Xrm.Cms
 		public ActivityEnabledEntityDataAdapter(ActivityEnabledEntity record, IDataAdapterDependencies dependencies)
 			: this(record.EntityReference, dependencies) { }
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
-		protected EntityReference RecordReference { get; private set; }
+		protected EntityReference RecordReference { get; }
 
 		public void CreateAlert(EntityReference user)
 		{

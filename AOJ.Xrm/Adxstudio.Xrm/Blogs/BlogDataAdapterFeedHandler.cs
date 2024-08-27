@@ -23,9 +23,9 @@ namespace Adxstudio.Xrm.Blogs
 			RouteName = routeName;
 		}
 
-		public string PortalName { get; private set; }
+		public string PortalName { get; }
 
-		public string RouteName { get; private set; }
+		public string RouteName { get; }
 
 		public void ProcessRequest(HttpContext context)
 		{

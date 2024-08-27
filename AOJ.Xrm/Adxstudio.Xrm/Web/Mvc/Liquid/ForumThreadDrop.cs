@@ -32,7 +32,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			_latestPost = new Lazy<ForumPostDrop>(() => new ForumPostDrop(this, _dependencies, _adapter.SelectLatestPost()), LazyThreadSafetyMode.None);
 		}
 
-		protected IForumThread Thread { get; private set; }
+		protected IForumThread Thread { get; }
 
 		public AuthorDrop Author { get; private set; }
 

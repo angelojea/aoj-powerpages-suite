@@ -35,7 +35,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			Website = website;
 		}
 
-		protected CrmWebsite Website { get; private set; }
+		protected CrmWebsite Website { get; }
 
 		public override async Task Invoke(IOwinContext context)
 		{

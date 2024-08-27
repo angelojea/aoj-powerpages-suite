@@ -137,10 +137,8 @@ namespace Adxstudio.Xrm.Ideas
 				null,
 				addBinaryFilterConditions => addBinaryFilterConditions("comments", "not-null"));
 			}
-			else
-			{
-				return new Dictionary<Guid, int>();
-			}
+
+			return new Dictionary<Guid, int>();
 		}
 
 		public static IDictionary<Guid, Tuple<string, string>> FetchIdeaCommentExtendedData(this OrganizationServiceContext serviceContext, IEnumerable<Guid> commentIds)
@@ -317,12 +315,9 @@ namespace Adxstudio.Xrm.Ideas
 			{
 				orFilter.AddFetchXmlFilterCondition("createdbycontact", "eq", portalUser.Id.ToString());
 			}
-			else
-			{
-				//author url?
-				//orFilter.AddFetchXmlFilterCondition("adx_createdbyipaddress", "eq", httpContext.Request.UserHostAddress);
-			}
 
+			//author url?
+			//orFilter.AddFetchXmlFilterCondition("adx_createdbyipaddress", "eq", httpContext.Request.UserHostAddress);
 			var ideaForumFilter = entity.Descendants("link-entity").First().Descendants("filter").First();
 
 			foreach (var id in ids)
@@ -390,12 +385,9 @@ namespace Adxstudio.Xrm.Ideas
 			{
 				orFilter.AddFetchXmlFilterCondition("createdbycontact", "eq", portalUser.Id.ToString());
 			}
-			else
-			{
-				// author_url?
-				//orFilter.AddFetchXmlFilterCondition("adx_createdbyipaddress", "eq", httpContext.Request.UserHostAddress);
-			}
 
+			// author_url?
+			//orFilter.AddFetchXmlFilterCondition("adx_createdbyipaddress", "eq", httpContext.Request.UserHostAddress);
 			var ideaForumFilter = entity.Descendants("link-entity").First().Descendants("filter").First();
 
 			foreach (var id in ideas.Where(idea => idea.GetAttributeValue<EntityReference>("adx_ideaforumid") != null).Select(idea => idea.GetAttributeValue<EntityReference>("adx_ideaforumid").Id).Distinct())

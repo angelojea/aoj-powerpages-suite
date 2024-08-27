@@ -8,9 +8,9 @@ namespace Adxstudio.Xrm.Cms
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Web;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Web;
-	using Adxstudio.Xrm.Web.Mvc;
+	using Services;
+	using Web;
+	using Web.Mvc;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Client.Security;
 	using Microsoft.Xrm.Sdk;
@@ -34,7 +34,7 @@ namespace Adxstudio.Xrm.Cms
 				return null;
 			}
 
-			return this.ContentMapProvider.Using(contentMap => this.Select(siteMarkerName, contentMap));
+			return ContentMapProvider.Using(contentMap => Select(siteMarkerName, contentMap));
 		}
 
 		/// <summary> Selects the SiteMarker by name with read access. </summary>
@@ -47,7 +47,7 @@ namespace Adxstudio.Xrm.Cms
 				return null;
 			}
 
-			return this.ContentMapProvider.Using(contentMap => this.SelectWithReadAccess(siteMarkerName, contentMap));
+			return ContentMapProvider.Using(contentMap => SelectWithReadAccess(siteMarkerName, contentMap));
 		}
 
 		/// <summary> The try get page node from site marker node. </summary>
@@ -82,22 +82,22 @@ namespace Adxstudio.Xrm.Cms
 				return false;
 			}
 
-			if (!this.Language.IsCrmMultiLanguageEnabled)
+			if (!Language.IsCrmMultiLanguageEnabled)
 			{
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("WebPage found for Sitemarker:{0} Page:{1}", siteMarkerNode.Id, targetNode.Id));
 				return true;
 			}
 
 			// MLP - Find the content webpage for the current language from the target page
-			var contentWebPage = targetNode.LanguageContentPages.FirstOrDefault(p => p.WebPageLanguage == this.Language.ContextLanguage.WebsiteLanguageNode);
+			var contentWebPage = targetNode.LanguageContentPages.FirstOrDefault(p => p.WebPageLanguage == Language.ContextLanguage.WebsiteLanguageNode);
 			if (contentWebPage != null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("WebPage found for Sitemarker:{0} Language:{1}", siteMarkerNode.Id, this.Language.ContextLanguage.Lcid));
+				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("WebPage found for Sitemarker:{0} Language:{1}", siteMarkerNode.Id, Language.ContextLanguage.Lcid));
 				targetNode = contentWebPage;
 				return true;
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("No WebPage found for Sitemarker:{0} Language:{1}", siteMarkerNode.Id, this.Language.ContextLanguage.Lcid));
+			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("No WebPage found for Sitemarker:{0} Language:{1}", siteMarkerNode.Id, Language.ContextLanguage.Lcid));
 			return false;
 		}
 
@@ -109,12 +109,12 @@ namespace Adxstudio.Xrm.Cms
 		{
 			WebPageNode target;
 
-			if (!this.TryGetPageNodeFromSiteMarkerNode(siteMarkerName, contentMap, out target))
+			if (!TryGetPageNodeFromSiteMarkerNode(siteMarkerName, contentMap, out target))
 			{
 				return null;
 			}
 
-			return this.ToSiteMarkerTarget(target);
+			return ToSiteMarkerTarget(target);
 		}
 
 		/// <summary> Select site marker target page with read access. </summary>
@@ -123,11 +123,11 @@ namespace Adxstudio.Xrm.Cms
 		/// <returns> The <see cref="ISiteMarkerTarget"/>. </returns>
 		private ISiteMarkerTarget SelectWithReadAccess(string siteMarkerName, ContentMap contentMap)
 		{
-			var securityProvider = this.Dependencies.GetSecurityProvider();
-			var serviceContext = this.Dependencies.GetServiceContext();
+			var securityProvider = Dependencies.GetSecurityProvider();
+			var serviceContext = Dependencies.GetServiceContext();
 			WebPageNode target;
 
-			if (!this.TryGetPageNodeFromSiteMarkerNode(siteMarkerName, contentMap, out target))
+			if (!TryGetPageNodeFromSiteMarkerNode(siteMarkerName, contentMap, out target))
 			{
 				return null;
 			}
@@ -137,7 +137,7 @@ namespace Adxstudio.Xrm.Cms
 				return null;
 			}
 
-			return this.ToSiteMarkerTarget(target);
+			return ToSiteMarkerTarget(target);
 		}
 
 		/// <summary> The to site marker target. </summary>
@@ -150,9 +150,9 @@ namespace Adxstudio.Xrm.Cms
 				return null;
 			}
 
-			var urlProvider = this.Dependencies.GetUrlProvider();
-			var securityProvider = this.Dependencies.GetSecurityProvider();
-			var serviceContext = this.Dependencies.GetServiceContext();
+			var urlProvider = Dependencies.GetUrlProvider();
+			var securityProvider = Dependencies.GetSecurityProvider();
+			var serviceContext = Dependencies.GetServiceContext();
 			var entity = webPageNode.AttachTo(serviceContext);
 
 			var portalViewEntity = new PortalViewEntity(serviceContext, entity, securityProvider, urlProvider);

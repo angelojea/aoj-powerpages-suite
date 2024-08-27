@@ -6,7 +6,7 @@
 namespace Adxstudio.Xrm.Diagnostics.Trace
 {
 	using System.Diagnostics;
-	using Adxstudio.Xrm.Configuration;
+	using Configuration;
 
 	/// <summary>
 	/// Helpers related to logging.

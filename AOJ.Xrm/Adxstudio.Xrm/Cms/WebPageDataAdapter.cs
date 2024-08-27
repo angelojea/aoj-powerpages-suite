@@ -54,7 +54,7 @@ namespace Adxstudio.Xrm.Cms
 
 		public WebPageDataAdapter(Entity page, string portalName = null) : this(page.ToEntityReference(), new PortalConfigurationDataAdapterDependencies(portalName)) { }
 
-		protected EntityReference WebPageReference { get; private set; }
+		protected EntityReference WebPageReference { get; }
 
 		public IDictionary<string, object> GetCommentAttributes(string content, string authorName = null, string authorEmail = null, string authorUrl = null, HttpContext context = null)
 		{

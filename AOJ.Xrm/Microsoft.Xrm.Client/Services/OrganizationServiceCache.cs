@@ -45,7 +45,7 @@ namespace Microsoft.Xrm.Client.Services
 		/// <summary>
 		/// The cache region used when interacting with the <see cref="ObjectCache"/>.
 		/// </summary>
-		public string CacheRegionName { get; private set; }
+		public string CacheRegionName { get; }
 
 		/// <summary>
 		/// The caching behavior mode.
@@ -60,22 +60,22 @@ namespace Microsoft.Xrm.Client.Services
 		/// <summary>
 		/// The underlying cache.
 		/// </summary>
-		public virtual ObjectCache Cache { get; private set; }
+		public virtual ObjectCache Cache { get; }
 
 		/// <summary>
 		/// The prefix string used for constructing the <see cref="CacheEntryChangeMonitor"/> objects assigned to the cache items.
 		/// </summary>
-		public virtual string CacheEntryChangeMonitorPrefix { get; private set; }
+		public virtual string CacheEntryChangeMonitorPrefix { get; }
 
 		/// <summary>
 		/// A key value for uniquely distinguishing the connection.
 		/// </summary>
-		public string ConnectionId { get; private set; }
+		public string ConnectionId { get; }
 
 		/// <summary>
 		/// Gets or sets the flag determining whether or not to hash the serialized query.
 		/// </summary>
-		public bool QueryHashingEnabled { get; private set; }
+		public bool QueryHashingEnabled { get; }
 
 		static OrganizationServiceCache()
 		{

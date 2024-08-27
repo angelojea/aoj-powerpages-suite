@@ -5,7 +5,7 @@
 
 namespace Adxstudio.Xrm.Web.Mvc.Liquid
 {
-	using Adxstudio.Xrm.Services;
+	using Services;
 
 	using System;
 	using System.ServiceModel;
@@ -15,19 +15,14 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 	public class EntitySetDrop : PortalDrop
 	{
-		private readonly string _entityLogicalName;
-
 		public EntitySetDrop(IPortalLiquidContext portalLiquidContext, string entityLogicalName) : base(portalLiquidContext)
 		{
 			if (entityLogicalName == null) throw new ArgumentNullException("entityLogicalName");
 
-			_entityLogicalName = entityLogicalName;
+			LogicalName = entityLogicalName;
 		}
 
-		public string LogicalName
-		{
-			get { return _entityLogicalName; }
-		}
+		public string LogicalName { get; }
 
 		public override object BeforeMethod(string method)
 		{
@@ -52,7 +47,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			{
 				try
 				{
-					var entity = serviceContext.RetrieveSingle(new EntityReference(this.LogicalName, id), new ColumnSet(true));
+					var entity = serviceContext.RetrieveSingle(new EntityReference(LogicalName, id), new ColumnSet(true));
 
 					EntityDrop entityDrop = (entity == null) ? null : new EntityDrop(this, entity);
 					return (entityDrop != null && entityDrop.Permissions.CanRead) ? entityDrop : null;

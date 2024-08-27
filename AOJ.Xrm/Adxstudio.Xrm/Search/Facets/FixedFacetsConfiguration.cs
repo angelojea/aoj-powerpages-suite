@@ -69,7 +69,7 @@ namespace Adxstudio.Xrm.Search.Facets
 				new FacetConfiguration(RecordTypeFacetFieldName, 
 										FacetSortOrder.OrderHitsDesc, 
 										FacetHandlerType.Static,
-										new FacetSpec()
+										new FacetSpec
 										{
 											MinHitCount = 0,
 											ExpandSelection = true
@@ -78,7 +78,7 @@ namespace Adxstudio.Xrm.Search.Facets
 				new FacetConfiguration(ModifiedDateFacetFieldName, 
 										FacetSortOrder.OrderValueDesc, 
 										FacetHandlerType.Dynamic,
-										new FacetSpec()
+										new FacetSpec
 										{
 											MinHitCount = 0,
 											ExpandSelection = true,
@@ -90,8 +90,8 @@ namespace Adxstudio.Xrm.Search.Facets
 				new FacetConfiguration(RatingFieldFacetName,
 										FacetSortOrder.OrderValueAsc,
 										FacetHandlerType.Static,
-										new FacetSpec()
-											{
+										new FacetSpec
+										{
 												MinHitCount = 0,
 												ExpandSelection = true
 											},
@@ -99,7 +99,7 @@ namespace Adxstudio.Xrm.Search.Facets
 				new FacetConfiguration(ProductFieldFacetName,
 										FacetSortOrder.OrderHitsDesc,
 										FacetHandlerType.Static,
-										new FacetSpec()
+										new FacetSpec
 										{
 											MinHitCount = 0,
 											ExpandSelection = true
@@ -115,7 +115,7 @@ namespace Adxstudio.Xrm.Search.Facets
 		/// </returns>
 		public IEnumerable<FacetConfiguration> GetConfiguredFacets()
 		{
-			return this.facetConfigs;
+			return facetConfigs;
 		}
 
 		/// <summary>
@@ -129,7 +129,7 @@ namespace Adxstudio.Xrm.Search.Facets
 		/// </returns>
 		public bool IsFacetConfigured(string facetName)
 		{
-			return this.facetConfigs.Exists(facetConfig => { return facetConfig.FieldName == facetName; });
+			return facetConfigs.Exists(facetConfig => { return facetConfig.FieldName == facetName; });
 		}
 	}
 }

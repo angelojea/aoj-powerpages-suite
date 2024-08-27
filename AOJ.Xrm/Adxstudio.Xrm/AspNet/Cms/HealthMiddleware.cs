@@ -40,9 +40,9 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		/// <returns>Returns Task</returns>
 		public override async Task Invoke(IOwinContext context)
 		{
-			if (object.Equals(context.Request.Path, this.callbackPath))
+			if (Equals(context.Request.Path, callbackPath))
 			{
-				string info = this.GetInfo();
+				string info = GetInfo();
 				context.Response.ContentType = "application/json";
 				await context.Response.WriteAsync(info);
 			}

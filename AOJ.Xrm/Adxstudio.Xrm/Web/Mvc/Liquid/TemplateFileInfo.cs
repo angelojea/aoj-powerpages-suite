@@ -28,7 +28,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 		public string Description { get; set; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
 		public string Title
 		{
@@ -36,7 +36,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			set { _title = value; }
 		}
 
-		protected JObject Metadata { get; private set; }
+		protected JObject Metadata { get; }
 
 		private T GetMetadataValue<T>(string key)
 		{

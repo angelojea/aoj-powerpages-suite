@@ -114,7 +114,7 @@ namespace Adxstudio.Xrm.Security
 			SecurityContextKey = securityContextKey;
 		}
 
-		protected string SecurityContextKey { get; private set; }
+		protected string SecurityContextKey { get; }
 
 		public virtual CrmEntitySecurityCacheInfo GetCacheInfo(OrganizationServiceContext context, Entity entity, CrmEntityRight right)
 		{

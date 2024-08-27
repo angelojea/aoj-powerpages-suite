@@ -8,7 +8,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 	using System;
 	using System.Configuration;
 	using Microsoft.ServiceBus.Messaging;
-	using Adxstudio.Xrm.Core.Flighting;
+	using Core.Flighting;
 
 	/// <summary>
 	/// Settings for the <see cref="EventHubJob"/>.
@@ -58,10 +58,10 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			get
 			{
 				return FeatureCheckHelper.IsFeatureEnabled(FeatureNames.EventHubCacheInvalidation)
-					&& this.Subscription != null
-					&& !string.IsNullOrWhiteSpace(this.ConnectionString)
-					&& !string.IsNullOrWhiteSpace(this.Subscription.Name)
-					&& !string.IsNullOrWhiteSpace(this.Subscription.TopicPath);
+					&& Subscription != null
+					&& !string.IsNullOrWhiteSpace(ConnectionString)
+					&& !string.IsNullOrWhiteSpace(Subscription.Name)
+					&& !string.IsNullOrWhiteSpace(Subscription.TopicPath);
 			}
 		}
 
@@ -77,21 +77,21 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// <param name="subscriptionType">Type of subscription.</param>
 		public EventHubJobSettings(string subscriptionName, EventHubSubscriptionType subscriptionType)
 		{
-			this.SubscriptionType = subscriptionType;
+			SubscriptionType = subscriptionType;
 			subscriptionName = subscriptionName == null ? null : subscriptionName.Substring(0, Math.Min(subscriptionName.Length, 50));
 			var topicPath = "adxportaltopic";
 			var connectionStringCollection = ConfigurationManager.ConnectionStrings["ADXPortalSBConnection"];
 			var connectionString = connectionStringCollection != null ? connectionStringCollection.ConnectionString : null;
 
-			this.RecreateSubscription = true;
-			this.JobInterval = 2;
-			this.ReceiveBatchMessageCount = 100;
-			this.ReceiveBatchServerWaitTime = new TimeSpan(0, 0, 0);
-			this.ConnectionString = connectionString;
+			RecreateSubscription = true;
+			JobInterval = 2;
+			ReceiveBatchMessageCount = 100;
+			ReceiveBatchServerWaitTime = new TimeSpan(0, 0, 0);
+			ConnectionString = connectionString;
 
 			if (!string.IsNullOrWhiteSpace(topicPath) && !string.IsNullOrWhiteSpace(subscriptionName))
 			{
-				this.Subscription = new SubscriptionDescription(topicPath, subscriptionName)
+				Subscription = new SubscriptionDescription(topicPath, subscriptionName)
 				{
 					EnableDeadLetteringOnFilterEvaluationExceptions = true,
 					EnableDeadLetteringOnMessageExpiration = false,

@@ -52,12 +52,12 @@ namespace Adxstudio.Xrm.Decorators
 		/// <returns>true if successful; false otherwise</returns>
 		public override bool Decorate()
 		{
-			if (!this.IsContextAvailable)
+			if (!IsContextAvailable)
 			{
 				return false;
 			}
 
-			this.Context.Response.Headers.Remove(HeaderDecorator.ServerHeader);
+			Context.Response.Headers.Remove(ServerHeader);
 
 			return true;
 		}

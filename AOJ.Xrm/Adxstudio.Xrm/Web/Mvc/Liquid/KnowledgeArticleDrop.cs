@@ -19,7 +19,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			Article = article;
 		}
 
-		protected IKnowledgeArticle Article { get; private set; }
+		protected IKnowledgeArticle Article { get; }
 
 		public string ArticlePublicNumber
 		{

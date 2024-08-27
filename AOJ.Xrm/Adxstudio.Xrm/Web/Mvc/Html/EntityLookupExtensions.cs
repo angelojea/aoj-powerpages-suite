@@ -85,7 +85,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			}
 
 			var container = new TagBuilder("div");
-			container.AddCssClass(string.Join(" ", new[] { "entity-associate", cssClass }).TrimEnd(' '));
+			container.AddCssClass(string.Join(" ", "entity-associate", cssClass).TrimEnd(' '));
 			container.MergeAttribute("data-url", serviceUrl);
 			
 			var jsonAssociateRequest =
@@ -223,7 +223,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			}
 
 			var container = new TagBuilder("div");
-			container.AddCssClass(string.Join(" ", new[] { "entity-lookup", cssClass }).TrimEnd(' '));
+			container.AddCssClass(string.Join(" ", "entity-lookup", cssClass).TrimEnd(' '));
 			container.MergeAttribute("data-url", gridServiceUrl);
 			container.MergeAttribute("data-lookup-datafieldname", lookupDataFieldName);
 			container.MergeAttribute("data-lookup-reference_entityformid", lookupReferenceEntityFormId.ToString());
@@ -291,7 +291,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 				cancelButtonText.GetValueOrDefault(_defaultModalLookupCancelButtonText), titleCssClass, primaryButtonCssClass,
 				closeButtonCssClass, htmlAttributes, footerButtonCollection, false, true);
 
-			container.InnerHtml = lookupModal.ToString() + (lookupCreateNewModal == null ? string.Empty : lookupCreateNewModal.ToString());
+			container.InnerHtml = lookupModal + (lookupCreateNewModal == null ? string.Empty : lookupCreateNewModal.ToString());
 
 			return new HtmlString(container.ToString());
 		}

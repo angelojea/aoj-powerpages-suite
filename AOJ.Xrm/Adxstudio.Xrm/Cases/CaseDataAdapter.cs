@@ -8,9 +8,9 @@ namespace Adxstudio.Xrm.Cases
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using Adxstudio.Xrm.Notes;
-	using Adxstudio.Xrm.Resources;
-	using Adxstudio.Xrm.Web;
+	using Notes;
+	using Resources;
+	using Web;
 	using Microsoft.Crm.Sdk.Messages;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Client.Messages;
@@ -35,7 +35,7 @@ namespace Adxstudio.Xrm.Cases
 			Dependencies = dependencies;
 		}
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 		
 		protected EntityReference Incident { get; set; }
 

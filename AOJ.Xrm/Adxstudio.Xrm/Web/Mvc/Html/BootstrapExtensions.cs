@@ -109,7 +109,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 				close.MergeAttribute("type", "button");
 				close.MergeAttribute("title", dismissButtonSrText ?? ResourceManager.GetString("Close_DefaultText"));
 				close.MergeAttribute("data-dismiss", "modal");
-				close.MergeAttribute("aria-label", Resources.ResourceManager.GetString("Close_DefaultText"));
+				close.MergeAttribute("aria-label", ResourceManager.GetString("Close_DefaultText"));
 				var span = new TagBuilder("span");
 				span.MergeAttribute("aria-hidden", "true");
 				span.InnerHtml = "&times;";
@@ -157,7 +157,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 					button.AddCssClass("primary");
 					button.MergeAttribute("type", "button");
 					button.MergeAttribute("tabindex", "0");
-					button.MergeAttribute("aria-label", primaryButtonText ?? Resources.ResourceManager.GetString("Ok_DefaultText"));
+					button.MergeAttribute("aria-label", primaryButtonText ?? ResourceManager.GetString("Ok_DefaultText"));
                     button.MergeAttribute("title", primaryButtonText ?? "Ok");
                     button.InnerHtml = primaryButtonText ?? "Ok";
 					if (!isLookup)
@@ -175,7 +175,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 					close.AddCssClass("cancel");
 					close.MergeAttribute("type", "button");
 					close.MergeAttribute("tabindex", "0");
-					close.MergeAttribute("aria-label", closeButtonText ?? Resources.ResourceManager.GetString("Cancel_DefaultText"));
+					close.MergeAttribute("aria-label", closeButtonText ?? ResourceManager.GetString("Cancel_DefaultText"));
 					close.MergeAttribute("data-dismiss", "modal");
 					close.MergeAttribute("title", closeButtonText ?? "Cancel");
 					close.InnerHtml = closeButtonText ?? "Cancel";
@@ -185,7 +185,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 				if (isLookup && !omitPrimaryButton && !omitCloseButton)
 				{
-					modalFooter.InnerHtml += button.ToString() + close.ToString();
+					modalFooter.InnerHtml += button + close.ToString();
 				}
 
 				if (footerButtonCollection != null)

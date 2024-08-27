@@ -20,22 +20,11 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		public string Format { get; set; }
 		public string PortalName { get; set; }
 
-		private bool _useSiteTimeZone = true;
+		[DefaultValue(true)]
+		public bool UseSiteTimeZone { get; set; } = true;
 
 		[DefaultValue(true)]
-		public bool UseSiteTimeZone 
-		{
-			get { return _useSiteTimeZone; }
-			set { _useSiteTimeZone = value; }
-		}
-
-		private bool _outputTimeZoneLabel = true;
-		[DefaultValue(true)]
-		public bool OutputTimeZoneLabel
-		{
-			get { return _outputTimeZoneLabel; }
-			set { _outputTimeZoneLabel = value; }
-		}
+		public bool OutputTimeZoneLabel { get; set; } = true;
 
 		protected override void Render(System.Web.UI.HtmlTextWriter writer)
 		{

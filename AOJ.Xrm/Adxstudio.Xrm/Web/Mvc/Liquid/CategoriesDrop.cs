@@ -9,8 +9,8 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Threading;
-	using Adxstudio.Xrm.Category;
-	using IDataAdapterDependencies = Adxstudio.Xrm.KnowledgeArticles.IDataAdapterDependencies;
+	using Category;
+	using IDataAdapterDependencies = KnowledgeArticles.IDataAdapterDependencies;
 
 	/// <summary>
 	/// Categories Drop
@@ -43,40 +43,40 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 		/// <param name="portalLiquidContext">Portal Liquid Context</param>
 		/// <param name="dependencies">Data Adapter Dependencies</param>
 		/// <param name="pageSize">Results Page Size</param>
-		public CategoriesDrop(IPortalLiquidContext portalLiquidContext, KnowledgeArticles.IDataAdapterDependencies dependencies, int pageSize = 5) : base(portalLiquidContext)
+		public CategoriesDrop(IPortalLiquidContext portalLiquidContext, IDataAdapterDependencies dependencies, int pageSize = 5) : base(portalLiquidContext)
 		{
 			if (dependencies == null) { throw new ArgumentException("dependencies"); }
 
-			this.PortalLiquidContext = portalLiquidContext;
+			PortalLiquidContext = portalLiquidContext;
 
-			this.Dependencies = dependencies;
+			Dependencies = dependencies;
 
-			this.dataAdapter = new CategoryAggregationDataAdapter(dependencies);
+			dataAdapter = new CategoryAggregationDataAdapter(dependencies);
 
-			this.topLevelCategories = new Lazy<CategoryDrop[]>(() => this.dataAdapter.SelectTopLevelCategories(pageSize).Select(e => new CategoryDrop(this, dependencies, e)).ToArray(), LazyThreadSafetyMode.None);
+			topLevelCategories = new Lazy<CategoryDrop[]>(() => dataAdapter.SelectTopLevelCategories(pageSize).Select(e => new CategoryDrop(this, dependencies, e)).ToArray(), LazyThreadSafetyMode.None);
 
-			this.recentCategories = new Lazy<CategoryDrop[]>(() => this.dataAdapter.SelectRecentCategories(pageSize).Select(e => new CategoryDrop(this, dependencies, e)).ToArray(), LazyThreadSafetyMode.None);
+			recentCategories = new Lazy<CategoryDrop[]>(() => dataAdapter.SelectRecentCategories(pageSize).Select(e => new CategoryDrop(this, dependencies, e)).ToArray(), LazyThreadSafetyMode.None);
 
-			this.popularCategories = new Lazy<CategoryDrop[]>(() => this.dataAdapter.SelectPopularCategories(pageSize).Select(e => new CategoryDrop(this, dependencies, e)).ToArray(), LazyThreadSafetyMode.None);
+			popularCategories = new Lazy<CategoryDrop[]>(() => dataAdapter.SelectPopularCategories(pageSize).Select(e => new CategoryDrop(this, dependencies, e)).ToArray(), LazyThreadSafetyMode.None);
 
         }
 
         /// <summary>
         /// Data Adpater Dependencies
         /// </summary>
-        internal IDataAdapterDependencies Dependencies { get; private set; }
+        internal IDataAdapterDependencies Dependencies { get; }
 
 		/// <summary>
 		/// Portal Liquid Context
 		/// </summary>
-		internal IPortalLiquidContext PortalLiquidContext { get; private set; }
+		internal IPortalLiquidContext PortalLiquidContext { get; }
 
 		/// <summary>
 		/// Category Drop to get Top Level (ParentCategoryId = null) categories
 		/// </summary>
 		public IEnumerable<CategoryDrop> TopLevel
 		{
-			get { return this.topLevelCategories.Value.AsEnumerable(); }
+			get { return topLevelCategories.Value.AsEnumerable(); }
 		}
 
 		/// <summary>
@@ -84,7 +84,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 		/// </summary>
 		public IEnumerable<CategoryDrop> Recent
 		{
-			get { return this.recentCategories.Value.AsEnumerable(); }
+			get { return recentCategories.Value.AsEnumerable(); }
 		}
 
 		/// <summary>
@@ -92,7 +92,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 		/// </summary>
 		public IEnumerable<CategoryDrop> Popular
 		{
-			get { return this.popularCategories.Value.AsEnumerable(); }
+			get { return popularCategories.Value.AsEnumerable(); }
 		}
 
 		/// <summary>
@@ -107,13 +107,13 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 				return null;
 			}
 
-			var category = this.dataAdapter.SelectByCategoryNumber(categoryNumber);
+			var category = dataAdapter.SelectByCategoryNumber(categoryNumber);
 			if (category == null)
 			{
 				return null;
 			}
 
-			return new CategoryDrop(this.PortalLiquidContext, this.Dependencies, category);
+			return new CategoryDrop(PortalLiquidContext, Dependencies, category);
 		}
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
         /// <returns>Category Drop Collection under <paramref name="parentCategoryId"/></returns>
         public IEnumerable<CategoryDrop> GetRelatedCategories(Guid parentCategoryId, int pageSize)
 		{
-			return this.dataAdapter.SelectRelatedCategories(parentCategoryId, pageSize).Select(category => new CategoryDrop(this.PortalLiquidContext, this.Dependencies, category));
+			return dataAdapter.SelectRelatedCategories(parentCategoryId, pageSize).Select(category => new CategoryDrop(PortalLiquidContext, Dependencies, category));
 		}
 	}
 }

@@ -16,7 +16,7 @@ namespace Adxstudio.Xrm.Web.Mvc
 	/// <summary>
 	/// Finds and rethrows the original 404 <see cref="HttpException"/> that happened during a request.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 	public class UnwrapNotFoundExceptionAttribute : FilterAttribute, IExceptionFilter
 	{
 		/// <summary>

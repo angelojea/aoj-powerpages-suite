@@ -62,7 +62,7 @@ namespace Adxstudio.Xrm.Caching
 			var objectCaches = GetObjectCaches();
 
 			foreach (var cache in objectCaches)
-				ObjectCacheManager.RemoveAll(cache);
+				cache.RemoveAll();
 		}
 
 		private static IEnumerable<IOrganizationServiceCache> GetServiceCaches()

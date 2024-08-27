@@ -13,10 +13,10 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
 	public class CloseIncidentActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-check-circle fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Close_Case_Button_Text");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Close_Case_Button_Text");
-		private static string DefaultResolutionLabel = ResourceManager.GetString("Case_Closed_DefaultResolutionLabel_Text");
-		private static string DefaultResolutionDescriptionLabel = ResourceManager.GetString("Case_Closed_Via_Web_Portal_LabelText");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-check-circle fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Close_Case_Button_Text");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Close_Case_Button_Text");
+		private static readonly string DefaultResolutionLabel = ResourceManager.GetString("Case_Closed_DefaultResolutionLabel_Text");
+		private static readonly string DefaultResolutionDescriptionLabel = ResourceManager.GetString("Case_Closed_Via_Web_Portal_LabelText");
 
 		public string DefaultResolution { get; set; }
 

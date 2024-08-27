@@ -189,7 +189,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 		private async Task<TKey> CreateWebsiteBindingAsync(PortalHostingEnvironment environment, TWebsite tempWebsite)
 		{
-			var website = await this.ExpandWebsite(tempWebsite);
+			var website = await ExpandWebsite(tempWebsite);
 
 			// check if the binding already exists
 
@@ -200,7 +200,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			{
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "A matching website binding already exists. Skip binding creation.");
 
-				return this.ToKey(existingBinding.Entity.Id);
+				return ToKey(existingBinding.Entity.Id);
 		}
 
 			// binding does not exist
@@ -209,10 +209,10 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 			var newBinding = website.AddWebsiteBinding(environment);
 
-			await this.Store.UpdateAsync(website);
-			await this.RemovePotentialDuplicateBindingAsync(environment, website, newBinding);
+			await Store.UpdateAsync(website);
+			await RemovePotentialDuplicateBindingAsync(environment, website, newBinding);
 
-			return this.ToKey(newBinding.Entity.Id);
+			return ToKey(newBinding.Entity.Id);
 		}
 
 		private async Task<TWebsite> ExpandWebsite(TWebsite website)
@@ -224,7 +224,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 		private IWebsiteStore<TWebsite, TKey> GetWebsiteStore()
 		{
-			var cast = Store as IWebsiteStore<TWebsite, TKey>;
+			var cast = Store;
 			if (cast == null)
 			{
 				throw new NotSupportedException("Store does not implement IWebsiteStore<TWebsite>.");
@@ -285,7 +285,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			Thread.Sleep(milliseconds);
 
 			// Query for the website bindings to see if a duplicate exists.
-			var website = await this.ExpandWebsite(tempWebsite);
+			var website = await ExpandWebsite(tempWebsite);
 			var bindings = website.Bindings
 				.Where(binding => MatchSiteName(binding.SiteName, environment.SiteName) && MatchVirtualPath(binding.VirtualPath, environment.ApplicationVirtualPath))
 				.ToList();
@@ -295,7 +295,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 				// Remove the binding if it was created by this thread.
 				if (tempWebsite.RemoveWebsiteBinding(newBinding))
 				{
-					await this.Store.UpdateAsync(tempWebsite);
+					await Store.UpdateAsync(tempWebsite);
 
 					ADXTrace.Instance.TraceWarning(TraceCategory.Application, "Duplicate website binding detected and deleted.");
 				}

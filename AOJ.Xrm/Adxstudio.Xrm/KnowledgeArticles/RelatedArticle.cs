@@ -7,9 +7,9 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 {
 	public class RelatedArticle : IRelatedArticle
 	{
-		public string Title { get; private set; }
+		public string Title { get; }
 
-		public string Url { get; private set; }
+		public string Url { get; }
 
 		public RelatedArticle(string title, string url)
 		{

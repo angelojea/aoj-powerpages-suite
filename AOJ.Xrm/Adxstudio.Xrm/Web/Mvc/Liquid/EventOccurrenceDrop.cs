@@ -15,7 +15,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 {
 	public class EventOccurrenceDrop : PortalDrop  //PortalUrlDrop
 	{
-		private IDataAdapterDependencies _dependencies;
+		private readonly IDataAdapterDependencies _dependencies;
 
 		public EventOccurrenceDrop(IPortalLiquidContext portalLiquidContext, IDataAdapterDependencies dependencies, IEventOccurrence occurrence)
 			: base(portalLiquidContext)
@@ -24,7 +24,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			_dependencies = dependencies;
 		}
 
-		protected IEventOccurrence Occurrence { get; private set; }
+		protected IEventOccurrence Occurrence { get; }
 
 		public DateTime End
 		{

@@ -49,31 +49,31 @@ namespace Adxstudio.Xrm.Products
 			}
 		}
 
-		public EntityReference Brand { get; private set; }
+		public EntityReference Brand { get; }
 		public string BrandName
 		{
 			get { return Brand.Name; }
 		}
-		public EntityReference Currency { get; private set; }
+		public EntityReference Currency { get; }
 		public decimal CurrentPrice
 		{
 			get { return PricingInfo.Price; }
 		}
 		public bool CurrentUserCanWriteReview { get { return true; } }
-		public EntityReference DefaultPriceList { get; private set; }
+		public EntityReference DefaultPriceList { get; }
 		public string DefaultPriceListName
 		{
 			get { return DefaultPriceList == null ? string.Empty : DefaultPriceList.Name; }
 		}
-		public EntityReference DefaultUnit { get; private set; }
+		public EntityReference DefaultUnit { get; }
 		public string Description
 		{
 			get { return Entity.GetAttributeValue<string>("description"); }
 		}
-		public Entity Entity { get; private set; }
-		public EntityReference EntityReference { get; private set; }
-		public string ImageURL { get; private set; }
-		public string ImageThumbnailURL { get; private set; }
+		public Entity Entity { get; }
+		public EntityReference EntityReference { get; }
+		public string ImageURL { get; }
+		public string ImageThumbnailURL { get; }
 		public bool IsInStock
 		{
 			get { return QuantityOnHand > 0; }
@@ -99,7 +99,7 @@ namespace Adxstudio.Xrm.Products
 		{
 			get { return Entity.GetAttributeValue<string>("adx_partialurl"); }
 		}
-		public IProductPricingInfo PricingInfo { get; private set; }
+		public IProductPricingInfo PricingInfo { get; }
 		public decimal QuantityOnHand
 		{
 			get { return Entity.GetAttributeValue<decimal>("quantityonhand"); }
@@ -115,7 +115,7 @@ namespace Adxstudio.Xrm.Products
 					Entity.GetAttributeValue<double?>("adx_ratingsum").GetValueOrDefault(0));
 			}
 		}
-		public DateTime ReleaseDate { get; private set; }
+		public DateTime ReleaseDate { get; }
 		public bool RequiresSpecialInstructions
 		{
 			get { return Entity.GetAttributeValue<bool?>("adx_requiresspecialinstructions").GetValueOrDefault(false); }
@@ -140,7 +140,7 @@ namespace Adxstudio.Xrm.Products
 		{
 			get { return Entity.GetAttributeValue<decimal>("stockweight"); }
 		}
-		public EntityReference Subject { get; private set; }
-		public EntityReference UnitGroup { get; private set; }
+		public EntityReference Subject { get; }
+		public EntityReference UnitGroup { get; }
 	}
 }

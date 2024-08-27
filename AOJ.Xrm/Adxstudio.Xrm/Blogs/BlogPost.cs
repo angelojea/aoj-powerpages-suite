@@ -65,36 +65,36 @@ namespace Adxstudio.Xrm.Blogs
 			Content = new HtmlString(HasExcerpt ? "{0}\n{1}".FormatWith(Summary, copy) : copy);
 		}
 
-		public ApplicationPath ApplicationPath { get; private set; }
+		public ApplicationPath ApplicationPath { get; }
 
-		public IBlogAuthor Author { get; private set; }
+		public IBlogAuthor Author { get; }
 
-		public int CommentCount { get; private set; }
+		public int CommentCount { get; }
 
-		public BlogCommentPolicy CommentPolicy { get; private set; }
+		public BlogCommentPolicy CommentPolicy { get; }
 
-		public IHtmlString Content { get; private set; }
+		public IHtmlString Content { get; }
 
-		public DateTime LastUpdatedTime { get; private set; }
+		public DateTime LastUpdatedTime { get; }
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public bool HasExcerpt { get; private set; }
+		public bool HasExcerpt { get; }
 
-		public Guid Id { get; private set; }
+		public Guid Id { get; }
 
-		public bool IsPublished { get; private set; }
+		public bool IsPublished { get; }
 
-		public DateTime PublishDate { get; private set; }
+		public DateTime PublishDate { get; }
 
-		public IHtmlString Summary { get; private set; }
+		public IHtmlString Summary { get; }
 
-		public IEnumerable<IBlogPostTag> Tags { get; private set; }
+		public IEnumerable<IBlogPostTag> Tags { get; }
 
-		public string Title { get; private set; }
+		public string Title { get; }
 
-		public IRatingInfo RatingInfo { get; private set; }
+		public IRatingInfo RatingInfo { get; }
 
-		public bool RatingEnabled { get; private set; }
+		public bool RatingEnabled { get; }
 	}
 }

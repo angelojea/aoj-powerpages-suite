@@ -44,7 +44,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			get { return _polls.Value.AsEnumerable(); }
 		}
 
-		protected IPollPlacement PollPlacement { get; private set; }
+		protected IPollPlacement PollPlacement { get; }
 
 		public string PlacementUrl
 		{

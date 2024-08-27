@@ -13,20 +13,20 @@ namespace Adxstudio.Xrm.Web.UI
 	using System.Linq;
 	using System.Threading.Tasks;
 	using System.Web;
-	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Collections.Generic;
+	using Cms;
+	using Collections.Generic;
 	using Adxstudio.Xrm.Configuration;
 	using Adxstudio.Xrm.Security;
-	using Adxstudio.Xrm.Services.Query;
-	using Adxstudio.Xrm.Web.UI.CrmEntityListView;
+	using Services.Query;
+	using CrmEntityListView;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Client;
 	using Microsoft.Xrm.Sdk.Messages;
 	using Microsoft.Xrm.Sdk.Metadata;
 	using Microsoft.Xrm.Sdk.Query;
-	using Adxstudio.Xrm.ContentAccess;
-	using Adxstudio.Xrm.Services;
+	using ContentAccess;
+	using Services;
 
 	/// <summary>
 	/// Data Adapter class for retrieving records defined by a view.
@@ -141,14 +141,14 @@ namespace Adxstudio.Xrm.Web.UI
 		/// <summary>
 		/// Data adataper dependencies
 		/// </summary>
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
 		/// <summary>
 		/// Current configuration settings
 		/// </summary>
-		protected ViewConfiguration Configuration { get; private set; }
+		protected ViewConfiguration Configuration { get; }
 
-		protected IDictionary<string, string> CustomParameters { get; private set; }
+		protected IDictionary<string, string> CustomParameters { get; }
 
 		public bool DoQueryPerRecordLevelFilter { get; set; }
 
@@ -194,17 +194,17 @@ namespace Adxstudio.Xrm.Web.UI
 
 		private bool EntityPermissionDenied { get; set; }
 
-		private bool ApplyRecordLevelFilters { get; set; }
+		private bool ApplyRecordLevelFilters { get; }
 
-		private bool ApplyRelatedRecordFilter { get; set; }
+		private bool ApplyRelatedRecordFilter { get; }
 
-		private string FilterRelationshipName { get; set; }
+		private string FilterRelationshipName { get; }
 
-		private string FilterEntityName { get; set; }
+		private string FilterEntityName { get; }
 
 		private string FilterAttributeName { get; set; }
 
-		private Guid FilterValue { get; set; }
+		private Guid FilterValue { get; }
 
 		private const string DisplayAllActivitiesOnTimeline = "CustomerSupport/DisplayAllUserActivitiesOnTimeline";
 
@@ -1522,9 +1522,9 @@ namespace Adxstudio.Xrm.Web.UI
 
 			fetch.PagingCookie = pagerEnabled && cookie != null ? cookie : null;
 
-			fetch.PageNumber = fetch.PageNumber ?? (pagerEnabled ? (int?)page : null);
+			fetch.PageNumber = fetch.PageNumber ?? (pagerEnabled ? page : null);
 			
-			fetch.PageSize = fetch.PageSize ?? (pagerEnabled ? (int?)count : null);
+			fetch.PageSize = fetch.PageSize ?? (pagerEnabled ? count : null);
 			
 			fetch.ReturnTotalRecordCount = pagerEnabled && returnTotalRecordCount;
 		}
@@ -1826,7 +1826,7 @@ namespace Adxstudio.Xrm.Web.UI
 				return null;
 			}
 
-			var portalOrganizationService = this.Dependencies.GetRequestContext().HttpContext.GetOrganizationService();
+			var portalOrganizationService = Dependencies.GetRequestContext().HttpContext.GetOrganizationService();
 			var contact = portalOrganizationService.RetrieveSingle(
 				user.LogicalName,
 				new[] { "parentcustomerid" },
@@ -2057,7 +2057,7 @@ namespace Adxstudio.Xrm.Web.UI
 			/// <summary>
 			/// Collection of <see cref="Entity"/> records
 			/// </summary>
-			public IEnumerable<Entity> Records { get; private set; }
+			public IEnumerable<Entity> Records { get; }
 
 			/// <summary>
 			/// The total number of records

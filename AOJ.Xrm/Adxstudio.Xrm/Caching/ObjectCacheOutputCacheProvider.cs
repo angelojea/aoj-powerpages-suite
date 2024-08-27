@@ -14,8 +14,8 @@ namespace Adxstudio.Xrm.Caching
 	using System.Web.Caching;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Client.Caching;
-	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.Threading;
+	using Configuration;
+	using Threading;
 
 	/// <summary>
 	/// A custom <see cref="OutputCacheProvider"/> for writing to a configured <see cref="ObjectCache"/>.
@@ -146,7 +146,7 @@ namespace Adxstudio.Xrm.Caching
 			{
 				var policy = GetPolicy(cache, utcExpiry, CacheRegionName);
 
-				container.Detail = this.IncludeCacheItemDetails
+				container.Detail = IncludeCacheItemDetails
 					? cache.CreateCacheItemDetailObject(cacheKey, policy, CacheRegionName)
 					: null;
 
@@ -183,7 +183,7 @@ namespace Adxstudio.Xrm.Caching
 			{
 				var policy = GetPolicy(cache, utcExpiry, CacheRegionName);
 
-				container.Detail = this.IncludeCacheItemDetails
+				container.Detail = IncludeCacheItemDetails
 					? cache.CreateCacheItemDetailObject(cacheKey, policy, CacheRegionName)
 					: null;
 

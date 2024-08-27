@@ -15,7 +15,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			Option = pollOption;
 		}
 
-		protected IPollOption Option { get; private set; }
+		protected IPollOption Option { get; }
 
 		public string Answer
 		{

@@ -6,7 +6,7 @@
 namespace Adxstudio.Xrm.AspNet.Cms
 {
 	using System.Threading.Tasks;
-	using Adxstudio.Xrm.Security;
+	using Security;
 	using Microsoft.Owin;
 	using Microsoft.Xrm.Client.Runtime.Serialization;
 	using Microsoft.Xrm.Client.Services.Messages;
@@ -21,7 +21,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 		public PluginMessageOptions()
 		{
-			this.CallbackPath = new PathString("/WebNotification.axd");
+			CallbackPath = new PathString("/WebNotification.axd");
 		}
 	}
 
@@ -42,12 +42,12 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		protected PluginMessageMiddleware(OwinMiddleware next, IAppBuilder app, PluginMessageOptions options)
 			: base(next)
 		{
-			this.Options = options;
+			Options = options;
 		}
 
 		public override async Task Invoke(IOwinContext context)
 		{
-			if (Equals(context.Request.Path, this.Options.CallbackPath))
+			if (Equals(context.Request.Path, Options.CallbackPath))
 			{
 				var request = new PluginMessageRequest
 				{
@@ -56,17 +56,17 @@ namespace Adxstudio.Xrm.AspNet.Cms
 					Body = context.GetRequestBody()
 				};
 
-				var message = this.GetPluginMessage(request.Body);
+				var message = GetPluginMessage(request.Body);
 
 				if (message != null && WebNotificationCryptography.ValidateRequest(request.Authorization))
 				{
 					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Posting message");
 
-					await this.PostAsync(context, message).WithCurrentCulture();
+					await PostAsync(context, message).WithCurrentCulture();
 				}
 			}
 
-			await this.Next.Invoke(context);
+			await Next.Invoke(context);
 		}
 
 		protected abstract Task PostAsync(IOwinContext context, PluginMessage message);

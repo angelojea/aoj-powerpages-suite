@@ -16,7 +16,7 @@ namespace Adxstudio.Xrm.Cms
 {
 	public class PageCommentPolicyReader : ICommentPolicyReader
 	{
-		private Entity _webPage;
+		private readonly Entity _webPage;
 
 		public PageCommentPolicyReader(Entity webPage)
 		{
@@ -33,7 +33,7 @@ namespace Adxstudio.Xrm.Cms
 
 				if (pageCommentPolicyAttributeValue is OptionSetValue)
 				{
-					pageCommentPolicy = (PageCommentPolicy)Enum.ToObject(typeof(PageCommentPolicy), ((OptionSetValue)pageCommentPolicyAttributeValue).Value);
+					pageCommentPolicy = (PageCommentPolicy)Enum.ToObject(typeof(PageCommentPolicy), pageCommentPolicyAttributeValue.Value);
 				}
 				else
 				{

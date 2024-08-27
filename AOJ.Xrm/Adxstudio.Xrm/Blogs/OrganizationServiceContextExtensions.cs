@@ -58,10 +58,8 @@ namespace Adxstudio.Xrm.Blogs
 					postIds,
 					addCondition => addCondition("adx_approved", "eq", "true"));
 			}
-			else
-			{
-				return new Dictionary<Guid, int>();
-			}
+
+			return new Dictionary<Guid, int>();
 		}
 
 		public static int FetchBlogPostCount(this OrganizationServiceContext serviceContext, Guid blogId, bool published = true)

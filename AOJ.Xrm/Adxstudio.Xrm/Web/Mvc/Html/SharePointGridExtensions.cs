@@ -417,7 +417,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 			if (deleteEnabled && !string.IsNullOrWhiteSpace(serviceUrlDelete))
 			{
-				var deleteFileModal = html.DeleteModal(modalDeleteFileSize, string.Join(" ", new[] { "modal-delete-file", modalDeleteFileCssClass }).TrimEnd(' '),
+				var deleteFileModal = html.DeleteModal(modalDeleteFileSize, string.Join(" ", "modal-delete-file", modalDeleteFileCssClass).TrimEnd(' '),
 					modalDeleteFileTitle.GetValueOrDefault(DefaultDeleteFileModalTitle),
 					modalDeleteFileConfirmation.GetValueOrDefault(DefaultDeleteFileModalConfirmation),
 					modalDeleteFileDismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText),
@@ -428,7 +428,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 				container.InnerHtml += deleteFileModal;
 
-				var deleteFolderModal = html.DeleteModal(modalDeleteFolderSize, string.Join(" ", new[] { "modal-delete-folder", modalDeleteFolderCssClass }).TrimEnd(' '),
+				var deleteFolderModal = html.DeleteModal(modalDeleteFolderSize, string.Join(" ", "modal-delete-folder", modalDeleteFolderCssClass).TrimEnd(' '),
 					modalDeleteFolderTitle.GetValueOrDefault(DefaultDeleteFolderModalTitle),
 					modalDeleteFolderConfirmation.GetValueOrDefault(DefaultDeleteFolderModalConfirmation),
 					modalDeleteFolderDismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText),
@@ -549,7 +549,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 			return html.BoostrapModal(BootstrapExtensions.BootstrapModalSize.Default,
 				title.GetValueOrDefault(DefaultAddFilesModalTitle), body.ToString(),
-				string.Join(" ", new[] { "modal-add-file", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-add-file", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(DefaultAddFilesModalPrimaryButtonText),
 				cancelButtonText.GetValueOrDefault(DefaultAddModalCancelButtonText), titleCssClass, primaryButtonCssClass,
@@ -629,7 +629,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 			return html.BoostrapModal(BootstrapExtensions.BootstrapModalSize.Default,
 				title.GetValueOrDefault(DefaultAddFolderModalTitle), body.ToString(),
-				string.Join(" ", new[] { "modal-add-folder", cssClass }).TrimEnd(' '), null, false,
+				string.Join(" ", "modal-add-folder", cssClass).TrimEnd(' '), null, false,
 				dismissButtonSrText.GetValueOrDefault(DefaultModalDismissButtonSrText), false, false, false,
 				primaryButtonText.GetValueOrDefault(DefaultAddFolderModalPrimaryButtonText),
 				cancelButtonText.GetValueOrDefault(DefaultAddModalCancelButtonText), titleCssClass, primaryButtonCssClass,

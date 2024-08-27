@@ -16,8 +16,7 @@ namespace Microsoft.Xrm.Portal.Cms.Security
 {
 	public sealed class CmsCrmEntitySecurityProvider : CrmEntitySecurityProvider
 	{
-		private static readonly string[] _handledEntityNames = new[]
-		{
+		private static readonly string[] _handledEntityNames = {
 			"mspp_webfile", "mspp_webpage", "mspp_contentsnippet", "mspp_pagetemplate", "mspp_sitemarker", "mspp_weblinkset", "mspp_weblink"
 		};
 

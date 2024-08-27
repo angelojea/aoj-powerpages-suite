@@ -13,11 +13,11 @@ namespace Adxstudio.Xrm.Search
 	using System.IO;
 	using System.Linq;
 	using System.Web.Hosting;
-	using Adxstudio.Xrm.Globalization;
-	using Adxstudio.Xrm.Resources;
-	using Adxstudio.Xrm.Search.Analysis;
-	using Adxstudio.Xrm.Search.Index;
-	using Adxstudio.Xrm.Search.Store;
+	using Globalization;
+	using Resources;
+	using Analysis;
+	using Index;
+	using Store;
 	using Lucene.Net.Index;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Sdk.Messages;
@@ -129,7 +129,7 @@ namespace Adxstudio.Xrm.Search
 			Guid websiteId;
 			WebsiteId = Guid.TryParse(config["websiteId"], out websiteId)
 				? websiteId
-				: (Guid?)null;
+				: null;
 
 			var recognizedAttributes = new List<string>
 			{

@@ -29,8 +29,8 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 			if (!contextLanguageInfo.IsCrmMultiLanguageEnabled)
 			{
-				this._availableLanguages = new Lazy<LanguageDrop[]>(() => new LanguageDrop[0]);
-				this._languages = new Lazy<LanguageDrop[]>(() => new LanguageDrop[0]);
+				_availableLanguages = new Lazy<LanguageDrop[]>(() => new LanguageDrop[0]);
+				_languages = new Lazy<LanguageDrop[]>(() => new LanguageDrop[0]);
 
 			}
 			else
@@ -38,17 +38,17 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 				var previewPermission = new PreviewPermission(PortalContext.Current.ServiceContext, PortalContext.Current.Website);
 				if (previewPermission.IsEnabledAndPermitted)
 				{
-					this._availableLanguages = new Lazy<LanguageDrop[]>(() => contextLanguageInfo.GetWebPageWebsiteLanguages(viewEntity.EntityReference, current).Select(websiteLanguage => new LanguageDrop(this, websiteLanguage)).ToArray());
-					this._languages = new Lazy<LanguageDrop[]>(() => contextLanguageInfo.ActiveWebsiteLanguages.Select(websiteLanguage => new LanguageDrop(this, websiteLanguage)).ToArray());
+					_availableLanguages = new Lazy<LanguageDrop[]>(() => contextLanguageInfo.GetWebPageWebsiteLanguages(viewEntity.EntityReference, current).Select(websiteLanguage => new LanguageDrop(this, websiteLanguage)).ToArray());
+					_languages = new Lazy<LanguageDrop[]>(() => contextLanguageInfo.ActiveWebsiteLanguages.Select(websiteLanguage => new LanguageDrop(this, websiteLanguage)).ToArray());
 				}
 				else
 				{
-					this._availableLanguages = new Lazy<LanguageDrop[]>(() => contextLanguageInfo.GetWebPageWebsiteLanguages(viewEntity.EntityReference, current).Where(lang => lang.IsPublished).Select(websiteLanguage => new LanguageDrop(this, websiteLanguage)).ToArray());
-					this._languages = new Lazy<LanguageDrop[]>(() => contextLanguageInfo.ActiveWebsiteLanguages.Where(lang => lang.IsPublished).Select(websiteLanguage => new LanguageDrop(this, websiteLanguage)).ToArray());
+					_availableLanguages = new Lazy<LanguageDrop[]>(() => contextLanguageInfo.GetWebPageWebsiteLanguages(viewEntity.EntityReference, current).Where(lang => lang.IsPublished).Select(websiteLanguage => new LanguageDrop(this, websiteLanguage)).ToArray());
+					_languages = new Lazy<LanguageDrop[]>(() => contextLanguageInfo.ActiveWebsiteLanguages.Where(lang => lang.IsPublished).Select(websiteLanguage => new LanguageDrop(this, websiteLanguage)).ToArray());
 				}
 			}
 
-			this._isPageless = new Lazy<bool>(() => CrmSiteMapProvider.IsPageless(current));
+			_isPageless = new Lazy<bool>(() => CrmSiteMapProvider.IsPageless(current));
 		}
 
 		public IEnumerable<SiteMapNodeDrop> Breadcrumbs
@@ -73,14 +73,12 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 				// If the current page is "pageless" then return the current sitemap node.
 				// This is to support legacy liquid template code that uses "page.parent == null" to identify whether
 				// the current page is the Home page.
-				if (this._isPageless.Value && SiteMapNode.Parent == null)
+				if (_isPageless.Value && SiteMapNode.Parent == null)
 				{
 					return SiteMapNode;
 				}
-				else
-				{
-					return SiteMapNode.Parent;
-				}
+
+				return SiteMapNode.Parent;
 			}
 		}
 
@@ -99,17 +97,17 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 		/// </summary>
 		public IEnumerable<LanguageDrop> AvailableLanguages
 		{
-			get { return this._availableLanguages.Value.AsEnumerable(); }
+			get { return _availableLanguages.Value.AsEnumerable(); }
 		}
 		/// <summary>
 		/// list of available languages
 		/// </summary>
 		public IEnumerable<LanguageDrop> Languages
 		{
-			get { return this._languages.Value.AsEnumerable(); }
+			get { return _languages.Value.AsEnumerable(); }
 		}
 
 
-		protected SiteMapNodeDrop SiteMapNode { get; private set; }
+		protected SiteMapNodeDrop SiteMapNode { get; }
 	}
 }

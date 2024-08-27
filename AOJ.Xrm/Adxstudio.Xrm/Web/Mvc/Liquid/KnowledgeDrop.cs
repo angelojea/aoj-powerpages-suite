@@ -27,7 +27,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			Dependencies = dependencies;
 
 			_knowledgeArticlesDrop = new Lazy<KnowledgeArticlesDrop>(() => new KnowledgeArticlesDrop(portalLiquidContext, dependencies), LazyThreadSafetyMode.None);
-            this.categoriesDrop = new Lazy<CategoriesDrop>(() => new CategoriesDrop(portalLiquidContext, dependencies), LazyThreadSafetyMode.None);
+            categoriesDrop = new Lazy<CategoriesDrop>(() => new CategoriesDrop(portalLiquidContext, dependencies), LazyThreadSafetyMode.None);
         }
 
 		internal IDataAdapterDependencies Dependencies { get; private set; }
@@ -43,7 +43,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
         /// </summary>
         public CategoriesDrop Categories
         {
-            get { return this.categoriesDrop.Value; }
+            get { return categoriesDrop.Value; }
         }
     }
 }

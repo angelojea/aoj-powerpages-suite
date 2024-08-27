@@ -55,7 +55,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// <see cref="FormXmlCellMetadata"/>
 		/// </summary>
-		protected FormXmlCellMetadata Metadata { get; private set; }
+		protected FormXmlCellMetadata Metadata { get; }
 
 		/// <summary>
 		/// Number of rows the cell should take up.

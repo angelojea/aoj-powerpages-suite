@@ -18,7 +18,7 @@ namespace Adxstudio.Xrm.Cms
 			Entity = entity;
 		}
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
 		public EntityReference Regarding
 		{

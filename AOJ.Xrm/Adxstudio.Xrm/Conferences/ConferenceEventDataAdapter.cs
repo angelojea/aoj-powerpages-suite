@@ -20,7 +20,7 @@ namespace Adxstudio.Xrm.Conferences
 	/// </summary>
 	public class ConferenceEventDataAdapter : EventAggregationDataAdapter
 	{
-		private Entity _conference;
+		private readonly Entity _conference;
 
 		public ConferenceEventDataAdapter(IDataAdapterDependencies dependencies, Entity conference)
 			: base(dependencies)

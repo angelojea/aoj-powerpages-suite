@@ -35,10 +35,10 @@ namespace Adxstudio.Xrm.AspNet
 		where TModel : CrmModel<TKey>, new()
 		where TKey : IEquatable<TKey>
 	{
-		protected virtual CrmEntityStoreSettings Settings { get; private set; }
-		protected virtual string LogicalName { get; private set; }
-		protected virtual string PrimaryIdAttribute { get; private set; }
-		protected virtual string PrimaryNameAttribute { get; private set; }
+		protected virtual CrmEntityStoreSettings Settings { get; }
+		protected virtual string LogicalName { get; }
+		protected virtual string PrimaryIdAttribute { get; }
+		protected virtual string PrimaryNameAttribute { get; }
 		protected virtual Version BaseSolutionCrmVersion { get; private set; }
 
 		protected CrmEntityStore(string logicalName, string primaryIdAttribute, string primaryNameAttribute, CrmDbContext context, CrmEntityStoreSettings settings)
@@ -196,8 +196,8 @@ namespace Adxstudio.Xrm.AspNet
 
 		protected virtual Task<Entity> FetchByIdAsync(EntityReference id)
 		{
-			var request = this.ToRetrieveRequest(id);
-			var response = this.Context.Service.Execute(request) as RetrieveResponse;
+			var request = ToRetrieveRequest(id);
+			var response = Context.Service.Execute(request) as RetrieveResponse;
 			return Task.FromResult(response.Entity);
 		}
 

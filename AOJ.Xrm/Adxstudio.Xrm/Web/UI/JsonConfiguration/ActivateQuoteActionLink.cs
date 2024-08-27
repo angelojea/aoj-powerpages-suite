@@ -13,8 +13,8 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
 	public class ActivateQuoteActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-check-square-o fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Activate_Quote_Button_Text");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Activate_Quote_Button_Text");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-check-square-o fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Activate_Quote_Button_Text");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Activate_Quote_Button_Text");
 
 		public ViewActivateModal Modal { get; set; }
 

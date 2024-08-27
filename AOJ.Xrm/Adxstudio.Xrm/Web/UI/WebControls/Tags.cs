@@ -24,73 +24,29 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 	public class Tags : Repeater
 	{
 		#region Defaults
-		private string deleteTagAlternateText = "(x)";
-		private string deleteTagCssClass = "remove-tag";
-		private string deleteTagToolTip = ResourceManager.GetString("Remove_Tag_Tool_Tip_Text");
-		private string newTagCssClass = "new-tag";
-		private string newTagTitle = ResourceManager.GetString("New_Tag_Title_Text");
-		private string newTagButtonName = ResourceManager.GetString("Create_Text");
-		private string newTagButtonCssClass = "create-tag";
-		private string readOnlyMessage = string.Empty;
-		private int autocompleteMaxItemsToShow = 10;
+
 		#endregion
 
 		private ITaggable _taggableItem;
 		
-		public string DeleteTagAlternateText
-		{
-			get { return deleteTagAlternateText; }
-			set { deleteTagAlternateText = value; }
-		}
+		public string DeleteTagAlternateText { get; set; } = "(x)";
 
-		public string DeleteTagCssClass
-		{
-			get { return deleteTagCssClass; }
-			set { deleteTagCssClass = value; }
-		}
+		public string DeleteTagCssClass { get; set; } = "remove-tag";
 
-		public string DeleteTagToolTip
-		{
-			get { return deleteTagToolTip; }
-			set { deleteTagToolTip = value; }
-		}
+		public string DeleteTagToolTip { get; set; } = ResourceManager.GetString("Remove_Tag_Tool_Tip_Text");
 
-		public string NewTagCssClass
-		{
-			get { return newTagCssClass; }
-			set { newTagCssClass = value; }
-		}
+		public string NewTagCssClass { get; set; } = "new-tag";
 
-		public string NewTagTitle
-		{
-			get { return newTagTitle; }
-			set { newTagTitle = value; }
-		}
+		public string NewTagTitle { get; set; } = ResourceManager.GetString("New_Tag_Title_Text");
 
-		public string NewTagButtonName
-		{
-			get { return newTagButtonName; }
-			set { newTagButtonName = value; }
-		}
+		public string NewTagButtonName { get; set; } = ResourceManager.GetString("Create_Text");
 
-		public string NewTagButtonCssClass
-		{
-			get { return newTagButtonCssClass; }
-			set { newTagButtonCssClass = value; }
-		}
+		public string NewTagButtonCssClass { get; set; } = "create-tag";
 
-		public string ReadOnlyMessage
-		{
-			get { return readOnlyMessage; }
-			set { readOnlyMessage = value; }
-		}
+		public string ReadOnlyMessage { get; set; } = string.Empty;
 
-		public int AutocompleteMaxItemsToShow
-		{
-			get { return autocompleteMaxItemsToShow; }
-			set { autocompleteMaxItemsToShow = value; }
-		}
-		
+		public int AutocompleteMaxItemsToShow { get; set; } = 10;
+
 		public string Title { get; set; }
 	
 		public bool IsReadOnly { get; set; }
@@ -148,7 +104,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			return null;
 		}
 
-		public string DefaultItemTemplateUrl { get; private set; }
+		public string DefaultItemTemplateUrl { get; }
 
 		public string CssClass { get; set; }
 
@@ -195,7 +151,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// Builds the template.
 		/// </summary>
 		/// <param name="container">The container.</param>
-		protected virtual void BuildTemplate(System.Web.UI.Control container)
+		protected virtual void BuildTemplate(Control container)
 		{
 			var repeaterItem = container as RepeaterItem;
 
@@ -393,7 +349,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				autoCompleteScript.Append("$('input." + NewTagCssClass + "').autocomplete('" + AutoCompleteServiceUrl + "',");
 				autoCompleteScript.Append("{matchContains:1,autoFill:true,maxItemsToShow:" + AutocompleteMaxItemsToShow + "}");
 				autoCompleteScript.Append(");}");
-				Page.ClientScript.RegisterStartupScript(this.GetType(), "JSScript", autoCompleteScript.ToString(), true);
+				Page.ClientScript.RegisterStartupScript(GetType(), "JSScript", autoCompleteScript.ToString(), true);
 			}
 		}
 

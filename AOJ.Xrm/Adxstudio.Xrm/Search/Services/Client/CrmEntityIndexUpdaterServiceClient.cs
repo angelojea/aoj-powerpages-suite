@@ -57,12 +57,10 @@ namespace Adxstudio.Xrm.Search.Services.Client
 
 		public void UpdateEntitySet(string entityLogicalName, string entityAttribute, List<Guid> entityIds)
 		{
-			return;
 		}
 
 		public void UpdateCmsEntityTree(string entityLogicalName, Guid rootEntityId, int? lcid = null)
         {
-            return;
         }
     }
 }

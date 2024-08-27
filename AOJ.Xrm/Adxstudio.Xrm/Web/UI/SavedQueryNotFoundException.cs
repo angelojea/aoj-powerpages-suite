@@ -6,7 +6,7 @@
 namespace Adxstudio.Xrm.Web.UI
 {
 	using System;
-	using Adxstudio.Xrm.Diagnostics.Trace;
+	using Diagnostics.Trace;
 
 	/// <summary>
 	/// Indicates that a savedquery could not be retrieved.

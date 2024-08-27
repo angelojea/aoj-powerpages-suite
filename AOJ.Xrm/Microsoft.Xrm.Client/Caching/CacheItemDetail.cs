@@ -82,10 +82,10 @@ namespace Microsoft.Xrm.Client.Caching
 		{
 			lock (_cacheItemStatusLock)
 			{
-				if (this.CacheItemStatus != status)
+				if (CacheItemStatus != status)
 				{
-					this.CacheItemStatus = status;
-					this.UpdatedOn = DateTimeOffset.UtcNow;
+					CacheItemStatus = status;
+					UpdatedOn = DateTimeOffset.UtcNow;
 					return true;
 				}
 			}

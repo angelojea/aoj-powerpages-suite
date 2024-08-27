@@ -11,10 +11,10 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityListView
 	using System.Globalization;
 	using System.Linq;
 	using System.Web;
-	using Adxstudio.Xrm.ContentAccess;
-	using Adxstudio.Xrm.Globalization;
-	using Adxstudio.Xrm.Metadata;
-	using Adxstudio.Xrm.Services.Query;
+	using ContentAccess;
+	using Globalization;
+	using Metadata;
+	using Services.Query;
 	using Adxstudio.Xrm.Security;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Portal;

@@ -30,7 +30,7 @@ namespace Adxstudio.Xrm.Web.Mvc
 			Tag = tag;
 		}
 
-		protected TagBuilder Tag { get; private set; }
+		protected TagBuilder Tag { get; }
 
 		public void AddAttribute(string name, string value)
 		{

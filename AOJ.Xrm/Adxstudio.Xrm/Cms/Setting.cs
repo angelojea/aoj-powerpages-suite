@@ -22,10 +22,10 @@ namespace Adxstudio.Xrm.Cms
 			Value = entity.GetAttributeValue<string>("adx_value");
 		}
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public string Value { get; private set; }
+		public string Value { get; }
 	}
 }

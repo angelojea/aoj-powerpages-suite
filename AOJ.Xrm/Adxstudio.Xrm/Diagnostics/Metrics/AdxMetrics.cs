@@ -37,7 +37,7 @@ namespace Adxstudio.Xrm.Diagnostics.Metrics
     /// </example>
     public static class AdxMetrics
     {
-        private static MetricFactory metricFactory = (metricName) => new AdxMetric(metricName);
+        private static MetricFactory metricFactory = metricName => new AdxMetric(metricName);
 
         /// <summary>
         /// Allows for unit testing metrics, by overriding metric creation mechanism.

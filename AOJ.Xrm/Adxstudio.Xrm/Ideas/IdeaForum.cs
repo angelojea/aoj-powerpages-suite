@@ -49,57 +49,57 @@ namespace Adxstudio.Xrm.Ideas
 		/// <summary>
 		/// The comment policy for this idea forum.
 		/// </summary>
-		public IdeaForumCommentPolicy CommentPolicy { get; private set; }
+		public IdeaForumCommentPolicy CommentPolicy { get; }
 
 		/// <summary>
 		/// The number of votes casted by the current user in this idea forum.
 		/// </summary>
-		public int CurrentUserActiveVoteCount { get; private set; }
+		public int CurrentUserActiveVoteCount { get; }
 
 		/// <summary>
 		/// Whether or not the current user is allowed to submit new ideas in this idea forum.
 		/// </summary>
-		public bool CurrentUserCanSubmitIdeas { get; private set; }
+		public bool CurrentUserCanSubmitIdeas { get; }
 
 		/// <summary>
 		/// An adx_ideaforum entity.
 		/// </summary>
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
 		/// <summary>
 		/// The unique identifier for this idea forum.
 		/// </summary>
-		public Guid Id { get; private set; }
+		public Guid Id { get; }
 
 		/// <summary>
 		/// The policy for new idea submissions in this idea forum.
 		/// </summary>
-		public IdeaForumIdeaSubmissionPolicy IdeaSubmissionPolicy { get; private set; }
+		public IdeaForumIdeaSubmissionPolicy IdeaSubmissionPolicy { get; }
 
 		/// <summary>
 		/// The URL slug for this idea forum.
 		/// </summary>
-		public string PartialUrl { get; private set; }
+		public string PartialUrl { get; }
 
 		/// <summary>
 		/// An abstract or description for this idea forum.
 		/// </summary>
-		public string Summary { get; private set; }
+		public string Summary { get; }
 
 		/// <summary>
 		/// The title for this idea forum.
 		/// </summary>
-		public string Title { get; private set; }
+		public string Title { get; }
 
 		/// <summary>
 		/// The number of votes a user can cast in this idea forum.
 		/// </summary>
-		public int? VotesPerUser { get; private set; }
+		public int? VotesPerUser { get; }
 
 		/// <summary>
 		/// The voting policy for this idea forum.
 		/// </summary>
-		public IdeaForumVotingPolicy VotingPolicy { get; private set; }
+		public IdeaForumVotingPolicy VotingPolicy { get; }
 
 		private static void ThrowOnNegative(int value, string parameterName)
 		{

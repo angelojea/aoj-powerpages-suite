@@ -56,9 +56,9 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		{
 			get
 			{
-				return this.ObjectId != default(Guid)
-						&& this.ObjectType != default(int)
-						&& !string.IsNullOrEmpty(this.EntityName)
+				return ObjectId != default(Guid)
+						&& ObjectType != default(int)
+						&& !string.IsNullOrEmpty(EntityName)
 						&& base.ValidMessage;
 			}
 		}

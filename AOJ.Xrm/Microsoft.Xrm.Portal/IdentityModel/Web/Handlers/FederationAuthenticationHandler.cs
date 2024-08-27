@@ -61,9 +61,9 @@ namespace Microsoft.Xrm.Portal.IdentityModel.Web.Handlers
 		private const string _confirm = "confirm";
 		private const string _inactive = "inactive";
 
-		public virtual IUserRegistrationSettings RegistrationSettings { get; private set; }
+		public virtual IUserRegistrationSettings RegistrationSettings { get; }
 
-		public virtual IUserResolutionSettings UserSettings { get; private set; }
+		public virtual IUserResolutionSettings UserSettings { get; }
 
 		protected string MemberEntityName
 		{
@@ -216,7 +216,6 @@ namespace Microsoft.Xrm.Portal.IdentityModel.Web.Handlers
 				{
 					if (TryHandleSignInResponse(context, fam))
 					{
-						return;
 					}
 				}
 				else

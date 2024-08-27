@@ -15,7 +15,7 @@ namespace Adxstudio.Xrm.AspNet.Identity
 		where TUser : CrmUser
 	{
 		private static readonly string _defaultProcessName = "adx_SendEmailTwoFactorCodeToContact";
-		public OrganizationManager OrganizationManager { get; private set; }
+		public OrganizationManager OrganizationManager { get; }
 		public string ProcessName { get; set; }
 
 		public CrmEmailTokenProvider(OrganizationManager organizationManager)

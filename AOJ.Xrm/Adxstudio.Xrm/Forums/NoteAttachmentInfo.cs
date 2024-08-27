@@ -34,12 +34,12 @@ namespace Adxstudio.Xrm.Forums
 			}
 		}
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public string ContentType { get; private set; }
+		public string ContentType { get; }
 
-		public ApplicationPath Path { get; private set; }
+		public ApplicationPath Path { get; }
 
-		public FileSize Size { get; private set; }
+		public FileSize Size { get; }
 	}
 }

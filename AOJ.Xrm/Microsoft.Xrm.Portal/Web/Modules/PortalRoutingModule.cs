@@ -54,8 +54,7 @@ namespace Microsoft.Xrm.Portal.Web.Modules
 	{
 		private const string _prefix = "xrm";
 
-		private static readonly string[] _paths = new[]
-		{
+		private static readonly string[] _paths = {
 			"js/xrm.js",
 			"js/editable/utilities.js",
 			"js/editable/data.js",

@@ -33,33 +33,33 @@ namespace Adxstudio.Xrm.AspNet.Identity
 		{
 			if (authenticationManager == null) throw new ArgumentNullException("authenticationManager");
 
-			this.AuthenticationManager = authenticationManager;
+			AuthenticationManager = authenticationManager;
 		}
 
 		public override async Task<ClaimsIdentity> CreateAsync(UserManager<TUser, string> manager, TUser user, string authenticationType)
 		{
 			var identity = await base.CreateAsync(manager, user, authenticationType).WithCurrentCulture();
 
-			var loginInfo = await this.AuthenticationManager.GetExternalLoginInfoAsync();
+			var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
 			var provider = loginInfo?.Login?.LoginProvider;
 
 			if (!string.IsNullOrWhiteSpace(provider))
 			{
-				identity.AddClaim(this.ToClaim("http://schemas.adxstudio.com/xrm/2014/02/identity/claims/loginprovider", provider, null));
+				identity.AddClaim(ToClaim("http://schemas.adxstudio.com/xrm/2014/02/identity/claims/loginprovider", provider, null));
 			}
 
 			if (!string.IsNullOrWhiteSpace(user.Email))
 			{
-				identity.AddClaim(this.ToClaim(System.Security.Claims.ClaimTypes.Email, user.Email, null));
+				identity.AddClaim(ToClaim(System.Security.Claims.ClaimTypes.Email, user.Email, null));
 			}
 
 			if (user.ContactId != null)
 			{
-				identity.AddClaim(this.ToClaim("http://schemas.adxstudio.com/xrm/2014/02/identity/claims/id", user.ContactId.Id.ToString(), null));
-				identity.AddClaim(this.ToClaim("http://schemas.adxstudio.com/xrm/2014/02/identity/claims/logicalname", user.ContactId.LogicalName, null));
+				identity.AddClaim(ToClaim("http://schemas.adxstudio.com/xrm/2014/02/identity/claims/id", user.ContactId.Id.ToString(), null));
+				identity.AddClaim(ToClaim("http://schemas.adxstudio.com/xrm/2014/02/identity/claims/logicalname", user.ContactId.LogicalName, null));
 			}
 
-			if (this.KeepExternalLoginClaims)
+			if (KeepExternalLoginClaims)
 			{
 				if (loginInfo != null && loginInfo.ExternalIdentity != null)
 				{
@@ -80,7 +80,7 @@ namespace Adxstudio.Xrm.AspNet.Identity
 
 		protected virtual Claim ToClaim(string entityName, string attribute, object value, string name)
 		{
-			return this.ToClaim(this.ToClaimType(entityName, attribute), this.ToClaimValue(value, name), this.ToClaimValueType(value, name));
+			return ToClaim(ToClaimType(entityName, attribute), ToClaimValue(value, name), ToClaimValueType(value, name));
 		}
 
 		protected virtual string ToClaimType(string entityName, string attribute)

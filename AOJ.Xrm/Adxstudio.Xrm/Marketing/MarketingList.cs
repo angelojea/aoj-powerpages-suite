@@ -24,9 +24,9 @@ namespace Adxstudio.Xrm.Marketing
 				.Distinct();
 		}
 
-		public Guid Id { get; private set; }
-		public string Name { get; private set; }
-		public string Purpose { get; private set; }
-		public IEnumerable<EntityReference> Subscribers { get; private set; }
+		public Guid Id { get; }
+		public string Name { get; }
+		public string Purpose { get; }
+		public IEnumerable<EntityReference> Subscribers { get; }
 	}
 }

@@ -2,7 +2,6 @@
 {
     public static class Helpers
     {
-
         public static string EntityListScript()
         {
             return @"

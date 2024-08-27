@@ -22,7 +22,7 @@ namespace Adxstudio.Xrm.Services.Query
 		/// </summary>
 		private LinkEntityAliasGenerator()
 		{
-			this.mapping = new Dictionary<string, int>();
+			mapping = new Dictionary<string, int>();
 		}
 
 		/// <summary>
@@ -41,7 +41,7 @@ namespace Adxstudio.Xrm.Services.Query
 		/// <returns>a populated LinkEntityAliasGenerator</returns>
 		public static LinkEntityAliasGenerator CreateInstance(Fetch fetch)
 		{
-			LinkEntityAliasGenerator linkEntityAliasGenerator = LinkEntityAliasGenerator.CreateInstance();
+			LinkEntityAliasGenerator linkEntityAliasGenerator = CreateInstance();
 			if (fetch.Entity != null && fetch.Entity.Links != null)
 			{
 				linkEntityAliasGenerator.PopulateHandler(fetch.Entity.Links);
@@ -60,12 +60,12 @@ namespace Adxstudio.Xrm.Services.Query
 			{
 				if (!string.IsNullOrEmpty(link.Alias) && !string.IsNullOrEmpty(link.Name))
 				{
-					this.IncrementIndex(link.Name);
+					IncrementIndex(link.Name);
 				}
 
 				if (link.Links != null)
 				{
-					this.PopulateHandler(link.Links);
+					PopulateHandler(link.Links);
 				}
 			}
 		}
@@ -77,12 +77,12 @@ namespace Adxstudio.Xrm.Services.Query
 		/// <returns>Current index WRT to the aliasPrefix</returns>
 		private int GetIndex(string aliasPrefix)
 		{
-			if (!this.mapping.ContainsKey(aliasPrefix))
+			if (!mapping.ContainsKey(aliasPrefix))
 			{
-				this.mapping.Add(aliasPrefix, 0);
+				mapping.Add(aliasPrefix, 0);
 			}
 
-			return this.mapping[aliasPrefix];
+			return mapping[aliasPrefix];
 		}
 
 		/// <summary>
@@ -91,12 +91,12 @@ namespace Adxstudio.Xrm.Services.Query
 		/// <param name="aliasPrefix">alias prefix to increment</param>
 		private void IncrementIndex(string aliasPrefix)
 		{
-			if (!this.mapping.ContainsKey(aliasPrefix))
+			if (!mapping.ContainsKey(aliasPrefix))
 			{
-				this.mapping.Add(aliasPrefix, 0);
+				mapping.Add(aliasPrefix, 0);
 			}
 
-			this.mapping[aliasPrefix]++;
+			mapping[aliasPrefix]++;
 		}
 
 		/// <summary>
@@ -106,8 +106,8 @@ namespace Adxstudio.Xrm.Services.Query
 		/// <returns>Current index WRT to the aliasPrefix</returns>
 		private int GetIndexAndIncrement(string aliasPrefix)
 		{
-			int index = this.GetIndex(aliasPrefix);
-			this.IncrementIndex(aliasPrefix);
+			int index = GetIndex(aliasPrefix);
+			IncrementIndex(aliasPrefix);
 			return index;
 		}
 
@@ -118,7 +118,7 @@ namespace Adxstudio.Xrm.Services.Query
 		/// <returns>alias name</returns>
 		public string CreateUniqueAlias(string aliasPrefix)
 		{
-			return string.Format("generated_alias_{0}_{1}", aliasPrefix, this.GetIndexAndIncrement(aliasPrefix));
+			return string.Format("generated_alias_{0}_{1}", aliasPrefix, GetIndexAndIncrement(aliasPrefix));
 		}
 	}
 }

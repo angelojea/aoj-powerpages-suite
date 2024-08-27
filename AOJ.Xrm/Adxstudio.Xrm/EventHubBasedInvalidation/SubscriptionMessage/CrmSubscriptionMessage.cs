@@ -18,7 +18,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 
 		public CrmSubscriptionMessage()
 		{
-			this.Received = DateTime.UtcNow;
+			Received = DateTime.UtcNow;
 		}
 
 		/// <summary>
@@ -47,10 +47,10 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// <param name="message">BrokeredMessage to pull properties from</param>
 		protected void AppendProperties(BrokeredMessage message)
 		{
-			this.EnqueuedTopicTimeUtc = this.TryGetDateTime(message, BrokeredMessageConstants.EnqueuedTopicTimeUtc);
-			this.EnqueuedEventhubTimeUtc = this.TryGetDateTime(message, BrokeredMessageConstants.EnqueuedEventhubTimeUtc);
-			this.DequeuedEventhubTimeUtc = this.TryGetDateTime(message, BrokeredMessageConstants.DequeuedEventhubTimeUtc);
-			this.DequeuedTopicTimeUtc = this.Received;
+			EnqueuedTopicTimeUtc = TryGetDateTime(message, BrokeredMessageConstants.EnqueuedTopicTimeUtc);
+			EnqueuedEventhubTimeUtc = TryGetDateTime(message, BrokeredMessageConstants.EnqueuedEventhubTimeUtc);
+			DequeuedEventhubTimeUtc = TryGetDateTime(message, BrokeredMessageConstants.DequeuedEventhubTimeUtc);
+			DequeuedTopicTimeUtc = Received;
 		}
 
 		/// <summary>
@@ -120,8 +120,8 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		{
 			get
 			{
-				return this.OrganizationId != default(Guid)
-						&& !string.IsNullOrEmpty(this.MessageName);
+				return OrganizationId != default(Guid)
+						&& !string.IsNullOrEmpty(MessageName);
 			}
 		}
 
@@ -132,9 +132,9 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		{
 			get
 			{
-				if (this.messageType == MessageType.Unknown)
-					if (!Enum.TryParse(this.MessageName, true, out messageType))
-						this.messageType = MessageType.Other;
+				if (messageType == MessageType.Unknown)
+					if (!Enum.TryParse(MessageName, true, out messageType))
+						messageType = MessageType.Other;
 
 				return messageType;
 			}

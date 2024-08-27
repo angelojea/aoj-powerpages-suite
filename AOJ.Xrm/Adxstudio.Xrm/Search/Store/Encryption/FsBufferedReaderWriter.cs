@@ -55,7 +55,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// <summary>
 		/// The certificate
 		/// </summary>
-		private X509Certificate2 certificate;
+		private readonly X509Certificate2 certificate;
 
 		/// <summary>
 		/// Cloned instance indicator
@@ -76,22 +76,22 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </param>
 		public FsBufferedReaderWriter(FileInfo file, X509Certificate2 certificate, bool readOnly)
 		{
-			this.File = file;
-			this.fileStream = this.File.Open(this.readOnly ? FileMode.Open : FileMode.OpenOrCreate, this.readOnly ? FileAccess.Read : FileAccess.ReadWrite, FileShare.ReadWrite);
+			File = file;
+			fileStream = File.Open(this.readOnly ? FileMode.Open : FileMode.OpenOrCreate, this.readOnly ? FileAccess.Read : FileAccess.ReadWrite, FileShare.ReadWrite);
 
 			this.certificate = certificate;
 			this.readOnly = readOnly;
 
-			if (this.fileStream.Length <= this.dataOffset && !this.readOnly)
+			if (fileStream.Length <= dataOffset && !this.readOnly)
 			{
-				this.WriteHeader();
+				WriteHeader();
 			}
 			else
 			{
-				this.ReadHeader();
+				ReadHeader();
 			}
 			
-			this.Initialize();
+			Initialize();
 		}
 
 		/// <summary>
@@ -101,7 +101,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		{
 			get
 			{
-				return this.ReadLength();
+				return ReadLength();
 			}
 		}
 
@@ -123,9 +123,9 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		{
 			base.Dispose();
 
-			if (!this.IsClone && this.fileStream != null)
+			if (!IsClone && fileStream != null)
 			{
-				this.fileStream.Dispose();
+				fileStream.Dispose();
 			}
 		}
 
@@ -140,8 +140,8 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 			var copy = (FsBufferedReaderWriter)MemberwiseClone();
 			copy.IsClone = true;
 
-			copy.pageBuffer = new byte[this.PageSize];
-			Array.Copy(this.pageBuffer, copy.pageBuffer, this.PageSize);
+			copy.pageBuffer = new byte[PageSize];
+			Array.Copy(pageBuffer, copy.pageBuffer, PageSize);
 
 			return copy;
 		}
@@ -157,14 +157,14 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </param>
 		public override void ReadPage(long pageNumber, byte[] destination)
 		{
-			this.fileStream.Seek(this.dataOffset + (pageNumber * (this.PageSize + 500)), SeekOrigin.Begin);
-			var readInt = this.ReadInt();
+			fileStream.Seek(dataOffset + (pageNumber * (PageSize + 500)), SeekOrigin.Begin);
+			var readInt = ReadInt();
 
 			var encrypted = new byte[readInt];
 
-			this.fileStream.Read(encrypted, 0, readInt);
+			fileStream.Read(encrypted, 0, readInt);
 
-			this.DecryptData(encrypted, destination);
+			DecryptData(encrypted, destination);
 		}
 
 		/// <summary>
@@ -178,18 +178,18 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </param>
 		public override void WritePage(long pageNumber, byte[] source)
 		{
-			var encrypted = this.EncryptData(source);
+			var encrypted = EncryptData(source);
 
-			this.fileStream.Seek(this.dataOffset + (pageNumber * (this.PageSize + 500)), SeekOrigin.Begin);
+			fileStream.Seek(dataOffset + (pageNumber * (PageSize + 500)), SeekOrigin.Begin);
 
-			this.WriteInt(encrypted.Length);
+			WriteInt(encrypted.Length);
 
-			this.fileStream.Write(encrypted, 0, encrypted.Length);
+			fileStream.Write(encrypted, 0, encrypted.Length);
 
 			// We need to track actual data size as our file has some overheap and also data could be padded to block size
-			if (this.fileSize > this.Length)
+			if (fileSize > Length)
 			{
-				this.WriteLength(this.fileSize);
+				WriteLength(fileSize);
 			}
 		}
 
@@ -207,7 +207,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 			var envelopedCms = new EnvelopedCms();
 
 			envelopedCms.Decode(source);
-			envelopedCms.Decrypt(new X509Certificate2Collection(this.certificate));
+			envelopedCms.Decrypt(new X509Certificate2Collection(certificate));
 			Buffer.BlockCopy(envelopedCms.ContentInfo.Content, 0, destination, 0, envelopedCms.ContentInfo.Content.Length);
 		}
 
@@ -221,7 +221,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 			var contentInfo = new ContentInfo(source);
 			var envelopedCms = new EnvelopedCms(contentInfo);
 
-			envelopedCms.Encrypt(new CmsRecipient(this.certificate));
+			envelopedCms.Encrypt(new CmsRecipient(certificate));
 			return envelopedCms.Encode();
 		}
 
@@ -230,17 +230,17 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </summary>
 		protected void WriteHeader()
 		{
-			var fs = this.fileStream;
+			var fs = fileStream;
 
 			// Write header marker
 			fs.Seek(0, SeekOrigin.Begin);
-			fs.Write(this.headerMarker, 0, this.headerMarker.Length);
+			fs.Write(headerMarker, 0, headerMarker.Length);
 
 			// Write version
 			fs.WriteByte(1);
 
-			this.lengthOffset = fs.Position;
-			this.dataOffset = this.lengthOffset + sizeof(long);
+			lengthOffset = fs.Position;
+			dataOffset = lengthOffset + sizeof(long);
 		}
 
 		/// <summary>
@@ -250,26 +250,26 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		{
 			try
 			{
-				var fs = this.fileStream;
+				var fs = fileStream;
 
 				// Check header
-				byte[] fileMarker = new byte[this.headerMarker.Length];
+				byte[] fileMarker = new byte[headerMarker.Length];
 
 				fs.Seek(0, SeekOrigin.Begin);
 				fs.Read(fileMarker, 0, fileMarker.Length);
 
-				if (!fileMarker.SequenceEqual(this.headerMarker))
+				if (!fileMarker.SequenceEqual(headerMarker))
 				{
 					throw new InvalidOperationException(
 						string.Format("File {0} does not looks like search index",
-						this.File.FullName));
+						File.FullName));
 				}
 
 				// Read version
 				var version = fs.ReadByte(); // Not in use right now. Just in case for required next changes
 
-				this.lengthOffset = fs.Position;
-				this.dataOffset = this.lengthOffset + sizeof(long);
+				lengthOffset = fs.Position;
+				dataOffset = lengthOffset + sizeof(long);
 			}
 			catch (Exception e)
 			{
@@ -285,17 +285,17 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </returns>
 		protected long ReadLength()
 		{
-			if (this.commitedFileSize > 0)
+			if (commitedFileSize > 0)
 			{
-				return this.commitedFileSize;
+				return commitedFileSize;
 			}
 
 			try
 			{
 				var raw = new byte[sizeof(long)];
 
-				this.fileStream.Seek(this.lengthOffset, SeekOrigin.Begin);
-				this.fileStream.Read(raw, 0, raw.Length);
+				fileStream.Seek(lengthOffset, SeekOrigin.Begin);
+				fileStream.Read(raw, 0, raw.Length);
 				var value = BitConverter.ToInt64(raw, 0);
 
 				return value;
@@ -314,12 +314,12 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </param>
 		protected void WriteLength(long value)
 		{
-			var raw = BitConverter.GetBytes(this.fileSize);
+			var raw = BitConverter.GetBytes(fileSize);
 
-			this.fileStream.Seek(this.lengthOffset, SeekOrigin.Begin);
-			this.fileStream.Write(raw, 0, raw.Length);
+			fileStream.Seek(lengthOffset, SeekOrigin.Begin);
+			fileStream.Write(raw, 0, raw.Length);
 
-			this.commitedFileSize = this.fileSize;
+			commitedFileSize = fileSize;
 		}
 
 		/// <summary>
@@ -329,7 +329,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		protected void WriteInt(int value)
 		{
 			var raw = BitConverter.GetBytes(value);
-			this.fileStream.Write(raw, 0, raw.Length);
+			fileStream.Write(raw, 0, raw.Length);
 		}
 
 		/// <summary>
@@ -339,7 +339,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		protected int ReadInt()
 		{
 			var raw = new byte[sizeof(int)];
-			this.fileStream.Read(raw, 0, raw.Length);
+			fileStream.Read(raw, 0, raw.Length);
 
 			var value = BitConverter.ToInt32(raw, 0);
 

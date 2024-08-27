@@ -99,7 +99,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 
 		public abstract string WebFileForeignKeyAttribute { get; }
 		
-		protected IEntityDirectoryFileSystem FileSystem { get; private set; }
+		protected IEntityDirectoryFileSystem FileSystem { get; }
 
 		protected ICrmEntitySecurityProvider SecurityProvider
 		{
@@ -159,7 +159,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error getting URL for entity [{0}:{1}]: {2}", entity.LogicalName, entity.Id, e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error getting URL for entity [{0}:{1}]: {2}", entity.LogicalName, entity.Id, e));
 
                 return null;
 			}
@@ -182,7 +182,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			}
 			catch (InvalidOperationException e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error validating security for entity [{0}:{1}]: {2}", entity.LogicalName, entity.Id, e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error validating security for entity [{0}:{1}]: {2}", entity.LogicalName, entity.Id, e));
 
                 return null;
 			}
@@ -250,7 +250,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			}
 			catch (InvalidOperationException e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error validating security for entity [{0}:{1}]: {2}", Entity.LogicalName, Entity.Id, e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error validating security for entity [{0}:{1}]: {2}", Entity.LogicalName, Entity.Id, e));
 
                 return false;
 			}

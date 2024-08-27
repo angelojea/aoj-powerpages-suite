@@ -12,12 +12,12 @@ namespace Adxstudio.Xrm.Forums
 	using Microsoft.Xrm.Client.Security;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Query;
-	using Adxstudio.Xrm.Web.Mvc;
-	using Adxstudio.Xrm.Core.Flighting;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
-	using Adxstudio.Xrm.Web;
-	using Adxstudio.Xrm.Cms;
+	using Web.Mvc;
+	using Core.Flighting;
+	using Services;
+	using Services.Query;
+	using Web;
+	using Cms;
 
 	public abstract class ForumAggregationDataAdapter : IForumAggregationDataAdapter
 	{

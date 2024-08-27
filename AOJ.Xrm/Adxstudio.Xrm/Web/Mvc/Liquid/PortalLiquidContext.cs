@@ -17,59 +17,43 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 {
     public class PortalLiquidContext : IPortalLiquidContext
     {
-        private readonly IOrganizationMoneyFormatInfo _organizationMoneyFormatInfo;
-        private readonly Random _random;
-        private readonly ContextLanguageInfo _contextLanguageInfo;
-        private readonly IOrganizationService _portalOrganizationService;
         public PortalLiquidContext(HtmlHelper html, IPortalViewContext portalViewContext)
         {
-            _organizationMoneyFormatInfo = new AojOrganizationMoneyFormatInfo();
-            _random = new Random();
+            OrganizationMoneyFormatInfo = new AojOrganizationMoneyFormatInfo();
+            Random = new Random();
             PortalViewContext = portalViewContext;
-            _contextLanguageInfo = null;
+            ContextLanguageInfo = null;
         }
 
         public PortalLiquidContext(IOrganizationService svc, IPortalViewContext portalViewContext)
         {
-            _organizationMoneyFormatInfo = new AojOrganizationMoneyFormatInfo();
-            _random = new Random();
+            OrganizationMoneyFormatInfo = new AojOrganizationMoneyFormatInfo();
+            Random = new Random();
             PortalViewContext = portalViewContext;
-            _contextLanguageInfo = null;
-            _portalOrganizationService = svc;
+            ContextLanguageInfo = null;
+            PortalOrganizationService = svc;
         }
 
         public PortalLiquidContext(IOrganizationService svc)
         {
-            _organizationMoneyFormatInfo = new AojOrganizationMoneyFormatInfo();
-            _random = new Random();
+            OrganizationMoneyFormatInfo = new AojOrganizationMoneyFormatInfo();
+            Random = new Random();
             //_contextLanguageInfo = new ContextLanguageInfo();
-            _contextLanguageInfo = null;
-            _portalOrganizationService = svc;
+            ContextLanguageInfo = null;
+            PortalOrganizationService = svc;
         }
 
-        public HtmlHelper Html { get; private set; }
+        public HtmlHelper Html { get; }
 
-        public IOrganizationMoneyFormatInfo OrganizationMoneyFormatInfo
-        {
-            get { return _organizationMoneyFormatInfo; }
-        }
+        public IOrganizationMoneyFormatInfo OrganizationMoneyFormatInfo { get; }
 
-        public IPortalViewContext PortalViewContext { get; private set; }
+        public IPortalViewContext PortalViewContext { get; }
 
-        public Random Random
-        {
-            get { return _random; }
-        }
+        public Random Random { get; }
 
-        public ContextLanguageInfo ContextLanguageInfo
-        {
-            get { return _contextLanguageInfo; }
-        }
+        public ContextLanguageInfo ContextLanguageInfo { get; }
 
-        public IOrganizationService PortalOrganizationService
-        {
-            get { return _portalOrganizationService; }
-        }
+        public IOrganizationService PortalOrganizationService { get; }
 
         public UrlHelper UrlHelper => new UrlHelper();
 

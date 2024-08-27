@@ -66,9 +66,9 @@ namespace Microsoft.Xrm.Client.Diagnostics
 			AppDomain = new TraceSource("AppDomain", SourceLevels.All);
 		}
 
-		public static TraceSource Framework { get; private set; }
-		public static TraceSource Workflow { get; private set; }
-		public static TraceSource AppDomain { get; private set; }
+		public static TraceSource Framework { get; }
+		public static TraceSource Workflow { get; }
+		public static TraceSource AppDomain { get; }
 
 		public static void FrameworkInformation(string className, string memberName, string format, params object[] args)
 		{

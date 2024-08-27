@@ -39,7 +39,7 @@ namespace Adxstudio.Xrm.Search.Index
 			var aggregatedResults = new Dictionary<string, XElement>();
 			var parsedResultSet = new FetchXmlResultSet(fetchXml);
 
-			bool isFirstPage = this.lastResultOnPage == null;
+			bool isFirstPage = lastResultOnPage == null;
 			bool isLastPage = !parsedResultSet.MoreRecords;
 
 			//// Check if last result of last page and first result of this page are the same article.
@@ -48,10 +48,10 @@ namespace Adxstudio.Xrm.Search.Index
 			if (!isFirstPage)
 			{
 				var firstId = inputResults.First().Descendants(primaryKeyFieldName).FirstOrDefault().Value;
-				var previousPageLastId = this.lastResultOnPage.Descendants(primaryKeyFieldName).FirstOrDefault().Value;
+				var previousPageLastId = lastResultOnPage.Descendants(primaryKeyFieldName).FirstOrDefault().Value;
 				if (firstId != previousPageLastId)
 				{
-					aggregatedResults[previousPageLastId] = this.lastResultOnPage;
+					aggregatedResults[previousPageLastId] = lastResultOnPage;
 				}
 			}
 			var lastId = inputResults.Descendants(primaryKeyFieldName).FirstOrDefault().Value;
@@ -65,7 +65,7 @@ namespace Adxstudio.Xrm.Search.Index
 				if (primaryKeyFieldNode == null) { return fetchXml; }
 
 				////Retrieving fields
-				collectionOfFields.ForEach(field => this.GetRelatedFields(resultNode, field, primaryKeyFieldNode.Value));
+				collectionOfFields.ForEach(field => GetRelatedFields(resultNode, field, primaryKeyFieldNode.Value));
 				////Removing duplicate nodes
 				aggregatedResults[primaryKeyFieldNode.Value] = resultNode;
 			}
@@ -84,11 +84,11 @@ namespace Adxstudio.Xrm.Search.Index
 			fetchXmlParsed.Descendants("result").Remove();
 
 			//// Inserting retrieved above related fields and deduplicated results.
-			collectionOfFields.ForEach(field => this.InsertRelatedFields(aggregatedResults, field));
+			collectionOfFields.ForEach(field => InsertRelatedFields(aggregatedResults, field));
 
 			//// Remove and store the last aggregated result, as this might be the same article as the first result on the 
 			//// next page.
-			this.lastResultOnPage = aggregatedResults[lastId];
+			lastResultOnPage = aggregatedResults[lastId];
 			if (!isLastPage)
 			{
 				aggregatedResults.Remove(lastId);
@@ -170,19 +170,19 @@ namespace Adxstudio.Xrm.Search.Index
 			/// <param name="fieldName">Field name</param>
 			public RelatedField(string fieldName)
 			{
-				this.FieldName = fieldName;
-				this.ListOfFields = new Dictionary<string, string>();
+				FieldName = fieldName;
+				ListOfFields = new Dictionary<string, string>();
 			}
 
 			/// <summary>
 			/// Field name
 			/// </summary>
-			public string FieldName { get; private set; }
+			public string FieldName { get; }
 
 			/// <summary>
 			/// List of fields
 			/// </summary>
-			public Dictionary<string, string> ListOfFields { get; set; }
+			public Dictionary<string, string> ListOfFields { get; }
 		}
 	}
 }

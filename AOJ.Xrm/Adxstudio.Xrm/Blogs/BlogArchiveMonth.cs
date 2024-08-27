@@ -17,10 +17,10 @@ namespace Adxstudio.Xrm.Blogs
 			ApplicationPath = applicationPath;
 		}
 
-		public ApplicationPath ApplicationPath { get; private set; }
+		public ApplicationPath ApplicationPath { get; }
 
-		public DateTime Month { get; private set; }
+		public DateTime Month { get; }
 
-		public int PostCount { get; private set; }
+		public int PostCount { get; }
 	}
 }

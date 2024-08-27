@@ -13,17 +13,17 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 		/// <summary>
 		/// Description of note
 		/// </summary>
-		public string Description { get; private set; }
+		public string Description { get; }
 
 		/// <summary>
 		/// File Name
 		/// </summary>
-		public string FileName { get; private set; }
+		public string FileName { get; }
 
 		/// <summary>
 		/// File Url
 		/// </summary>
-		public string FileUrl { get; private set; }
+		public string FileUrl { get; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="RelatedNote" /> class.
@@ -33,9 +33,9 @@ namespace Adxstudio.Xrm.KnowledgeArticles
 		/// <param name="fileUrl">File Url</param>
 		public RelatedNote(string description, string fileName, string fileUrl)
 		{
-			this.Description = description;
-			this.FileName = fileName;
-			this.FileUrl = fileUrl;
+			Description = description;
+			FileName = fileName;
+			FileUrl = fileUrl;
 		}
 	}
 }

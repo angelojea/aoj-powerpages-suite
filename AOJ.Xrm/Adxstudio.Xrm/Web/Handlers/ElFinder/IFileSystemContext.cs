@@ -43,7 +43,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			get { return FileSystem.EntityDirectoryTypes; }
 		}
 
-		protected IEntityDirectoryFileSystem FileSystem { get; private set; }
+		protected IEntityDirectoryFileSystem FileSystem { get; }
 
 		protected ICrmEntitySecurityProvider SecurityProvider
 		{
@@ -102,7 +102,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			}
 			catch (InvalidOperationException e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error validating security for entity [{0}:{1}]: {2}", entity.LogicalName, entity.Id, e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error validating security for entity [{0}:{1}]: {2}", entity.LogicalName, entity.Id, e));
 
                 return false;
 			}

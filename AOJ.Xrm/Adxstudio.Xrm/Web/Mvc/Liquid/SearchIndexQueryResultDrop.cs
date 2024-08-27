@@ -12,7 +12,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 {
 	public class SearchIndexQueryResultDrop : PortalDrop
 	{
-		private Lazy<EntityDrop> _entity;
+		private readonly Lazy<EntityDrop> _entity;
 
 		public SearchIndexQueryResultDrop(IPortalLiquidContext portalLiquidContext, ICrmEntitySearchResult result) : base(portalLiquidContext)
 		{
@@ -63,7 +63,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			get { return Result.Url.ToString(); }
 		}
 
-		protected ICrmEntitySearchResult Result { get; private set; }
+		protected ICrmEntitySearchResult Result { get; }
 
 		public override object BeforeMethod(string method)
 		{

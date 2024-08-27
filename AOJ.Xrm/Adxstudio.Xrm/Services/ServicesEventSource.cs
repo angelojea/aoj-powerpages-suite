@@ -9,9 +9,9 @@ namespace Adxstudio.Xrm.Services
 	using System.Diagnostics;
 	using System.Diagnostics.Tracing;
 	using System.Linq;
-	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.Core.Telemetry.EventSources;
-	using Adxstudio.Xrm.Diagnostics.Trace;
+	using Configuration;
+	using Core.Telemetry.EventSources;
+	using Diagnostics.Trace;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Messages;
 	using Microsoft.Xrm.Sdk.Query;
@@ -113,11 +113,11 @@ namespace Adxstudio.Xrm.Services
 				relationship.SchemaName,
 				relatedEntitiesString,
 				duration,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}
@@ -167,11 +167,11 @@ namespace Adxstudio.Xrm.Services
 			WriteEventCreate(
 				entity.LogicalName,
 				duration,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}
@@ -204,11 +204,11 @@ namespace Adxstudio.Xrm.Services
 				entityLogicalName,
 				entityId.ToString(),
 				duration,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}
@@ -254,11 +254,11 @@ namespace Adxstudio.Xrm.Services
 				relationship.SchemaName,
 				relatedEntitiesString,
 				duration,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}
@@ -310,7 +310,7 @@ namespace Adxstudio.Xrm.Services
 
 			if (cachedRequest != null)
 			{
-				return this.OrganizationRequest(cachedRequest.Request, duration, cached, cachedRequest.Telemetry);
+				return OrganizationRequest(cachedRequest.Request, duration, cached, cachedRequest.Telemetry);
 			}
 
 			var retrieveMultiple = request as RetrieveMultipleRequest;
@@ -381,11 +381,11 @@ namespace Adxstudio.Xrm.Services
 				request.RequestId.HasValue ? request.RequestId.Value.ToString() : null,
 				duration,
 				cached,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime(),
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime(),
 				telemetry?.Caller.MemberName,
 				telemetry?.Caller.SourceFilePath,
 				telemetry?.Caller.SourceLineNumber ?? 0);
@@ -438,11 +438,11 @@ namespace Adxstudio.Xrm.Services
 				columns,
 				duration,
 				cached,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime(),
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime(),
 				telemetry?.IsAllColumns ?? false,
 				telemetry?.Caller.MemberName,
 				telemetry?.Caller.SourceFilePath,
@@ -512,11 +512,11 @@ namespace Adxstudio.Xrm.Services
 				queryInfo,
 				duration,
 				cached,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime(),
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime(),
 				telemetry?.IsAllColumns ?? false,
 				telemetry?.Caller.MemberName,
 				telemetry?.Caller.SourceFilePath,
@@ -562,11 +562,11 @@ namespace Adxstudio.Xrm.Services
 				entity.LogicalName,
 				entity.Id,
 				duration,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}

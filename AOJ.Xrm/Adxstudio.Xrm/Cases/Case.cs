@@ -65,48 +65,48 @@ namespace Adxstudio.Xrm.Cases
 			}
 		}
 
-		public string CaseTypeLabel { get; private set; }
+		public string CaseTypeLabel { get; }
 
 		public DateTime CreatedOn
 		{
 			get { return Entity.GetAttributeValue<DateTime?>("createdon").GetValueOrDefault(); }
 		}
 
-		public EntityReference Customer { get; private set; }
+		public EntityReference Customer { get; }
 
 		public string Description
 		{
 			get { return Entity.GetAttributeValue<string>("description"); }
 		}
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public EntityReference EntityReference { get; private set; }
+		public EntityReference EntityReference { get; }
 
-		public bool IsActive { get; private set; }
+		public bool IsActive { get; }
 
-		public bool IsCanceled { get; private set; }
+		public bool IsCanceled { get; }
 
-		public bool IsResolved { get; private set; }
+		public bool IsResolved { get; }
 
 		public bool PublishToWeb
 		{
 			get { return Entity.GetAttributeValue<bool?>("adx_publishtoweb").GetValueOrDefault(); }
 		}
 
-		public EntityReference ResponsibleContact { get; private set; }
+		public EntityReference ResponsibleContact { get; }
 
-		public string ResponsibleContactEmailAddress { get; private set; }
+		public string ResponsibleContactEmailAddress { get; }
 
-		public string ResponsibleContactName { get; private set; }
+		public string ResponsibleContactName { get; }
 
-		public string Resolution { get; private set; }
+		public string Resolution { get; }
 
-		public DateTime? ResolutionDate { get; private set; }
+		public DateTime? ResolutionDate { get; }
 
-		public string StateLabel { get; private set; }
+		public string StateLabel { get; }
 
-		public string StatusLabel { get; private set; }
+		public string StatusLabel { get; }
 
 		public string TicketNumber
 		{
@@ -118,7 +118,7 @@ namespace Adxstudio.Xrm.Cases
 			get { return Entity.GetAttributeValue<string>("title"); }
 		}
 
-		public string Url { get; private set; }
+		public string Url { get; }
 
 		private static string GetEnumLabel(Entity entity, EntityMetadata entityMetadata, string attributeLogicalName)
 		{

@@ -278,7 +278,7 @@ namespace Adxstudio.Xrm.SharePoint
 					var relativePaths = folderPath.Split('/');
 					var parentFolderName = relativePaths.Length > 2 ? relativePaths.Skip(relativePaths.Length - 2).First() : "/";
 
-					sharePointItems.Add(new SharePointItem()
+					sharePointItems.Add(new SharePointItem
 					{
 						Name = @"""{0}""".FormatWith(parentFolderName),
 						IsFolder = true,

@@ -9,7 +9,7 @@ namespace Adxstudio.Xrm.Issues
 {
 	public class IssueCommentPolicyReader : ICommentPolicyReader
 	{
-		private IIssue _issue;
+		private readonly IIssue _issue;
 
 		public IssueCommentPolicyReader(IIssue issue)
 		{

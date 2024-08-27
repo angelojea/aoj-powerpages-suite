@@ -13,8 +13,8 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
 	public class ReopenCaseActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-reply fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Reopen_Case_DefaultText");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Reopen_Case_DefaultText");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-reply fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Reopen_Case_DefaultText");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Reopen_Case_DefaultText");
 
 		public ViewReopenCaseModal Modal { get; set; }
 

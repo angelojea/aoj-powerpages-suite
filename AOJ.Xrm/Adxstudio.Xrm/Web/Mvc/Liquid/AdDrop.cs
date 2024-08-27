@@ -22,7 +22,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			_adUrl = new Lazy<string>(GetAdUrl, LazyThreadSafetyMode.None);
 		}
 
-		protected IAd Ad { get; private set; }
+		protected IAd Ad { get; }
 
 		public string Copy
 		{

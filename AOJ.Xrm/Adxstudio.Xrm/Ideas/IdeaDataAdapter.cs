@@ -14,18 +14,18 @@ namespace Adxstudio.Xrm.Ideas
 	using Microsoft.Xrm.Client.Security;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Client;
-	using Adxstudio.Xrm.Text;
+	using Text;
 	using Microsoft.Xrm.Client.Messages;
 	using Microsoft.Xrm.Portal.Web;
 	using Microsoft.Xrm.Sdk.Metadata;
 	using Microsoft.Xrm.Sdk.Messages;
 	using Microsoft.Xrm.Sdk.Query;
-	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Core.Flighting;
-	using Adxstudio.Xrm.Feedback;
-	using Adxstudio.Xrm.Resources;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
+	using Cms;
+	using Core.Flighting;
+	using Feedback;
+	using Resources;
+	using Services;
+	using Services.Query;
 
 	/// <summary>
 	/// Provides methods to get and set data for an Adxstudio Portals Idea such as comments and votes.
@@ -84,9 +84,9 @@ namespace Adxstudio.Xrm.Ideas
 		/// <param name="portalName">The configured name of the portal to get and set data for.</param>
 		public IdeaDataAdapter(IIdea idea, string portalName = null) : this(idea.Entity, portalName) { }
 
-		protected EntityReference Idea { get; private set; }
+		protected EntityReference Idea { get; }
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
 		/// <summary>
 		/// Gets or sets whether or not comments should be in chronological order (default false [reverse chronological]).
@@ -328,7 +328,7 @@ namespace Adxstudio.Xrm.Ideas
 
 		private Entity GetIdeaEntity(OrganizationServiceContext serviceContext)
 		{
-			var idea = serviceContext.RetrieveSingle("adx_idea", "adx_ideaid", this.Idea.Id, FetchAttribute.All);
+			var idea = serviceContext.RetrieveSingle("adx_idea", "adx_ideaid", Idea.Id, FetchAttribute.All);
 
 			if (idea == null)
 			{
@@ -409,7 +409,7 @@ namespace Adxstudio.Xrm.Ideas
 		{
 			var context = Dependencies.GetServiceContext();
 
-			var metadataRequest = new RetrieveEntityRequest()
+			var metadataRequest = new RetrieveEntityRequest
 			{
 				EntityFilters = EntityFilters.All,
 				LogicalName = Idea.LogicalName,

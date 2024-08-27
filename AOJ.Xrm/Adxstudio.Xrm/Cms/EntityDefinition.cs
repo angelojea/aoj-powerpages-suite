@@ -25,7 +25,7 @@ namespace Adxstudio.Xrm.Cms
 			EntityNodeColumns = columns;
 		}
 
-		public string Solution { get; private set; }
+		public string Solution { get; }
 
 		public IEnumerable<string> ColumnSet
 		{
@@ -39,14 +39,14 @@ namespace Adxstudio.Xrm.Cms
 			}
 		}
 
-		public IEnumerable<EntityNodeColumn> EntityNodeColumns { get; private set; }
+		public IEnumerable<EntityNodeColumn> EntityNodeColumns { get; }
 
 		public SolutionColumnSet GetFilteredColumns(Version solutionVersion)
 		{
 			List<EntityNodeColumn> filteredColumns = new List<EntityNodeColumn>();
-			if (this.EntityNodeColumns != null)
+			if (EntityNodeColumns != null)
 			{
-				foreach (var column in this.EntityNodeColumns)
+				foreach (var column in EntityNodeColumns)
 				{
 					if (column.IntroducedVersion != null)
 					{
@@ -62,7 +62,7 @@ namespace Adxstudio.Xrm.Cms
 					}
 				}
 			}
-			return new SolutionColumnSet(this.Solution, filteredColumns.ToArray());
+			return new SolutionColumnSet(Solution, filteredColumns.ToArray());
 		}
 	}
 
@@ -161,13 +161,13 @@ namespace Adxstudio.Xrm.Cms
 			return new EntityDefinition(solution, logicalName, null, typeof(T), null, columnSets, null, version, false, relationships);
 		}
 
-		public string LogicalName { get; private set; }
+		public string LogicalName { get; }
 		public string PrimaryIdAttributeName { get; private set; }
-		public Type EntityNodeType { get; private set; }
+		public Type EntityNodeType { get; }
 		public string Solution { get; private set; }
-		public int? ActiveStateCode { get; private set; }
-		public IEnumerable<SolutionColumnSet> ColumnSets { get; private set; }
-		public IEnumerable<RelationshipDefinition> Relationships { get; private set; }
+		public int? ActiveStateCode { get; }
+		public IEnumerable<SolutionColumnSet> ColumnSets { get; }
+		public IEnumerable<RelationshipDefinition> Relationships { get; }
 		public QueryBuilder QueryBuilder { get; private set; }
 
 		/// <summary>
@@ -182,7 +182,7 @@ namespace Adxstudio.Xrm.Cms
 		/// an entity could be added to ContentMap even if it doesn't match on any relationships definition. Setting this to true will
 		/// force an extra check to prevent this scenario.
 		/// </summary>
-		public bool CheckEntityBeforeContentMapRefresh { get; private set; }
+		public bool CheckEntityBeforeContentMapRefresh { get; }
 
 		/// <summary>
 		/// <see cref="EntityDefinition"/> constructor.
@@ -229,19 +229,19 @@ namespace Adxstudio.Xrm.Cms
 		/// <returns>Whether the given entity should be included in the content map.</returns>
 		public bool ShouldIncludeInContentMap(Entity entity)
 		{
-			if (!this.CheckEntityBeforeContentMapRefresh)
+			if (!CheckEntityBeforeContentMapRefresh)
 			{
 				// This entity definition doesn't have 'CheckEntityBeforeContentMapRefresh' enabled, so automatically return true.
 				return true;
 			}
 			
-			if (!this.Relationships.Any())
+			if (!Relationships.Any())
 			{
 				// No relationships to check, automatically include.
 				return true;
 			}
 
-			foreach (var relationship in this.Relationships)
+			foreach (var relationship in Relationships)
 			{
 				var regardingEntity = entity.GetAttributeValue<EntityReference>(relationship.ForeignIdAttributeName);
 				if (string.Equals(regardingEntity?.LogicalName, relationship.ForeignEntityLogicalname))
@@ -325,7 +325,7 @@ namespace Adxstudio.Xrm.Cms
 		public IEnumerable<SolutionColumnSet> GetFilteredColumns(Version solutionVersion)
 		{
 			List<SolutionColumnSet> filteredColumnSet = new List<SolutionColumnSet>();
-			foreach (var solutionColumnSet in this.ColumnSets)
+			foreach (var solutionColumnSet in ColumnSets)
 			{
 				filteredColumnSet.Add(solutionColumnSet.GetFilteredColumns(solutionVersion));
 			}
@@ -341,9 +341,9 @@ namespace Adxstudio.Xrm.Cms
 		{
 			List<RelationshipDefinition> filteredRelationships = new List<RelationshipDefinition>();
 
-			if (this.Relationships != null)
+			if (Relationships != null)
 			{
-				foreach (var relationship in this.Relationships)
+				foreach (var relationship in Relationships)
 				{
 					// If solution name is missing in Relationship definition or CRM is missing this solution, do the filtering based on MicrosoftCrmPortalBase solution version.
 					var solutionVersion = !string.IsNullOrEmpty(relationship.Solution) && crmSolutions.ContainsKey(relationship.Solution)

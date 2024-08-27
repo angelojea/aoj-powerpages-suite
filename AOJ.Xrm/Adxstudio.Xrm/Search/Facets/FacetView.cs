@@ -32,8 +32,8 @@ namespace Adxstudio.Xrm.Search.Facets
 		/// </param>
 		public FacetView(string facetName, IEnumerable<ConstraintHit> constraintHits)
 		{
-			this.FacetName = facetName;
-			this.ConstraintHits = constraintHits;
+			FacetName = facetName;
+			ConstraintHits = constraintHits;
 		}
 
 		/// <summary>

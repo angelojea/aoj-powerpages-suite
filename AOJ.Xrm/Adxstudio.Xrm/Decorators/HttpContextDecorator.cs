@@ -23,7 +23,7 @@ namespace Adxstudio.Xrm.Decorators
 		/// <param name="context">type: HttpContext</param>
 		protected HttpContextDecorator(HttpContextBase context)
 		{
-			this.Context = context;
+			Context = context;
 		}
 
 		/// <summary>
@@ -39,7 +39,7 @@ namespace Adxstudio.Xrm.Decorators
 		{
 			get
 			{
-				return this.Context != null;
+				return Context != null;
 			}
 		}
 	}

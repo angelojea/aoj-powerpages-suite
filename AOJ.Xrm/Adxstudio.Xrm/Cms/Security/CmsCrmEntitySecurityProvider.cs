@@ -10,18 +10,18 @@ namespace Adxstudio.Xrm.Cms.Security
 	using System.Diagnostics;
 	using System.Linq;
 	using System.Web;
-	using Adxstudio.Xrm.Blogs;
-	using Adxstudio.Xrm.Cases;
-	using Adxstudio.Xrm.Configuration;
+	using Blogs;
+	using Cases;
+	using Configuration;
 	using Adxstudio.Xrm.Events.Security;
 	using Adxstudio.Xrm.Forums.Security;
-	using Adxstudio.Xrm.Ideas;
-	using Adxstudio.Xrm.Issues;
+	using Ideas;
+	using Issues;
 	using Adxstudio.Xrm.Security;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
-	using Adxstudio.Xrm.Diagnostics.Trace;
-	using Adxstudio.Xrm.Web;
+	using Services;
+	using Services.Query;
+	using Diagnostics.Trace;
+	using Web;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Client.Security;
 	using Microsoft.Xrm.Portal.Configuration;
@@ -86,7 +86,7 @@ namespace Adxstudio.Xrm.Cms.Security
 			public UncachedProvider(string portalName = null)
 				: this(new WebPageAccessControlSecurityProvider(HttpContext.Current), new PublishedDatesAccessProvider(HttpContext.Current), new PublishingStateAccessProvider(HttpContext.Current), portalName)
 			{
-				this.current = HttpContext.Current;
+				current = HttpContext.Current;
 			}
 
 			protected UncachedProvider(
@@ -98,15 +98,15 @@ namespace Adxstudio.Xrm.Cms.Security
 				_publishedDatesAccessProvider = publishedDatesAccessProvider;
 				_publishingStateAccessProvider = publishingStateAccessProvider;
 				_eventAccessPermissionProvider = new EventAccessPermissionProvider();
-				_forumAccessPermissionProvider = new ForumAccessPermissionProvider(this.current);
-				_blogSecurityProvider = new BlogSecurityProvider(_webPageAccessControlProvider, this.current, portalName);
-				_ideaSecurityProvider = new IdeaSecurityProvider(this.current, portalName);
+				_forumAccessPermissionProvider = new ForumAccessPermissionProvider(current);
+				_blogSecurityProvider = new BlogSecurityProvider(_webPageAccessControlProvider, current, portalName);
+				_ideaSecurityProvider = new IdeaSecurityProvider(current, portalName);
 				_issueSecurityProvider = new IssueSecurityProvider(portalName);
 
 				PortalName = portalName;
 			}
 
-			protected string PortalName { get; private set; }
+			protected string PortalName { get; }
 
 			public override bool TryAssert(OrganizationServiceContext context, Entity entity, CrmEntityRight right, CrmEntityCacheDependencyTrace dependencies)
 			{
@@ -382,7 +382,7 @@ namespace Adxstudio.Xrm.Cms.Security
 					return false;
 				}
 
-				return this.TestForum(context, entity.GetAttributeValue<EntityReference>("adx_forumid"), right, dependencies);
+				return TestForum(context, entity.GetAttributeValue<EntityReference>("adx_forumid"), right, dependencies);
 			}
 
 			protected virtual bool TestForumThread(OrganizationServiceContext context, Entity entity, CrmEntityRight right, CrmEntityCacheDependencyTrace dependencies)
@@ -392,7 +392,7 @@ namespace Adxstudio.Xrm.Cms.Security
 					return false;
 				}
 
-				return this.TestForum(context, entity.GetAttributeValue<EntityReference>("adx_forumid"), right, dependencies);
+				return TestForum(context, entity.GetAttributeValue<EntityReference>("adx_forumid"), right, dependencies);
 			}
 
 			protected virtual bool TestForumPost(OrganizationServiceContext context, Entity entity, CrmEntityRight right, CrmEntityCacheDependencyTrace dependencies)
@@ -420,7 +420,7 @@ namespace Adxstudio.Xrm.Cms.Security
 
 				var thread = context.RetrieveSingle(fetch);
 
-				return this.TestForumThread(context, thread, right, dependencies);
+				return TestForumThread(context, thread, right, dependencies);
 			}
 
 			protected virtual bool TestIdeaForum(OrganizationServiceContext context, Entity entity, CrmEntityRight right, CrmEntityCacheDependencyTrace dependencies)
@@ -490,7 +490,7 @@ namespace Adxstudio.Xrm.Cms.Security
 
 				if (entity.GetAttributeValue<EntityReference>("adx_webpageid") != null)
 				{
-					return this.TestWebPage(context, entity.GetAttributeValue<EntityReference>("adx_webpageid"), right, dependencies);
+					return TestWebPage(context, entity.GetAttributeValue<EntityReference>("adx_webpageid"), right, dependencies);
 				}
 
 				if (entity.GetAttributeValue<EntityReference>("adx_webfileid") != null)
@@ -501,12 +501,12 @@ namespace Adxstudio.Xrm.Cms.Security
 						new[] { "adx_blogpostid", "adx_parentpageid" },
 						new Condition("adx_webfileid", ConditionOperator.Equal, reference.Id));
 
-					return this.TestWebFile(context, webfile, right, dependencies);
+					return TestWebFile(context, webfile, right, dependencies);
 				}
 
 				if (entity.GetAttributeValue<EntityReference>("adx_forumid") != null)
 				{
-					return this.TestForum(context, entity.GetAttributeValue<EntityReference>("adx_forumid"), right, dependencies);
+					return TestForum(context, entity.GetAttributeValue<EntityReference>("adx_forumid"), right, dependencies);
 				}
 
 				// legacy entities
@@ -545,7 +545,7 @@ namespace Adxstudio.Xrm.Cms.Security
 				if (parentBlogPostReference != null)
 				{
 					var post = context.RetrieveSingle(parentBlogPostReference, new ColumnSet());
-					return this.TestBlogPost(context, post, right, dependencies);
+					return TestBlogPost(context, post, right, dependencies);
 					}
 
 				return TestParentWebPage(context, entity, right, dependencies);

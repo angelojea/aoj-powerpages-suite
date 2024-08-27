@@ -41,9 +41,9 @@ namespace Adxstudio.Xrm.Ideas
 		/// <param name="portalName">The configured name of the portal to get data for.</param>
 		public WebsiteIdeaForumAggregationByNewDataAdapter(string portalName = null) : this(new PortalConfigurationDataAdapterDependencies(portalName)) { }
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
-		protected EntityReference Website { get; private set; }
+		protected EntityReference Website { get; }
 
 		/// <summary>
 		/// Returns ideas that have been submitted to the idea forums this adapter applies to.

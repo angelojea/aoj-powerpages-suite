@@ -17,7 +17,7 @@ namespace Adxstudio.Xrm.Search.Index
 {
 	public class SavedQueryIndexer : ICrmEntityIndexer
 	{
-		private Lazy<ICrmEntityIndexer[]> _indexers;
+		private readonly Lazy<ICrmEntityIndexer[]> _indexers;
 
 		public SavedQueryIndexer(ICrmEntityIndex index, string savedQueryName)
 		{
@@ -36,9 +36,9 @@ namespace Adxstudio.Xrm.Search.Index
 			_indexers = new Lazy<ICrmEntityIndexer[]>(GetIndexersForSavedQueries, LazyThreadSafetyMode.None);
 		}
 
-		protected string SavedQueryName { get; private set; }
+		protected string SavedQueryName { get; }
 
-		protected ICrmEntityIndex Index { get; private set; }
+		protected ICrmEntityIndex Index { get; }
 
 		protected IEnumerable<ICrmEntityIndexer> Indexers
 		{

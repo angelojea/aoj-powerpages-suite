@@ -15,8 +15,8 @@ namespace Adxstudio.Xrm.Blogs
 			Weight = weight;
 		}
 
-		public int PostCount { get; private set; }
+		public int PostCount { get; }
 
-		public int Weight { get; private set; }
+		public int Weight { get; }
 	}
 }

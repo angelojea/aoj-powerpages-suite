@@ -13,8 +13,8 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
 	public class LoseOpportunityActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-ban fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Close_As_Lost_Button_Label");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Close_As_Lost_Button_Label");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-ban fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Close_As_Lost_Button_Label");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Close_As_Lost_Button_Label");
 
 		public ViewLoseOpportunityModal Modal { get; set; }
 

@@ -44,13 +44,13 @@ namespace Adxstudio.Xrm.Forums
 
 		}
 
-		protected Guid UserId { get; private set; }
+		protected Guid UserId { get; }
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
 		protected EntityReference Website { get; private set; }
 
-		protected Func<OrganizationServiceContext, IQueryable<Entity>> SelectThreadEntities { get; private set; }
+		protected Func<OrganizationServiceContext, IQueryable<Entity>> SelectThreadEntities { get; }
 
 		public int SelectPostCount()
 		{

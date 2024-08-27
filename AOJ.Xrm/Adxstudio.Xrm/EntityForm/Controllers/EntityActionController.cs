@@ -57,7 +57,7 @@ namespace Adxstudio.Xrm.EntityForm.Controllers
 
 			if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.TelemetryFeatureUsage))
 			{
-				PortalFeatureTrace.TraceInstance.LogFeatureUsage(FeatureTraceCategory.Case, this.HttpContext, "close_incident", 1, entity.ToEntityReference(), "edit");
+				PortalFeatureTrace.TraceInstance.LogFeatureUsage(FeatureTraceCategory.Case, HttpContext, "close_incident", 1, entity.ToEntityReference(), "edit");
 			}
 
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
@@ -107,7 +107,7 @@ namespace Adxstudio.Xrm.EntityForm.Controllers
 
 			if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.TelemetryFeatureUsage))
 			{
-				PortalFeatureTrace.TraceInstance.LogFeatureUsage(FeatureTraceCategory.Case, this.HttpContext, "resolve_incident", 1, entity.ToEntityReference(), "edit");
+				PortalFeatureTrace.TraceInstance.LogFeatureUsage(FeatureTraceCategory.Case, HttpContext, "resolve_incident", 1, entity.ToEntityReference(), "edit");
 			}
 
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
@@ -144,7 +144,7 @@ namespace Adxstudio.Xrm.EntityForm.Controllers
 
 			if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.TelemetryFeatureUsage))
 			{
-				PortalFeatureTrace.TraceInstance.LogFeatureUsage(FeatureTraceCategory.Case, this.HttpContext, "reopen_incident", 1, entity.ToEntityReference(), "edit");
+				PortalFeatureTrace.TraceInstance.LogFeatureUsage(FeatureTraceCategory.Case, HttpContext, "reopen_incident", 1, entity.ToEntityReference(), "edit");
 			}
 
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
@@ -182,7 +182,7 @@ namespace Adxstudio.Xrm.EntityForm.Controllers
 
 			if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.TelemetryFeatureUsage))
 			{
-				PortalFeatureTrace.TraceInstance.LogFeatureUsage(FeatureTraceCategory.Case, this.HttpContext, "cancel_incident", 1, entity.ToEntityReference(), "edit");
+				PortalFeatureTrace.TraceInstance.LogFeatureUsage(FeatureTraceCategory.Case, HttpContext, "cancel_incident", 1, entity.ToEntityReference(), "edit");
 			}
 
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);

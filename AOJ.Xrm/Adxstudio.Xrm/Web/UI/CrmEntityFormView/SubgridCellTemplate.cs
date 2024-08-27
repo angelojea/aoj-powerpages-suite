@@ -48,7 +48,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			get { return !Metadata.Disabled; }
 		}
 
-		protected FormXmlCellMetadata Metadata { get; private set; }
+		protected FormXmlCellMetadata Metadata { get; }
 
 		/// <summary>
 		/// Number of rows a cell should take up

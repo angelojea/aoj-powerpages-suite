@@ -13,8 +13,8 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
 	public class DeactivateActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-ban fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Deactivate_Button_Text");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Deactivate_Button_Text");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-ban fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Deactivate_Button_Text");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Deactivate_Button_Text");
 
 		public ViewDeactivateModal Modal { get; set; }
 

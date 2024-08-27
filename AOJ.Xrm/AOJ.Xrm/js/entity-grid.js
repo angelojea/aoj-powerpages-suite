@@ -365,7 +365,7 @@ entityGrid.prototype.render = function (forceLoad) {
                             data: jsonData,
                             global: false,
                             headers: {
-                                "__requestverificationtoken":window.AOJ.token
+                                "__requestverificationtoken": window.AOJ.token
                             },
                             success: function (result) {
                                 if (result.success) {
@@ -374,7 +374,10 @@ entityGrid.prototype.render = function (forceLoad) {
                             }
                         }).fail(function (jqXhr) {
                             var contentType = jqXhr.getResponseHeader("content-type");
-                            var error = contentType.indexOf("json") > -1 ? $.parseJSON(jqXhr.responseText) : { Message: jqXhr.status, InnerError: { Message: jqXhr.statusText } };
+                            var error = contentType.indexOf("json") > -1 ? $.parseJSON(jqXhr.responseText) : {
+                                Message: jqXhr.status,
+                                InnerError: {Message: jqXhr.statusText}
+                            };
                             displayErrorAlert(error, $element);
                         }).always(function () {
                             $downloadButton.removeAttr("disabled", "disabled");
@@ -1263,16 +1266,19 @@ entityGrid.prototype.load = function (page, filter, relatedRecordfilterOff, call
             // always
             $loadingMessage.hide().prop("aria-hidden", true);
             if (processingRequest) {
-                $table.find("th.sort-enabled a").removeAttr('disabled').css({ 'pointer-events': '', 'cursor': '' });
+                $table.find("th.sort-enabled a").removeAttr('disabled').css({'pointer-events': '', 'cursor': ''});
                 processingRequest = false;
             }
         }, entityName, entityId);
 }
 
 entityGrid.prototype.getData = function (url, configuration, base64SecureConfiguration, sortExpression, filter, metaFilter, search, page, pageSize, applyRelatedRecordFilter, filterRelationshipName, filterEntityName, filterAttributeName, filterValue, done, fail, always, entityName, entityId) {
-    done = $.isFunction(done) ? done : function () { };
-    fail = $.isFunction(fail) ? fail : function () { };
-    always = $.isFunction(always) ? always : function () { };
+    done = $.isFunction(done) ? done : function () {
+    };
+    fail = $.isFunction(fail) ? fail : function () {
+    };
+    always = $.isFunction(always) ? always : function () {
+    };
     if (!url || url == '') {
         always.call(this);
         fail.call(this, null, "error", window.ResourceManager['EntityGrid_Url_NotFound']);
@@ -1444,14 +1450,12 @@ entityGrid.prototype.formatAttributeValue = function (attribute, attributeMetada
                     });
 
                     if (result && result.length) {
-                        continue;
-                    }
-                    else if (action.Type === 2) {
+
+                    } else if (action.Type === 2) {
                         var actionLinkURL = getUrlFromActionLink(action);
                         if (actionLinkURL != null) {
                             hrefDetails = URI(actionLinkURL).addSearch(action.QueryStringIdParameterName, record.Id.toString());
-                        }
-                        else {
+                        } else {
                             actionLink = action;
                         }
                         break;
@@ -1468,8 +1472,7 @@ entityGrid.prototype.formatAttributeValue = function (attribute, attributeMetada
 
         if (actionLink && actionLink.EntityForm != null) {
             $detailsLink.addClass("launch-modal").attr("data-entityformid", actionLink.EntityForm.Id);
-        }
-        else if (layout.Configuration.DetailsActionLink.EntityForm) {
+        } else if (layout.Configuration.DetailsActionLink.EntityForm) {
             $detailsLink.addClass("launch-modal").attr("data-entityformid", layout.Configuration.DetailsActionLink.EntityForm.Id);
         }
         html.value = $detailsLink;
@@ -1487,7 +1490,10 @@ entityGrid.prototype.addSortEventHandlers = function () {
     $table.find("th.sort-enabled a").on("click", function (e) {
         e.preventDefault();
         if (!processingRequest) {
-            $table.find("th.sort-enabled a").attr('disabled', 'disabled').css({ 'pointer-events': 'none', 'cursor': 'default' });
+            $table.find("th.sort-enabled a").attr('disabled', 'disabled').css({
+                'pointer-events': 'none',
+                'cursor': 'default'
+            });
             processingRequest = true;
         }
         var $header = $(this).closest("th");
@@ -1507,12 +1513,12 @@ entityGrid.prototype.addSortEventHandlers = function () {
             sortExpression = name + " DESC";
             $header.data("sort-dir", "DESC").removeClass("sort-asc").addClass("sort-desc");
             $header.attr("aria-sort", "descending");
-            $(this).append(" ").append($("<span></span>").addClass("fa").addClass("fa-arrow-down")).append("<span class='sr-only sort-hint'>. " + window.ResourceManager['Sort_Ascending_Order'] + "</span>");;
+            $(this).append(" ").append($("<span></span>").addClass("fa").addClass("fa-arrow-down")).append("<span class='sr-only sort-hint'>. " + window.ResourceManager['Sort_Ascending_Order'] + "</span>");
         } else {
             sortExpression = name + " ASC";
             $header.data("sort-dir", "ASC").removeClass("sort-desc").addClass("sort-asc");
             $header.attr("aria-sort", "ascending");
-            $(this).append(" ").append($("<span></span>").addClass("fa").addClass("fa-arrow-up")).append("<span class='sr-only sort-hint'>. " + window.ResourceManager['Sort_Descending_Order'] + "</span>");;
+            $(this).append(" ").append($("<span></span>").addClass("fa").addClass("fa-arrow-up")).append("<span class='sr-only sort-hint'>. " + window.ResourceManager['Sort_Descending_Order'] + "</span>");
         }
         $header.addClass("sort");
         $table.data("sort-expression", sortExpression);
@@ -1587,17 +1593,20 @@ function onComplete($gridElement, action) {
 }
 
 function getError(jqXhr) {
-    var error = { Message: window.ResourceManager['UnKnown_Error_Occurred'] };
+    var error = {Message: window.ResourceManager['UnKnown_Error_Occurred']};
     if (jqXhr == null) return error;
     try {
         var contentType = jqXhr.getResponseHeader("content-type");
         if (contentType != null) {
-            error = contentType.indexOf("json") > -1 ? $.parseJSON(jqXhr.responseText) : { Message: jqXhr.status, InnerError: { Message: jqXhr.statusText } };
+            error = contentType.indexOf("json") > -1 ? $.parseJSON(jqXhr.responseText) : {
+                Message: jqXhr.status,
+                InnerError: {Message: jqXhr.statusText}
+            };
         } else {
-            error = { Message: jqXhr.statusText };
+            error = {Message: jqXhr.statusText};
         }
     } catch (e) {
-        error = { Message: e.message }
+        error = {Message: e.message}
     }
     return error;
 }
@@ -1620,7 +1629,7 @@ entityGrid.prototype.addCreateRelatedRecordLinkEventHandler = function () {
         // ID of source entity which is used to create related record.
         var refEntityId = $tr.data("id");
         // Relationship name for which new related record need to be created.
-        var relationship = link.data("relationship");;
+        var relationship = link.data("relationship");
         // Logical name of source entity.
         var refEntityName = $tr.data("entity");
         var entityFormId = $(this).data("entityformid");
@@ -1759,9 +1768,9 @@ entityGrid.prototype.addDeleteActionLinkClickEventHandlers = function () {
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: data
             }).done(function () {
                 var rowCount = $element.children(".view-grid").find("tbody tr").length;
@@ -1828,9 +1837,9 @@ entityGrid.prototype.addQualifyLeadActionLinkClickEventHandlers = function () {
                     type: "POST",
                     contentType: "application/json",
                     url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                    headers: {
+                        "__requestverificationtoken": window.AOJ.token
+                    },
                     data: json
                 }).done(function () {
                     $modal.modal("hide");
@@ -1866,16 +1875,17 @@ entityGrid.prototype.addQualifyLeadActionLinkClickEventHandlers = function () {
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: json
             }).done(function () {
                 displaySuccessAlert(layout.Configuration.QualifyLeadActionLink.SuccessMessage, $element, true);
                 onComplete($element, layout.Configuration.QualifyLeadActionLink);
             }).fail(function (jqXhr) {
                 displayErrorAlert(getError(jqXhr), $element);
-            }).always(function () { });
+            }).always(function () {
+            });
         });
     }
 }
@@ -1918,9 +1928,9 @@ entityGrid.prototype.addCloseCaseActionLinkClickEventHandlers = function () {
                     type: "POST",
                     contentType: "application/json",
                     url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                    headers: {
+                        "__requestverificationtoken": window.AOJ.token
+                    },
                     data: json
                 }).done(function () {
                     $modal.modal("hide");
@@ -1962,16 +1972,17 @@ entityGrid.prototype.addCloseCaseActionLinkClickEventHandlers = function () {
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: json
             }).done(function () {
                 displaySuccessAlert(layout.Configuration.CloseIncidentActionLink.SuccessMessage, $element, true);
                 onComplete($element, layout.Configuration.CloseIncidentActionLink);
             }).fail(function (jqXhr) {
                 displayErrorAlert(getError(jqXhr), $element);
-            }).always(function () { });
+            }).always(function () {
+            });
         });
     }
 }
@@ -2008,9 +2019,9 @@ entityGrid.prototype.addConvertQuoteActionLinkClickEventHandlers = function () {
                     type: "POST",
                     contentType: "application/json",
                     url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                    headers: {
+                        "__requestverificationtoken": window.AOJ.token
+                    },
                     data: data
                 }).done(function () {
                     $modal.modal("hide");
@@ -2041,16 +2052,17 @@ entityGrid.prototype.addConvertQuoteActionLinkClickEventHandlers = function () {
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: data
             }).done(function () {
                 displaySuccessAlert(layout.Configuration.ConvertQuoteToOrderActionLink.SuccessMessage, $element, true);
                 onComplete($element, layout.Configuration.ConvertQuoteToOrderActionLink);
             }).fail(function (jqXhr) {
                 displayErrorAlert(getError(jqXhr), $element);
-            }).always(function () { });
+            }).always(function () {
+            });
         });
     }
 }
@@ -2087,9 +2099,9 @@ entityGrid.prototype.addConvertOrderActionLinkClickEventHandlers = function () {
                     type: "POST",
                     contentType: "application/json",
                     url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                    headers: {
+                        "__requestverificationtoken": window.AOJ.token
+                    },
                     data: data
                 }).done(function () {
                     $modal.modal("hide");
@@ -2120,16 +2132,17 @@ entityGrid.prototype.addConvertOrderActionLinkClickEventHandlers = function () {
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: data
             }).done(function () {
                 displaySuccessAlert(layout.Configuration.ConvertOrderToInvoiceActionLink.SuccessMessage, $element, true);
                 onComplete($element, layout.Configuration.ConvertOrderToInvoiceActionLink);
             }).fail(function (jqXhr) {
                 displayErrorAlert(getError(jqXhr), $element);
-            }).always(function () { });
+            }).always(function () {
+            });
         });
     }
 }
@@ -2166,9 +2179,9 @@ entityGrid.prototype.addCalculateOpportunityActionLinkClickEventHandlers = funct
                     type: "POST",
                     contentType: "application/json",
                     url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                    headers: {
+                        "__requestverificationtoken": window.AOJ.token
+                    },
                     data: data
                 }).done(function () {
                     $modal.modal("hide");
@@ -2199,16 +2212,17 @@ entityGrid.prototype.addCalculateOpportunityActionLinkClickEventHandlers = funct
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: data
             }).done(function () {
                 displaySuccessAlert(layout.Configuration.CalculateOpportunityActionLink.SuccessMessage, $element, true);
                 onComplete($element, layout.Configuration.CalculateOpportunityActionLink);
             }).fail(function (jqXhr) {
                 displayErrorAlert(getError(jqXhr), $element);
-            }).always(function () { });
+            }).always(function () {
+            });
         });
     }
 }
@@ -2249,9 +2263,9 @@ entityGrid.prototype.addResolveCaseActionLinkClickEventHandlers = function () {
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: json
             }).done(function () {
                 $modal.modal("hide");
@@ -2305,9 +2319,9 @@ entityGrid.prototype.addReopenCaseActionLinkClickEventHandlers = function () {
                     type: "POST",
                     contentType: "application/json",
                     url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                    headers: {
+                        "__requestverificationtoken": window.AOJ.token
+                    },
                     data: data
                 }).done(function () {
                     $modal.modal("hide");
@@ -2338,16 +2352,17 @@ entityGrid.prototype.addReopenCaseActionLinkClickEventHandlers = function () {
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: data
             }).done(function () {
                 displaySuccessAlert(layout.Configuration.ReopenCaseActionLink.SuccessMessage, $element, true);
                 onComplete($element, layout.Configuration.ReopenCaseActionLink);
             }).fail(function (jqXhr) {
                 displayErrorAlert(getError(jqXhr), $element);
-            }).always(function () { });
+            }).always(function () {
+            });
         });
     }
 }
@@ -2384,9 +2399,9 @@ entityGrid.prototype.addCancelCaseActionLinkClickEventHandlers = function () {
                     type: "POST",
                     contentType: "application/json",
                     url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                    headers: {
+                        "__requestverificationtoken": window.AOJ.token
+                    },
                     data: data
                 }).done(function () {
                     $modal.modal("hide");
@@ -2421,16 +2436,17 @@ entityGrid.prototype.addCancelCaseActionLinkClickEventHandlers = function () {
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: data
             }).done(function () {
                 displaySuccessAlert(layout.Configuration.CancelCaseActionLink.SuccessMessage, $element, true);
                 onComplete($element, layout.Configuration.CancelCaseActionLink);
             }).fail(function (jqXhr) {
                 displayErrorAlert(getError(jqXhr), $element);
-            }).always(function () { });
+            }).always(function () {
+            });
         });
     }
 }
@@ -2467,9 +2483,9 @@ entityGrid.prototype.addActivateActionLinkClickEventHandlers = function () {
                     type: "POST",
                     contentType: "application/json",
                     url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                    headers: {
+                        "__requestverificationtoken": window.AOJ.token
+                    },
                     data: data
                 }).done(function () {
                     $modal.modal("hide");
@@ -2500,9 +2516,9 @@ entityGrid.prototype.addActivateActionLinkClickEventHandlers = function () {
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: data
             }).done(function () {
                 displaySuccessAlert(layout.Configuration.ActivateActionLink.SuccessMessage, $element, true);
@@ -2546,9 +2562,9 @@ entityGrid.prototype.addDeactivateActionLinkClickEventHandlers = function () {
                     type: "POST",
                     contentType: "application/json",
                     url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                    headers: {
+                        "__requestverificationtoken": window.AOJ.token
+                    },
                     data: data
                 }).done(function () {
                     $modal.modal("hide");
@@ -2579,9 +2595,9 @@ entityGrid.prototype.addDeactivateActionLinkClickEventHandlers = function () {
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: data
             }).done(function () {
                 displaySuccessAlert(layout.Configuration.DeactivateActionLink.SuccessMessage, $element, true);
@@ -2625,9 +2641,9 @@ entityGrid.prototype.addActivateQuoteActionLinkClickEventHandlers = function () 
                     type: "POST",
                     contentType: "application/json",
                     url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                    headers: {
+                        "__requestverificationtoken": window.AOJ.token
+                    },
                     data: data
                 }).done(function () {
                     $modal.modal("hide");
@@ -2658,9 +2674,9 @@ entityGrid.prototype.addActivateQuoteActionLinkClickEventHandlers = function () 
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: data
             }).done(function () {
                 displaySuccessAlert(layout.Configuration.ActivateQuoteActionLink.SuccessMessage, $element, true);
@@ -2704,9 +2720,9 @@ entityGrid.prototype.addSetOpportunityOnHoldActionLinkClickEventHandlers = funct
                     type: "POST",
                     contentType: "application/json",
                     url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                    headers: {
+                        "__requestverificationtoken": window.AOJ.token
+                    },
                     data: data
                 }).done(function () {
                     $modal.modal("hide");
@@ -2737,9 +2753,9 @@ entityGrid.prototype.addSetOpportunityOnHoldActionLinkClickEventHandlers = funct
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: data
             }).done(function () {
                 displaySuccessAlert(layout.Configuration.SetOpportunityOnHoldActionLink.SuccessMessage, $element, true);
@@ -2783,9 +2799,9 @@ entityGrid.prototype.addReopenOpportunityActionLinkClickEventHandlers = function
                     type: "POST",
                     contentType: "application/json",
                     url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                    headers: {
+                        "__requestverificationtoken": window.AOJ.token
+                    },
                     data: data
                 }).done(function () {
                     $modal.modal("hide");
@@ -2816,9 +2832,9 @@ entityGrid.prototype.addReopenOpportunityActionLinkClickEventHandlers = function
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: data
             }).done(function () {
                 displaySuccessAlert(layout.Configuration.ReopenOpportunityActionLink.SuccessMessage, $element, true);
@@ -2862,9 +2878,9 @@ entityGrid.prototype.addWinOpportunityActionLinkClickEventHandlers = function ()
                     type: "POST",
                     contentType: "application/json",
                     url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                    headers: {
+                        "__requestverificationtoken": window.AOJ.token
+                    },
                     data: data
                 }).done(function () {
                     $modal.modal("hide");
@@ -2899,9 +2915,9 @@ entityGrid.prototype.addWinOpportunityActionLinkClickEventHandlers = function ()
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: data
             }).done(function () {
                 displaySuccessAlert(layout.Configuration.WinOpportunityActionLink.SuccessMessage, $element, true);
@@ -2945,9 +2961,9 @@ entityGrid.prototype.addLoseOpportunityActionLinkClickEventHandlers = function (
                     type: "POST",
                     contentType: "application/json",
                     url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                    headers: {
+                        "__requestverificationtoken": window.AOJ.token
+                    },
                     data: data
                 }).done(function () {
                     $modal.modal("hide");
@@ -2982,9 +2998,9 @@ entityGrid.prototype.addLoseOpportunityActionLinkClickEventHandlers = function (
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: data
             }).done(function () {
                 displaySuccessAlert(layout.Configuration.LoseOpportunityActionLink.SuccessMessage, $element, true);
@@ -3028,9 +3044,9 @@ entityGrid.prototype.addGenerateQuoteFromOpportunityActionLinkClickEventHandlers
                     type: "POST",
                     contentType: "application/json",
                     url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                    headers: {
+                        "__requestverificationtoken": window.AOJ.token
+                    },
                     data: data
                 }).done(function () {
                     $modal.modal("hide");
@@ -3061,9 +3077,9 @@ entityGrid.prototype.addGenerateQuoteFromOpportunityActionLinkClickEventHandlers
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: data
             }).done(function () {
                 displaySuccessAlert(layout.Configuration.GenerateQuoteFromOpportunityActionLink.SuccessMessage, $element, true);
@@ -3105,8 +3121,8 @@ entityGrid.prototype.addDisassociateActionLinkClickEventHandlers = function () {
                 if (!refEntityName || !refEntityId || !refRelationship) {
                     return;
                 }
-                var target = { LogicalName: refEntityName, Id: refEntityId };
-                var relationship = { SchemaName: refRelationship };
+                var target = {LogicalName: refEntityName, Id: refEntityId};
+                var relationship = {SchemaName: refRelationship};
                 if (refRelationshipRole) {
                     relationship.PrimaryEntityRole = refRelationshipRole;
                 }
@@ -3124,9 +3140,9 @@ entityGrid.prototype.addDisassociateActionLinkClickEventHandlers = function () {
                     type: "POST",
                     contentType: "application/json",
                     url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                    headers: {
+                        "__requestverificationtoken": window.AOJ.token
+                    },
                     data: data
                 }).done(function () {
                     $modal.modal("hide");
@@ -3161,8 +3177,8 @@ entityGrid.prototype.addDisassociateActionLinkClickEventHandlers = function () {
             if (!refEntityName || !refEntityId || !refRelationship) {
                 return;
             }
-            var target = { LogicalName: refEntityName, Id: refEntityId };
-            var relationship = { SchemaName: refRelationship };
+            var target = {LogicalName: refEntityName, Id: refEntityId};
+            var relationship = {SchemaName: refRelationship};
             if (refRelationshipRole) {
                 relationship.PrimaryEntityRole = refRelationshipRole;
             }
@@ -3180,9 +3196,9 @@ entityGrid.prototype.addDisassociateActionLinkClickEventHandlers = function () {
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: data
             }).done(function () {
                 displaySuccessAlert(layout.Configuration.DisassociateActionLink.SuccessMessage, $element, true);
@@ -3270,9 +3286,9 @@ entityGrid.prototype.addWorkflowActionLinkClickEventHandlers = function () {
                     type: "POST",
                     contentType: "application/json",
                     url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                    headers: {
+                        "__requestverificationtoken": window.AOJ.token
+                    },
                     data: json
                 }).done(function () {
                     $modal.modal("hide");
@@ -3326,9 +3342,9 @@ entityGrid.prototype.addWorkflowActionLinkClickEventHandlers = function () {
                 type: "POST",
                 contentType: "application/json",
                 url: url,
-        headers: {
-            "__requestverificationtoken": window.AOJ.token
-        },
+                headers: {
+                    "__requestverificationtoken": window.AOJ.token
+                },
                 data: json
             }).done(function () {
                 displaySuccessAlert(workflowActionLink != null ? workflowActionLink.SuccessMessage : null, $element, true);
@@ -3609,7 +3625,7 @@ function parseSortExpression(sortExpression) {
             if (direction != null) {
                 direction = direction.replace(/,\s*$/, "");
             }
-            var sort = { name: name, direction: direction };
+            var sort = {name: name, direction: direction};
             sorts.push(sort);
         }
     }

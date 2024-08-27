@@ -31,7 +31,7 @@ namespace Adxstudio.Xrm.Web.Providers
 			PortalName = portalName;
 		}
 
-		protected new string PortalName { get; private set; }
+		protected new string PortalName { get; }
 
 		public override ApplicationPath GetApplicationPath(OrganizationServiceContext context, Entity entity)
 		{
@@ -311,10 +311,8 @@ namespace Adxstudio.Xrm.Web.Providers
 					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Circular reference with page {0}", page.Id));
 					return url;
 				}
-				else
-				{
-					url = InternalJoinApplicationPath(parent, partialUrl);
-				}
+
+				url = InternalJoinApplicationPath(parent, partialUrl);
 			}
 
 			return url;
@@ -357,10 +355,8 @@ namespace Adxstudio.Xrm.Web.Providers
 						page.IsCircularReference = true;
 						return true;
 					}
-					else
-					{
-						pageDetails.Add(page.Id, page.Name);
-					}
+
+					pageDetails.Add(page.Id, page.Name);
 
 					page = page.Parent;
 				}

@@ -80,7 +80,7 @@ namespace Adxstudio.Xrm.Services.Query
 				Column = element.GetAttribute("column"),
 				EntityName = element.GetAttribute("entityname"),
 				Attribute = element.GetAttribute("attribute"),
-				Operator = element.GetAttribute<ConditionOperator>("operator", FetchXMLConditionalOperators.GetKeyByValue),
+				Operator = element.GetAttribute("operator", FetchXMLConditionalOperators.GetKeyByValue),
 				Aggregate = element.GetAttribute("aggregate", Lookups.AggregateToText),
 				Alias = element.GetAttribute("alias"),
 				UiName = element.GetAttribute("uiname"),
@@ -106,7 +106,7 @@ namespace Adxstudio.Xrm.Services.Query
 			{
 				Column = element.GetAttribute("column"),
 				Attribute = element.GetAttribute("attribute"),
-				Operator = element.GetAttribute<ConditionOperator>("operator", FetchXMLConditionalOperators.GetKeyByValue),
+				Operator = element.GetAttribute("operator", FetchXMLConditionalOperators.GetKeyByValue),
 				Aggregate = element.GetAttribute("aggregate", Lookups.AggregateToText),
 				Alias = element.GetAttribute("alias"),
 				UiName = element.GetAttribute("uiname"),

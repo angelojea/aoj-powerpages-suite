@@ -43,7 +43,7 @@ namespace Microsoft.Xrm.Portal.IdentityModel.Web.Handlers
 		private static readonly string _className = typeof(LiveIdAccountTransferHandler).FullName;
 		private static readonly WindowsLiveLogin _windowsLiveLogin = new WindowsLiveLogin(true);
 
-		public virtual IUserRegistrationSettings RegistrationSettings { get; private set; }
+		public virtual IUserRegistrationSettings RegistrationSettings { get; }
 
 		protected string LiveIdTokenKey
 		{

@@ -15,7 +15,7 @@ namespace Adxstudio.Xrm.Web.Mvc
 	/// </summary>
 	public class PortalViewAttribute : ActionFilterAttribute
 	{
-		public string PortalName { get; private set; }
+		public string PortalName { get; }
 
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
 		{

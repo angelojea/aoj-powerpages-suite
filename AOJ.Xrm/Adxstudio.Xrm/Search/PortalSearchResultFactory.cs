@@ -29,7 +29,7 @@ namespace Adxstudio.Xrm.Search
 			PortalName = portalName;
 		}
 
-		protected string PortalName { get; private set; }
+		protected string PortalName { get; }
 
 		protected override Uri GetUrl(OrganizationServiceContext context, Document document, float score, int number, Entity entity)
 		{
@@ -50,7 +50,7 @@ namespace Adxstudio.Xrm.Search
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error generating search result URL, returning null URL: {0}", e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error generating search result URL, returning null URL: {0}", e));
 
                 return null;
 			}

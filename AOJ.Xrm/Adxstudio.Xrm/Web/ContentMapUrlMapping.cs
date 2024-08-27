@@ -8,9 +8,9 @@ namespace Adxstudio.Xrm.Web
 	using System;
 	using System.Web;
 	using System.Linq;
-	using Adxstudio.Xrm.Cms;
+	using Cms;
 	using Microsoft.Xrm.Portal.Web;
-	using Adxstudio.Xrm.Resources;
+	using Resources;
 	using Microsoft.Xrm.Sdk;
 	using System.Collections.Generic;
 	using Adxstudio.Xrm.AspNet.Cms;

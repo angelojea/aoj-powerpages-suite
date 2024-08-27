@@ -13,8 +13,8 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
 	public class GenerateQuoteFromOpportunityActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-clipboard fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Generate_Quote_Button_Label");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Generate_Quote_Button_Label");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-clipboard fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Generate_Quote_Button_Label");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Generate_Quote_Button_Label");
 
 		public ViewGenerateQuoteFromOpportunityModal Modal { get; set; }
 

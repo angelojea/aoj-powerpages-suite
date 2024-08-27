@@ -86,9 +86,9 @@ namespace Adxstudio.Xrm.Search
 
 		private Guid GetWebsiteId()
 		{
-			if (this.WebsiteId != null)
+			if (WebsiteId != null)
 			{
-				return this.WebsiteId.Value;
+				return WebsiteId.Value;
 			}
 
 			var portalContext = PortalCrmConfigurationManager.CreatePortalContext(PortalName);

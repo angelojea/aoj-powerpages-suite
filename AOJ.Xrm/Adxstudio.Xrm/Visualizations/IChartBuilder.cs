@@ -5,7 +5,7 @@
 
 namespace Adxstudio.Xrm.Visualizations
 {
-	using Adxstudio.Xrm.Services.Query;
+	using Services.Query;
 
 	/// <summary>
 	/// Describes details needed to be able to build a chart from CRM chart visualizations.

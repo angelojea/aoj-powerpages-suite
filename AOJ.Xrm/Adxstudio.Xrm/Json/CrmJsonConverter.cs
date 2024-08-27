@@ -91,12 +91,12 @@ namespace Adxstudio.Xrm.Json
 				serializer.Serialize(writer, new JsonEntityFilters { Value = (int)value });
 			}
 
-			CrmJsonConverter.Serialize(writer, value as DataCollection<string, object>, serializer);
-			CrmJsonConverter.Serialize(writer, value as DataCollection<string, string>, serializer);
-			CrmJsonConverter.Serialize(writer, value as DataCollection<Relationship, EntityCollection>, serializer);
-			CrmJsonConverter.Serialize(writer, value as DataCollection<Relationship, QueryBase>, serializer);
-			CrmJsonConverter.Serialize(writer, value as DataCollection<DeletedMetadataFilters, DataCollection<Guid>>, serializer);
-			CrmJsonConverter.Serialize(writer, value as ICollection<object>, serializer);
+			Serialize(writer, value as DataCollection<string, object>, serializer);
+			Serialize(writer, value as DataCollection<string, string>, serializer);
+			Serialize(writer, value as DataCollection<Relationship, EntityCollection>, serializer);
+			Serialize(writer, value as DataCollection<Relationship, QueryBase>, serializer);
+			Serialize(writer, value as DataCollection<DeletedMetadataFilters, DataCollection<Guid>>, serializer);
+			Serialize(writer, value as ICollection<object>, serializer);
 		}
 
 		/// <summary>
@@ -170,12 +170,12 @@ namespace Adxstudio.Xrm.Json
 				return jcondition.ToCondition(Deserialize);
 			}
 
-			CrmJsonConverter.Deserialize(reader, existingValue as DataCollection<string, object>, serializer);
-			CrmJsonConverter.Deserialize(reader, existingValue as DataCollection<string, string>, serializer);
-			CrmJsonConverter.Deserialize(reader, existingValue as DataCollection<Relationship, EntityCollection>, serializer);
-			CrmJsonConverter.Deserialize(reader, existingValue as DataCollection<Relationship, QueryBase>, serializer);
-			CrmJsonConverter.Deserialize(reader, existingValue as DataCollection<DeletedMetadataFilters, DataCollection<Guid>>, serializer);
-			CrmJsonConverter.Deserialize(reader, existingValue as ICollection<object>, serializer);
+			Deserialize(reader, existingValue as DataCollection<string, object>, serializer);
+			Deserialize(reader, existingValue as DataCollection<string, string>, serializer);
+			Deserialize(reader, existingValue as DataCollection<Relationship, EntityCollection>, serializer);
+			Deserialize(reader, existingValue as DataCollection<Relationship, QueryBase>, serializer);
+			Deserialize(reader, existingValue as DataCollection<DeletedMetadataFilters, DataCollection<Guid>>, serializer);
+			Deserialize(reader, existingValue as ICollection<object>, serializer);
 
 			return existingValue;
 		}

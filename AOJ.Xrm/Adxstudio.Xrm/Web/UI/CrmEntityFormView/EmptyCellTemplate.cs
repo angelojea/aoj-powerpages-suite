@@ -27,9 +27,9 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			
 		}
 
-		public int? ColumnSpan { get; private set; }
-		public string CssClass { get; private set; }
-		public bool Enabled { get; private set; }
-		public int? RowSpan { get; private set; }
+		public int? ColumnSpan { get; }
+		public string CssClass { get; }
+		public bool Enabled { get; }
+		public int? RowSpan { get; }
 	}
 }

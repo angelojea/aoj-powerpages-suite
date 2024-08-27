@@ -56,12 +56,12 @@ namespace Adxstudio.Xrm.Ideas
 		/// <summary>
 		/// The author for this comment.
 		/// </summary>
-		public IAuthor Author { get; private set; }
+		public IAuthor Author { get; }
 
 		/// <summary>
 		/// The comment copy.
 		/// </summary>
-		public string Content { get; private set; }
+		public string Content { get; }
 
 		public DateTime Date
 		{
@@ -86,12 +86,12 @@ namespace Adxstudio.Xrm.Ideas
 		/// <summary>
 		/// An feedback entity.
 		/// </summary>
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
 		/// <summary>
 		/// Whether or not this comment should be visible in the portal.
 		/// </summary>
-		public bool IsApproved { get; private set; }
+		public bool IsApproved { get; }
 
 		/// <summary>
 		/// A title for the comment.
@@ -103,8 +103,8 @@ namespace Adxstudio.Xrm.Ideas
 		/// </summary>
 		public DateTime PostedOn { get; private set; }
 
-		public IRatingInfo RatingInfo { get; private set; }
+		public IRatingInfo RatingInfo { get; }
 
-		public bool RatingEnabled { get; private set; }
+		public bool RatingEnabled { get; }
 	}
 }

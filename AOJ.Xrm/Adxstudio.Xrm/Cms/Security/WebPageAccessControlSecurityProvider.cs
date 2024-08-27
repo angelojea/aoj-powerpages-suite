@@ -9,9 +9,9 @@ namespace Adxstudio.Xrm.Cms.Security
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Web.Security;
-	using Adxstudio.Xrm.Configuration;
+	using Configuration;
 	using Adxstudio.Xrm.Security;
-	using Adxstudio.Xrm.Web;
+	using Web;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Client.Security;
 	using Microsoft.Xrm.Sdk;
@@ -61,7 +61,7 @@ namespace Adxstudio.Xrm.Cms.Security
 		/// <returns> The <see cref="bool"/>. </returns>
 		protected override bool TryAssert(OrganizationServiceContext context, Entity entity, CrmEntityRight right, CrmEntityCacheDependencyTrace dependencies, ContentMap map)
 		{
-			return this.TryAssert(context, entity, right, dependencies, map, false);
+			return TryAssert(context, entity, right, dependencies, map, false);
 		}
 
 		/// <summary> The try assert. </summary>
@@ -76,7 +76,7 @@ namespace Adxstudio.Xrm.Cms.Security
 			CrmEntityCacheDependencyTrace dependencies, ContentMap map, bool useScope)
 		{
 			entity.AssertEntityName("adx_webpage");
-			this.AddDependencies(
+			AddDependencies(
 				dependencies,
 				entity,
 				new[] { "adx_webrole", "adx_webrole_contact", "adx_webrole_account", "adx_webpageaccesscontrolrule" });
@@ -93,7 +93,7 @@ namespace Adxstudio.Xrm.Cms.Security
 
 			dependencies.IsCacheable = false;
 
-			return this.TryAssert(page, right, useScope);
+			return TryAssert(page, right, useScope);
 		}
 
 		/// <summary> The try assert. </summary>
@@ -125,7 +125,7 @@ namespace Adxstudio.Xrm.Cms.Security
 				return false;
 			}
 
-			var userRoles = this.GetUserRoles();
+			var userRoles = GetUserRoles();
 
 			// when we use rule scope we're checking permissions for parent page of web file
 			//	and we need to check permissions only for one level
@@ -134,7 +134,7 @@ namespace Adxstudio.Xrm.Cms.Security
 			// Get all rules applicable to the page and its parent path, grouping equivalent rules. (Rules that
 			// target the same web page and confer the same right are equivalent.)
 			var ruleGroupings =
-				from rule in this.GetRulesApplicableToWebPage(page, useInheritance)
+				from rule in GetRulesApplicableToWebPage(page, useInheritance)
 				where rule.WebPage != null && rule.Right != null
 				group rule by new { WebPageId = rule.WebPage.Id, Right = ParseRightOption(rule.Right.Value) } into ruleGrouping
 				select ruleGrouping;

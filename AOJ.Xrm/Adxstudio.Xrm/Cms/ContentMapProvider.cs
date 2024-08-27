@@ -13,16 +13,16 @@ namespace Adxstudio.Xrm.Cms
 	using System.Runtime.CompilerServices;
 	using System.ServiceModel;
 	using System.Threading.Tasks;
-	using Adxstudio.Xrm.AspNet;
+	using AspNet;
 	using Adxstudio.Xrm.AspNet.Cms;
-	using Adxstudio.Xrm.EventHubBasedInvalidation;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
+	using EventHubBasedInvalidation;
+	using Services;
+	using Services.Query;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Messages;
 	using Microsoft.Xrm.Sdk.Query;
-	using Adxstudio.Xrm.Diagnostics.Trace;
-	using Adxstudio.Xrm.Web.UI;
+	using Diagnostics.Trace;
+	using Web.UI;
 
 	public class ContentMapProvider : IContentMapProvider, IDisposable
 	{
@@ -30,15 +30,15 @@ namespace Adxstudio.Xrm.Cms
 
 		private Lazy<ContentMap> _map;
 
-		protected virtual ISolutionDefinitionProvider SolutionDefinitionProvider { get; private set; }
+		protected virtual ISolutionDefinitionProvider SolutionDefinitionProvider { get; }
 
 		public virtual TimeSpan? LockTimeout { get; set; }
 
 		public Version BaseSolutionCrmVersion { get; set; }
 
-		protected EventHubJobSettings EventHubJobSettings { get; private set; }
+		protected EventHubJobSettings EventHubJobSettings { get; }
 
-		protected PortalSolutions PortalSolutions { get; private set; }
+		protected PortalSolutions PortalSolutions { get; }
 
 		public ContentMapProvider(
 			Func<CrmDbContext> createContext,
@@ -46,12 +46,12 @@ namespace Adxstudio.Xrm.Cms
 			EventHubJobSettings eventHubJobSettings,
 			PortalSolutions portalSolutions)
 		{
-			this.CreateContext = createContext;
-			this.SolutionDefinitionProvider = solutionDefinitionProvider;
-			this.EventHubJobSettings = eventHubJobSettings;
-			this.PortalSolutions = portalSolutions;
+			CreateContext = createContext;
+			SolutionDefinitionProvider = solutionDefinitionProvider;
+			EventHubJobSettings = eventHubJobSettings;
+			PortalSolutions = portalSolutions;
 
-			_map = new Lazy<ContentMap>(this.GetContentMap);
+			_map = new Lazy<ContentMap>(GetContentMap);
 		}
 
 		public virtual T Using<T>(Func<ContentMap, T> action,
@@ -90,24 +90,24 @@ namespace Adxstudio.Xrm.Cms
 
 		protected virtual ContentMap GetContentMap()
 		{
-			using (var context = this.CreateContext())
+			using (var context = CreateContext())
 			{
-				return this.GetContentMap(context);
+				return GetContentMap(context);
 			}
 		}
 
 		private ContentMap GetContentMap(CrmDbContext context)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("LockTimeout={0}", this.LockTimeout));
+			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("LockTimeout={0}", LockTimeout));
 
 			var sw = Stopwatch.StartNew();
 
-			var solution = this.SolutionDefinitionProvider.GetSolution();
-			var parameters = this.SolutionDefinitionProvider.GetQueryParameters();
-			var map = new ContentMap(solution) { LockTimeout = this.LockTimeout.GetValueOrDefault(TimeSpan.FromMinutes(1)) };
-			var entities = this.GetEntities(context, map.Solution, parameters).ToList();
+			var solution = SolutionDefinitionProvider.GetSolution();
+			var parameters = SolutionDefinitionProvider.GetQueryParameters();
+			var map = new ContentMap(solution) { LockTimeout = LockTimeout.GetValueOrDefault(TimeSpan.FromMinutes(1)) };
+			var entities = GetEntities(context, map.Solution, parameters).ToList();
 
-			map.Using(ContentMapLockType.Write, () => this.BuildContentMap(map, entities));
+			map.Using(ContentMapLockType.Write, () => BuildContentMap(map, entities));
 
 			sw.Stop();
 
@@ -157,7 +157,7 @@ namespace Adxstudio.Xrm.Cms
 
 			if (map.ContainsKey(websiteKey) && map[websiteKey] != null)
 			{
-				var retrieveBaseSolutionCrmVersion = this.PortalSolutions.BaseSolutionCrmVersion;
+				var retrieveBaseSolutionCrmVersion = PortalSolutions.BaseSolutionCrmVersion;
 
 				foreach (var node in map[websiteKey])
 				{
@@ -194,7 +194,7 @@ namespace Adxstudio.Xrm.Cms
 
 		public virtual EntityNode Refresh(ContentMap map, EntityReference reference)
 		{
-			using (var context = this.CreateContext())
+			using (var context = CreateContext())
 			{
 				return Refresh(context, map, reference);
 			}
@@ -218,7 +218,7 @@ namespace Adxstudio.Xrm.Cms
 
 				try
 				{
-					string primaryIdAttribute = EventHubBasedInvalidation.CrmChangeTrackingManager.Instance.TryGetPrimaryKey(reference.LogicalName);
+					string primaryIdAttribute = CrmChangeTrackingManager.Instance.TryGetPrimaryKey(reference.LogicalName);
 					
 					// The condition for the filter on primary key
 					var primaryAttributeCondition = new Condition
@@ -237,12 +237,12 @@ namespace Adxstudio.Xrm.Cms
 						{
 							Name = reference.LogicalName,
 							Attributes = attributes,
-							Filters = new List<Filter>()
+							Filters = new List<Filter>
 							{
 								new Filter
 								{
 									Type = LogicalOperator.And,
-									Conditions = new List<Condition>()
+									Conditions = new List<Condition>
 									{
 										primaryAttributeCondition
 									}
@@ -289,7 +289,7 @@ namespace Adxstudio.Xrm.Cms
 
 		public virtual void Refresh(ContentMap map, List<EntityReference> references)
 		{
-			using (var context = this.CreateContext())
+			using (var context = CreateContext())
 			{
 				Refresh(context, map, references);
 			}
@@ -315,7 +315,7 @@ namespace Adxstudio.Xrm.Cms
 					}
 					try
 					{
-						string primaryEntityAttribute = EventHubBasedInvalidation.CrmChangeTrackingManager.Instance.TryGetPrimaryKey(references[0].LogicalName);
+						string primaryEntityAttribute = CrmChangeTrackingManager.Instance.TryGetPrimaryKey(references[0].LogicalName);
 
 						var entities = RetrieveCRMRecords(context, primaryEntityAttribute, references[0], ed, guids);
 						foreach (var entity in entities)
@@ -328,7 +328,7 @@ namespace Adxstudio.Xrm.Cms
 						// check if the entity is inactive according to the definition
 						foreach (var reference in references)
 						{
-							var entity = mapEntities.ContainsKey(reference.Id) ? (Entity)mapEntities[reference.Id] : null;
+							var entity = mapEntities.ContainsKey(reference.Id) ? mapEntities[reference.Id] : null;
 
 							// Check if the entity matches on the defined relationships.
 							if (!ed.ShouldIncludeInContentMap(entity))
@@ -349,7 +349,7 @@ namespace Adxstudio.Xrm.Cms
 					catch (FaultException<OrganizationServiceFault>)
 					{
 						// an exception occurs when trying to retrieve a non-existing entity
-						ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("An exception occurs when trying to retrieve a non-existing entity"));
+						ADXTrace.Instance.TraceInfo(TraceCategory.Application, "An exception occurs when trying to retrieve a non-existing entity");
 					}
 				}
 				else
@@ -399,7 +399,7 @@ namespace Adxstudio.Xrm.Cms
 
 		public virtual void Associate(ContentMap map, EntityReference target, Relationship relationship, EntityReferenceCollection relatedEntities)
 		{
-			using (var context = this.CreateContext())
+			using (var context = CreateContext())
 			{
 				Associate(context, map, target, relationship, relatedEntities);
 			}
@@ -438,9 +438,9 @@ namespace Adxstudio.Xrm.Cms
 
 		public virtual void Disassociate(ContentMap map, EntityReference target, Relationship relationship, EntityReferenceCollection relatedEntities)
 		{
-			using (var context = this.CreateContext())
+			using (var context = CreateContext())
 			{
-				this.Disassociate(context, map, target, relationship, relatedEntities);
+				Disassociate(context, map, target, relationship, relatedEntities);
 			}
 		}
 
@@ -460,7 +460,7 @@ namespace Adxstudio.Xrm.Cms
 
 			var entities = new List<EntityReference>();
 
-			if (this.EventHubJobSettings.IsEnabled)
+			if (EventHubJobSettings.IsEnabled)
 			{
 				//logic to ignore to get Intersect entity which we already have in eventhub model.
 				EntityReference intersectEntity = new EntityReference();

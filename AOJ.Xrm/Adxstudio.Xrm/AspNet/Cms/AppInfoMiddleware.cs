@@ -41,7 +41,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 	{
 		private static string _info;
 
-		public AppInfoOptions Options { get; private set; }
+		public AppInfoOptions Options { get; }
 
 		public AppInfoMiddleware(OwinMiddleware next, AppInfoOptions options)
 			: base(next)

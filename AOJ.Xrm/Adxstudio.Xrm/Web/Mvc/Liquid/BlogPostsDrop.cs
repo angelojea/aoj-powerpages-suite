@@ -59,10 +59,10 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			StartRowIndex = startRowIndex;  PageSize = pageSize; OrderByKey = orderBy; SortDirection = sortDirection;
 		}
 
-		internal IBlog Blog { get; private set; }
+		internal IBlog Blog { get; }
 
 		internal IPortalLiquidContext PortalLiquidContext { get; private set; }
-		internal IDataAdapterDependencies Dependencies { get; private set; }
+		internal IDataAdapterDependencies Dependencies { get; }
 
 		public int StartRowIndex { get; private set; }
 		public int PageSize { get; private set; }

@@ -21,13 +21,13 @@ namespace Adxstudio.Xrm.Cases
 			Public = @public;
 		}
 
-		public bool Delete { get; private set; }
+		public bool Delete { get; }
 
-		public bool Public { get; private set; }
+		public bool Public { get; }
 
-		public bool Read { get; private set; }
+		public bool Read { get; }
 
-		public bool Write { get; private set; }
+		public bool Write { get; }
 
 		public static ICaseAccess FromPermissions(ICaseAccessPermissions permissions, bool @public = false)
 		{

@@ -16,7 +16,7 @@ namespace Microsoft.Xrm.Client.Metadata
 		/// <summary>
 		/// The <see cref="PropertyInfo"/> reflection object for the attribute property.
 		/// </summary>
-		public PropertyInfo Property { get; private set; }
+		public PropertyInfo Property { get; }
 
 		/// <summary>
 		/// The logical name annotation of the attribute property.

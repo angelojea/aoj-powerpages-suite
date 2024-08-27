@@ -54,8 +54,8 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
         {
             get
             {
-                return CrmChangeTrackingManager.crmChangeTrackingManager ??
-                       (CrmChangeTrackingManager.crmChangeTrackingManager = new CrmChangeTrackingManager());
+                return crmChangeTrackingManager ??
+                       (crmChangeTrackingManager = new CrmChangeTrackingManager());
             }
         }
 
@@ -64,7 +64,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
         /// </summary>
         private CrmChangeTrackingManager()
         {
-            this.entityInfoList = new ConcurrentDictionary<string, EntityTrackingInfo>();
+            entityInfoList = new ConcurrentDictionary<string, EntityTrackingInfo>();
         }
 
 
@@ -78,9 +78,9 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
             order.AttributeName = "versionnumber";
             order.OrderType = OrderType.Descending;
 
-            var executeMulti = new ExecuteMultipleRequest()
+            var executeMulti = new ExecuteMultipleRequest
             {
-                Settings = new ExecuteMultipleSettings()
+                Settings = new ExecuteMultipleSettings
                 {
                     ContinueOnError = true,
                     ReturnResponses = true
@@ -94,14 +94,14 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
             {
                 if (entity.Value == string.Empty || entity.Value == null)
                 {
-                    QueryExpression query = new QueryExpression()
+                    QueryExpression query = new QueryExpression
                     {
                         EntityName = entity.Key,
                         ColumnSet = new ColumnSet("versionnumber"),
-                        PageInfo = new PagingInfo() { Count = 10, PageNumber = 1 }
+                        PageInfo = new PagingInfo { Count = 10, PageNumber = 1 }
                     };
                     query.Orders.Add(order);
-                    var request = new RetrieveMultipleRequest() { Query = query };
+                    var request = new RetrieveMultipleRequest { Query = query };
                     mRequests.Add(request);
                 }
             }
@@ -112,7 +112,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
             {
                 executeMulti.Requests.AddRange(mRequests);
 
-                var response = (ExecuteMultipleResponse)this.OrganizationServiceContext.Execute(executeMulti);
+                var response = (ExecuteMultipleResponse)OrganizationServiceContext.Execute(executeMulti);
 
                 foreach (ExecuteMultipleResponseItem item in response.Responses)
                 {
@@ -172,7 +172,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 
 				if (response == null || response.Responses == null)
 				{
-					ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Got null response while processing the requests"));
+					ADXTrace.Instance.TraceWarning(TraceCategory.Application, "Got null response while processing the requests");
 					return null;
 				}
 
@@ -213,9 +213,9 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
         private ExecuteMultipleRequest ExecuteMultipleRequest(Dictionary<string, string> entitiesWithLastTimestamp)
         {
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Creating request for getting Retrieve entity changes for entities."));
+            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Creating request for getting Retrieve entity changes for entities.");
 
-            var requests = entitiesWithLastTimestamp.Select(updatedEntity => new RetrieveEntityChangesRequest()
+            var requests = entitiesWithLastTimestamp.Select(updatedEntity => new RetrieveEntityChangesRequest
             {
                 EntityName = updatedEntity.Key,
                 DataVersion = updatedEntity.Value,
@@ -223,9 +223,9 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
                 PageInfo = new PagingInfo()
             }).ToList();
 
-            var requestWithResults = new ExecuteMultipleRequest()
+            var requestWithResults = new ExecuteMultipleRequest
             {
-                Settings = new ExecuteMultipleSettings()
+                Settings = new ExecuteMultipleSettings
                 {
                     ContinueOnError = true,
                     ReturnResponses = true
@@ -244,7 +244,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
         /// <returns>Return column set having only ID column or set it to pull all columns</returns>
         private ColumnSet GetColumnSet(string entityName)
         {
-            string primaryKeyAttribute = this.TryGetPrimaryKey(entityName);
+            string primaryKeyAttribute = TryGetPrimaryKey(entityName);
             ColumnSet columns = new ColumnSet();
             if (string.IsNullOrEmpty(primaryKeyAttribute))
             {
@@ -267,7 +267,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
         private void SetAdditionalColumns(string entityName, ColumnSet columns)
         {
             //check the type of message for the respective entityName
-            var message = this.processingEntities[entityName] as AssociateDisassociateMessage;
+            var message = processingEntities[entityName] as AssociateDisassociateMessage;
 
             //if the message is of AssociateDisassociateMessage type add related entities key attributes also.
             if (message != null)
@@ -279,7 +279,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
             }
 
             //add primary name attribute
-            string primaryNameAttribute = this.TryGetPrimaryNameAttribute(entityName);
+            string primaryNameAttribute = TryGetPrimaryNameAttribute(entityName);
             if (!string.IsNullOrEmpty(primaryNameAttribute))
             {
                 columns.AddColumn(primaryNameAttribute);
@@ -300,7 +300,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
         /// <param name="relatedEntityName">related Entity Name</param>
         private void AddColumn(ColumnSet columns, string relatedEntityName)
         {
-            string primaryKeyAttribute = this.TryGetPrimaryKey(relatedEntityName);
+            string primaryKeyAttribute = TryGetPrimaryKey(relatedEntityName);
             if (!string.IsNullOrEmpty(primaryKeyAttribute))
             {
                 columns.AddColumn(primaryKeyAttribute);
@@ -340,7 +340,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 				changedData.UpdatedEntitiesWithLastTimestamp.Add(entityNameWithTimestamp.Value.Key, entityNameWithTimestamp.Value.Value);
 			}
 
-			changedData.UpdatedEntityRecords.AddRange(this.GetChangesRelatedToWebsite(responseCollection, context, websiteId));
+			changedData.UpdatedEntityRecords.AddRange(GetChangesRelatedToWebsite(responseCollection, context, websiteId));
 
 			return changedData;
 		}
@@ -357,13 +357,13 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			var changedItemList = new List<IChangedItem>();
 			var groupedChanges = responseCollection
 				.SelectMany(kvp => kvp.Value.EntityChanges.Changes)
-				.GroupBy(change => this.GetEntityIdFromChangeItem(change));
+				.GroupBy(change => GetEntityIdFromChangeItem(change));
 
 			foreach (var itemGroup in groupedChanges)
 			{
 				try
 				{
-					if (this.ChangesBelongsToWebsite(itemGroup, context, websiteId))
+					if (ChangesBelongsToWebsite(itemGroup, context, websiteId))
 					{
 						changedItemList.AddRange(itemGroup);
 					}
@@ -416,7 +416,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		private bool ChangesBelongsToWebsite(IGrouping<Guid, IChangedItem> groupedChanges, CrmDbContext context, Guid websiteId)
 		{
 			var entityId = groupedChanges.Key;
-			var entityName = this.GetEntityNameFromChangedItem(groupedChanges.First());
+			var entityName = GetEntityNameFromChangedItem(groupedChanges.First());
 
 			if (string.Equals("adx_website", entityName, StringComparison.OrdinalIgnoreCase))
 			{
@@ -460,15 +460,16 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
                 ADXTrace.Instance.TraceError(TraceCategory.Application, "TryGetPrimaryKey: the entity name is null");
 				return null;
             }
-            else if (!entityInfoList.TryGetValue(entityName, out trackingInfo))
+
+            if (!entityInfoList.TryGetValue(entityName, out trackingInfo))
             {
-				var entityTrackingInfo = this.GetWebsiteLookupEntityTrackingInfo(entityName);
-				if (entityTrackingInfo != null)
-				{
-					entityInfoList.AddOrUpdate(entityName, entityTrackingInfo, (name, info) => entityTrackingInfo);
-					return entityTrackingInfo.EntityKeyAttribute;
-				}
-				return null;
+	            var entityTrackingInfo = GetWebsiteLookupEntityTrackingInfo(entityName);
+	            if (entityTrackingInfo != null)
+	            {
+		            entityInfoList.AddOrUpdate(entityName, entityTrackingInfo, (name, info) => entityTrackingInfo);
+		            return entityTrackingInfo.EntityKeyAttribute;
+	            }
+	            return null;
             }
 
             return trackingInfo.EntityKeyAttribute;
@@ -484,8 +485,8 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			// ignore relationships for adx_website entity
 			var isWebsiteEntity = string.Equals(entityName, "adx_website", StringComparison.OrdinalIgnoreCase);
 			var metadata = isWebsiteEntity
-				? this.OrganizationServiceContext.GetEntityMetadata(entityName)
-				: this.OrganizationServiceContext.GetEntityMetadata(entityName, EntityFilters.Attributes | EntityFilters.Relationships);
+				? OrganizationServiceContext.GetEntityMetadata(entityName)
+				: OrganizationServiceContext.GetEntityMetadata(entityName, EntityFilters.Attributes | EntityFilters.Relationships);
 
 			if (metadata == null)
 			{
@@ -523,7 +524,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
         /// </summary>
         public OrganizationServiceContext OrganizationServiceContext
         {
-            get { return this.organizationServiceContext ?? (this.organizationServiceContext = PortalCrmConfigurationManager.CreateServiceContext()); }
+            get { return organizationServiceContext ?? (organizationServiceContext = PortalCrmConfigurationManager.CreateServiceContext()); }
         }
 
         /// <summary>
@@ -534,7 +535,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
         {
             get
             {
-                return this.organizationId = ((WhoAmIResponse)this.OrganizationServiceContext.Execute(new WhoAmIRequest())).OrganizationId;
+                return organizationId = ((WhoAmIResponse)OrganizationServiceContext.Execute(new WhoAmIRequest())).OrganizationId;
             }
         }
     }

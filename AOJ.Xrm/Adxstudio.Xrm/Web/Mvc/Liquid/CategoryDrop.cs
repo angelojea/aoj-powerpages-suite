@@ -25,20 +25,20 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
             if (dependencies == null) { throw new ArgumentNullException("dependencies"); }
             if (category == null) { throw new ArgumentNullException("category"); }
 
-            this.Category = category;
+            Category = category;
         }
 
         /// <summary>
         /// Category property
         /// </summary>
-        protected ICategory Category { get; private set; }
+        protected ICategory Category { get; }
 
         /// <summary>
         /// Category Number
         /// </summary>
         public string CategoryNumber
         {
-            get { return this.Category.CategoryNumber;  }
+            get { return Category.CategoryNumber;  }
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
         /// </summary>
         public string Name
         {
-            get { return this.Category.Title; }
+            get { return Category.Title; }
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
         /// </summary>
         public string Title
         {
-            get { return this.Category.Title; }
+            get { return Category.Title; }
         }
     }
 }

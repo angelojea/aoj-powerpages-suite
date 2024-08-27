@@ -141,7 +141,6 @@ namespace Adxstudio.Xrm.Web.Handlers
 					}
 					catch
 					{
-						continue;
 					}
 				}
 

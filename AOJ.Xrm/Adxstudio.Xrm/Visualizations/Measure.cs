@@ -6,7 +6,7 @@
 namespace Adxstudio.Xrm.Visualizations
 {
 	using System.Xml.Linq;
-	using Adxstudio.Xrm.Services.Query;
+	using Services.Query;
 
 	/// <summary>
 	/// Measure parsed from Measure XML defined in datadescription of a CRM chart visualization.

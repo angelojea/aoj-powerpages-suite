@@ -37,7 +37,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			get { return true; }
 		}
 
-		protected SearchDataSource Owner { get; private set; }
+		protected SearchDataSource Owner { get; }
 
 		protected override IEnumerable ExecuteSelect(DataSourceSelectArguments args)
 		{

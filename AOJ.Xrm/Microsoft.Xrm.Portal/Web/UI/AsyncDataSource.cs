@@ -43,7 +43,7 @@ namespace Microsoft.Xrm.Portal.Web.UI
 
 	public abstract class AsyncDataSourceView : DataSourceView
 	{
-		private IAsyncDataSource _owner;
+		private readonly IAsyncDataSource _owner;
 
 		protected AsyncDataSourceView(IAsyncDataSource owner, string viewName)
 			: base(owner, viewName)
@@ -84,10 +84,10 @@ namespace Microsoft.Xrm.Portal.Web.UI
 		{
 			if (_owner.IsAsync)
 			{
-				System.Web.UI.Page page = ((Control)_owner).Page;
+				Page page = ((Control)_owner).Page;
 				PageAsyncTask task = new PageAsyncTask(
-					new BeginEventHandler(OnBeginSelect),
-					new EndEventHandler(OnEndSelect),
+					OnBeginSelect,
+					OnEndSelect,
 					null,
 					new object[] { arguments, callback });
 
@@ -101,10 +101,10 @@ namespace Microsoft.Xrm.Portal.Web.UI
 
 		protected sealed class SynchronousAsyncSelectResult : IAsyncResult
 		{
-			private object _state;
+			private readonly object _state;
 
-			private IEnumerable _selectResult;
-			private Exception _selectException;
+			private readonly IEnumerable _selectResult;
+			private readonly Exception _selectException;
 
 			public SynchronousAsyncSelectResult(IEnumerable selectResult, AsyncCallback asyncCallback, object asyncState)
 			{

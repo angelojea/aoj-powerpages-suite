@@ -9,8 +9,8 @@ namespace Adxstudio.Xrm.Services
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Runtime.CompilerServices;
-	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Services.Query;
+	using Cms;
+	using Query;
 	using Microsoft.Crm.Sdk.Messages;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Portal.Web;

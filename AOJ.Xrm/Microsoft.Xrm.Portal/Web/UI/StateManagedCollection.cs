@@ -16,7 +16,7 @@ namespace Microsoft.Xrm.Portal.Web.UI
 		void SetDirty();
 	}
 
-	[System.Web.AspNetHostingPermission(SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal), AspNetHostingPermission(SecurityAction.InheritanceDemand, Level = AspNetHostingPermissionLevel.Minimal)]
+	[AspNetHostingPermission(SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal), AspNetHostingPermission(SecurityAction.InheritanceDemand, Level = AspNetHostingPermissionLevel.Minimal)]
 	public class StateManagedCollection<T> : StateManagedCollection where T : IStateManagedItem
 	{
 		public int Add(T parameter)
@@ -73,7 +73,7 @@ namespace Microsoft.Xrm.Portal.Web.UI
 		{
 			get
 			{
-				return (T)this[index];
+				return this[index];
 			}
 			set
 			{

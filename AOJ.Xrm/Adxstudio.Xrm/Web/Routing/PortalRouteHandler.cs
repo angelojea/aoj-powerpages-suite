@@ -14,11 +14,11 @@ namespace Adxstudio.Xrm.Web.Routing
 	using System.Web.WebPages;
 	using Adxstudio.Xrm.AspNet.Cms;
 	using Microsoft.Xrm.Client;
-	using Adxstudio.Xrm.Cms;
+	using Cms;
 	using Microsoft.Xrm.Portal;
 	using Microsoft.Xrm.Portal.Web;
 	using Microsoft.Xrm.Portal.Configuration;
-	using Adxstudio.Xrm.Web;
+	using Web;
 
     /// <summary>
     /// Handles requests to portal <see cref="Entity"/> objects.
@@ -57,7 +57,7 @@ namespace Adxstudio.Xrm.Web.Routing
 			string routeUrl = string.Empty;
 			try
 			{
-				Route route = (System.Web.Routing.Route)requestContext.RouteData.Route;
+				Route route = (Route)requestContext.RouteData.Route;
 				routeUrl = route.Url;
 			}
 			catch { }
@@ -237,7 +237,7 @@ namespace Adxstudio.Xrm.Web.Routing
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Exception while checking existence of virtual path: {0}", e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Exception while checking existence of virtual path: {0}", e));
 
 				return false;
 			}

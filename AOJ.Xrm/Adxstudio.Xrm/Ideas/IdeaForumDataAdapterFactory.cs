@@ -9,8 +9,8 @@ namespace Adxstudio.Xrm.Ideas
 	using System.Web;
 	using Microsoft.Xrm.Sdk;
 	using Adxstudio.Xrm.AspNet.Cms;
-	using Adxstudio.Xrm.Cms.SolutionVersions;
-	using Adxstudio.Xrm.Web;
+	using Cms.SolutionVersions;
+	using Web;
 
 	/// <summary>
 	/// Factory Class to initialize an IIdeaForumDataAdapter
@@ -55,16 +55,16 @@ namespace Adxstudio.Xrm.Ideas
 			}
 			else
 			{
-				ideaForumDataAdapter = this.IsIdeasPreRollup()
-					? this.CreateIdeaDataAdapterPreRollup(ideaForum, filter)
-					: this.CreateIdeaDataAdapter(ideaForum, filter);
+				ideaForumDataAdapter = IsIdeasPreRollup()
+					? CreateIdeaDataAdapterPreRollup(ideaForum, filter)
+					: CreateIdeaDataAdapter(ideaForum, filter);
 			}
 
 			ideaForumDataAdapter.MinDate = timeSpan == "this-year" ? DateTime.UtcNow.AddYears(-1).Date
 				: timeSpan == "this-month" ? DateTime.UtcNow.AddMonths(-1).Date
 				: timeSpan == "this-week" ? DateTime.UtcNow.AddDays(-7).Date
 				: timeSpan == "today" ? DateTime.UtcNow.AddHours(-24)
-				: (DateTime?)null;
+				: null;
 
 			ideaForumDataAdapter.Status = status != (int?)IdeaStatus.Any ? status : null;
 

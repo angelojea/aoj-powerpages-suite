@@ -20,10 +20,10 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 	using System.Web.UI.HtmlControls;
 	using System.Web.UI.WebControls;
 
-	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Globalization;
-	using Adxstudio.Xrm.Resources;
-	using Adxstudio.Xrm.Web.UI.WebControls;
+	using Cms;
+	using Globalization;
+	using Resources;
+	using WebControls;
 
 	using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 	using Microsoft.Xrm.Client;
@@ -61,7 +61,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// Bind Control Value
 		/// </summary>
-		private ICollection<Action<Entity>> bindControlValue;
+		private readonly ICollection<Action<Entity>> bindControlValue;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="AddressCompositeControlTemplate"/> class.
@@ -81,11 +81,11 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			FormViewMode? mode)
 			: base(metadata, validationGroup, bindings)
 		{
-			this.Field = field;
-			this.isEditable = mode != FormViewMode.ReadOnly;
+			Field = field;
+			isEditable = mode != FormViewMode.ReadOnly;
 			this.entityMetadata = entityMetadata;
-			this.alias = this.ControlID.Split('_').First();
-			this.bindControlValue = new List<Action<Entity>>();
+			alias = ControlID.Split('_').First();
+			bindControlValue = new List<Action<Entity>>();
 		}
 
 		/// <summary>
@@ -105,7 +105,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <value>
 		/// The field.
 		/// </value>
-		public CrmEntityFormViewField Field { get; private set; }
+		public CrmEntityFormViewField Field { get; }
 
 		/// <summary>
 		/// Gets the validator display.
@@ -117,7 +117,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		{
 			get
 			{
-				return string.IsNullOrWhiteSpace(this.Metadata.ValidationText) ? ValidatorDisplay.None : ValidatorDisplay.Dynamic;
+				return string.IsNullOrWhiteSpace(Metadata.ValidationText) ? ValidatorDisplay.None : ValidatorDisplay.Dynamic;
 			}
 		}
 
@@ -128,24 +128,24 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		protected override void InstantiateControlIn(Control container)
 		{
 			var contentId = Guid.NewGuid();
-			if (this.Metadata.ReadOnly)
+			if (Metadata.ReadOnly)
 			{
-				this.isEditable = false;
+				isEditable = false;
 			}
 
 			var addressTextBox = new TextBox
 			{
-				ID = this.ControlID,
-				CssClass = string.Join(" ", "trigger", this.CssClass, this.Metadata.CssClass, "addressCompositeControl"),
-				ToolTip = this.Metadata.ToolTip,
+				ID = ControlID,
+				CssClass = string.Join(" ", "trigger", CssClass, Metadata.CssClass, "addressCompositeControl"),
+				ToolTip = Metadata.ToolTip,
 				TextMode = TextBoxMode.MultiLine
 			};
 			addressTextBox.Attributes.Add("data-composite-control", string.Empty);
 			addressTextBox.Attributes.Add("data-content-id", contentId.ToString());
-			addressTextBox.Attributes.Add("data-editable", this.isEditable.ToString());
+			addressTextBox.Attributes.Add("data-editable", isEditable.ToString());
 			try
 			{
-				addressTextBox.Rows = checked((this.Metadata.RowSpan.GetValueOrDefault(2) * 3) - 2);
+				addressTextBox.Rows = checked((Metadata.RowSpan.GetValueOrDefault(2) * 3) - 2);
 			}
 			catch (OverflowException)
 			{
@@ -170,14 +170,14 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 				case LocaleIds.Japanese:
 					addressTextBox.Attributes.Add(
 						"data-content-template",
-						string.Format("{{{0}_postalcode}}{{BREAK}}{{{0}_country}} {{{0}_stateorprovince}} {{{0}_city}}{{BREAK}}{{{0}_line1}} {{{0}_line2}}", this.ControlID));
-					this.addressControlValue = new StringBuilder(addressTextBox.Attributes["data-content-template"]);
-					this.MakePostalCode(addRangeControls);
-					this.MakeCountry(addRangeControls);
-					this.MakeState(addRangeControls);
-					this.MakeCity(addRangeControls);
-					this.MakeAddressLine1(addRangeControls);
-					this.MakeAddressLine2(addRangeControls);
+						string.Format("{{{0}_postalcode}}{{BREAK}}{{{0}_country}} {{{0}_stateorprovince}} {{{0}_city}}{{BREAK}}{{{0}_line1}} {{{0}_line2}}", ControlID));
+					addressControlValue = new StringBuilder(addressTextBox.Attributes["data-content-template"]);
+					MakePostalCode(addRangeControls);
+					MakeCountry(addRangeControls);
+					MakeState(addRangeControls);
+					MakeCity(addRangeControls);
+					MakeAddressLine1(addRangeControls);
+					MakeAddressLine2(addRangeControls);
 					break;
 				case LocaleIds.ChineseSimplified:
 				case LocaleIds.ChineseHongKong:
@@ -185,28 +185,28 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 				case LocaleIds.Korean:
 					addressTextBox.Attributes.Add(
 						"data-content-template",
-						string.Format("{{{0}_postalcode}} {{{0}_country}}{{BREAK}}{{{0}_stateorprovince}} {{{0}_city}}{{BREAK}}{{{0}_line1}}", this.ControlID));
-					this.addressControlValue = new StringBuilder(addressTextBox.Attributes["data-content-template"]);
-					this.MakePostalCode(addRangeControls);
-					this.MakeCountry(addRangeControls);
-					this.MakeState(addRangeControls);
-					this.MakeCity(addRangeControls);
-					this.MakeAddressLine1(addRangeControls);
+						string.Format("{{{0}_postalcode}} {{{0}_country}}{{BREAK}}{{{0}_stateorprovince}} {{{0}_city}}{{BREAK}}{{{0}_line1}}", ControlID));
+					addressControlValue = new StringBuilder(addressTextBox.Attributes["data-content-template"]);
+					MakePostalCode(addRangeControls);
+					MakeCountry(addRangeControls);
+					MakeState(addRangeControls);
+					MakeCity(addRangeControls);
+					MakeAddressLine1(addRangeControls);
 					break;
 				default:
 					addressTextBox.Attributes.Add(
 						"data-content-template",
-						string.Format("{{{0}_line1}} {{{0}_line2}} {{{0}_line3}}{{BREAK}}{{{0}_city}} {{{0}_stateorprovince}} {{{0}_postalcode}}{{BREAK}}{{{0}_country}}", this.ControlID));
-					this.addressControlValue = new StringBuilder(addressTextBox.Attributes["data-content-template"]);
-					this.MakeAddressLine1(addRangeControls);
-					this.MakeAddressLine2(addRangeControls);
-					this.MakeAddressLine3(addRangeControls);
+						string.Format("{{{0}_line1}} {{{0}_line2}} {{{0}_line3}}{{BREAK}}{{{0}_city}} {{{0}_stateorprovince}} {{{0}_postalcode}}{{BREAK}}{{{0}_country}}", ControlID));
+					addressControlValue = new StringBuilder(addressTextBox.Attributes["data-content-template"]);
+					MakeAddressLine1(addRangeControls);
+					MakeAddressLine2(addRangeControls);
+					MakeAddressLine3(addRangeControls);
 
-					this.MakeCity(addRangeControls);
+					MakeCity(addRangeControls);
 
-					this.MakeState(addRangeControls);
-					this.MakePostalCode(addRangeControls);
-					this.MakeCountry(addRangeControls);
+					MakeState(addRangeControls);
+					MakePostalCode(addRangeControls);
+					MakeCountry(addRangeControls);
 					break;
 			}
 			
@@ -219,22 +219,22 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 			addRangeControls(new[] { doneButton });
 			var ariaLabelPattern = "{0}. {1}";
-			if (this.Metadata.IsRequired || this.Metadata.WebFormForceFieldIsRequired)
+			if (Metadata.IsRequired || Metadata.WebFormForceFieldIsRequired)
 			{
 				addressTextBox.Attributes.Add("required", string.Empty);
 				ariaLabelPattern = "{0}*. {1}";
 			}
 
-			if (this.isEditable)
+			if (isEditable)
 			{
-				addressTextBox.Attributes.Add("aria-label", string.Format(ariaLabelPattern, this.Metadata.Label, ResourceManager.GetString("Narrator_Label_For_Composite_Controls")));
+				addressTextBox.Attributes.Add("aria-label", string.Format(ariaLabelPattern, Metadata.Label, ResourceManager.GetString("Narrator_Label_For_Composite_Controls")));
 			}
 			else
 			{
 				addressTextBox.CssClass += " readonly ";
 			}
 
-			this.Bindings[this.ControlID] = new CellBinding
+			Bindings[ControlID] = new CellBinding
 			{
 				Get = () =>
 				{
@@ -245,13 +245,13 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 				{
 					Entity entity = obj as Entity;
 
-					foreach (var bindAction in this.bindControlValue)
+					foreach (var bindAction in bindControlValue)
 					{
 						bindAction(entity);
 					}
 
 					var textBoxValue = string.Join("\r\n",
-						this.addressControlValue.ToString()
+						addressControlValue.ToString()
 							.Split(new[] { "{BREAK}" }, StringSplitOptions.RemoveEmptyEntries)
 							.Select(x => x.Trim()));
 
@@ -267,17 +267,17 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <param name="container">The container.</param>
 		protected override void InstantiateValidatorsIn(Control container)
 		{
-			if (this.Metadata.IsRequired || this.Metadata.WebFormForceFieldIsRequired || this.Metadata.IsFullNameControl)
+			if (Metadata.IsRequired || Metadata.WebFormForceFieldIsRequired || Metadata.IsFullNameControl)
 			{
 				container.Controls.Add(
 					new RequiredFieldValidator
 					{
-						ID = string.Format("RequiredFieldValidator{0}", this.ControlID),
-						ControlToValidate = this.ControlID,
-						ValidationGroup = this.ValidationGroup,
-						Display = this.ValidatorDisplay,
-						ErrorMessage = ValidationSummaryMarkup(this.ValidationMessage()),
-						Text = this.Metadata.ValidationText,
+						ID = string.Format("RequiredFieldValidator{0}", ControlID),
+						ControlToValidate = ControlID,
+						ValidationGroup = ValidationGroup,
+						Display = ValidatorDisplay,
+						ErrorMessage = ValidationSummaryMarkup(ValidationMessage()),
+						Text = Metadata.ValidationText,
 					});
 			}
 
@@ -290,7 +290,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <param name="addRangeControls">Add Corols Delegate</param>
 		private void MakeAddressLine1(Action<IEnumerable<Control>> addRangeControls)
 		{
-			var line1 = this.MakeEditControls("_line1", "Address_Line_1_DefaultText");
+			var line1 = MakeEditControls("_line1", "Address_Line_1_DefaultText");
 			addRangeControls(line1);
 		}
 
@@ -300,7 +300,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <param name="addRangeControls">Add Corols Delegate</param>
 		private void MakeAddressLine2(Action<IEnumerable<Control>> addRangeControls)
 		{
-			var line2 = this.MakeEditControls("_line2", "Address_Line_2_DefaultText");
+			var line2 = MakeEditControls("_line2", "Address_Line_2_DefaultText");
 			addRangeControls(line2);
 		}
 
@@ -310,7 +310,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <param name="addRangeControls">Add Corols Delegate</param>
 		private void MakeAddressLine3(Action<IEnumerable<Control>> addRangeControls)
 		{
-			var line3 = this.MakeEditControls("_line3", "Address_Line_3_DefaultText");
+			var line3 = MakeEditControls("_line3", "Address_Line_3_DefaultText");
 			addRangeControls(line3);
 		}
 
@@ -320,7 +320,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <param name="addRangeControls">Add Corols Delegate</param>
 		private void MakeCity(Action<IEnumerable<Control>> addRangeControls)
 		{
-			var city = this.MakeEditControls("_city", "City_DefaultText");
+			var city = MakeEditControls("_city", "City_DefaultText");
 
 			addRangeControls(city);
 		}
@@ -331,7 +331,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <param name="addRangeControls">Add Corols Delegate</param>
 		private void MakeCountry(Action<IEnumerable<Control>> addRangeControls)
 		{
-			var country = this.MakeEditControls("_country", "Country_DefaultText");
+			var country = MakeEditControls("_country", "Country_DefaultText");
 			addRangeControls(country);
 		}
 
@@ -341,7 +341,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <param name="addRangeControls">Add Corols Delegate</param>
 		private void MakePostalCode(Action<IEnumerable<Control>> addRangeControls)
 		{
-			var postalcode = this.MakeEditControls("_postalcode", "Zip_Postal_Code");
+			var postalcode = MakeEditControls("_postalcode", "Zip_Postal_Code");
 			addRangeControls(postalcode);
 		}
 
@@ -351,7 +351,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <param name="addRangeControls">Add Corols Delegate</param>
 		private void MakeState(Action<IEnumerable<Control>> addRangeControls)
 		{
-			var stateorprovince = this.MakeEditControls("_stateorprovince", "State_Province_DefaultText");
+			var stateorprovince = MakeEditControls("_stateorprovince", "State_Province_DefaultText");
 			addRangeControls(stateorprovince);
 		}
 
@@ -363,14 +363,14 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <returns>Collection with Field and Label controls</returns>
 		private IEnumerable<Control> MakeEditControls(string fieldName, string labelName)
 		{
-			var fieldMetaData = this.entityMetadata.Attributes.FirstOrDefault(a => a.LogicalName == this.alias + fieldName);
+			var fieldMetaData = entityMetadata.Attributes.FirstOrDefault(a => a.LogicalName == alias + fieldName);
 
 			var controls = new List<Control>();
 			var textBox = new TextBox
 			{
-				ID = string.Concat(this.ControlID, fieldName),
-				CssClass = string.Concat(" content ", " ", this.CssClass, this.Metadata.CssClass),
-				ToolTip = this.Metadata.ToolTip
+				ID = string.Concat(ControlID, fieldName),
+				CssClass = string.Concat(" content ", " ", CssClass, Metadata.CssClass),
+				ToolTip = Metadata.ToolTip
 			};
 
 			var snippetName = "AddressCompositeControlTemplate/FieldLabel/" + labelName;
@@ -385,7 +385,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 				HtmlTag = HtmlTextWriterTag.Label
 			};
 			
-			if (this.isEditable)
+			if (isEditable)
 			{
 				// Applying required parameters to first name if it's application required
 				if (fieldMetaData != null
@@ -405,7 +405,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			}
 			controls.Add(textBox);
 			textBox.Attributes.Add("onchange", "setIsDirty(this.id);");
-			this.Bindings[this.ControlID + this.alias + fieldName] = new CellBinding
+			Bindings[ControlID + alias + fieldName] = new CellBinding
 			{
 				Get = () =>
 				{
@@ -420,13 +420,13 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 					{
 						textBox.Text =
 							entity.GetAttributeValue<string>(
-								this.alias + fieldName);
+								alias + fieldName);
 					}
 				}
 			};
-			this.bindControlValue.Add(entity =>
+			bindControlValue.Add(entity =>
 			{
-				this.addressControlValue.Replace("{" + textBox.ID + "}", entity.GetAttributeValue<string>(this.alias + fieldName));
+				addressControlValue.Replace("{" + textBox.ID + "}", entity.GetAttributeValue<string>(alias + fieldName));
 			});
 			return controls;
 		}
@@ -437,11 +437,11 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <returns>string Validation Message</returns>
 		private string ValidationMessage()
 		{
-			return string.IsNullOrWhiteSpace(this.Metadata.RequiredFieldValidationErrorMessage)
-					   ? (this.Metadata.Messages == null || !this.Metadata.Messages.ContainsKey("Required"))
-							 ? ResourceManager.GetString("Required_Field_Error").FormatWith(this.Metadata.Label)
-							 : this.Metadata.Messages["Required"].FormatWith(this.Metadata.Label)
-					   : this.Metadata.RequiredFieldValidationErrorMessage;
+			return string.IsNullOrWhiteSpace(Metadata.RequiredFieldValidationErrorMessage)
+					   ? (Metadata.Messages == null || !Metadata.Messages.ContainsKey("Required"))
+							 ? ResourceManager.GetString("Required_Field_Error").FormatWith(Metadata.Label)
+							 : Metadata.Messages["Required"].FormatWith(Metadata.Label)
+					   : Metadata.RequiredFieldValidationErrorMessage;
 		}
 	}
 }

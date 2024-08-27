@@ -73,7 +73,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		/// <summary>
 		/// Gets or sets the template that defines how the contained controls are displayed.
 		/// </summary>
-		[DefaultValue((string)null)]
+		[DefaultValue(null)]
 		[PersistenceMode(PersistenceMode.InnerProperty)]
 		[TemplateContainer(typeof(RepeaterItem))]
 		[Description("")]
@@ -90,7 +90,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		/// </example>
 		[Bindable(false)]
 		[Category("Data")]
-		[DefaultValue((string)null)]
+		[DefaultValue(null)]
 		public virtual string PropertyName { get; set; }
 
 		public string PortalName { get; set; }
@@ -296,7 +296,6 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 				}
 				catch (HttpException)
 				{
-					continue;
 				}
 			}
 
@@ -321,9 +320,9 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 				Value = value;
 			}
 
-			public string Name { get; private set; }
+			public string Name { get; }
 
-			public object Value { get; private set; }
+			public object Value { get; }
 		}
 	}
 }

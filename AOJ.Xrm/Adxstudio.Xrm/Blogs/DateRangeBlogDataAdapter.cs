@@ -48,15 +48,15 @@ namespace Adxstudio.Xrm.Blogs
 
 		public DateRangeBlogDataAdapter(IBlog blog, DateTime min, DateTime max, string portalName = null) : this(blog, min, max, new PortalConfigurationDataAdapterDependencies(portalName)) { }
 
-		protected EntityReference Blog { get; private set; }
+		protected EntityReference Blog { get; }
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
-		protected DateTime Max { get; private set; }
+		protected DateTime Max { get; }
 
-		protected DateTime Min { get; private set; }
+		protected DateTime Min { get; }
 
-		protected BlogSecurityInfo Security { get; private set; }
+		protected BlogSecurityInfo Security { get; }
 
 		public IBlog Select()
 		{

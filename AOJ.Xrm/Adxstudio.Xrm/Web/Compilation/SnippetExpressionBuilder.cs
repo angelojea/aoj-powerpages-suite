@@ -8,8 +8,8 @@ namespace Adxstudio.Xrm.Web.Compilation
 	using System;
 	using System.Collections.Specialized;
 	using System.Web;
-	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Resources;
+	using Cms;
+	using Resources;
 	using Microsoft.Xrm.Portal.Web.Compilation;
 	using Microsoft.Xrm.Sdk;
 
@@ -22,15 +22,15 @@ namespace Adxstudio.Xrm.Web.Compilation
 		{
 			object IExpressionBuilderProvider.Evaluate(NameValueCollection arguments, Type controlType, string propertyName, string expressionPrefix)
 			{
-				if (string.IsNullOrEmpty(NameValueCollectionExtensions.GetValueByIndexOrName(arguments, 0, "Name")))
+				if (string.IsNullOrEmpty(arguments.GetValueByIndexOrName(0, "Name")))
 				{
-					CrmExpressionBuilder<SnippetExpressionBuilder.Provider>.ThrowArgumentException(propertyName, expressionPrefix, "Name={snippet name} [, Key={ResourceManager key}] [, Format={format string}] [, Portal={portal name}]");
+					ThrowArgumentException(propertyName, expressionPrefix, "Name={snippet name} [, Key={ResourceManager key}] [, Format={format string}] [, Portal={portal name}]");
 				}
 
-				string valueByIndexOrName1 = NameValueCollectionExtensions.GetValueByIndexOrName(arguments, 0, "Name");
-				string key = NameValueCollectionExtensions.GetValueByIndexOrName(arguments, 1, "Key") ?? string.Empty;
-				string valueByIndexOrName2 = NameValueCollectionExtensions.GetValueByIndexOrName(arguments, 2, "Format");
-				Type returnType = CrmExpressionBuilder<SnippetExpressionBuilder.Provider>.GetReturnType(controlType, propertyName);
+				string valueByIndexOrName1 = arguments.GetValueByIndexOrName(0, "Name");
+				string key = arguments.GetValueByIndexOrName(1, "Key") ?? string.Empty;
+				string valueByIndexOrName2 = arguments.GetValueByIndexOrName(2, "Format");
+				Type returnType = GetReturnType(controlType, propertyName);
 
 				var adapter = new SnippetDataAdapter(new PortalConfigurationDataAdapterDependencies());
 				var snippet = adapter.Select(valueByIndexOrName1);
@@ -39,7 +39,7 @@ namespace Adxstudio.Xrm.Web.Compilation
 
 				if (Microsoft.Xrm.Client.TypeExtensions.IsA(returnType, typeof(Entity)))
 				{
-					return (object)snippetByName;
+					return snippetByName;
 				}
 
 				if (snippetByName == null)
@@ -47,13 +47,13 @@ namespace Adxstudio.Xrm.Web.Compilation
 					string value = ResourceManager.GetString(key);
 					if (value == null)
 					{
-						return (object)key;
+						return key;
 					}
 
-					return (object)value;
+					return value;
 				}
 
-				return CrmExpressionBuilder<SnippetExpressionBuilder.Provider>.GetEvalData((object)snippetByName, "adx_value", (string)null, valueByIndexOrName2, returnType);
+				return GetEvalData(snippetByName, "adx_value", null, valueByIndexOrName2, returnType);
 			}
 		}
 	}

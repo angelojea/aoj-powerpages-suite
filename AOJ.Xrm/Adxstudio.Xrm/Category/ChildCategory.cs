@@ -17,19 +17,19 @@ namespace Adxstudio.Xrm.Category
         /// <param name="url">Child Category URL</param>
         public ChildCategory(string title, string url)
         {
-            this.Title = title;
-            this.Url = url;
+            Title = title;
+            Url = url;
         }
 
         /// <summary>
         /// Child Category's Title
         /// </summary>
-        public string Title { get; private set; }
+        public string Title { get; }
 
         /// <summary>
         /// Child Category's URL
         /// </summary>
-        public string Url { get; private set; }
+        public string Url { get; }
 
     }
 }

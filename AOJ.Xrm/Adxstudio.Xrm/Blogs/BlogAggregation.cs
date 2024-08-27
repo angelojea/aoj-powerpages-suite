@@ -41,26 +41,26 @@ namespace Adxstudio.Xrm.Blogs
 			Title = string.IsNullOrWhiteSpace(title) ? entity.GetAttributeValue<string>("adx_name") : title;
 		}
 
-		public ApplicationPath ApplicationPath { get; private set; }
+		public ApplicationPath ApplicationPath { get; }
 
 		public BlogCommentPolicy CommentPolicy
 		{
 			get { return BlogCommentPolicy.None; }
 		}
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public ApplicationPath FeedPath { get; private set; }
+		public ApplicationPath FeedPath { get; }
 
-		public Guid Id { get; private set; }
+		public Guid Id { get; }
 
 		public bool IsAggregation
 		{
 			get { return true; }
 		}
 
-		public IHtmlString Summary { get; private set; }
+		public IHtmlString Summary { get; }
 
-		public string Title { get; private set; }
+		public string Title { get; }
 	}
 }

@@ -26,9 +26,9 @@ namespace Adxstudio.Xrm.EntityList
 			Dependencies = dependencies;
 		}
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 		
-		protected EntityReference Video { get; private set; }
+		protected EntityReference Video { get; }
 
 		public Video SelectVideo()
 		{

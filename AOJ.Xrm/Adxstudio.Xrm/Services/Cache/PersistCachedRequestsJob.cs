@@ -13,12 +13,12 @@ namespace Adxstudio.Xrm.Services.Cache
 	using System.Text;
 	using System.Web.Hosting;
 	using System.Web.Security;
-	using Adxstudio.Xrm.IO;
-	using Adxstudio.Xrm.Json;
-	using Adxstudio.Xrm.Performance;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Threading;
-	using Adxstudio.Xrm.Web;
+	using IO;
+	using Json;
+	using Performance;
+	using Services;
+	using Threading;
+	using Web;
 	using Microsoft.Xrm.Client;
 
 	/// <summary>
@@ -29,17 +29,17 @@ namespace Adxstudio.Xrm.Services.Cache
 		/// <summary>
 		/// The settings.
 		/// </summary>
-		public WarmupCacheSettings Settings { get; private set; }
+		public WarmupCacheSettings Settings { get; }
 
 		/// <summary>
 		/// The full path of the output folder.
 		/// </summary>
-		public string AppDataFullPath { get; private set; }
+		public string AppDataFullPath { get; }
 
 		/// <summary>
 		/// Reference to the object cache.
 		/// </summary>
-		public ObjectCache ObjectCache { get; private set; }
+		public ObjectCache ObjectCache { get; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PersistCachedRequestsJob" /> class.
@@ -48,9 +48,9 @@ namespace Adxstudio.Xrm.Services.Cache
 		/// <param name="settings">The settings.</param>
 		public PersistCachedRequestsJob(ObjectCache objectCache, WarmupCacheSettings settings)
 		{
-			this.Settings = settings;
-			this.ObjectCache = objectCache;
-			this.AppDataFullPath = settings.AppDataPath.StartsWith("~/")
+			Settings = settings;
+			ObjectCache = objectCache;
+			AppDataFullPath = settings.AppDataPath.StartsWith("~/")
 				? HostingEnvironment.MapPath(settings.AppDataPath)
 				: settings.AppDataPath;
 		}
@@ -65,21 +65,21 @@ namespace Adxstudio.Xrm.Services.Cache
 
 			using (PerformanceProfiler.Instance.StartMarker(PerformanceMarkerName.Cache, PerformanceMarkerArea.Cms, PerformanceMarkerTagName.PersistCachedRequests))
 			{
-				this.Settings.AppDataRetryPolicy.DirectoryCreate(this.AppDataFullPath);
+				Settings.AppDataRetryPolicy.DirectoryCreate(AppDataFullPath);
 
 				// find cached requests for writing to disk
-				foreach (var telemetry in this.ObjectCache.Select(item => item.Value).OfType<CacheItemTelemetry>())
+				foreach (var telemetry in ObjectCache.Select(item => item.Value).OfType<CacheItemTelemetry>())
 				{
 					if (telemetry.Request != null)
 					{
-						this.Save(this.AppDataFullPath, telemetry);
+						Save(AppDataFullPath, telemetry);
 					}
 				}
 
 				// cleanup exipired files
-				var directory = this.Settings.AppDataRetryPolicy.GetDirectory(this.AppDataFullPath);
-				var files = this.Settings.AppDataRetryPolicy.GetFiles(directory, this.Settings.FilenameFormat.FormatWith("*"));
-				var expiresOn = DateTimeOffset.UtcNow - this.Settings.ExpirationWindow;
+				var directory = Settings.AppDataRetryPolicy.GetDirectory(AppDataFullPath);
+				var files = Settings.AppDataRetryPolicy.GetFiles(directory, Settings.FilenameFormat.FormatWith("*"));
+				var expiresOn = DateTimeOffset.UtcNow - Settings.ExpirationWindow;
 
 				foreach (var file in files)
 				{
@@ -91,14 +91,14 @@ namespace Adxstudio.Xrm.Services.Cache
 						{
 							ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Deleting: " + file.FullName);
 
-							this.Settings.AppDataRetryPolicy.FileDelete(file);
+							Settings.AppDataRetryPolicy.FileDelete(file);
 						}
 					}
 					catch (Exception e)
 					{
 						WebEventSource.Log.GenericWarningException(e);
 
-						if (this.Settings.PropagateExceptions)
+						if (Settings.PropagateExceptions)
 						{
 							exceptions.Add(e);
 						}
@@ -106,7 +106,7 @@ namespace Adxstudio.Xrm.Services.Cache
 				}
 			}
 
-			if (this.Settings.PropagateExceptions && exceptions.Any())
+			if (Settings.PropagateExceptions && exceptions.Any())
 			{
 				throw new AggregateException(exceptions);
 			}
@@ -132,13 +132,13 @@ namespace Adxstudio.Xrm.Services.Cache
 			{
 				var request = CrmJsonConvert.SerializeObject(telemetry.Request);
 				var key = request.GetHashCode();
-				var filename = string.Format(this.Settings.FilenameFormat, key);
+				var filename = string.Format(Settings.FilenameFormat, key);
 				var fullPath = Path.Combine(folderPath, filename);
-				var bytes = MachineKey.Protect(Encoding.UTF8.GetBytes(request), this.Settings.GetType().ToString());
+				var bytes = MachineKey.Protect(Encoding.UTF8.GetBytes(request), Settings.GetType().ToString());
 
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Writing: " + fullPath);
 
-				this.Settings.AppDataRetryPolicy.WriteAllBytes(fullPath, bytes);
+				Settings.AppDataRetryPolicy.WriteAllBytes(fullPath, bytes);
 			}
 		}
 	}

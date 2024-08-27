@@ -20,7 +20,7 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 	/// </summary>
 	public class WorkflowActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = ResourceManager.GetString("Run_Workflow_Button_Text");		
+		private static readonly string DefaultButtonLabel = ResourceManager.GetString("Run_Workflow_Button_Text");		
 
 		/// <summary>
 		/// Setting used to configure the modal

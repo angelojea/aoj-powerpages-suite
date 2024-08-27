@@ -56,27 +56,27 @@ namespace Adxstudio.Xrm.Cms
 		}
 
 		[JsonIgnore]
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public string Copy { get; private set; }
+		public string Copy { get; }
 
-		public string ImageAlternateText { get; private set; }
+		public string ImageAlternateText { get; }
 
-		public int? ImageHeight { get; private set; }
+		public int? ImageHeight { get; }
 
-		public string ImageUrl { get; private set; }
+		public string ImageUrl { get; }
 
-		public int? ImageWidth { get; private set; }
+		public int? ImageWidth { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public bool OpenInNewWindow { get; private set; }
+		public bool OpenInNewWindow { get; }
 
-		public string RedirectUrl { get; private set; }
+		public string RedirectUrl { get; }
 
-		public string Title { get; private set; }
+		public string Title { get; }
 
 		[JsonIgnore]
-		public EntityReference WebTemplate { get; private set; }
+		public EntityReference WebTemplate { get; }
 	}
 }

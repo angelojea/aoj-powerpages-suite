@@ -8,9 +8,9 @@ namespace Adxstudio.Xrm.Performance
 	using System;
 	using System.Diagnostics;
 	using System.Diagnostics.Tracing;
-	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.Core.Telemetry.EventSources;
-	using Adxstudio.Xrm.Diagnostics.Trace;
+	using Configuration;
+	using Core.Telemetry.EventSources;
+	using Diagnostics.Trace;
 
 	[EventSource(Guid = "F2E43462-6850-4CD3-9074-19DA26E24DE6", Name = InternalName)]
 	public sealed class PerformanceEventSource : EventSourceBase
@@ -60,9 +60,9 @@ namespace Adxstudio.Xrm.Performance
 				PerfMarkerAreaHelper.AreaEnumToString(marker.Area),
 				marker.Tag ?? string.Empty,
 				marker.Elapsed.GetValueOrDefault().TotalMilliseconds,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial);
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial);
 		}
 
 		[Event((int)EventName.PerformanceMarker, Message = "Id : {0} Name : {1} Type : {2} Source : {3} Timestamp : {4} Request Id : {5} Session Id : {6} Area : {7} Tag : {8} Elapsed Time In Milliseconds : {9} PortalURL : {10} PortalVersion : {11} PortalProductionOrTrial : {12}", Level = EventLevel.Informational, Version = 2)]
@@ -104,9 +104,9 @@ namespace Adxstudio.Xrm.Performance
 				aggregate.AggregatesInMilliseconds[(int)PerformanceMarkerArea.Cms],
 				aggregate.AggregatesInMilliseconds[(int)PerformanceMarkerArea.Liquid],
 				aggregate.AggregatesInMilliseconds[(int)PerformanceMarkerArea.Security],
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial);
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial);
 		}
 
 		[Event((int)EventName.PerformanceAggregate, Message = "Timestamp : {0} Total Request Time : {1} Request Id : {2} Session Id : {3} Unknown Milliseconds : {4} Crm Milliseconds : {5} Cms Milliseconds : {6} Liquid Milliseconds : {7} Security Milliseconds : {8} PortalURL : {9} PortalVersion : {10} PortalProductionOrTrial : {11}", Level = EventLevel.Informational, Version = 2)]

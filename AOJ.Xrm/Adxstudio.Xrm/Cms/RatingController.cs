@@ -7,9 +7,9 @@ namespace Adxstudio.Xrm.Cms
 {
 	using System;
 	using System.Web.Mvc;
-	using Adxstudio.Xrm.Core.Flighting;
-	using Adxstudio.Xrm.Resources;
-	using Adxstudio.Xrm.Web.Mvc;
+	using Core.Flighting;
+	using Resources;
+	using Web.Mvc;
 	using Microsoft.Xrm.Portal.Configuration;
 	using Microsoft.Xrm.Sdk;
 

@@ -37,9 +37,9 @@ namespace Adxstudio.Xrm.Forums
 			Weight = weight;
 		}
 
-		public int ThreadCount { get; private set; }
+		public int ThreadCount { get; }
 
-		public int Weight { get; private set; }
+		public int Weight { get; }
 	}
 
 	internal class ForumThreadWeightedTagInfo : ITagInfo
@@ -50,8 +50,8 @@ namespace Adxstudio.Xrm.Forums
 			TaggedItemCount = count;
 		}
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public int TaggedItemCount { get; private set; }
+		public int TaggedItemCount { get; }
 	}
 }

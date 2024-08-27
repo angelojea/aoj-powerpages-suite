@@ -12,11 +12,11 @@ namespace Adxstudio.Xrm.Visualizations
 	using System.Text;
 	using System.Web.Script.Serialization;
 	using Adxstudio.Xrm.AspNet.Cms;
-	using Adxstudio.Xrm.Core;
-	using Adxstudio.Xrm.Metadata;
-	using Adxstudio.Xrm.Resources;
-	using Adxstudio.Xrm.Security;
-	using Adxstudio.Xrm.Services.Query;
+	using Core;
+	using Metadata;
+	using Resources;
+	using Security;
+	using Services.Query;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Client;
 	using Microsoft.Xrm.Sdk.Messages;
@@ -140,10 +140,10 @@ namespace Adxstudio.Xrm.Visualizations
 		/// <param name="languageCode">The language code to be used for get <see cref="CultureInfo"/> for formatting currency, datetime, and when retrieving localized labels from metadata.</param>
 		public CrmChartBuilder(OrganizationServiceContext serviceContext, Guid chartId, ContextLanguageInfo contextLanguage, Guid? viewId = null, bool entityPermissionsEnabled = true, int languageCode = 0)
 		{
-			this.culture = ContextLanguageInfo.GetCulture(languageCode);
+			culture = ContextLanguageInfo.GetCulture(languageCode);
 			this.contextLanguage = contextLanguage;
 
-			this.Data = Enumerable.Empty<Entity>();
+			Data = Enumerable.Empty<Entity>();
 
 			var chart = serviceContext.CreateQuery("savedqueryvisualization").FirstOrDefault(s => s.GetAttributeValue<Guid>("savedqueryvisualizationid") == chartId && s.GetAttributeValue<int>("componentstate") == 0);
 
@@ -152,7 +152,7 @@ namespace Adxstudio.Xrm.Visualizations
 				throw new ApplicationException(string.Format("Chart with ID '{0}' could not be found.", chartId));
 			}
 
-			this.Id = Guid.NewGuid().ToString("N");
+			Id = Guid.NewGuid().ToString("N");
 
 			if (viewId != null && viewId != Guid.Empty)
 			{
@@ -160,77 +160,77 @@ namespace Adxstudio.Xrm.Visualizations
 
 				if (view != null)
 				{
-					this.ViewDefinition = new CrmView(view);
+					ViewDefinition = new CrmView(view);
 				}
 			}
 
-			this.ChartDefinition = new CrmChart(chart, serviceContext, contextLanguage.IsCrmMultiLanguageEnabled ? contextLanguage.ContextLanguage.CrmLcid : this.culture.LCID);
+			ChartDefinition = new CrmChart(chart, serviceContext, contextLanguage.IsCrmMultiLanguageEnabled ? contextLanguage.ContextLanguage.CrmLcid : culture.LCID);
 
-			this.EntityPermissionsEnabled = entityPermissionsEnabled;
+			EntityPermissionsEnabled = entityPermissionsEnabled;
 
-			this.ResourceManagerStringOverrides = this.CreateResourceManagerStringOverrides();
+			ResourceManagerStringOverrides = CreateResourceManagerStringOverrides();
 
-			this.ResourceManagerStringOverridesSerialized =
-				new JavaScriptSerializer().Serialize(this.ResourceManagerStringOverrides);
+			ResourceManagerStringOverridesSerialized =
+				new JavaScriptSerializer().Serialize(ResourceManagerStringOverrides);
 
-			if (this.ChartDefinition == null)
+			if (ChartDefinition == null)
 			{
 				return;
 			}
 
-			if (string.IsNullOrWhiteSpace(this.ChartDefinition.DataDescriptionXml))
+			if (string.IsNullOrWhiteSpace(ChartDefinition.DataDescriptionXml))
 			{
 				return;
 			}
 
-			this.MergeViewFetchIntoChartFetch();
+			MergeViewFetchIntoChartFetch();
 
-			var metadata = this.ChartDefinition.PrimaryEntityMetadata;
+			var metadata = ChartDefinition.PrimaryEntityMetadata;
 
 			// If Name is not being retrieved and there is no grouping, add it to the attribute collection to
 			// give chart labels a value
-			if (!this.Query.Aggregate.GetValueOrDefault(false) && (!this.Query.Entity.Attributes.Any(a => a.Name.Equals(metadata.PrimaryNameAttribute, StringComparison.OrdinalIgnoreCase) || (a.GroupBy.HasValue && a.GroupBy.Value))))
+			if (!Query.Aggregate.GetValueOrDefault(false) && (!Query.Entity.Attributes.Any(a => a.Name.Equals(metadata.PrimaryNameAttribute, StringComparison.OrdinalIgnoreCase) || (a.GroupBy.HasValue && a.GroupBy.Value))))
 			{
-				this.Query.Entity.Attributes.Add(new FetchAttribute(metadata.PrimaryNameAttribute));
+				Query.Entity.Attributes.Add(new FetchAttribute(metadata.PrimaryNameAttribute));
 			}
 
-			this.Data = this.RetrieveData(serviceContext);
+			Data = RetrieveData(serviceContext);
 
 			// Serialize the data in the format required by the CrmHighchartsLibrary.js
 
-			this.entityMetadataCache.Add(metadata.LogicalName, metadata);
+			entityMetadataCache.Add(metadata.LogicalName, metadata);
 
-			this.PopulateEntityMetadataCacheForEntityLinks(serviceContext, this.Query.Entity.Links);
+			PopulateEntityMetadataCacheForEntityLinks(serviceContext, Query.Entity.Links);
 
-			var queryAttributes = this.Query.Entity.Attributes == null ? new List<FetchAttribute>() : this.Query.Entity.Attributes.ToList();
+			var queryAttributes = Query.Entity.Attributes == null ? new List<FetchAttribute>() : Query.Entity.Attributes.ToList();
 
 			var queryAttributeNames = queryAttributes.Select(a => a.Name).ToArray();
 
 			foreach (var attributeMetadata in metadata.Attributes.Where(a => queryAttributeNames.Contains(a.LogicalName)))
 			{
-				this.attributeMetadataCache.Add(new Tuple<string, string, AttributeMetadata>(attributeMetadata.EntityLogicalName, attributeMetadata.LogicalName, attributeMetadata));
+				attributeMetadataCache.Add(new Tuple<string, string, AttributeMetadata>(attributeMetadata.EntityLogicalName, attributeMetadata.LogicalName, attributeMetadata));
 			}
 
-			this.PopulateAttributeMetadataCacheForEntityLinkAttributes(this.Query.Entity.Links);
+			PopulateAttributeMetadataCacheForEntityLinkAttributes(Query.Entity.Links);
 			
-			var chartData = this.ConvertRecordsToDictionary(serviceContext, this.Data, metadata);
+			var chartData = ConvertRecordsToDictionary(serviceContext, Data, metadata);
 
 			var chartDataJson = new JavaScriptSerializer().Serialize(chartData);
 
 			// An infinite for loop is prefixed in the json response for security reasons, this will be stripped in the client side code.
-			this.DataJson = BadData + chartDataJson;
+			DataJson = BadData + chartDataJson;
 
 			// Build the entity metadata dictionary
 
-			this.EntityMetadata = this.entityMetadataCache.Select(e => this.CreateEntityMetadataDictionary(e.Value)).ToArray();
+			EntityMetadata = entityMetadataCache.Select(e => CreateEntityMetadataDictionary(e.Value)).ToArray();
 
-			this.EntityMetadataSerialized = new JavaScriptSerializer().Serialize(this.EntityMetadata);
+			EntityMetadataSerialized = new JavaScriptSerializer().Serialize(EntityMetadata);
 
 			// Build the attribute metadata dictionary
 
-			this.AttributeMetadata = this.attributeMetadataCache.Select(a => this.CreateAttributeMetadataDictionary(a.Item3)).ToArray();
+			AttributeMetadata = attributeMetadataCache.Select(a => CreateAttributeMetadataDictionary(a.Item3)).ToArray();
 
-			this.AttributeMetadataSerialized = new JavaScriptSerializer().Serialize(this.AttributeMetadata);
+			AttributeMetadataSerialized = new JavaScriptSerializer().Serialize(AttributeMetadata);
 		}
 		
 		/// <summary>
@@ -273,7 +273,7 @@ namespace Adxstudio.Xrm.Visualizations
 			metadata["entitylogicalname"] = attributeMetadata.EntityLogicalName;
 			metadata["type"] = attributeMetadata.AttributeTypeName;
 			metadata["sourcetype"] = attributeMetadata.SourceType;
-			metadata["displayname"] = this.GetLocalizedLabel(attributeMetadata.DisplayName) ?? string.Empty;
+			metadata["displayname"] = GetLocalizedLabel(attributeMetadata.DisplayName) ?? string.Empty;
 			metadata["requiredlevel"] = attributeMetadata.RequiredLevel.Value;
 			metadata["issecured"] = attributeMetadata.IsSecured;
 			metadata["isvalidforcreate"] = attributeMetadata.IsValidForCreate;
@@ -310,8 +310,8 @@ namespace Adxstudio.Xrm.Visualizations
 
 			metadata["Id"] = entityMetadata.MetadataId;
 			metadata["LogicalName"] = entityMetadata.LogicalName;
-			metadata["DisplayName"] = this.GetLocalizedLabel(entityMetadata.DisplayName) ?? string.Empty;
-			metadata["PluralName"] = this.GetLocalizedLabel(entityMetadata.DisplayCollectionName) ?? string.Empty;
+			metadata["DisplayName"] = GetLocalizedLabel(entityMetadata.DisplayName) ?? string.Empty;
+			metadata["PluralName"] = GetLocalizedLabel(entityMetadata.DisplayCollectionName) ?? string.Empty;
 			metadata["ObjectTypeCode"] = entityMetadata.ObjectTypeCode.GetValueOrDefault(0);
 			metadata["PrimaryIdAttribute"] = entityMetadata.PrimaryIdAttribute;
 			metadata["PrimaryNameAttribute"] = entityMetadata.PrimaryNameAttribute;
@@ -327,7 +327,7 @@ namespace Adxstudio.Xrm.Visualizations
 		/// <returns>A localized string.</returns>
 		private string GetLocalizedLabel(Label label)
 		{
-			var lcid = this.contextLanguage.IsCrmMultiLanguageEnabled ? this.contextLanguage.ContextLanguage.CrmLcid : this.culture.LCID;
+			var lcid = contextLanguage.IsCrmMultiLanguageEnabled ? contextLanguage.ContextLanguage.CrmLcid : culture.LCID;
 			var localizedLabel = label.LocalizedLabels.FirstOrDefault(l => l.LanguageCode == lcid);
 
 			if (localizedLabel != null)
@@ -376,10 +376,10 @@ namespace Adxstudio.Xrm.Visualizations
 			};
 
 			var shortMonthCsv = new StringBuilder(string.Empty);
-			for (int i = 1; i <= this.culture.Calendar.GetMonthsInYear(DateTime.Now.Year); i++)
+			for (int i = 1; i <= culture.Calendar.GetMonthsInYear(DateTime.Now.Year); i++)
 			{
-				DateTime month = new DateTime(DateTime.Now.Year, i, 1, this.culture.Calendar);
-				shortMonthCsv.AppendFormat("{0},", month.ToString("MMM", this.culture));
+				DateTime month = new DateTime(DateTime.Now.Year, i, 1, culture.Calendar);
+				shortMonthCsv.AppendFormat("{0},", month.ToString("MMM", culture));
 			}
 			resources.Add("Calendar_Short_Months", shortMonthCsv.ToString().TrimEnd(','));
 
@@ -400,16 +400,16 @@ namespace Adxstudio.Xrm.Visualizations
 
 			foreach (var link in links.Where(l => l.Intersect.GetValueOrDefault(false) == false))
 			{
-				if (this.entityMetadataCache.ContainsKey(link.Name))
+				if (entityMetadataCache.ContainsKey(link.Name))
 				{
 					continue;
 				}
 
 				var entityMetadata = MetadataHelper.GetEntityMetadata(serviceContext, link.Name);
 
-				this.entityMetadataCache.Add(entityMetadata.LogicalName, entityMetadata);
+				entityMetadataCache.Add(entityMetadata.LogicalName, entityMetadata);
 
-				this.PopulateEntityMetadataCacheForEntityLinks(serviceContext, link.Links);
+				PopulateEntityMetadataCacheForEntityLinks(serviceContext, link.Links);
 			}
 		}
 
@@ -426,9 +426,9 @@ namespace Adxstudio.Xrm.Visualizations
 
 			foreach (var link in links.Where(l => l.Attributes != null && l.Attributes.Any()))
 			{
-				if (this.entityMetadataCache.ContainsKey(link.Name))
+				if (entityMetadataCache.ContainsKey(link.Name))
 				{
-					var entityMetadata = this.entityMetadataCache[link.Name];
+					var entityMetadata = entityMetadataCache[link.Name];
 
 					foreach (var attribute in link.Attributes)
 					{
@@ -439,11 +439,11 @@ namespace Adxstudio.Xrm.Visualizations
 							continue;
 						}
 
-						this.attributeMetadataCache.Add(new Tuple<string, string, AttributeMetadata>(link.Name, attribute.Name, attributeMetadata));
+						attributeMetadataCache.Add(new Tuple<string, string, AttributeMetadata>(link.Name, attribute.Name, attributeMetadata));
 					}
 				}
 
-				this.PopulateAttributeMetadataCacheForEntityLinkAttributes(link.Links);
+				PopulateAttributeMetadataCacheForEntityLinkAttributes(link.Links);
 			}
 		}
 
@@ -488,7 +488,7 @@ namespace Adxstudio.Xrm.Visualizations
 					var formattedValue = string.Empty;
 					var attributeLogicalName = aliasedValue != null ? aliasedValue.AttributeLogicalName : attribute.Key;
 					var attributeEntityLogicalName = aliasedValue != null ? aliasedValue.EntityLogicalName : entityMetadata.LogicalName;
-					var attributeMetadata = this.GetAttributeMetadata(attributeLogicalName, attributeEntityLogicalName);
+					var attributeMetadata = GetAttributeMetadata(attributeLogicalName, attributeEntityLogicalName);
 					
 					if (record.FormattedValues.Contains(attribute.Key))
 					{
@@ -515,8 +515,8 @@ namespace Adxstudio.Xrm.Visualizations
 								if (optionSetValue != null)
 								{
 									formattedValue =
-										Adxstudio.Xrm.Core.OrganizationServiceContextExtensions.GetOptionSetValueLabel(attributeMetadata,
-											optionSetValue.Value, this.contextLanguage.IsCrmMultiLanguageEnabled ? this.contextLanguage.ContextLanguage.CrmLcid : this.culture.LCID);
+										Core.OrganizationServiceContextExtensions.GetOptionSetValueLabel(attributeMetadata,
+											optionSetValue.Value, contextLanguage.IsCrmMultiLanguageEnabled ? contextLanguage.ContextLanguage.CrmLcid : culture.LCID);
 								}
 								break;
 							case AttributeTypeCode.Money:
@@ -535,14 +535,14 @@ namespace Adxstudio.Xrm.Visualizations
 								}
 								if (value is DateTime)
 								{
-									formattedValue = ((DateTime)value).ToString(this.culture.DateTimeFormat.ShortDatePattern);
+									formattedValue = ((DateTime)value).ToString(culture.DateTimeFormat.ShortDatePattern);
 								}
 								break;
 							case AttributeTypeCode.BigInt:
 							case AttributeTypeCode.Integer:
 								if (value is int)
 								{
-									formattedValue = ((int)value).ToString("N", this.culture);
+									formattedValue = ((int)value).ToString("N", culture);
 								}
 								break;
 							case AttributeTypeCode.Decimal:
@@ -551,7 +551,7 @@ namespace Adxstudio.Xrm.Visualizations
 								{
 									formattedValue =
 										((decimal)value).ToString(string.Format("N{0}", decimalAttributeMetadata.Precision.GetValueOrDefault(2)),
-											this.culture);
+											culture);
 								}
 								break;
 							case AttributeTypeCode.Double:
@@ -560,7 +560,7 @@ namespace Adxstudio.Xrm.Visualizations
 								{
 									formattedValue =
 										((double)value).ToString(string.Format("N{0}", doubleAttributeMetadata.Precision.GetValueOrDefault(2)),
-											this.culture);
+											culture);
 								}
 								break;
 						}
@@ -601,7 +601,7 @@ namespace Adxstudio.Xrm.Visualizations
 		/// <returns><see cref="Microsoft.Xrm.Sdk.Metadata.AttributeMetadata"/></returns>
 		private AttributeMetadata GetAttributeMetadata(string attributeLogicalName, string entityLogicalName)
 		{
-			var attributeMetadata = this.attributeMetadataCache.FirstOrDefault(a => a.Item1 == entityLogicalName && a.Item2 == attributeLogicalName);
+			var attributeMetadata = attributeMetadataCache.FirstOrDefault(a => a.Item1 == entityLogicalName && a.Item2 == attributeLogicalName);
 
 			return attributeMetadata == null ? null : attributeMetadata.Item3;
 		}
@@ -611,18 +611,18 @@ namespace Adxstudio.Xrm.Visualizations
 		/// </summary>
 		private void MergeViewFetchIntoChartFetch()
 		{
-			if (this.ChartDefinition == null || this.ChartDefinition.Fetch == null || this.ChartDefinition.Fetch.Entity == null)
+			if (ChartDefinition == null || ChartDefinition.Fetch == null || ChartDefinition.Fetch.Entity == null)
 			{
 				return;
 			}
 
-			var fetch = this.ChartDefinition.Fetch;
+			var fetch = ChartDefinition.Fetch;
 
-			if (this.ViewDefinition != null && this.ViewDefinition.Fetch != null && this.ViewDefinition.Fetch.Entity != null)
+			if (ViewDefinition != null && ViewDefinition.Fetch != null && ViewDefinition.Fetch.Entity != null)
 			{
-				var chartFetchHasOrder = this.ChartDefinition.Fetch.Entity.Orders != null && this.ChartDefinition.Fetch.Entity.Orders.Any();
+				var chartFetchHasOrder = ChartDefinition.Fetch.Entity.Orders != null && ChartDefinition.Fetch.Entity.Orders.Any();
 
-				var viewFetchHasOrder = this.ViewDefinition.Fetch.Entity.Orders != null && this.ViewDefinition.Fetch.Entity.Orders.Any();
+				var viewFetchHasOrder = ViewDefinition.Fetch.Entity.Orders != null && ViewDefinition.Fetch.Entity.Orders.Any();
 
 				// If no sort order is specified in the chart FetchXml, and a sort order is specified in the view FetchXml, add the order.
 
@@ -630,17 +630,17 @@ namespace Adxstudio.Xrm.Visualizations
 				{
 					fetch.Entity.Orders = new List<Order>();
 
-					var chartFetchHasAggregates = this.ChartDefinition.Fetch.Aggregate.GetValueOrDefault(false);
+					var chartFetchHasAggregates = ChartDefinition.Fetch.Aggregate.GetValueOrDefault(false);
 
 					if (chartFetchHasAggregates)
 					{
 						// For aggregate queries, only honor the primary sort order of the view if the sort is on a groupby attribute in the chart FetchXml.
 
-						var chartFetchGroupByAttributes = this.ChartDefinition.Fetch.Entity.Attributes == null ? null : this.ChartDefinition.Fetch.Entity.Attributes.Where(a => a.Aggregate != null).ToArray();
+						var chartFetchGroupByAttributes = ChartDefinition.Fetch.Entity.Attributes == null ? null : ChartDefinition.Fetch.Entity.Attributes.Where(a => a.Aggregate != null).ToArray();
 
 						if (chartFetchGroupByAttributes != null)
 						{
-							foreach (var order in this.ViewDefinition.Fetch.Entity.Orders)
+							foreach (var order in ViewDefinition.Fetch.Entity.Orders)
 							{
 								var order1 = order;
 								foreach (var attribute in chartFetchGroupByAttributes.Where(attribute => order1.Attribute == attribute.Name))
@@ -658,11 +658,11 @@ namespace Adxstudio.Xrm.Visualizations
 					{
 						// For non-aggregate queries, always honor the primary sort order of the view.
 
-						fetch.Entity.Orders = this.ViewDefinition.Fetch.Entity.Orders;
+						fetch.Entity.Orders = ViewDefinition.Fetch.Entity.Orders;
 					}
 				}
 
-				var viewFetch = this.ViewDefinition.Fetch;
+				var viewFetch = ViewDefinition.Fetch;
 
 				// If the view fetch contains link entities, add them to the fetch query.
 
@@ -722,9 +722,9 @@ namespace Adxstudio.Xrm.Visualizations
 				}
 			}
 
-			this.Query = fetch;
+			Query = fetch;
 
-			this.FetchXml = this.Query.ToXml().ToString();
+			FetchXml = Query.ToXml().ToString();
 		}
 
 		/// <summary>
@@ -734,28 +734,28 @@ namespace Adxstudio.Xrm.Visualizations
 		/// <returns>A collection of <see cref="Entity"/> records.</returns>
 		private IEnumerable<Entity> RetrieveData(OrganizationServiceContext serviceContext)
 		{
-			if (this.Query == null)
+			if (Query == null)
 			{
 				return Enumerable.Empty<Entity>();
 			}
 
-			if (this.EntityPermissionsEnabled)
+			if (EntityPermissionsEnabled)
 			{
 				var crmEntityPermissionProvider = new CrmEntityPermissionProvider();
 
-				var result = crmEntityPermissionProvider.TryApplyRecordLevelFiltersToFetch(serviceContext, CrmEntityPermissionRight.Read, this.Query);
+				var result = crmEntityPermissionProvider.TryApplyRecordLevelFiltersToFetch(serviceContext, CrmEntityPermissionRight.Read, Query);
 
-				this.EntityPermissionDenied = !result.GlobalPermissionGranted && !result.PermissionGranted;
+				EntityPermissionDenied = !result.GlobalPermissionGranted && !result.PermissionGranted;
 
-				if (this.EntityPermissionDenied)
+				if (EntityPermissionDenied)
 				{
 					return Enumerable.Empty<Entity>();
 				}
 			}
 
-			this.Query.NoLock = true;
+			Query.NoLock = true;
 
-			var response = (RetrieveMultipleResponse)serviceContext.Execute(this.Query.ToRetrieveMultipleRequest());
+			var response = (RetrieveMultipleResponse)serviceContext.Execute(Query.ToRetrieveMultipleRequest());
 
 			var data = response.EntityCollection.Entities;
 

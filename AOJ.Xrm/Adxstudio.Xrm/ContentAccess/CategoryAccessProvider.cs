@@ -29,8 +29,8 @@ namespace Adxstudio.Xrm.ContentAccess
         /// <param name="configuration">Category Access Procider Configuration</param>
         public CategoryAccessProvider(ContentAccessConfiguration configuration) : base(configuration)
         {
-            this.ContentAccessLevelProvider = new ContentAccessLevelProvider();
-            this.ProductAccessProvider = new ProductAccessProvider();
+            ContentAccessLevelProvider = new ContentAccessLevelProvider();
+            ProductAccessProvider = new ProductAccessProvider();
         }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace Adxstudio.Xrm.ContentAccess
         public CategoryAccessProvider(IPortalContext portalContext, ContentAccessLevelProvider contentAccessLevelProvider, ProductAccessProvider productAccessProvider)
             : base(ContentAccessConfiguration.DefaultCategoryConfiguration(), portalContext)
         {
-            this.ContentAccessLevelProvider = contentAccessLevelProvider;
-            this.ProductAccessProvider = productAccessProvider;
+            ContentAccessLevelProvider = contentAccessLevelProvider;
+            ProductAccessProvider = productAccessProvider;
         }
 
         #endregion Constructors
@@ -69,11 +69,11 @@ namespace Adxstudio.Xrm.ContentAccess
             throw new NotImplementedException();
 
             // Apply filter only if Entity is "Knowledge Article" and Right is "Read"
-            if (!this.IsRightEntityAndPermissionRight(right, fetchIn, this.Config.SourceEntityName, CrmEntityPermissionRight.Read))
+            if (!IsRightEntityAndPermissionRight(right, fetchIn, Config.SourceEntityName, CrmEntityPermissionRight.Read))
             {
                 return;
             }
-            this.ApplyCategoryFilter(fetchIn);
+            ApplyCategoryFilter(fetchIn);
         }
 
 
@@ -96,8 +96,8 @@ namespace Adxstudio.Xrm.ContentAccess
                     Links = new List<Link>(),
 					Filters = new List<Filter>
 					{
-						new Filter()
-						{
+						new Filter
+                        {
 							Conditions = new List<Condition>
 							{
 								new Condition("statecode", ConditionOperator.Equal, KnowledgeArticleState.Published),
@@ -111,23 +111,23 @@ namespace Adxstudio.Xrm.ContentAccess
             };
 
             // If CAL is enabled, then get the accessible categoryIds by querying Articles joining KnowledgeArticleCategories
-            if (this.ContentAccessLevelProvider.IsEnabled())
+            if (ContentAccessLevelProvider.IsEnabled())
             {
                 // Apply Content Access Level filtering
-                this.ContentAccessLevelProvider.TryApplyRecordLevelFiltersToFetch(CrmEntityPermissionRight.Read, articlesFetch);
+                ContentAccessLevelProvider.TryApplyRecordLevelFiltersToFetch(CrmEntityPermissionRight.Read, articlesFetch);
             }
 
             // If Product Filtering is enabled, then get the accessible categoryIds by querying Articles joining KnowledgeArticleCategories
-            if (this.ProductAccessProvider.IsEnabled())
+            if (ProductAccessProvider.IsEnabled())
             {
                 // Apply Product filtering
-                this.ProductAccessProvider.TryApplyRecordLevelFiltersToFetch(CrmEntityPermissionRight.Read, articlesFetch);
+                ProductAccessProvider.TryApplyRecordLevelFiltersToFetch(CrmEntityPermissionRight.Read, articlesFetch);
             }
             
             // Apply Category-KnowledgeArticle Intersect to determine whether it has any accessible articles on or under it.
-            this.ApplyKnowledgeArticleCategoryIntersectToArticleFetch(articlesFetch);
+            ApplyKnowledgeArticleCategoryIntersectToArticleFetch(articlesFetch);
 
-            var categoryIdsCollection = articlesFetch.Execute(this.Portal.ServiceContext as IOrganizationService);
+            var categoryIdsCollection = articlesFetch.Execute(Portal.ServiceContext as IOrganizationService);
 
             if (categoryIdsCollection != null && categoryIdsCollection.Entities != null &&
                 categoryIdsCollection.Entities.Any())
@@ -150,7 +150,7 @@ namespace Adxstudio.Xrm.ContentAccess
         /// <returns>Constructed Fetch XML as a Fetch</returns>
         public Fetch GetCategoryFetchUnderParent(Guid? currentcategoryId, int? pageSize = 5)
         {
-            var fetch = this.GetCategoryFetch(pageSize);
+            var fetch = GetCategoryFetch(pageSize);
 
             var baseCategoryFilter = currentcategoryId == null
                 ? new Condition("parentcategoryid", ConditionOperator.Null)
@@ -204,9 +204,9 @@ namespace Adxstudio.Xrm.ContentAccess
         /// <returns>Category collection</returns>
         public IEnumerable<Entity> GetCategoriesUnderId(Guid? currentcategoryId)
         {
-            var fetch = this.GetCategoryFetchUnderParent(currentcategoryId);
+            var fetch = GetCategoryFetchUnderParent(currentcategoryId);
 
-            var categoryCollection = fetch.Execute(this.Portal.ServiceContext as IOrganizationService);
+            var categoryCollection = fetch.Execute(Portal.ServiceContext as IOrganizationService);
 
             return categoryCollection.Entities;
         }
@@ -221,16 +221,16 @@ namespace Adxstudio.Xrm.ContentAccess
         /// <param name="fetchIn">Existing Fetch XML</param>
         private void ApplyCategoryFilter(Fetch fetchIn)
         {
-            var filter = this.GetCategoryFilterWithAccessibleCategoryIds();
+            var filter = GetCategoryFilterWithAccessibleCategoryIds();
 
             if (fetchIn.Entity.Filters == null || !fetchIn.Entity.Filters.Any())
             {
-                fetchIn.Entity.Filters = new List<Filter>() { filter };
+                fetchIn.Entity.Filters = new List<Filter> { filter };
             }
             else
             {
                 var existingFilters = fetchIn.Entity.Filters;
-                existingFilters.FirstOrDefault().Filters = new List<Filter>() { filter };
+                existingFilters.FirstOrDefault().Filters = new List<Filter> { filter };
             }
         }
 
@@ -247,7 +247,7 @@ namespace Adxstudio.Xrm.ContentAccess
                 ToAttribute = "knowledgearticleid",
                 Intersect = true,
                 Visible = false,
-                Type = Microsoft.Xrm.Sdk.Query.JoinOperator.Inner,
+                Type = JoinOperator.Inner,
                 Attributes = new List<FetchAttribute>
                 {
                     new FetchAttribute
@@ -273,13 +273,13 @@ namespace Adxstudio.Xrm.ContentAccess
         private Filter GetCategoryFilterWithAccessibleCategoryIds()
         {
             // Retrieve accessible Category IDs to filter further
-            var categoryIds = this.GetAccessibleCategoryIds();
+            var categoryIds = GetAccessibleCategoryIds();
 
             var filter = new Filter
             {
                 Type = LogicalOperator.Or,
                 Conditions =
-                    this.ConstructFilterWithConditions("categoryid", ConditionOperator.AboveOrEqual, categoryIds)
+                    ConstructFilterWithConditions("categoryid", ConditionOperator.AboveOrEqual, categoryIds)
             };
 
             return filter;
@@ -307,12 +307,12 @@ namespace Adxstudio.Xrm.ContentAccess
         /// <summary>
         /// Content Access Level Provider
         /// </summary>
-        private ContentAccessLevelProvider ContentAccessLevelProvider { get; set; }
+        private ContentAccessLevelProvider ContentAccessLevelProvider { get; }
 
         /// <summary>
         /// Product Access Provider
         /// </summary>
-        private ProductAccessProvider ProductAccessProvider { get; set; }
+        private ProductAccessProvider ProductAccessProvider { get; }
 
         #endregion
 

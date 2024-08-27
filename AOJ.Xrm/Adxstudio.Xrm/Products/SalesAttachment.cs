@@ -31,27 +31,27 @@ namespace Adxstudio.Xrm.Products
 			URL = salesLiteratureItem.GetFileAttachmentUrl(website);
 		}
 
-		public string AbstractText { get; private set; }
+		public string AbstractText { get; }
 
-		public string AttachedDocumentURL { get; private set; }
+		public string AttachedDocumentURL { get; }
 
-		public string AuthorName { get; private set; }
+		public string AuthorName { get; }
 
-		public string ContentType { get; private set; }
+		public string ContentType { get; }
 
-		public string FileName { get; private set; }
+		public string FileName { get; }
 
-		public FileSize FileSize { get; private set; }
+		public FileSize FileSize { get; }
 
-		public bool HasFile { get; private set; }
+		public bool HasFile { get; }
 
-		public Guid ID { get; private set; }
+		public Guid ID { get; }
 
-		public string Keywords { get; private set; }
+		public string Keywords { get; }
 
-		public string Title { get; private set; }
+		public string Title { get; }
 
-		public string URL { get; private set; }
+		public string URL { get; }
 
 		private static string FormatAbstract(string abstractText)
 		{

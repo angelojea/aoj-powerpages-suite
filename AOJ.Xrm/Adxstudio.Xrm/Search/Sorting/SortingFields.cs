@@ -18,17 +18,17 @@ namespace Adxstudio.Xrm.Search.Sorting
 		/// <summary>
 		/// The rating
 		/// </summary>
-		private static string rating = "rating";
+		private static readonly string rating = "rating";
 
 		/// <summary>
 		/// The view count
 		/// </summary>
-		private static string viewCount = "knowledgearticleviews";
+		private static readonly string viewCount = "knowledgearticleviews";
 
 		/// <summary>
 		/// The relevance
 		/// </summary>
-		private static string relevance = "relevance";
+		private static readonly string relevance = "relevance";
 
 		/// <summary>
 		/// Gets the rating.

@@ -15,7 +15,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 	using System.Text.RegularExpressions;
 	using System.Threading;
 	using System.Threading.Tasks;
-	using Adxstudio.Xrm.AspNet.Identity;
+	using Identity;
 	using Adxstudio.Xrm.Owin.Security.Saml2;
 	using ITfoxtec.Saml2.Util;
 	using Microsoft.AspNet.Identity;
@@ -103,13 +103,13 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 			public async Task<string> ToIssuer(CancellationToken cancellationToken)
 			{
-				if (this.issuer == null)
+				if (issuer == null)
 				{
-					var configuration = await this.ConfigurationManager.GetConfigurationAsync(cancellationToken);
-					this.issuer = configuration.Issuer;
+					var configuration = await ConfigurationManager.GetConfigurationAsync(cancellationToken);
+					issuer = configuration.Issuer;
 				}
 
-				return this.issuer;
+				return issuer;
 			}
 		}
 
@@ -134,13 +134,13 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 			public async Task<string> ToIssuer(CancellationToken cancellationToken)
 			{
-				if (this.issuer == null)
+				if (issuer == null)
 				{
-					var configuration = await this.ConfigurationManager.GetConfigurationAsync(cancellationToken);
-					this.issuer = configuration.Issuer;
+					var configuration = await ConfigurationManager.GetConfigurationAsync(cancellationToken);
+					issuer = configuration.Issuer;
 				}
 
-				return this.issuer;
+				return issuer;
 			}
 		}
 
@@ -176,13 +176,13 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 			public async Task<string> ToIssuer(CancellationToken cancellationToken)
 			{
-				if (this.issuer == null)
+				if (issuer == null)
 				{
-					var configuration = await this.ConfigurationManager.GetConfigurationAsync(cancellationToken);
-					this.issuer = configuration.Issuer;
+					var configuration = await ConfigurationManager.GetConfigurationAsync(cancellationToken);
+					issuer = configuration.Issuer;
 				}
 
-				return this.issuer;
+				return issuer;
 			}
 		}
 
@@ -206,7 +206,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 			public Task<string> ToIssuer(CancellationToken cancellationToken)
 			{
-				return Task.FromResult(this.AuthenticationType);
+				return Task.FromResult(AuthenticationType);
 			}
 		}
 
@@ -230,7 +230,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 			public Task<string> ToIssuer(CancellationToken cancellationToken)
 			{
-				return Task.FromResult(this.AuthenticationType);
+				return Task.FromResult(AuthenticationType);
 			}
 		}
 
@@ -254,7 +254,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 			public Task<string> ToIssuer(CancellationToken cancellationToken)
 			{
-				return Task.FromResult(this.AuthenticationType);
+				return Task.FromResult(AuthenticationType);
 			}
 		}
 
@@ -278,7 +278,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 			public Task<string> ToIssuer(CancellationToken cancellationToken)
 			{
-				return Task.FromResult(this.AuthenticationType);
+				return Task.FromResult(AuthenticationType);
 			}
 		}
 
@@ -302,7 +302,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 			public Task<string> ToIssuer(CancellationToken cancellationToken)
 			{
-				return Task.FromResult(this.AuthenticationType);
+				return Task.FromResult(AuthenticationType);
 			}
 		}
 
@@ -326,7 +326,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 			public Task<string> ToIssuer(CancellationToken cancellationToken)
 			{
-				return Task.FromResult(this.AuthenticationType);
+				return Task.FromResult(AuthenticationType);
 			}
 		}
 
@@ -561,7 +561,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 				if (validate)
 				{
-					var manager = this.GetUserManager(context.OwinContext);
+					var manager = GetUserManager(context.OwinContext);
 					var userId = getUserIdCallback(context.Identity);
 
 					if (manager != null && userId != null)
@@ -1379,7 +1379,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 		private static CrmWebsiteSetting ToCrmWebsiteSetting(string name, CrmWebsiteSetting setting)
 		{
-			var entity = Microsoft.Xrm.Client.EntityExtensions.Clone(setting.Entity);
+			var entity = setting.Entity.Clone();
 			entity.SetAttributeValue("adx_name", name);
 			return new CrmWebsiteSetting(entity);
 		}
@@ -1398,13 +1398,13 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 		public async Task<string> GetAuthenticationTypeAsync(ExternalLoginInfo loginInfo, CancellationToken cancellationToken)
 		{
-			var options = await this.GetAuthenticationOptionsExtendedAsync(loginInfo, cancellationToken);
+			var options = await GetAuthenticationOptionsExtendedAsync(loginInfo, cancellationToken);
 			return options?.AuthenticationType;
 		}
 
 		public Task<IAuthenticationOptionsExtended> GetAuthenticationOptionsExtendedAsync(ExternalLoginInfo loginInfo, CancellationToken cancellationToken)
 		{
-			return this.GetAuthenticationOptionsExtendedAsync(loginInfo?.Login?.LoginProvider, cancellationToken);
+			return GetAuthenticationOptionsExtendedAsync(loginInfo?.Login?.LoginProvider, cancellationToken);
 		}
 
 		public async Task<IAuthenticationOptionsExtended> GetAuthenticationOptionsExtendedAsync(string provider, CancellationToken cancellationToken)
@@ -1414,7 +1414,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 				return null;
 			}
 
-			foreach (var option in this.GetAllAuthenticationOptions())
+			foreach (var option in GetAllAuthenticationOptions())
 			{
 				if (await option.ToIssuer(cancellationToken) == provider)
 				{
@@ -1428,66 +1428,66 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		public IAuthenticationOptionsExtended GetAuthenticationOptionsExtended(string authenticationType)
 		{
 			return !string.IsNullOrWhiteSpace(authenticationType)
-				? this.GetAllAuthenticationOptions()?.FirstOrDefault(option => option.AuthenticationType == authenticationType)
+				? GetAllAuthenticationOptions()?.FirstOrDefault(option => option.AuthenticationType == authenticationType)
 				: null;
 		}
 
 		private IEnumerable<IAuthenticationOptionsExtended> GetAllAuthenticationOptions()
 		{
-			if (this.MicrosoftAccount != null)
+			if (MicrosoftAccount != null)
 			{
-				yield return this.MicrosoftAccount;
+				yield return MicrosoftAccount;
 			}
 
-			if (this.Twitter != null)
+			if (Twitter != null)
 			{
-				yield return this.Twitter;
+				yield return Twitter;
 			}
 
-			if (this.Facebook != null)
+			if (Facebook != null)
 			{
-				yield return this.Facebook;
+				yield return Facebook;
 			}
 
-			if (this.Google != null)
+			if (Google != null)
 			{
-				yield return this.Google;
+				yield return Google;
 			}
 
-			if (this.LinkedIn != null)
+			if (LinkedIn != null)
 			{
-				yield return this.LinkedIn;
+				yield return LinkedIn;
 			}
 
-			if (this.Yahoo != null)
+			if (Yahoo != null)
 			{
-				yield return this.Yahoo;
+				yield return Yahoo;
 			}
 
-			if (this.AzureAdOptions != null)
+			if (AzureAdOptions != null)
 			{
-				yield return this.AzureAdOptions;
+				yield return AzureAdOptions;
 			}
 
-			if (this.OpenIdConnectOptions != null)
+			if (OpenIdConnectOptions != null)
 			{
-				foreach (var option in this.OpenIdConnectOptions)
+				foreach (var option in OpenIdConnectOptions)
 				{
 					yield return option;
 				}
 			}
 
-			if (this.WsFederationOptions != null)
+			if (WsFederationOptions != null)
 			{
-				foreach (var option in this.WsFederationOptions)
+				foreach (var option in WsFederationOptions)
 				{
 					yield return option;
 				}
 			}
 
-			if (this.Saml2Options != null)
+			if (Saml2Options != null)
 			{
-				foreach (var option in this.Saml2Options)
+				foreach (var option in Saml2Options)
 				{
 					yield return option;
 				}

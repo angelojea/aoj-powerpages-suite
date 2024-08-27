@@ -27,9 +27,9 @@ namespace Adxstudio.Xrm.Blogs
 
 		public DateRangeWebsiteBlogAggregationDataAdapter(DateTime min, DateTime max, string portalName = null) : this(min, max, new PortalConfigurationDataAdapterDependencies(portalName)) { }
 
-		protected DateTime Max { get; private set; }
+		protected DateTime Max { get; }
 
-		protected DateTime Min { get; private set; }
+		protected DateTime Min { get; }
 
 		public override IEnumerable<IBlogPost> SelectPosts(int startRowIndex, int maximumRows = -1)
 		{

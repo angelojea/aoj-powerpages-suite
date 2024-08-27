@@ -121,7 +121,7 @@ namespace Microsoft.Xrm.Client.Caching
 			return LockManager.Get(
 				cacheKey,
 				// try to load from cache
-				key => this.GetCacheItemValue(cache, key.ToLower(), regionName),
+				key => GetCacheItemValue(cache, key.ToLower(), regionName),
 				key =>
 				{
 					// load object from the service
@@ -176,7 +176,7 @@ namespace Microsoft.Xrm.Client.Caching
 			var valueCacheKey = cacheKey.ToLower();
 
 			// Create the cache value container - which contains the actual cache value and the cache item detail.
-			var container = new CacheItemContainer(value, this.CreateCacheItemDetailObject(cache, cacheKey, policy, regionName));
+			var container = new CacheItemContainer(value, CreateCacheItemDetailObject(cache, cacheKey, policy, regionName));
 
 			// Insert into cache.
 			cache.Set(valueCacheKey, container, policy, regionName);

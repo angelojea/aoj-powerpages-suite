@@ -71,7 +71,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// <summary>
 		/// Custom validators for this field in addition to the existing validators.
 		/// </summary>
-		[PersistenceMode(PersistenceMode.InnerProperty), Browsable(false), DefaultValue((string)null)]
+		[PersistenceMode(PersistenceMode.InnerProperty), Browsable(false), DefaultValue(null)]
 		public ITemplate CustomValidatorsTemplate { get; set; }
 
 		public bool IsTrackingViewState { get; private set; }

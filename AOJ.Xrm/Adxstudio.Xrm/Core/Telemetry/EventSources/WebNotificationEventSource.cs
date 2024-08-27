@@ -85,11 +85,11 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 		{
 			WriteEventAuthorizationHeaderInvalid(
 				"Write Event Authorization Header invalid",
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 
 			return GetActivityId();
@@ -110,11 +110,11 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 		{
 			WriteEventAuthorizationHeaderMissing(
 				"Authorization Header Missing",
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}
@@ -134,11 +134,11 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 		{
 			WriteEventAuthorizationValidationFailed(
 				"Authorization Validation failed",
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}
@@ -158,11 +158,11 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 		{
 			WriteEventContentTypeInvalid(
 				"Write Event Content Type invalid",
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}
@@ -182,11 +182,11 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 		{
 			WriteEventMessageDeserializationFailed(
 				"Write Event Message deserialization failed",
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}
@@ -206,11 +206,11 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 		{
 			WriteEventMessageInvalid(
 				"Write Event Message is invalid",
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}
@@ -230,11 +230,11 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 		{
 			WriteEventMessageIsNull(
 				"Write Event Message is null",
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}
@@ -254,11 +254,11 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 		{
 			WriteEventSecureTokenInvalid(
 				token,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}
@@ -278,11 +278,11 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 		{
 			WriteEventWebNotificationUrlRecordNotFound(
 				webNotificationUrlId.ToString(),
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}
@@ -302,11 +302,11 @@ namespace Adxstudio.Xrm.Core.Telemetry.EventSources
 		{
 			WriteEventWebNotificationUrlTokenMissing(
 				webNotificationUrlId.ToString(),
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}

@@ -39,7 +39,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 		/// <summary>
 		/// The CRM schema name of the relationship being requested.
 		/// </summary>
-		protected virtual string RelationshipSchemaName { get; private set; }
+		protected virtual string RelationshipSchemaName { get; }
 
 		protected override void AssertRequestEntitySecurity(IPortalContext portal, OrganizationServiceContext serviceContext, Entity entity, ICrmEntitySecurityProvider security)
 		{
@@ -202,7 +202,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 
 					if (!entityMetadata.TryGetOneToManyRelationshipMetadata(relationship, out relationshipMetadata))
 					{
-						throw new CmsEntityServiceException(HttpStatusCode.BadRequest, "Unable to retrieve the one-to-many relationship metadata for relationship {0} on entity type".FormatWith(relationship.ToSchemaName("."), entity.LogicalName));
+						throw new CmsEntityServiceException(HttpStatusCode.BadRequest, "Unable to retrieve the one-to-many relationship metadata for relationship {0} on entity type".FormatWith(relationship.ToSchemaName(), entity.LogicalName));
 					}
 
 					var relatedEntity = CreateEntityOfType(serviceContext, relationshipMetadata.ReferencingEntity);
@@ -242,7 +242,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 
 					if (!entityMetadata.TryGetManyToOneRelationshipMetadata(relationship, out relationshipMetadata))
 					{
-						throw new CmsEntityServiceException(HttpStatusCode.BadRequest, "Unable to retrieve the many-to-one relationship metadata for relationship {0} on entity type".FormatWith(relationship.ToSchemaName("."), entity.LogicalName));
+						throw new CmsEntityServiceException(HttpStatusCode.BadRequest, "Unable to retrieve the many-to-one relationship metadata for relationship {0} on entity type".FormatWith(relationship.ToSchemaName(), entity.LogicalName));
 					}
 
 					var relatedEntity = CreateEntityOfType(serviceContext, relationshipMetadata.ReferencedEntity);

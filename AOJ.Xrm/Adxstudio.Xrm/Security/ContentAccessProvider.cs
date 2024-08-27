@@ -8,13 +8,13 @@ namespace Adxstudio.Xrm.Security
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Adxstudio.Xrm.Cms;
-    using Adxstudio.Xrm.ContentAccess;
-    using Adxstudio.Xrm.Resources;
+    using Cms;
+    using ContentAccess;
+    using Resources;
     using Microsoft.Xrm.Sdk.Client;
     using Microsoft.Xrm.Sdk.Messages;
     using Microsoft.Xrm.Sdk.Metadata;
-    using Adxstudio.Xrm.Services.Query;
+    using Services.Query;
     using Microsoft.Xrm.Portal;
     using Microsoft.Xrm.Portal.Configuration;
     using Microsoft.Xrm.Sdk;
@@ -41,8 +41,8 @@ namespace Adxstudio.Xrm.Security
         /// <param name="siteSettingDictionary">Site Setting Dictionary</param>
         protected ContentAccessProvider(ContentAccessConfiguration configuration, IPortalContext portalContext, Dictionary<string, string> siteSettingDictionary = null)
         {
-            this.Config = configuration;
-            this.Portal = portalContext;
+            Config = configuration;
+            Portal = portalContext;
             this.siteSettingDictionary = siteSettingDictionary;
         }
 
@@ -158,10 +158,10 @@ namespace Adxstudio.Xrm.Security
             /// <param name="scope">Optional <see cref="EntityPermissionScope"/></param>
             public LinkDetails(string entity1Name, string entity2Name, string relationshipName, OwningCustomerType? scope = null)
             {
-                this.Entity1Name = entity1Name;
-                this.Entity2Name = entity2Name;
-                this.RelationshipName = relationshipName;
-                this.Scope = scope;
+                Entity1Name = entity1Name;
+                Entity2Name = entity2Name;
+                RelationshipName = relationshipName;
+                Scope = scope;
             }
         }
 
@@ -183,9 +183,9 @@ namespace Adxstudio.Xrm.Security
         protected bool IsSiteSettingEnabled(string siteSettingName)
         {
             string siteSettingEnabledString;
-            if (this.siteSettingDictionary != null && this.siteSettingDictionary.ContainsKey(siteSettingName))
+            if (siteSettingDictionary != null && siteSettingDictionary.ContainsKey(siteSettingName))
             {
-                siteSettingEnabledString = this.siteSettingDictionary[siteSettingName];
+                siteSettingEnabledString = siteSettingDictionary[siteSettingName];
             }
             else
             {
@@ -230,7 +230,7 @@ namespace Adxstudio.Xrm.Security
         /// <returns>True if config's site setting exists and is enabled</returns>
         public virtual bool IsEnabled()
         {
-            return this.Config != null && this.IsSiteSettingEnabled(this.Config.SiteSettingName);
+            return Config != null && IsSiteSettingEnabled(Config.SiteSettingName);
         }
 
         /// <summary>
@@ -240,9 +240,9 @@ namespace Adxstudio.Xrm.Security
         {
             get
             {
-                return this.Portal.User == null
+                return Portal.User == null
                     ? null
-                    : this.Portal.User.ToEntityReference();
+                    : Portal.User.ToEntityReference();
             }
         }
 
@@ -253,9 +253,9 @@ namespace Adxstudio.Xrm.Security
         {
             get
             {
-                return this.Portal.User == null || !this.Portal.User.Attributes.ContainsKey("parentcustomerid")
+                return Portal.User == null || !Portal.User.Attributes.ContainsKey("parentcustomerid")
                     ? null
-                    : this.Portal.User.GetAttributeValue<EntityReference>("parentcustomerid");
+                    : Portal.User.GetAttributeValue<EntityReference>("parentcustomerid");
             }
         }
 
@@ -266,9 +266,9 @@ namespace Adxstudio.Xrm.Security
         {
             get
             {
-                return this.Portal.User == null
+                return Portal.User == null
                     ? Guid.Empty
-                    : this.Portal.User.Id;
+                    : Portal.User.Id;
             }
         }
 
@@ -279,7 +279,7 @@ namespace Adxstudio.Xrm.Security
         {
             get
             {
-                var parentCustomerEntityReference = this.ParentCustomerEntityReference;
+                var parentCustomerEntityReference = ParentCustomerEntityReference;
                 return parentCustomerEntityReference == null ? Guid.Empty : parentCustomerEntityReference.Id;
             }
         }
@@ -287,7 +287,7 @@ namespace Adxstudio.Xrm.Security
         /// <summary>
         /// Current Portal Context
         /// </summary>
-        protected IPortalContext Portal { get; private set; }
+        protected IPortalContext Portal { get; }
         #endregion
 
         

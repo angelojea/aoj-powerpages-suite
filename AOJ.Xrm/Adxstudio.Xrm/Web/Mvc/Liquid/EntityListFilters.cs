@@ -73,7 +73,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error parsing entity list filter definition: {0}", e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error parsing entity list filter definition: {0}", e));
 
                 return Enumerable.Empty<FilterOptionGroupDrop>();
 			}
@@ -94,7 +94,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			}
 			catch (FaultException<OrganizationServiceFault> e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Error retrieving metadata for entity ""{0}"": {1}", EntityNamePrivacy.GetEntityName(entityList.EntityLogicalName), e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Error retrieving metadata for entity ""{0}"": {1}", EntityNamePrivacy.GetEntityName(entityList.EntityLogicalName), e));
 
                 return Enumerable.Empty<FilterOptionGroupDrop>();
 			}
@@ -116,22 +116,22 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 				currentFilters,
 				entityList.LanguageCode,
 				entityView == null ? null : entityView.Columns.ToDictionary(e => e.LogicalName, e => e.Name))
-				.Select(@group => new FilterOptionGroupDrop(@group));
+				.Select(group => new FilterOptionGroupDrop(group));
 		}
 	}
 
 	public class FilterOptionGroupDrop : Drop
 	{
-		internal FilterOptionGroupDrop(FilterOptionGroup @group)
+		internal FilterOptionGroupDrop(FilterOptionGroup group)
 		{
-			if (@group == null) throw new ArgumentNullException("group");
+			if (group == null) throw new ArgumentNullException("group");
 
-			Id = @group.Id;
-			Label = @group.Label;
-			Order = @group.Order;
-			SelectionMode = @group.SelectionMode;
+			Id = group.Id;
+			Label = group.Label;
+			Order = group.Order;
+			SelectionMode = group.SelectionMode;
 
-			Options = @group.Options.Select(option => new FilterOptionDrop(option)).ToArray();
+			Options = group.Options.Select(option => new FilterOptionDrop(option)).ToArray();
 		}
 
 		public string Id { get; private set; }

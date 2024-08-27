@@ -9,9 +9,9 @@ namespace Adxstudio.Xrm.Caching
 	using System.Diagnostics;
 	using System.Diagnostics.Tracing;
 	using System.Runtime.Caching;
-	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.Core.Telemetry.EventSources;
-	using Adxstudio.Xrm.Diagnostics.Trace;
+	using Configuration;
+	using Core.Telemetry.EventSources;
+	using Diagnostics.Trace;
 
 	[EventSource(Guid = "7378F76F-1251-4F96-A5B6-B68EFC188C5A", Name = InternalName)]
 	internal sealed class CacheEventSource : EventSourceBase
@@ -71,11 +71,11 @@ namespace Adxstudio.Xrm.Caching
 			WriteEventInsert(
 				key,
 				region,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}
@@ -103,11 +103,11 @@ namespace Adxstudio.Xrm.Caching
 			WriteEventRemove(
 				key,
 				region,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}
@@ -132,11 +132,11 @@ namespace Adxstudio.Xrm.Caching
 		{
 			WriteEventRemoveAll(
 				"Write Event Remove All",
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}
@@ -173,11 +173,11 @@ namespace Adxstudio.Xrm.Caching
 				key,
 				region,
 				reason,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 
 			return GetActivityId();
 		}

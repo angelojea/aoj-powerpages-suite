@@ -668,11 +668,11 @@ namespace Adxstudio.Xrm.Web
 			};
 
 			var blogs = serviceContext.RetrieveMultiple(fetch);
-			var blogWithMatchingPath = blogs.Entities.FirstOrDefault(e => this.EntityHasPath(serviceContext, e, path));
+			var blogWithMatchingPath = blogs.Entities.FirstOrDefault(e => EntityHasPath(serviceContext, e, path));
 
 			if (blogWithMatchingPath != null)
 			{
-				node = this.GetAccessibleNodeOrAccessDeniedNode(serviceContext, blogWithMatchingPath);
+				node = GetAccessibleNodeOrAccessDeniedNode(serviceContext, blogWithMatchingPath);
 
 				return true;
 			}
@@ -749,11 +749,11 @@ namespace Adxstudio.Xrm.Web
 			};
 
 			var posts = serviceContext.RetrieveMultiple(fetch);
-			var postWithMatchingPath = posts.Entities.FirstOrDefault(e => this.EntityHasPath(serviceContext, e, path));
+			var postWithMatchingPath = posts.Entities.FirstOrDefault(e => EntityHasPath(serviceContext, e, path));
 
 			if (postWithMatchingPath != null)
 			{
-				node = this.GetAccessibleNodeOrAccessDeniedNode(serviceContext, postWithMatchingPath);
+				node = GetAccessibleNodeOrAccessDeniedNode(serviceContext, postWithMatchingPath);
 
 				return true;
 			}
@@ -821,7 +821,7 @@ namespace Adxstudio.Xrm.Web
 			};
 
 			var posts = serviceContext.RetrieveMultiple(fetch);
-			blogPost = posts.Entities.FirstOrDefault(e => this.EntityHasPath(serviceContext, e, path));
+			blogPost = posts.Entities.FirstOrDefault(e => EntityHasPath(serviceContext, e, path));
 
 			return blogPost != null;
 		}

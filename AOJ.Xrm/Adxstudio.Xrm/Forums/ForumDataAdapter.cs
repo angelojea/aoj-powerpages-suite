@@ -24,7 +24,7 @@ namespace Adxstudio.Xrm.Forums
 {
 	public class ForumDataAdapter : IForumDataAdapter
 	{
-		private IForumThreadAggregationDataAdapter _helperDataAdapter;
+		private readonly IForumThreadAggregationDataAdapter _helperDataAdapter;
 
 		public ForumDataAdapter(IDataAdapterDependencies dependencies, 
 			Func<OrganizationServiceContext, IQueryable<Entity>> selectThreadEntities)
@@ -92,9 +92,9 @@ namespace Adxstudio.Xrm.Forums
 
 
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
-		protected EntityReference Forum { get; private set; }
+		protected EntityReference Forum { get; }
 
 		public IForum Select()
 		{
@@ -329,7 +329,7 @@ namespace Adxstudio.Xrm.Forums
 										Conditions =
 											new[]
 											{
-												new Condition("adx_forumid", ConditionOperator.Equal, this.Forum.Id),
+												new Condition("adx_forumid", ConditionOperator.Equal, Forum.Id),
 												new Condition("adx_communityforumthreadid", ConditionOperator.NotEqual, thread.Id),
 												new Condition("adx_lastpostid", ConditionOperator.NotNull)
 											}

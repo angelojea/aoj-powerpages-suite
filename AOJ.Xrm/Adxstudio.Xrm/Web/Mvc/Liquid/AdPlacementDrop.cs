@@ -41,7 +41,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			get { return _ads.Value.AsEnumerable(); }
 		}
 
-		protected IAdPlacement AdPlacement { get; private set; }
+		protected IAdPlacement AdPlacement { get; }
 
 		public string PlacementUrl
 		{

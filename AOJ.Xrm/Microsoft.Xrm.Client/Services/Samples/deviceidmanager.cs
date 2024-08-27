@@ -53,9 +53,9 @@ namespace Microsoft.Xrm.Client.Services.Samples
 
 		private static DeviceRegistrationResponse RegisterDevice(Guid applicationId, ClientCredentials deviceCredentials)
 		{
-			var userName = new DeviceUserName() { DeviceName = deviceCredentials.UserName.UserName, DecryptedPassword = deviceCredentials.UserName.Password };
+			var userName = new DeviceUserName { DeviceName = deviceCredentials.UserName.UserName, DecryptedPassword = deviceCredentials.UserName.Password };
 			
-			var device = new LiveDevice() { User = userName, Version = 1 };
+			var device = new LiveDevice { User = userName, Version = 1 };
 
 			var request = new DeviceRegistrationRequest(applicationId, device);
 
@@ -97,9 +97,9 @@ namespace Microsoft.Xrm.Client.Services.Samples
 
 			var deviceName = deviceId.StartsWith(DevicePrefix) & deviceId.Length > MaxDeviceNameLength ? deviceId.Substring(DevicePrefix.Length) : deviceId;
 
-			var userName = new DeviceUserName() { DeviceName = deviceName, DecryptedPassword = deviceCredentials.UserName.Password };
+			var userName = new DeviceUserName { DeviceName = deviceName, DecryptedPassword = deviceCredentials.UserName.Password };
 
-			var device = new LiveDevice() { User = userName, Version = 1 };
+			var device = new LiveDevice { User = userName, Version = 1 };
 
 			var file = GetDeviceFile(null);
 
@@ -234,7 +234,7 @@ namespace Microsoft.Xrm.Client.Services.Samples
 		/// <returns>ClientCredentials that were registered</returns>
 		public static ClientCredentials RegisterDevice(Guid applicationId, string deviceName, string devicePassword)
 		{
-			return RegisterDevice(applicationId, (Uri)null, deviceName, devicePassword);
+			return RegisterDevice(applicationId, null, deviceName, devicePassword);
 		}
 
 		/// <summary>
@@ -254,7 +254,8 @@ namespace Microsoft.Xrm.Client.Services.Samples
 			{
 				throw new ArgumentNullException("deviceName", "If PersistToFile is false, then deviceName must be specified.");
 			}
-			else if (string.IsNullOrEmpty(deviceName) != string.IsNullOrEmpty(devicePassword))
+
+			if (string.IsNullOrEmpty(deviceName) != string.IsNullOrEmpty(devicePassword))
 			{
 				throw new ArgumentNullException("deviceName", "Either deviceName/devicePassword should both be specified or they should be null.");
 			}
@@ -266,7 +267,7 @@ namespace Microsoft.Xrm.Client.Services.Samples
 			}
 			else
 			{
-				userNameCredentials = new DeviceUserName() { DeviceName = deviceName, DecryptedPassword = devicePassword };
+				userNameCredentials = new DeviceUserName { DeviceName = deviceName, DecryptedPassword = devicePassword };
 			}
 
 			return RegisterDevice(applicationId, issuerUri, userNameCredentials);
@@ -366,7 +367,7 @@ namespace Microsoft.Xrm.Client.Services.Samples
 		{
 			string environment = DiscoverEnvironment(issuerUri);
 
-			LiveDevice device = new LiveDevice() { User = userName, Version = 1 };
+			LiveDevice device = new LiveDevice { User = userName, Version = 1 };
 
 			DeviceRegistrationRequest request = new DeviceRegistrationRequest(applicationId, device);
 
@@ -577,7 +578,6 @@ namespace Microsoft.Xrm.Client.Services.Samples
 		/// Construct an instance of the DeviceRegistrationFailedException class
 		/// </summary>
 		public DeviceRegistrationFailedException()
-			: base()
 		{
 		}
 
@@ -619,7 +619,7 @@ namespace Microsoft.Xrm.Client.Services.Samples
 		public DeviceRegistrationFailedException(DeviceRegistrationErrorCode code, string subCode, Exception innerException)
 			: base(string.Concat(code.ToString(), ": ", subCode), innerException)
 		{
-			this.RegistrationErrorCode = code;
+			RegistrationErrorCode = code;
 		}
 
 		/// <summary>
@@ -666,8 +666,8 @@ namespace Microsoft.Xrm.Client.Services.Samples
 				throw new ArgumentNullException("device");
 			}
 
-			this.ClientInfo = new DeviceRegistrationClientInfo() { ApplicationId = applicationId, Version = "1.0" };
-			this.Authentication = new DeviceRegistrationAuthentication()
+			ClientInfo = new DeviceRegistrationClientInfo { ApplicationId = applicationId, Version = "1.0" };
+			Authentication = new DeviceRegistrationAuthentication
 			{
 				MemberName = device.User.DeviceId,
 				Password = device.User.DecryptedPassword
@@ -749,12 +749,12 @@ namespace Microsoft.Xrm.Client.Services.Samples
 		{
 			get
 			{
-				return this._code;
+				return _code;
 			}
 
 			set
 			{
-				this._code = value;
+				_code = value;
 
 				//Parse the error code
 				if (!string.IsNullOrEmpty(value))
@@ -767,7 +767,7 @@ namespace Microsoft.Xrm.Client.Services.Samples
 							CultureInfo.InvariantCulture, out code) &&
 							Enum.IsDefined(typeof(DeviceRegistrationErrorCode), code))
 						{
-							this.RegistrationErrorCode = (DeviceRegistrationErrorCode)Enum.ToObject(
+							RegistrationErrorCode = (DeviceRegistrationErrorCode)Enum.ToObject(
 								typeof(DeviceRegistrationErrorCode), code);
 						}
 					}
@@ -821,7 +821,7 @@ namespace Microsoft.Xrm.Client.Services.Samples
 		#region Constructors
 		public DeviceUserName()
 		{
-			this.UserNameType = "Logical";
+			UserNameType = "Logical";
 		}
 		#endregion
 
@@ -837,21 +837,21 @@ namespace Microsoft.Xrm.Client.Services.Samples
 		{
 			get
 			{
-				this.ThrowIfNoEncryption();
+				ThrowIfNoEncryption();
 
-				if (!this._encryptedValueIsUpdated)
+				if (!_encryptedValueIsUpdated)
 				{
-					this._encryptedPassword = this.Encrypt(this._decryptedPassword);
-					this._encryptedValueIsUpdated = true;
+					_encryptedPassword = Encrypt(_decryptedPassword);
+					_encryptedValueIsUpdated = true;
 				}
 
-				return this._encryptedPassword;
+				return _encryptedPassword;
 			}
 
 			set
 			{
-				this.ThrowIfNoEncryption();
-				this.UpdateCredentials(value, null);
+				ThrowIfNoEncryption();
+				UpdateCredentials(value, null);
 			}
 		}
 
@@ -868,12 +868,12 @@ namespace Microsoft.Xrm.Client.Services.Samples
 		{
 			get
 			{
-				return this._decryptedPassword;
+				return _decryptedPassword;
 			}
 
 			set
 			{
-				this.UpdateCredentials(null, value);
+				UpdateCredentials(null, value);
 			}
 		}
 
@@ -892,15 +892,15 @@ namespace Microsoft.Xrm.Client.Services.Samples
 		public ClientCredentials ToClientCredentials()
 		{
 			ClientCredentials credentials = new ClientCredentials();
-			credentials.UserName.UserName = this.DeviceId;
-			credentials.UserName.Password = this.DecryptedPassword;
+			credentials.UserName.UserName = DeviceId;
+			credentials.UserName.Password = DecryptedPassword;
 
 			return credentials;
 		}
 
 		private void ThrowIfNoEncryption()
 		{
-			if (!this.IsEncryptionEnabled)
+			if (!IsEncryptionEnabled)
 			{
 				throw new NotSupportedException("Not supported when DeviceIdManager.UseEncryptionApis is false.");
 			}
@@ -915,9 +915,9 @@ namespace Microsoft.Xrm.Client.Services.Samples
 			}
 			else if (string.IsNullOrEmpty(encryptedValue))
 			{
-				if (this.IsEncryptionEnabled)
+				if (IsEncryptionEnabled)
 				{
-					encryptedValue = this.Encrypt(decryptedValue);
+					encryptedValue = Encrypt(decryptedValue);
 					isValueUpdated = true;
 				}
 				else
@@ -928,15 +928,15 @@ namespace Microsoft.Xrm.Client.Services.Samples
 			}
 			else
 			{
-				this.ThrowIfNoEncryption();
+				ThrowIfNoEncryption();
 
-				decryptedValue = this.Decrypt(encryptedValue);
+				decryptedValue = Decrypt(encryptedValue);
 				isValueUpdated = true;
 			}
 
-			this._encryptedPassword = encryptedValue;
-			this._decryptedPassword = decryptedValue;
-			this._encryptedValueIsUpdated = isValueUpdated;
+			_encryptedPassword = encryptedValue;
+			_decryptedPassword = decryptedValue;
+			_encryptedValueIsUpdated = isValueUpdated;
 		}
 
 		private string Encrypt(string value)

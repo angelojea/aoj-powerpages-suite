@@ -50,33 +50,33 @@ namespace Adxstudio.Xrm.Forums
 			PostedOn = entity.GetAttributeValue<DateTime?>("adx_date").GetValueOrDefault(postInfo.PostedOn);
 		}
 
-		public IForumAuthor Author { get; private set; }
+		public IForumAuthor Author { get; }
 
-		public IEnumerable<IForumPostAttachmentInfo> AttachmentInfo { get; private set; }
+		public IEnumerable<IForumPostAttachmentInfo> AttachmentInfo { get; }
 
-		public string Content { get; private set; }
+		public string Content { get; }
 
 		public ApplicationPath DeletePath { get { return _getDeletePath.Value; } }
 
 		public ApplicationPath EditPath { get { return _getEditPath.Value; } }
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public int HelpfulVoteCount { get; private set; }
+		public int HelpfulVoteCount { get; }
 
-		public bool IsAnswer { get; private set; }
+		public bool IsAnswer { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
 		public bool CanEdit { get { return _canEdit.Value; } }
 
 		public bool CanMarkAsAnswer { get { return _canMarkAsAnswer.Value; } }
 
-		public DateTime PostedOn { get; private set; }
+		public DateTime PostedOn { get; }
 
-		public EntityReference ThreadEntity { get; private set; }
+		public EntityReference ThreadEntity { get; }
 
-		public IForumThread Thread { get; private set; }
+		public IForumThread Thread { get; }
 
 		//string IForumPostInfo.Url { get; set; }
 

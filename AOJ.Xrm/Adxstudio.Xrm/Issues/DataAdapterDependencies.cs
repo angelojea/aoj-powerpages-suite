@@ -26,7 +26,7 @@ namespace Adxstudio.Xrm.Issues
 		private readonly ICrmEntitySecurityProvider _securityProvider;
 		private readonly OrganizationServiceContext _serviceContext;
 		private readonly EntityReference _website;
-		private RequestContext _requestContext;
+		private readonly RequestContext _requestContext;
 
 		/// <summary>
 		/// Constructor.
@@ -118,7 +118,7 @@ namespace Adxstudio.Xrm.Issues
 
 		public IEntityUrlProvider GetUrlProvider()
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
 		/// <summary>

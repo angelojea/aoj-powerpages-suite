@@ -29,7 +29,7 @@ namespace Adxstudio.Xrm.Web.Providers
 			PortalName = portalName;
 		}
 
-		protected string PortalName { get; private set; }
+		protected string PortalName { get; }
 
 		public override ApplicationPath GetApplicationPath(OrganizationServiceContext context, Entity entity)
 		{
@@ -528,7 +528,7 @@ namespace Adxstudio.Xrm.Web.Providers
 
 			var urlHelper = new UrlHelper(new RequestContext(httpContextWrapper, routeData));
 
-			var url = urlHelper.Action("Index", "Article", new { number = number, area = "KnowledgeBase" });
+			var url = urlHelper.Action("Index", "Article", new { number, area = "KnowledgeBase" });
 
 			return url == null ? null : ApplicationPath.FromAbsolutePath(url);
 		}
@@ -580,7 +580,7 @@ namespace Adxstudio.Xrm.Web.Providers
 			string url = string.Empty;
 			if (contextLanguageInfo.IsCrmMultiLanguageEnabled && ContextLanguageInfo.DisplayLanguageCodeInUrl)
 			{
-				var actionUrl = urlHelper.Action("Article", "Article", new { number = number, area = "KnowledgeManagement" });
+				var actionUrl = urlHelper.Action("Article", "Article", new { number, area = "KnowledgeManagement" });
 
 				// if actionUrl is null, ex: deactivated root page.
 				if (actionUrl == null)
@@ -593,7 +593,7 @@ namespace Adxstudio.Xrm.Web.Providers
 			}
 			else
 			{
-				url = urlHelper.Action("Article", "Article", new { number = number, lang = languageLocaleCode, area = "KnowledgeManagement" });
+				url = urlHelper.Action("Article", "Article", new { number, lang = languageLocaleCode, area = "KnowledgeManagement" });
 			}
 
 			return url == null ? null : ApplicationPath.FromAbsolutePath(url);
@@ -627,7 +627,7 @@ namespace Adxstudio.Xrm.Web.Providers
 
 			var urlHelper = new UrlHelper(new RequestContext(httpContextWrapper, routeData));
 
-			var url = urlHelper.Action("Index", "Category", new { number = number, area = "Category" });
+			var url = urlHelper.Action("Index", "Category", new { number, area = "Category" });
 
 			return url == null ? null : ApplicationPath.FromAbsolutePath(url);
 		}

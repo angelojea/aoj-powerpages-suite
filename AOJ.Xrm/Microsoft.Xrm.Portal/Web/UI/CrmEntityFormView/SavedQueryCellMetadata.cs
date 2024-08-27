@@ -11,8 +11,6 @@ namespace Microsoft.Xrm.Portal.Web.UI.CrmEntityFormView
 {
 	public class SavedQueryCellMetadata : CellMetadata
 	{
-		private readonly string _label;
-
 		public SavedQueryCellMetadata(XNode cellNode, EntityMetadata entityMetadata, int languageCode)
 			: base(cellNode, entityMetadata, languageCode, GetDataFieldName)
 		{
@@ -32,14 +30,11 @@ namespace Microsoft.Xrm.Portal.Web.UI.CrmEntityFormView
 
 			if (localizedDisplayName != null)
 			{
-				_label = localizedDisplayName.Label;
+				Label = localizedDisplayName.Label;
 			}
 		}
 
-		public override string Label
-		{
-			get { return _label; }
-		}
+		public override string Label { get; }
 
 		public override bool ShowLabel
 		{

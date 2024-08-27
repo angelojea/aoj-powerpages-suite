@@ -31,7 +31,7 @@ namespace Adxstudio.Xrm.Cms
 			Dependencies = dependencies;
 		}
 
-		public IDataAdapterDependencies Dependencies { get; private set; }
+		public IDataAdapterDependencies Dependencies { get; }
 
 		public IPoll SelectPoll(Guid pollId)
 		{

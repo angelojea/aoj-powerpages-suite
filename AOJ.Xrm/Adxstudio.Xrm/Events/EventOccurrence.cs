@@ -32,19 +32,19 @@ namespace Adxstudio.Xrm.Events
 			IsAllDayEvent = eventSchedule.GetAttributeValue<bool?>("adx_alldayevent").GetValueOrDefault(false);
 		}
 
-		public DateTime End { get; private set; }
+		public DateTime End { get; }
 
-		public Entity Event { get; private set; }
+		public Entity Event { get; }
 
-		public Entity EventSchedule { get; private set; }
+		public Entity EventSchedule { get; }
 
-		public bool IsAllDayEvent { get; private set; }
+		public bool IsAllDayEvent { get; }
 
-		public string Location { get; private set; }
+		public string Location { get; }
 
-		public DateTime Start { get; private set; }
+		public DateTime Start { get; }
 
-		public string Url { get; private set; }
+		public string Url { get; }
 
 		private static DateTime? GetEndTime(Entity eventSchedule, DateTime date)
 		{

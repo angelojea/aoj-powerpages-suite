@@ -21,7 +21,7 @@ namespace Microsoft.Xrm.Portal.Web.Providers
 			WebsiteProvider = websiteProvider;
 		}
 
-		protected IEntityWebsiteProvider WebsiteProvider { get; private set; }
+		protected IEntityWebsiteProvider WebsiteProvider { get; }
 
 		public virtual string GetUrl(OrganizationServiceContext context, Entity entity)
 		{

@@ -10,11 +10,11 @@ namespace Adxstudio.Xrm.Search
     using System.Diagnostics;
     using System.Linq;
     using System.Web;
-	using Adxstudio.Xrm.Core.Flighting;
-	using Adxstudio.Xrm.Diagnostics;
-	using Adxstudio.Xrm.Cms;
-    using Adxstudio.Xrm.Search.Facets;
-    using Adxstudio.Xrm.Search.Index;
+	using Core.Flighting;
+	using Diagnostics;
+	using Cms;
+    using Facets;
+    using Index;
     using Lucene.Net.Index;
     using Lucene.Net.QueryParsers;
     using Lucene.Net.Search;
@@ -28,9 +28,6 @@ namespace Adxstudio.Xrm.Search
 		private const int InitialSearchLimitMultiple = 1;
 		private const int ExtendedSearchLimitMultiple = 2;
 
-		private readonly ICrmEntityIndex _index;
-		private readonly IndexSearcher _searcher;
-
 		public CrmEntityIndexSearcher(ICrmEntityIndex index)
 		{
 			if (index == null)
@@ -38,36 +35,30 @@ namespace Adxstudio.Xrm.Search
 				throw new ArgumentNullException("index");
 			}
 
-			_index = index;
+			Index = index;
 
-			if (!IndexReader.IndexExists(_index.Directory))
+			if (!IndexReader.IndexExists(Index.Directory))
 			{
-				throw new IndexNotFoundException("Search index not found in {0}. Ensure index is constructed before attempting to search.".FormatWith(_index.Directory));
+				throw new IndexNotFoundException("Search index not found in {0}. Ensure index is constructed before attempting to search.".FormatWith(Index.Directory));
 			}
 
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
 
-			_searcher = new IndexSearcher(_index.Directory, true);
+			Searcher = new IndexSearcher(Index.Directory, true);
 
 			stopwatch.Stop();
 
 			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Lucene IndexSearcher initialized ({0}ms)", stopwatch.ElapsedMilliseconds));
 		}
 
-        protected ICrmEntityIndex Index
-		{
-			get { return _index; }
-		}
+        protected ICrmEntityIndex Index { get; }
 
-		protected IndexSearcher Searcher
-		{
-			get { return _searcher; }
-		}
+        protected IndexSearcher Searcher { get; }
 
-		public virtual void Dispose()
+        public virtual void Dispose()
 		{
-			_searcher.Dispose();
+			Searcher.Dispose();
 		}
 
 		public virtual ICrmEntitySearchResultPage Search(ICrmEntityQuery query)
@@ -128,7 +119,7 @@ namespace Adxstudio.Xrm.Search
 		{
 			var entities = new List<EntityReference>();
 
-			var topDocs = this._searcher.Search(query, maxSearchResults);
+			var topDocs = Searcher.Search(query, maxSearchResults);
 
 			if (topDocs.ScoreDocs.Length < 1)
 			{
@@ -137,7 +128,7 @@ namespace Adxstudio.Xrm.Search
 
 			foreach (var indexDoc in topDocs.ScoreDocs)
 			{
-				var document = this._searcher.Doc(indexDoc.Doc);
+				var document = Searcher.Doc(indexDoc.Doc);
 				var entity = new EntityReference();
 
 				var primaryFieldName = document.GetField("_logicalname");
@@ -204,7 +195,7 @@ namespace Adxstudio.Xrm.Search
 				booleanQuery.Add(logicalNameQuery, Occur.MUST);
 			}
 
-			this.AddLanguageRestrictionToQuery(query, booleanQuery);
+			AddLanguageRestrictionToQuery(query, booleanQuery);
 
 			return booleanQuery;
 		}
@@ -216,7 +207,7 @@ namespace Adxstudio.Xrm.Search
 		/// <param name="booleanQuery">Search query</param>
 		private void AddLanguageRestrictionToQuery(ICrmEntityQuery query, BooleanQuery booleanQuery)
 		{
-			if (string.IsNullOrEmpty(this.Index.LanguageLocaleCodeFieldName))
+			if (string.IsNullOrEmpty(Index.LanguageLocaleCodeFieldName))
 			{
 				return;
 			}
@@ -225,17 +216,17 @@ namespace Adxstudio.Xrm.Search
 			if (query.MultiLanguageEnabled && !string.IsNullOrEmpty(query.ContextLanguage.Code))
 			{
 				var languageQuery = new BooleanQuery();
-				languageQuery.Add(new TermQuery(new Term(this.Index.LanguageLocaleCodeFieldName, query.ContextLanguage.Code.ToLowerInvariant())), Occur.SHOULD);
-				languageQuery.Add(new TermQuery(new Term(this.Index.LanguageLocaleCodeFieldName, this.Index.LanguageLocaleCodeDefaultValue)), Occur.SHOULD);
+				languageQuery.Add(new TermQuery(new Term(Index.LanguageLocaleCodeFieldName, query.ContextLanguage.Code.ToLowerInvariant())), Occur.SHOULD);
+				languageQuery.Add(new TermQuery(new Term(Index.LanguageLocaleCodeFieldName, Index.LanguageLocaleCodeDefaultValue)), Occur.SHOULD);
 
 				booleanQuery.Add(languageQuery, Occur.MUST);
 			}
 			//// Multilanguage disabled, KB language present in settings
-			else if (!query.MultiLanguageEnabled && !string.IsNullOrWhiteSpace(this.Index.LanguageLocaleCode))
+			else if (!query.MultiLanguageEnabled && !string.IsNullOrWhiteSpace(Index.LanguageLocaleCode))
 			{
 				var languageQuery = new BooleanQuery();
-				languageQuery.Add(new TermQuery(new Term(this.Index.LanguageLocaleCodeFieldName, this.Index.LanguageLocaleCode)), Occur.SHOULD);
-				languageQuery.Add(new TermQuery(new Term(this.Index.LanguageLocaleCodeFieldName, this.Index.LanguageLocaleCodeDefaultValue)), Occur.SHOULD);
+				languageQuery.Add(new TermQuery(new Term(Index.LanguageLocaleCodeFieldName, Index.LanguageLocaleCode)), Occur.SHOULD);
+				languageQuery.Add(new TermQuery(new Term(Index.LanguageLocaleCodeFieldName, Index.LanguageLocaleCodeDefaultValue)), Occur.SHOULD);
 
 				booleanQuery.Add(languageQuery, Occur.MUST);
 			}
@@ -259,7 +250,7 @@ namespace Adxstudio.Xrm.Search
 
             try
             {
-                topDocs = _searcher.Search(luceneQuery, searchLimit);
+                topDocs = Searcher.Search(luceneQuery, searchLimit);
             }
             catch (Exception e)
             {
@@ -335,7 +326,7 @@ namespace Adxstudio.Xrm.Search
 
             if (displayNotes && !string.IsNullOrEmpty(query.QueryTerm))
             {
-                var rawNotes = this.GetRelatedAnnotations(rawSearchResults, query);
+                var rawNotes = GetRelatedAnnotations(rawSearchResults, query);
 
                 var notes =
                     rawNotes.Select(document => resultFactory.GetResult(document, 1, results.Count + 1)).ToList();
@@ -353,7 +344,7 @@ namespace Adxstudio.Xrm.Search
             {
                 offsetForNextIteration++;
 
-                var result = resultFactory.GetResult(_searcher.Doc(scoreDoc.Doc), scoreDoc.Score, results.Count + 1);
+                var result = resultFactory.GetResult(Searcher.Doc(scoreDoc.Doc), scoreDoc.Score, results.Count + 1);
 
                 // Not a valid user result, filter out
                 if (result == null)
@@ -424,17 +415,17 @@ namespace Adxstudio.Xrm.Search
             noteQuery.Add(new TermQuery(new Term("_logicalname", "annotation")), Occur.MUST);
             foreach (var scoreDoc in rawSearchResults.Results)
             {
-            var resultField = _searcher.Doc(scoreDoc.Doc).GetField("_logicalname");
+            var resultField = Searcher.Doc(scoreDoc.Doc).GetField("_logicalname");
                 if (resultField != null && resultField.StringValue == "knowledgearticle")
                 {
-                    var primaryKey = _searcher.Doc(scoreDoc.Doc).GetField("_primarykey");
+                    var primaryKey = Searcher.Doc(scoreDoc.Doc).GetField("_primarykey");
                     noteQuery.Add(new TermQuery(new Term("annotation_knowledgearticleid", primaryKey.StringValue)), Occur.SHOULD);
                 }
             }
 
             var rawNoteResults = GetRawSearchResults(noteQuery, 30, 0);
 
-            return rawNoteResults.Results.Select(rawNoteResult => _searcher.Doc(rawNoteResult.Doc)).ToList();
+            return rawNoteResults.Results.Select(rawNoteResult => Searcher.Doc(rawNoteResult.Doc)).ToList();
         }
 
         private RawSearchResultSet ConvertTopDocsToRawSearchResultSet(TopDocs topDocs, int rawOffset)
@@ -482,14 +473,14 @@ namespace Adxstudio.Xrm.Search
         /// </summary>
         protected class RawSearchResult
         {
-            public int Doc { get; private set; }
-            public float Score { get; private set; }
+            public int Doc { get; }
+            public float Score { get; }
             public List<RawSearchResult> ChildResults { get; set; } 
 
             public RawSearchResult(int doc, float score)
             {
-                this.Doc = doc;
-                this.Score = score;
+                Doc = doc;
+                Score = score;
             }
         }
 
@@ -498,17 +489,17 @@ namespace Adxstudio.Xrm.Search
         /// </summary>
         protected class RawSearchResultSet 
         {
-            public IEnumerable<RawSearchResult> Results { get; private set; }
-            public int TotalHits { get; private set; }
+            public IEnumerable<RawSearchResult> Results { get; }
+            public int TotalHits { get; }
             public IEnumerable<FacetView> FacetViews { get; private set; }
             public IEnumerable<string> SortingOptions { get; private set; }
 
             public RawSearchResultSet(IEnumerable<RawSearchResult> results, int totalHits, IEnumerable<FacetView> facetViews = null, IEnumerable<string> sortingOptions = null)
             {
-                this.Results = results;
-                this.TotalHits = totalHits;
-                this.FacetViews = facetViews;
-                this.SortingOptions = sortingOptions;
+                Results = results;
+                TotalHits = totalHits;
+                FacetViews = facetViews;
+                SortingOptions = sortingOptions;
             }
         }
     }

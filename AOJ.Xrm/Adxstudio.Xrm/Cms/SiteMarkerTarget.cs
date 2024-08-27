@@ -38,7 +38,7 @@ namespace Adxstudio.Xrm.Cms
 		public SiteMarkerTarget(Entity entity, IPortalViewEntity viewEntity, ApplicationPath applicationPath)
 			: this(entity, new Lazy<IPortalViewEntity>(() => viewEntity, LazyThreadSafetyMode.None), applicationPath) { }
 
-		public string Description { get; private set; }
+		public string Description { get; }
 
 		public bool Editable
 		{
@@ -50,9 +50,9 @@ namespace Adxstudio.Xrm.Cms
 			get { return Entity.ToEntityReference(); }
 		}
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public string Url { get; private set; }
+		public string Url { get; }
 
 		public IPortalViewAttribute GetAttribute(string attributeLogicalName)
 		{

@@ -161,8 +161,8 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 				if (!(submitActions.Any()))
 				{
-					var newSubmitAction = new SubmitAction()
-										  {
+					var newSubmitAction = new SubmitAction
+					{
 											  ActionButtonAlignment	= JsonConfiguration.ActionButtonAlignment.Left,
 											  ActionButtonPlacement	= JsonConfiguration.ActionButtonPlacement.BelowForm,
 											  ActionButtonStyle	= JsonConfiguration.ActionButtonStyle.ButtonGroup,
@@ -180,7 +180,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 				if (!(nextActions.Any()))
 				{
-					var newNextAction = new NextAction()
+					var newNextAction = new NextAction
 					{
 						ActionButtonAlignment = JsonConfiguration.ActionButtonAlignment.Left,
 						ActionButtonPlacement = JsonConfiguration.ActionButtonPlacement.BelowForm,
@@ -196,7 +196,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 				if (!(previousActions.Any()))
 				{
-					var newPreviousAction = new PreviousAction()
+					var newPreviousAction = new PreviousAction
 					{
 						ActionButtonAlignment = JsonConfiguration.ActionButtonAlignment.Left,
 						ActionButtonPlacement = JsonConfiguration.ActionButtonPlacement.BelowForm,

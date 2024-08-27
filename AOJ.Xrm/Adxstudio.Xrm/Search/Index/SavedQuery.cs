@@ -14,7 +14,6 @@ namespace Adxstudio.Xrm.Search.Index
 {
 	internal class SavedQuery
 	{
-		private readonly FetchXml _fetchxml;
 		private readonly XDocument _layoutxml;
 
 		public SavedQuery(Entity savedQuery)
@@ -24,7 +23,7 @@ namespace Adxstudio.Xrm.Search.Index
 				throw new ArgumentNullException("savedQuery");
 			}
 
-			_fetchxml = new FetchXml(XDocument.Parse(savedQuery.GetAttributeValue<string>("fetchxml")));
+			FetchXml = new FetchXml(XDocument.Parse(savedQuery.GetAttributeValue<string>("fetchxml")));
 			_layoutxml = XDocument.Parse(savedQuery.GetAttributeValue<string>("layoutxml"));
 
 			string titleAttributeLogicalName;
@@ -39,10 +38,7 @@ namespace Adxstudio.Xrm.Search.Index
 			}
 		}
 
-		public FetchXml FetchXml
-		{
-			get { return _fetchxml; }
-		}
+		public FetchXml FetchXml { get; }
 
 		public string LogicalName
 		{

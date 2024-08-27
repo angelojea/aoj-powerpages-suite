@@ -18,8 +18,8 @@ namespace Microsoft.Xrm.Portal.Web
 			LastModified = lastModified;
 		}
 
-		public DateTime? LastModified { get; private set; }
+		public DateTime? LastModified { get; }
 
-		public string Url { get; private set; }
+		public string Url { get; }
 	}
 }

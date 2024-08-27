@@ -25,7 +25,7 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 	/// <typeparam name="TMessage"></typeparam>
 	public abstract class PortalBusProvider<TMessage> : IPortalBusProvider<TMessage>
 	{
-		protected IDataProtector Protector { get; private set; }
+		protected IDataProtector Protector { get; }
 
 		protected PortalBusProvider(IAppBuilder app)
 		{

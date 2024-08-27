@@ -35,9 +35,9 @@ namespace Adxstudio.Xrm.Products
 
 		public string Description { get { return Entity.GetAttributeValue<string>("description"); } }
 		public DateTime ExpirationDate { get { return Entity.GetAttributeValue<DateTime>("expirationdate"); } }
-		public EntityReference EmployeeContact { get; private set; }
-		public Entity Entity { get; private set; }
-		public EntityReference EntityReference { get; private set; }
+		public EntityReference EmployeeContact { get; }
+		public Entity Entity { get; }
+		public EntityReference EntityReference { get; }
 		public bool HasAttachments { get { return Entity.GetAttributeValue<bool>("hasattachments"); } }
 		public bool IsCustomerViewable { get { return Entity.GetAttributeValue<bool>("iscustomerviewable"); } }
 		public string Keywords { get { return Entity.GetAttributeValue<string>("keywords"); } }
@@ -52,12 +52,12 @@ namespace Adxstudio.Xrm.Products
 				}
 				var type =  option.Value;
 				return Enum.IsDefined(typeof(SalesLiteratureTypeCode), type)
-					       ? (SalesLiteratureTypeCode?)((SalesLiteratureTypeCode)type)
+					       ? (SalesLiteratureTypeCode)type
 					       : null;
 			}
 		}
-		public string LiteratureTypeCodeLabel { get; private set; }
+		public string LiteratureTypeCodeLabel { get; }
 		public string Name { get { return Entity.GetAttributeValue<string>("name"); } }
-		public EntityReference Subject { get; private set; }
+		public EntityReference Subject { get; }
 	}
 }

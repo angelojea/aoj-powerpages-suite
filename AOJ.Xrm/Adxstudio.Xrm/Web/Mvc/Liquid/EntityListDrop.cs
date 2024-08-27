@@ -131,7 +131,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 		public bool DetailEnabled { get { return DetailUrl != null && !string.IsNullOrEmpty(DetailIdParameter); } }
 
-		public string DetailIdParameter { get; private set; }
+		public string DetailIdParameter { get; }
 
 		public string DetailLabel { get { return _detailLabel.Value; } }
 
@@ -139,9 +139,9 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 		public string EmptyListText { get { return _emptyListText.Value; } }
 
-		public bool EnableEntityPermissions { get; private set; }
+		public bool EnableEntityPermissions { get; }
 
-		public string EntityLogicalName { get; private set; }
+		public string EntityLogicalName { get; }
 
 		public string FilterAccountAttributeName { get; private set; }
 
@@ -169,7 +169,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 		public int? PageSize { get; private set; }
 
-		public string PrimaryKeyName { get; private set; }
+		public string PrimaryKeyName { get; }
 
 		public bool SearchEnabled { get; private set; }
 
@@ -181,9 +181,9 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 		public Guid? DefaultViewId { get { return Views.Any() ? new Guid?(Views.First().ViewId) : null; } }
 
-		internal GridMetadata GridMetadataConfiguration { get; private set; }
+		internal GridMetadata GridMetadataConfiguration { get; }
 
-		internal ViewMetadata ViewMetadataConfiguration { get; private set; }
+		internal ViewMetadata ViewMetadataConfiguration { get; }
 
 		private Lazy<string> CreateLazyLocalizedString(string attributeLogicalName)
 		{

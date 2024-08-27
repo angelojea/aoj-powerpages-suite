@@ -12,8 +12,7 @@ namespace Adxstudio.Xrm.Text
 	{
 		private const int _defaultPrecision = 2;
 
-		private static readonly string[] _units = new[]
-		{
+		private static readonly string[] _units = {
 			"bytes", "KB", "MB", "GB", "TB"
 		};
 

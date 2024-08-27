@@ -25,15 +25,15 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 	using Microsoft.Xrm.Sdk.Client;
 	using Microsoft.Xrm.Sdk.Query;
 	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.Resources;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
-	using Adxstudio.Xrm.Web.Mvc.Html;
+	using Resources;
+	using Services;
+	using Services.Query;
+	using Mvc.Html;
 	using Adxstudio.Xrm.Web.UI.CrmEntityListView;
-	using Adxstudio.Xrm.Web.UI.HtmlControls;
-	using Adxstudio.Xrm.Web.UI.JsonConfiguration;
-	using Filter = Adxstudio.Xrm.Services.Query.Filter;
-    using Adxstudio.Xrm.Cms;
+	using HtmlControls;
+	using JsonConfiguration;
+	using Filter = Services.Query.Filter;
+    using Cms;
     using Adxstudio.Xrm.Security;
     using Adxstudio.Xrm.Web.UI.CrmEntityFormView;
     using global::AOJ.Configuration;
@@ -197,7 +197,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
             if (LanguageCode <= 0)
             {
-                LanguageCode = this.Context.GetPortalSolutionsDetails().OrganizationBaseLanguageCode;
+                LanguageCode = Context.GetPortalSolutionsDetails().OrganizationBaseLanguageCode;
             }
 
             RegisterClientSideDependencies(this);
@@ -255,7 +255,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (LanguageCode <= 0)
 			{
-				LanguageCode = this.Context.GetPortalSolutionsDetails().OrganizationBaseLanguageCode;
+				LanguageCode = Context.GetPortalSolutionsDetails().OrganizationBaseLanguageCode;
 			}
 
 			RegisterClientSideDependencies(this);
@@ -307,8 +307,8 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// <param name="serviceContext"></param>
 		protected virtual IEnumerable<Entity> GetViews(OrganizationServiceContext serviceContext)
 		{
-			var viewIds = this.ViewConfigurations.Where(v => v.ViewId != Guid.Empty).Select(v => v.ViewId).Cast<object>().ToArray();
-			var viewNames = this.ViewConfigurations.Where(v => !string.IsNullOrWhiteSpace(v.ViewName))
+			var viewIds = ViewConfigurations.Where(v => v.ViewId != Guid.Empty).Select(v => v.ViewId).Cast<object>().ToArray();
+			var viewNames = ViewConfigurations.Where(v => !string.IsNullOrWhiteSpace(v.ViewName))
 					.Select(v => new Tuple<string, string>(v.EntityName, v.ViewName))
 					.ToList();
 
@@ -1470,7 +1470,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			return html.EntityGrid(ViewConfigurations.ToList(),
 				$"/_services/entity-grid-data.json/{AojConfigurationManager.Website.Id.ToString()}", user,
-				string.Join(" ", new[] { CssClass, CurrentViewConfiguration.CssClass }).TrimEnd(' '),
+				string.Join(" ", CssClass, CurrentViewConfiguration.CssClass).TrimEnd(' '),
 				CurrentViewConfiguration.GridCssClass,
 				CurrentViewConfiguration.GridColumnWidthStyle ?? EntityGridExtensions.GridColumnWidthStyle.Percent,
 				SelectMode, null, CurrentViewConfiguration.LoadingMessage,

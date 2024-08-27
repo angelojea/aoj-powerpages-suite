@@ -9,9 +9,9 @@ namespace Adxstudio.Xrm
 	using System.Diagnostics;
 	using System.Diagnostics.Tracing;
 	using System.Web;
-	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.Core.Telemetry.EventSources;
-	using Adxstudio.Xrm.Diagnostics.Trace;
+	using Configuration;
+	using Core.Telemetry.EventSources;
+	using Diagnostics.Trace;
 	using Microsoft.Xrm.Sdk;
 
 	/// <summary>
@@ -75,7 +75,7 @@ namespace Adxstudio.Xrm
 		[NonEvent]
 		public void LogFeatureUsage(FeatureTraceCategory category, HttpContext context, string action, int itemCount, EntityReference entity, string cRED)
 		{
-			this.LogFeatureUsage(
+			LogFeatureUsage(
 				category,
 				new HttpContextWrapper(context),
 				action,
@@ -99,7 +99,7 @@ namespace Adxstudio.Xrm
 			var id = entity != null ? entity.Id.ToString() : string.Empty;
 			var logicalName = entity != null ? entity.LogicalName : string.Empty;
 
-			this.LogFeatureUsage(
+			LogFeatureUsage(
 				category,
 				context,
 				action,
@@ -122,7 +122,7 @@ namespace Adxstudio.Xrm
 		[NonEvent]
 		public void LogFeatureUsage(FeatureTraceCategory category, HttpContext context, string action, string message, int itemCount, string entity, string cRED)
 		{
-			this.LogFeatureUsage(
+			LogFeatureUsage(
 				category,
 				new HttpContextWrapper(context),
 				action,
@@ -157,7 +157,7 @@ namespace Adxstudio.Xrm
 
                 // message = EntityGUID
 
-				this.LogFeatureUsage(
+				LogFeatureUsage(
 					category,
 					userId,
 					sessionId,
@@ -165,13 +165,13 @@ namespace Adxstudio.Xrm
 					message,
 					itemCount,
 					entity,
-					this.Lcid,
-					this.CrmLcid,
-					this.PortalUrl,
-					this.PortalVersion,
-					this.ProductionOrTrial,
+					Lcid,
+					CrmLcid,
+					PortalUrl,
+					PortalVersion,
+					ProductionOrTrial,
 					cRED,
-					this.ElapsedTime());
+					ElapsedTime());
 			}
 			catch (Exception ex)
 			{
@@ -191,7 +191,7 @@ namespace Adxstudio.Xrm
 		[NonEvent]
 		public void LogAuthentication(FeatureTraceCategory category, HttpContext context, string action, string entity = "")
 		{
-			this.LogAuthentication(
+			LogAuthentication(
 				category,
 				new HttpContextWrapper(context),
 				action,
@@ -214,7 +214,7 @@ namespace Adxstudio.Xrm
 				var userId = HashPii.GetHashedUserId(context);
 				var sessionId = context.Session.SessionID;
 
-				this.LogAuthentication(
+				LogAuthentication(
 					category,
 					userId,
 					sessionId,
@@ -242,17 +242,17 @@ namespace Adxstudio.Xrm
 		{
 			try
 			{
-				this.LogAuthentication(
+				LogAuthentication(
 					category,
 					userId,
 					sessionId,
 					action,
 					entity,
-					this.PortalUrl,
-					this.PortalVersion,
-					this.ProductionOrTrial,
+					PortalUrl,
+					PortalVersion,
+					ProductionOrTrial,
 					authenticationType,
-					this.ElapsedTime());
+					ElapsedTime());
 			}
 			catch (Exception ex)
 			{
@@ -273,7 +273,7 @@ namespace Adxstudio.Xrm
 			var authenticated = false;
 			var userAgent = string.Empty;
 			var ipAddress = string.Empty;
-			var context = this.HttpContextBase;
+			var context = HttpContextBase;
 
 			if (context != null)
 			{
@@ -290,21 +290,21 @@ namespace Adxstudio.Xrm
 				}
 			}
 
-			this.LogSessionInfo(category,
+			LogSessionInfo(category,
 				userId,
 				authenticated
 					? "authenticated"
 					: "nonauthenticated",
-				this.SessionId,
-				this.Lcid,
-				this.CrmLcid,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
+				SessionId,
+				Lcid,
+				CrmLcid,
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
 				userAgent,
 				ipAddress,
-				this.ElapsedTime(),
-				this.PersistentCookie);
+				ElapsedTime(),
+				PersistentCookie);
 		}
         #endregion Session
 
@@ -321,17 +321,17 @@ namespace Adxstudio.Xrm
         public void LogSearch(FeatureTraceCategory category, int totalHits, long elapsedTime, string message)
         {
 
-            this.LogSearch(category,
+            LogSearch(category,
                 message,
                 totalHits,
                 elapsedTime,
-                this.UserId,
-                this.SessionId,
-                this.Lcid,
-                this.CrmLcid,
-                this.PortalUrl,
-                this.PortalVersion,
-                this.ProductionOrTrial);
+                UserId,
+                SessionId,
+                Lcid,
+                CrmLcid,
+                PortalUrl,
+                PortalVersion,
+                ProductionOrTrial);
 
         }
 
@@ -382,7 +382,7 @@ namespace Adxstudio.Xrm
 					ipAddress,
 					persistentCookie);
 
-				this.WriteEvent((int)Feature.PortalSession, category, userId, authenticated, sessionId, lcid, crmLcid, portalUrl, portalVersion, portalProductionOrTrialType, userAgent, ipAddress, elapsedTime, persistentCookie);
+				WriteEvent((int)Feature.PortalSession, category, userId, authenticated, sessionId, lcid, crmLcid, portalUrl, portalVersion, portalProductionOrTrialType, userAgent, ipAddress, elapsedTime, persistentCookie);
 			}
 			catch (Exception ex)
 			{
@@ -437,7 +437,7 @@ namespace Adxstudio.Xrm
 					PortalDetail.Instance.PortalApp,
 					PortalDetail.Instance.PortalType);
 
-				this.WriteEvent((int)Feature.PortalFeatureUsage, category, userId, sessionId, action, message, itemCount, entity, lcid, crmLcid, portalUrl, portalVersion, portalProductionOrTrialType, cRED, elapsedTime);
+				WriteEvent((int)Feature.PortalFeatureUsage, category, userId, sessionId, action, message, itemCount, entity, lcid, crmLcid, portalUrl, portalVersion, portalProductionOrTrialType, cRED, elapsedTime);
 			}
 			catch (Exception ex)
 			{
@@ -484,7 +484,7 @@ namespace Adxstudio.Xrm
 					PortalDetail.Instance.PortalApp,
 					PortalDetail.Instance.PortalType);
 
-				this.WriteEvent((int)Feature.PortalAuthenticationEvent, category, userId, sessionId, action, entity, portalUrl, portalVersion, portalProductionOrTrialType, authenticationType, elapsedTime);
+				WriteEvent((int)Feature.PortalAuthenticationEvent, category, userId, sessionId, action, entity, portalUrl, portalVersion, portalProductionOrTrialType, authenticationType, elapsedTime);
 			}
 			catch (Exception ex)
 			{
@@ -533,7 +533,7 @@ namespace Adxstudio.Xrm
                     PortalDetail.Instance.PortalApp,
                     PortalDetail.Instance.PortalType);
 
-                this.WriteEvent((int)Feature.PortalSearch, category, message, totalHits, elapsedTime, userId, sessionId, lcid, crmLcid, portalUrl, portalVersion, portalProductionOrTrialType);
+                WriteEvent((int)Feature.PortalSearch, category, message, totalHits, elapsedTime, userId, sessionId, lcid, crmLcid, portalUrl, portalVersion, portalProductionOrTrialType);
             }
             catch (Exception ex)
             {

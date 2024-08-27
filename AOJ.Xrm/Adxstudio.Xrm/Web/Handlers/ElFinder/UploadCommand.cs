@@ -110,14 +110,14 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 				};
 			}
 
-			List<string> @select;
+			List<string> select;
 			List<Tuple<string, string>> errors;
 			
-			CreateFiles(commandContext, cwdInfo, files, publishingState, out @select, out errors);
+			CreateFiles(commandContext, cwdInfo, files, publishingState, out select, out errors);
 
 			try
 			{
-				return fileSystem.Using(cwd, fs => GetResponse(commandContext, fs, @select, errors));
+				return fileSystem.Using(cwd, fs => GetResponse(commandContext, fs, select, errors));
 			}
 			catch (InvalidOperationException)
 			{
@@ -128,7 +128,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			}
 		}
 
-		private CommandResponse GetResponse(ICommandContext commandContext, IFileSystemContext fileSystemContext, List<string> @select, List<Tuple<string, string>> errors)
+		private CommandResponse GetResponse(ICommandContext commandContext, IFileSystemContext fileSystemContext, List<string> select, List<Tuple<string, string>> errors)
 		{
 			var response = new OpenCommand().GetResponse(commandContext, fileSystemContext);
 
@@ -144,9 +144,9 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			return response;
 		}
 
-		private static void CreateFiles(ICommandContext commandContext, DirectoryUploadInfo uploadInfo, IEnumerable<HttpPostedFile> files, EntityReference publishingState, out List<string> @select, out List<Tuple<string, string>> errors)
+		private static void CreateFiles(ICommandContext commandContext, DirectoryUploadInfo uploadInfo, IEnumerable<HttpPostedFile> files, EntityReference publishingState, out List<string> select, out List<Tuple<string, string>> errors)
 		{
-			@select = new List<string>();
+			select = new List<string>();
 			errors = new List<Tuple<string, string>>();
 			
 			var dataAdapterDependencies = new PortalConfigurationDataAdapterDependencies();
@@ -192,11 +192,11 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 						FileAttachment = AnnotationDataAdapter.CreateFileAttachment(new HttpPostedFileWrapper(file), annotationSettings.StorageLocation)
 					}, annotationSettings);
 
-					@select.Add(new DirectoryContentHash(webFile.ToEntityReference()).ToString());
+					select.Add(new DirectoryContentHash(webFile.ToEntityReference()).ToString());
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Exception uploading file: {0}",  e.ToString()));
+					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Exception uploading file: {0}",  e));
 
                     errors.Add(new Tuple<string, string>(file.FileName, e.Message));
 				}
@@ -303,15 +303,15 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 				WebFileForeignKeyAttribute = directory.WebFileForeignKeyAttribute;
 			}
 
-			public bool CanWrite { get; private set; }
+			public bool CanWrite { get; }
 
-			public Entity Entity { get; private set; }
+			public Entity Entity { get; }
 
-			public EntityReference EntityReference { get; private set; }
+			public EntityReference EntityReference { get; }
 
-			public bool SupportsUpload { get; private set; }
+			public bool SupportsUpload { get; }
 
-			public string WebFileForeignKeyAttribute { get; private set; }
+			public string WebFileForeignKeyAttribute { get; }
 		}
 	}
 }

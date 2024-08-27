@@ -66,7 +66,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		{
 			get
 			{
-				return this.Length;
+				return Length;
 			}
 		}
 
@@ -77,7 +77,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		{
 			get
 			{
-				return this.filePointer;
+				return filePointer;
 			}
 		}
 
@@ -88,7 +88,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		{
 			get
 			{
-				return this.Length;
+				return Length;
 			}
 		}
 
@@ -99,7 +99,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		{
 			get
 			{
-				return this.filePointer;
+				return filePointer;
 			}
 		}
 
@@ -108,7 +108,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </summary>
 		public virtual void Dispose()
 		{
-			this.Flush();
+			Flush();
 		}
 
 		/// <summary>
@@ -116,7 +116,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </summary>
 		public void Flush()
 		{
-			this.WriteCurrentPage();
+			WriteCurrentPage();
 		}
 
 		/// <summary>
@@ -127,16 +127,16 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </returns>
 		public byte ReadByte()
 		{
-			if (this.bufferPointer == this.PageSize)
+			if (bufferPointer == PageSize)
 			{
-				this.pageNumber++;
-				this.bufferPointer = 0;
+				pageNumber++;
+				bufferPointer = 0;
 
-				this.ReadCurrentPage();
+				ReadCurrentPage();
 			}
 
-			var @byte = this.pageBuffer[this.bufferPointer++];
-			this.filePointer++;
+			var @byte = pageBuffer[bufferPointer++];
+			filePointer++;
 
 			return @byte;
 		}
@@ -158,7 +158,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 			// TODO: Optimize with Buffer.BlockCopy
 			for (var i = 0; i < length; i++)
 			{
-				var @byte = this.ReadByte();
+				var @byte = ReadByte();
 
 				destination[offset + i] = @byte;
 			}
@@ -183,22 +183,22 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </param>
 		public void WriteByte(byte @byte)
 		{
-			if (this.bufferPointer == this.PageSize)
+			if (bufferPointer == PageSize)
 			{
-				this.WriteCurrentPage();
-				this.bufferPointer = 0;
-				this.pageNumber++;
-				this.ReadCurrentPage();
+				WriteCurrentPage();
+				bufferPointer = 0;
+				pageNumber++;
+				ReadCurrentPage();
 			}
 
-			this.pageBuffer[this.bufferPointer++] = @byte;
-			this.pageIsChanged = true;
+			pageBuffer[bufferPointer++] = @byte;
+			pageIsChanged = true;
 
-			this.filePointer++;
+			filePointer++;
 
-			if (this.filePointer > this.fileSize)
+			if (filePointer > fileSize)
 			{
-				this.fileSize = this.filePointer;
+				fileSize = filePointer;
 			}
 		}
 
@@ -220,7 +220,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 
 			foreach (byte @byte in range)
 			{
-				this.WriteByte(@byte);
+				WriteByte(@byte);
 			}
 		}
 
@@ -243,7 +243,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </param>
 		void IBufferedPageReader.Seek(long position)
 		{
-			this.Seek(position);
+			Seek(position);
 		}
 
 		/// <summary>
@@ -254,7 +254,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </param>
 		void IBufferedPageWriter.Seek(long position)
 		{
-			this.Seek(position);
+			Seek(position);
 		}
 
 		/// <summary>
@@ -262,9 +262,9 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </summary>
 		protected void Initialize()
 		{
-			this.pageBuffer = new byte[this.PageSize];
-			this.pageNumber = -1;
-			this.Seek(0);
+			pageBuffer = new byte[PageSize];
+			pageNumber = -1;
+			Seek(0);
 		}
 
 		/// <summary>
@@ -275,22 +275,22 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </exception>
 		protected void ReadCurrentPage()
 		{
-			if (this.pageIsChanged)
+			if (pageIsChanged)
 			{
 				throw new InvalidOperationException("Save page before read");
 			}
 
-			if (this.pageNumber * this.PageSize >= this.Length)
+			if (pageNumber * PageSize >= Length)
 			{
 				// There are no more data. Fill next page with zeros
-				Array.Clear(this.pageBuffer, 0, this.PageSize);
+				Array.Clear(pageBuffer, 0, PageSize);
 			}
 			else
 			{
-				this.ReadPage(this.pageNumber, this.pageBuffer);
+				ReadPage(pageNumber, pageBuffer);
 			}
 
-			this.pageIsChanged = false;
+			pageIsChanged = false;
 		}
 
 		/// <summary>
@@ -301,12 +301,12 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </param>
 		protected void Seek(long position)
 		{
-			this.Flush();
+			Flush();
 
-			var pageNumber = (int)Math.Floor((double)position / this.PageSize);
+			var pageNumber = (int)Math.Floor((double)position / PageSize);
 
-			this.filePointer = position;
-			this.bufferPointer = (int)(position - (pageNumber * this.PageSize));
+			filePointer = position;
+			bufferPointer = (int)(position - (pageNumber * PageSize));
 
 			if (pageNumber == this.pageNumber)
 			{
@@ -315,7 +315,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 
 			this.pageNumber = pageNumber;
 
-			this.ReadCurrentPage();
+			ReadCurrentPage();
 		}
 
 		/// <summary>
@@ -323,14 +323,14 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </summary>
 		protected void WriteCurrentPage()
 		{
-			if (!this.pageIsChanged)
+			if (!pageIsChanged)
 			{
 				return;
 			}
 
-			this.WritePage(this.pageNumber, this.pageBuffer);
+			WritePage(pageNumber, pageBuffer);
 
-			this.pageIsChanged = false;
+			pageIsChanged = false;
 		}
 	}
 }

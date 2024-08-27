@@ -17,7 +17,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		/// <summary>
 		/// Gets the owner data source.
 		/// </summary>
-		private SavedQueryDataSource Owner { get; set; }
+		private SavedQueryDataSource Owner { get; }
 
 		public SavedQueryDataSourceView(SavedQueryDataSource owner, string viewName) : base(owner, viewName)
 		{

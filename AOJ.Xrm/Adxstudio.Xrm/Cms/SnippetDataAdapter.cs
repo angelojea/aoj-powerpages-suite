@@ -5,7 +5,7 @@
 
 namespace Adxstudio.Xrm.Cms
 {
-	using Adxstudio.Xrm.Web.Mvc;
+	using Web.Mvc;
 	using Microsoft.Xrm.Client;
 
 	/// <summary> The snippet data adapter. </summary>
@@ -30,11 +30,11 @@ namespace Adxstudio.Xrm.Cms
 
 			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", snippetName));
 
-			var snippetNode = this.ContentMapProvider.Using(contentMap => contentMap.GetSnippetNode(snippetName, this.Language));
+			var snippetNode = ContentMapProvider.Using(contentMap => contentMap.GetSnippetNode(snippetName, Language));
 
 			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}", snippetName));
 
-			return this.ToSnippet(snippetNode);
+			return ToSnippet(snippetNode);
 		}
 
 		/// <summary> The to snippet. </summary>
@@ -47,13 +47,13 @@ namespace Adxstudio.Xrm.Cms
 				return null;
 			}
 
-			var urlProvider = this.Dependencies.GetUrlProvider();
-			var securityProvider = this.Dependencies.GetSecurityProvider();
-			var serviceContext = this.Dependencies.GetServiceContext();
+			var urlProvider = Dependencies.GetUrlProvider();
+			var securityProvider = Dependencies.GetSecurityProvider();
+			var serviceContext = Dependencies.GetServiceContext();
 			var entity = serviceContext.MergeClone(snippetNode.ToEntity());
 
 			var portalViewEntity = new PortalViewEntity(serviceContext, entity, securityProvider, urlProvider);
-			var snippet = new Snippet(entity, portalViewEntity, this.Language);
+			var snippet = new Snippet(entity, portalViewEntity, Language);
 
 			return snippet;
 		}

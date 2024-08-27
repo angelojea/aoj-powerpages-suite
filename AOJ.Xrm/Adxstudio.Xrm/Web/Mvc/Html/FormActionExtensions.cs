@@ -227,7 +227,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			WorkflowActionLink firstWorkflow = null;
 
 
-			List<string> actionLinks = new List<string> { };
+			List<string> actionLinks = new List<string>();
 
 			foreach (var action in formConfiguration.TopFormActionLinks)
 			{ 

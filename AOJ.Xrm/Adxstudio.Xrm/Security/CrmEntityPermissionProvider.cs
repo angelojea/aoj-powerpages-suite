@@ -327,15 +327,15 @@ namespace Adxstudio.Xrm.Security
 			/// <summary>
 			/// Primary entity logical name
 			/// </summary>
-			public string Entity1Name { get; private set; }
+			public string Entity1Name { get; }
 			/// <summary>
 			/// Secondary entity logical name
 			/// </summary>
-			public string Entity2Name { get; private set; }
+			public string Entity2Name { get; }
 			/// <summary>
 			/// Schema name of the relationship between the two entities.
 			/// </summary>
-			public string RelationshipName { get; private set; }
+			public string RelationshipName { get; }
 
 			/// <summary>
 			/// Scope of the permission rule.
@@ -366,11 +366,11 @@ namespace Adxstudio.Xrm.Security
 			/// <summary>
 			/// Id of the entity permission
 			/// </summary>
-			public Guid EntityPermissionId { get; private set; }
+			public Guid EntityPermissionId { get; }
 			/// <summary>
 			/// Web Role entity associated with the entity permission
 			/// </summary>
-			public Entity WebRole { get; private set; }
+			public Entity WebRole { get; }
 
 			/// <summary>
 			/// Constructor
@@ -431,7 +431,7 @@ namespace Adxstudio.Xrm.Security
 		/// <summary>
 		/// An array of role names for the current user.
 		/// </summary>
-		public string[] CurrentUserRoleNames { get; private set; }
+		public string[] CurrentUserRoleNames { get; }
 
 		/// <summary>
 		/// Indicates whether the current user belongs to any roles.
@@ -444,18 +444,18 @@ namespace Adxstudio.Xrm.Security
 		/// <summary>
 		/// The portal configuration that the control binds to.
 		/// </summary>
-		protected string PortalName { get; private set; }
+		protected string PortalName { get; }
 
 		/// <summary>
 		/// The portal context that contains the current <see cref="Entity"/>, Website and User.
 		/// </summary>
-		protected IPortalContext Portal { get; private set; }
+		protected IPortalContext Portal { get; }
 
 		/// <summary>
 		/// Add the hint="union" attribute to the main permission filter, allowing supporting CRM servers
 		/// to further optimize the query.
 		/// </summary>
-		protected bool UseUnionHint { get; private set; }
+		protected bool UseUnionHint { get; }
 
 		protected virtual List<ITreeNode<EntityPermission>> GetEntitySpecificPermissions(string entityName, EntityReference regarding = null, bool trimTreeForCurrentUser = true)
 		{
@@ -1326,11 +1326,11 @@ namespace Adxstudio.Xrm.Security
 		{
 			public CrmEntityPermissionRight Right { get; private set; }
 
-			public bool GlobalGranted { get; private set; }
+			public bool GlobalGranted { get; }
 
-			public List<Guid> ScopedPermissionIds { get; private set; }
+			public List<Guid> ScopedPermissionIds { get; }
 
-			public bool Granted { get; private set; }
+			public bool Granted { get; }
 
 			public PermissionTest()
 			{

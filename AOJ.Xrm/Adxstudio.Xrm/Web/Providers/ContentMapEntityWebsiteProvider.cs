@@ -7,8 +7,8 @@ namespace Adxstudio.Xrm.Web.Providers
 {
 	using System;
 	using System.Web;
-	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Services;
+	using Cms;
+	using Services;
 
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Client;

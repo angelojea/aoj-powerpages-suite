@@ -15,12 +15,7 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 	/// </summary>
 	public class JsonConfigurationContractResolver : DefaultContractResolver
 	{
-		private static readonly IContractResolver _instance = new JsonConfigurationContractResolver();
-
-		public static IContractResolver Instance
-		{
-			get { return _instance; }
-		}
+		public static IContractResolver Instance { get; } = new JsonConfigurationContractResolver();
 
 		protected override JsonObjectContract CreateObjectContract(Type objectType)
 		{
@@ -29,7 +24,7 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 				: base.CreateObjectContract(objectType);
 		}
 
-		private static readonly string[] EntityReferencePropertyWhitelist = new string[] {
+		private static readonly string[] EntityReferencePropertyWhitelist = {
 			"Id",
 			"LogicalName",
 			"Name"

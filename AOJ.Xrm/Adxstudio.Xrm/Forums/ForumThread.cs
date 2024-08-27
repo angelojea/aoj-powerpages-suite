@@ -44,31 +44,31 @@ namespace Adxstudio.Xrm.Forums
 		public ForumThread(Entity entity, IPortalViewEntity viewEntity, IForumThreadInfo threadInfo, int postCount, string url = null)
 			: this(entity, viewEntity, threadInfo, () => postCount, url) { }
 
-		public IForumAuthor Author { get; private set; }
+		public IForumAuthor Author { get; }
 
 		public Entity Entity { get; set; }
 
-		public bool IsAnswered { get; private set; }
+		public bool IsAnswered { get; }
 
-		public bool IsSticky { get; private set; }
+		public bool IsSticky { get; }
 
-		public bool Locked { get; private set; }
+		public bool Locked { get; }
 
-		public IForumPostInfo LatestPost { get; private set; }
+		public IForumPostInfo LatestPost { get; }
 
 		public string LatestPostUrl { get; set; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
 		public int PostCount { get { return _postCount.Value; } }
 
 		public int ReplyCount { get { return PostCount - 1; } }
 
-		public DateTime PostedOn { get; private set; }
+		public DateTime PostedOn { get; }
 
-		public IEnumerable<IForumThreadTag> Tags { get; private set; }
+		public IEnumerable<IForumThreadTag> Tags { get; }
 
-		public IForumThreadType ThreadType { get; private set; }
+		public IForumThreadType ThreadType { get; }
 
 		public string Description { get { return _viewEntity.Description; } }
 

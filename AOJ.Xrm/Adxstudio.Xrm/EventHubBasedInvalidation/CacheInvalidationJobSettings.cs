@@ -34,8 +34,8 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		/// <param name="webAppSettings">The web app settings.</param>
 		public CacheInvalidationJobSettings(WebAppSettings webAppSettings)
 		{
-			this.StartedOn = webAppSettings.StartedOn;
-			this.JobInterval = 2;
+			StartedOn = webAppSettings.StartedOn;
+			JobInterval = 2;
 		}
 	}
 }

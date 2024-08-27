@@ -58,8 +58,8 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			/// <param name="optionValue">The option value.</param>
 			public SearchFilterOptionDrop(string optionDisplayName, string optionValue)
 			{
-				this.DisplayName = optionDisplayName;
-				this.Value = optionValue;
+				DisplayName = optionDisplayName;
+				Value = optionValue;
 			}
 
 			/// <summary>

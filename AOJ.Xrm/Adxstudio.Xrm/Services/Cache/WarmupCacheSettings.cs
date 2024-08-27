@@ -6,7 +6,7 @@
 namespace Adxstudio.Xrm.Services.Cache
 {
 	using System;
-	using Adxstudio.Xrm.Configuration;
+	using Configuration;
 	using Microsoft.Practices.TransientFaultHandling;
 
 	/// <summary>
@@ -97,17 +97,17 @@ namespace Adxstudio.Xrm.Services.Cache
 			var jobInterval = "PortalPersistCachedRequestsJobInterval".ResolveAppSetting().ToTimeSpan().GetValueOrDefault(DefaultJobInterval);
 			var retryStrategy = new Incremental(5, new TimeSpan(0, 0, 1), new TimeSpan(0, 0, 1));
 
-			this.AppDataPath = "~/App_Data/Adxstudio.Xrm.Services.Cache.Warmup/";
-			this.FilenameFormat = "cache_{0}.request";
-			this.IsEnabled = isEnabled;
-			this.AsyncWarmupEnabled = asyncWarmupEnabled;
-			this.AsyncWarmupDelay = 0;
-			this.JobInterval = Convert.ToInt32(jobInterval.TotalSeconds);
-			this.ExpirationWindow = expirationWindow;
-			this.PersistOnAppDisposing = persistOnAppDisposing;
-			this.PersistOnSchedule = persistOnSchedule;
-			this.PropagateExceptions = false;
-			this.AppDataRetryPolicy = Adxstudio.Xrm.IO.Extensions.CreateRetryPolicy(retryStrategy);
+			AppDataPath = "~/App_Data/Adxstudio.Xrm.Services.Cache.Warmup/";
+			FilenameFormat = "cache_{0}.request";
+			IsEnabled = isEnabled;
+			AsyncWarmupEnabled = asyncWarmupEnabled;
+			AsyncWarmupDelay = 0;
+			JobInterval = Convert.ToInt32(jobInterval.TotalSeconds);
+			ExpirationWindow = expirationWindow;
+			PersistOnAppDisposing = persistOnAppDisposing;
+			PersistOnSchedule = persistOnSchedule;
+			PropagateExceptions = false;
+			AppDataRetryPolicy = IO.Extensions.CreateRetryPolicy(retryStrategy);
 		}
 	}
 }

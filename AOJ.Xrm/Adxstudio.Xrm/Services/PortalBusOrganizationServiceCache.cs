@@ -10,8 +10,8 @@ namespace Adxstudio.Xrm.Services
 	using System.Runtime.Caching;
 	using System.Web;
 	using System.Web.Hosting;
-	using Adxstudio.Xrm.AspNet;
-	using Adxstudio.Xrm.AspNet.PortalBus;
+	using AspNet;
+	using AspNet.PortalBus;
 	using Microsoft.Owin;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Client.Services;
@@ -68,7 +68,7 @@ namespace Adxstudio.Xrm.Services
 
 				if (bool.TryParse(config["syncRemoveEnabled"], out syncRemoveEnabled))
 				{
-					this._syncRemoveEnabled = syncRemoveEnabled;
+					_syncRemoveEnabled = syncRemoveEnabled;
 				}
 			}
 
@@ -151,7 +151,7 @@ namespace Adxstudio.Xrm.Services
 
 			var portalBusMessage = new CacheInvalidationPortalBusMessage { Message = message };
 
-			if (this._syncRemoveEnabled)
+			if (_syncRemoveEnabled)
 			{
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Sending messages syncronously");
 
@@ -160,7 +160,7 @@ namespace Adxstudio.Xrm.Services
 			}
 			else
 			{
-				this.RemoveLocal(message);
+				RemoveLocal(message);
 
 				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Sending messages asyncronously");
 

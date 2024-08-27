@@ -21,7 +21,7 @@ namespace Adxstudio.Xrm.Commerce
 			PortalName = portalName;
 		}
 
-		protected new string PortalName { get; private set; }
+		protected new string PortalName { get; }
 
 		public override OrganizationServiceContext GetServiceContextForWrite()
 		{

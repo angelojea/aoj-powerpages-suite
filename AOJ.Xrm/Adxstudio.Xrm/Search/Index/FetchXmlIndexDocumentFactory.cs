@@ -13,16 +13,16 @@ namespace Adxstudio.Xrm.Search.Index
 	using System.Xml.Linq;
 	using System.Xml.XPath;
 	using Adxstudio.Xrm.AspNet.Cms;
-	using Adxstudio.Xrm.Resources;
+	using Resources;
 	using Lucene.Net.Documents;
 	using Microsoft.Xrm.Client;
-	using Adxstudio.Xrm.Search.Facets;
+	using Facets;
 	using Microsoft.Xrm.Sdk.Client;
 	using Microsoft.Xrm.Sdk.Metadata;
-	using Adxstudio.Xrm.Cms;
+	using Cms;
 	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.ContentAccess;
-	using Adxstudio.Xrm.Core.Flighting;
+	using ContentAccess;
+	using Core.Flighting;
 	using Microsoft.Xrm.Portal.Configuration;
 
 	internal class FetchXmlIndexDocumentFactory
@@ -34,8 +34,8 @@ namespace Adxstudio.Xrm.Search.Index
 		private readonly string _titleAttributeLogicalName;
 		private readonly FetchXmlLocaleConfig _localeConfig;
 		private readonly IContentMapProvider _contentMapProvider;
-		private readonly List<string> oOBUrlDefinedEntities = new List<string>()
-											   {
+		private readonly List<string> oOBUrlDefinedEntities = new List<string>
+		{
 												   "adx_blog", "adx_blogpost",
 												   "adx_webpage",
 												   "adx_webfile",
@@ -127,24 +127,24 @@ namespace Adxstudio.Xrm.Search.Index
 							{
 								ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "CMS is enabled. Adding roles for adx_webpage index");
 
-								var ruleNames = CmsIndexHelper.GetWebPageWebRoles(this._contentMapProvider, primaryKey);
-								this.AddWebRolesToDocument(document, ruleNames);
+								var ruleNames = CmsIndexHelper.GetWebPageWebRoles(_contentMapProvider, primaryKey);
+								AddWebRolesToDocument(document, ruleNames);
 							}
 
 							if (entityMetadata.LogicalName == "adx_ideaforum")
 							{
 								ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "CMS is enabled. Adding roles for adx_ideaforum index");
 
-								var ruleNames = CmsIndexHelper.GetIdeaForumWebRoles(this._contentMapProvider, primaryKey);
-								this.AddWebRolesToDocument(document, ruleNames);
+								var ruleNames = CmsIndexHelper.GetIdeaForumWebRoles(_contentMapProvider, primaryKey);
+								AddWebRolesToDocument(document, ruleNames);
 							}
 
 							if (entityMetadata.LogicalName == "adx_communityforum")
 							{
 								ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "CMS is enabled. Adding roles for adx_communityforum index");
 
-								var ruleNames = CmsIndexHelper.GetForumsWebRoles(this._contentMapProvider, primaryKey);
-								this.AddWebRolesToDocument(document, ruleNames);
+								var ruleNames = CmsIndexHelper.GetForumsWebRoles(_contentMapProvider, primaryKey);
+								AddWebRolesToDocument(document, ruleNames);
 							}
 						}
 						continue;
@@ -157,9 +157,9 @@ namespace Adxstudio.Xrm.Search.Index
 							ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "CMS is enabled. Adding roles for adx_idea index");
 
 							var ruleNames = CmsIndexHelper.GetIdeaForumWebRoles(
-							this._contentMapProvider,
+							_contentMapProvider,
 							new Guid(fetchXmlField.Value));
-							this.AddWebRolesToDocument(document, ruleNames);
+							AddWebRolesToDocument(document, ruleNames);
 						}
 
 						// Based off the Parent Web Page get the webroles for each given entity
@@ -169,8 +169,8 @@ namespace Adxstudio.Xrm.Search.Index
 						{
 							ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("CMS is enabled. Adding roles for {0} index", fetchXmlField.Name));
 
-							var ruleNames = CmsIndexHelper.GetWebPageWebRoles(this._contentMapProvider, new Guid(fetchXmlField.Value));
-							this.AddWebRolesToDocument(document, ruleNames);
+							var ruleNames = CmsIndexHelper.GetWebPageWebRoles(_contentMapProvider, new Guid(fetchXmlField.Value));
+							AddWebRolesToDocument(document, ruleNames);
 						}
 
 						if ((fetchXmlField.Name == "adx_forumid" && entityMetadata.LogicalName == "adx_communityforumthread")
@@ -179,9 +179,9 @@ namespace Adxstudio.Xrm.Search.Index
 							ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("CMS is enabled. Adding roles for {0} index", fetchXmlField.Name));
 
 							var ruleNames = CmsIndexHelper.GetForumsWebRoles(
-							this._contentMapProvider,
+							_contentMapProvider,
 							new Guid(fetchXmlField.Value));
-							this.AddWebRolesToDocument(document, ruleNames);
+							AddWebRolesToDocument(document, ruleNames);
 						}
 						if (entityMetadata.LogicalName == "annotation" && fetchXmlField.Name == "knowledgearticle.knowledgearticleid")
 						{
@@ -238,13 +238,13 @@ namespace Adxstudio.Xrm.Search.Index
 
 						//Renaming product identifier field to  "associated.product"
 						if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.CmsEnabledSearching)
-							&& (this._fetchXml.LogicalName == "knowledgearticle" && fieldName == "record2id" 
-							|| this._fetchXml.LogicalName == "annotation" && fieldName == "productid"))
+							&& (_fetchXml.LogicalName == "knowledgearticle" && fieldName == "record2id" 
+							|| _fetchXml.LogicalName == "annotation" && fieldName == "productid"))
 						{
 							fieldName = FixedFacetsConfiguration.ProductFieldFacetName;
 						}
 						if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.CmsEnabledSearching)
-						&& (this._fetchXml.LogicalName == "knowledgearticle" && (fieldName == "notetext" || fieldName == "filename")))
+						&& (_fetchXml.LogicalName == "knowledgearticle" && (fieldName == "notetext" || fieldName == "filename")))
 						{
 							fieldName = "related_" + fieldName;
 						}
@@ -292,7 +292,7 @@ namespace Adxstudio.Xrm.Search.Index
 						document.Add(
 							new Field(
 								FixedFacetsConfiguration.ProductFieldFacetName,
-								this._index.ProductAccessNonKnowledgeArticleDefaultValue,
+								_index.ProductAccessNonKnowledgeArticleDefaultValue,
 								Field.Store.NO,
 								Field.Index.NOT_ANALYZED));
 						document.Add(
@@ -311,7 +311,7 @@ namespace Adxstudio.Xrm.Search.Index
 							document.Add(
 								new Field(
 									FixedFacetsConfiguration.ProductFieldFacetName,
-									this._index.ProductAccessDefaultValue,
+									_index.ProductAccessDefaultValue,
 									Field.Store.NO,
 									Field.Index.NOT_ANALYZED));
 						}
@@ -338,8 +338,8 @@ namespace Adxstudio.Xrm.Search.Index
 
 				if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.CmsEnabledSearching))
 				{
-					this.AddDefaultWebRoleToAllDocumentsNotUnderCMS(document, entityMetadata.LogicalName);
-					this.AddUrlDefinedToDocument(document, entityMetadata.LogicalName, fetchXmlResult);
+					AddDefaultWebRoleToAllDocumentsNotUnderCMS(document, entityMetadata.LogicalName);
+					AddUrlDefinedToDocument(document, entityMetadata.LogicalName, fetchXmlResult);
 				}
 
 				var documentAnalyzer = lcid > 0
@@ -422,7 +422,7 @@ namespace Adxstudio.Xrm.Search.Index
 					ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("Adding rule: {0}", rule));
 
 					document.Add(
-						new Field(this._index.WebRoleFieldName, rule, Field.Store.NO, Field.Index.NOT_ANALYZED));
+						new Field(_index.WebRoleFieldName, rule, Field.Store.NO, Field.Index.NOT_ANALYZED));
 				}
 			}
 		}
@@ -449,7 +449,7 @@ namespace Adxstudio.Xrm.Search.Index
 			if (!cmsEntities.Contains(entityLogicalName))
 			{
 				document.Add(
-					new Field(this._index.WebRoleFieldName, this._index.WebRoleDefaultValue, Field.Store.NO, Field.Index.NOT_ANALYZED));
+					new Field(_index.WebRoleFieldName, _index.WebRoleDefaultValue, Field.Store.NO, Field.Index.NOT_ANALYZED));
 			}
 
 		}
@@ -469,7 +469,7 @@ namespace Adxstudio.Xrm.Search.Index
 
 				var blogPartialUrl = blogPartialUrlFetch.Value;
 				isUrlDefined = CmsIndexHelper.IsWebPageUrlDefined(
-					this._contentMapProvider,
+					_contentMapProvider,
 					new Guid(parentPageIdFetch.Value),
 					blogPartialUrl);
 
@@ -494,7 +494,7 @@ namespace Adxstudio.Xrm.Search.Index
 				var blogPostsCombineUrl = string.Format("{0}/{1}", blogPartialUrl, blogPostPartialUrl);
 
 				isUrlDefined = CmsIndexHelper.IsWebPageUrlDefined(
-					this._contentMapProvider,
+					_contentMapProvider,
 					new Guid(parentWebPageIdFetch.Value),
 					blogPostsCombineUrl);
 			}
@@ -508,7 +508,7 @@ namespace Adxstudio.Xrm.Search.Index
 					return;
 				}
 				isUrlDefined = CmsIndexHelper.IsForumUrlDefined(
-					this._contentMapProvider,
+					_contentMapProvider,
 					new Guid(forumIdFetch.Value));
 			}
 			if (entityLogicalName == "adx_communityforumthread")
@@ -520,7 +520,7 @@ namespace Adxstudio.Xrm.Search.Index
 					return;
 				}
 				isUrlDefined = CmsIndexHelper.IsForumUrlDefined(
-					this._contentMapProvider,
+					_contentMapProvider,
 					new Guid(forumIdFetch.Value));
 			}
 			if (entityLogicalName == "adx_communityforumpost")
@@ -532,7 +532,7 @@ namespace Adxstudio.Xrm.Search.Index
 					return;
 				}
 				isUrlDefined = CmsIndexHelper.IsForumUrlDefined(
-					this._contentMapProvider,
+					_contentMapProvider,
 					new Guid(forumIdFetch.Value));
 			}
 
@@ -561,7 +561,7 @@ namespace Adxstudio.Xrm.Search.Index
 
 			if (entityLogicalName == "incident")
 			{
-				isUrlDefined = CmsIndexHelper.IsSiteMakerUrlDefined(this._contentMapProvider, "Case");
+				isUrlDefined = CmsIndexHelper.IsSiteMakerUrlDefined(_contentMapProvider, "Case");
 			}
 
 			if (entityLogicalName == "adx_webfile")
@@ -573,7 +573,7 @@ namespace Adxstudio.Xrm.Search.Index
 					return;
 				}
 				isUrlDefined = CmsIndexHelper.IsWebPageUrlDefined(
-					this._contentMapProvider,
+					_contentMapProvider,
 					new Guid(webPageIdFetch.Value),
 					webfilePartialUrlFetch.Value);
 			}
@@ -586,16 +586,16 @@ namespace Adxstudio.Xrm.Search.Index
 					return;
 				}
 				var primaryId = new Guid(webpageId.Value);
-				isUrlDefined = CmsIndexHelper.IsWebPageUrlDefined(this._contentMapProvider, primaryId);
+				isUrlDefined = CmsIndexHelper.IsWebPageUrlDefined(_contentMapProvider, primaryId);
 			}
 
-			if (!this.oOBUrlDefinedEntities.Contains(entityLogicalName))
+			if (!oOBUrlDefinedEntities.Contains(entityLogicalName))
 			{
 				isUrlDefined = true;
 			}
 
 			document.Add(
-						new Field(this._index.IsUrlDefinedFieldName, isUrlDefined.ToString(), Field.Store.NO, Field.Index.NOT_ANALYZED));
+						new Field(_index.IsUrlDefinedFieldName, isUrlDefined.ToString(), Field.Store.NO, Field.Index.NOT_ANALYZED));
 		}
 
 		private static bool AttributeTypeEqualsOneOf(AttributeMetadata attributeMetadata, params string[] typeNames)

@@ -13,8 +13,8 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 {
 	public class SetOpportunityOnHoldActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-exclamation-circle fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Set_On_Hold_Button_Label_Text");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Set_On_Hold_Button_Label_Text");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-exclamation-circle fa-fw' aria-hidden='true'></span> " + ResourceManager.GetString("Set_On_Hold_Button_Label_Text");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Set_On_Hold_Button_Label_Text");
 
 		public ViewSetOpportunityOnHoldModal Modal { get; set; }
 

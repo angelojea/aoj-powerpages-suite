@@ -9,8 +9,8 @@ namespace Adxstudio.Xrm.Json
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Runtime.Serialization;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
+	using Services;
+	using Services.Query;
 	using Microsoft.Crm.Sdk.Messages;
 	using Microsoft.Xrm.Client.Services;
 	using Microsoft.Xrm.Sdk;

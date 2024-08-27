@@ -30,16 +30,16 @@ namespace Adxstudio.Xrm.Ideas
 		/// <summary>
 		/// An adx_ideavote entity.
 		/// </summary>
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
 		/// <summary>
 		/// When the vote was casted.
 		/// </summary>
-		public DateTime SubmittedOn { get; private set; }
+		public DateTime SubmittedOn { get; }
 
 		/// <summary>
 		/// The whole number value of this vote.
 		/// </summary>
-		public int VoteValue { get; private set; }
+		public int VoteValue { get; }
 	}
 }

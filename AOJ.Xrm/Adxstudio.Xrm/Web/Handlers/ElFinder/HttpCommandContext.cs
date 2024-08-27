@@ -38,11 +38,11 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			DisabledCommands = disabledCommands.ToArray();
 		}
 
-		public IEnumerable<string> DisabledCommands { get; private set; }
+		public IEnumerable<string> DisabledCommands { get; }
 
-		public HttpFileCollection Files { get; private set; }
+		public HttpFileCollection Files { get; }
 
-		public NameValueCollection Parameters { get; private set; }
+		public NameValueCollection Parameters { get; }
 
 		public IDependencyProvider CreateDependencyProvider()
 		{
@@ -56,7 +56,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			var dataAdapterDependencies = new PortalConfigurationDataAdapterDependencies(_portalName, _requestContext);
 
 			return contentMapProvider == null || contentMapUrlProvider == null
-				? (IFileSystem)new EntityFileSystem(dataAdapterDependencies)
+				? new EntityFileSystem(dataAdapterDependencies)
 				: new ContentMapFileSystem(contentMapProvider, contentMapUrlProvider, dataAdapterDependencies);
 		}
 

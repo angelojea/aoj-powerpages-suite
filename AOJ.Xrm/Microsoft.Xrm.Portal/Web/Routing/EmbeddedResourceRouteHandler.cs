@@ -22,7 +22,7 @@ namespace Microsoft.Xrm.Portal.Web.Routing
 		/// <summary>
 		/// Description of the available embedded resource assemblies.
 		/// </summary>
-		public IEnumerable<EmbeddedResourceAssemblyAttribute> Mappings { get; private set; }
+		public IEnumerable<EmbeddedResourceAssemblyAttribute> Mappings { get; }
 
 		public EmbeddedResourceRouteHandler(IEnumerable<EmbeddedResourceAssemblyAttribute> mappings)
 		{

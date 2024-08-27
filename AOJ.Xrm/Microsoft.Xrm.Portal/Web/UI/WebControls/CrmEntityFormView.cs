@@ -48,9 +48,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		private static readonly object _eventItemInserted = new object();
 		private static readonly object _eventItemInserting = new object();
 
-		private string _cellTemplateFactoryType = typeof(CellTemplateFactory).FullName;
 		private ITemplate _insertItemTemplate;
-		private readonly IDictionary<string, CellBinding> _cellBindings = new Dictionary<string, CellBinding>();
 		private string _validationGroup;
 
 		public event EventHandler<CrmEntityFormViewInsertedEventArgs> ItemInserted
@@ -65,23 +63,16 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 			remove { Events.RemoveHandler(_eventItemInserting, value); }
 		}
 
-		[PersistenceMode(PersistenceMode.InnerProperty), Browsable(false), DefaultValue((string)null)]
+		[PersistenceMode(PersistenceMode.InnerProperty), Browsable(false), DefaultValue(null)]
 		public ITemplate InsertItemTemplate
 		{
 			get { return _insertItemTemplate ?? new DefaultInsertItemTemplate(ValidationGroup); }
 			set { _insertItemTemplate = value; }
 		}
 
-		protected IDictionary<string, CellBinding> CellBindings
-		{
-			get { return _cellBindings; }
-		}
+		protected IDictionary<string, CellBinding> CellBindings { get; } = new Dictionary<string, CellBinding>();
 
-		public string CellTemplateFactoryType
-		{
-			get { return _cellTemplateFactoryType; }
-			set { _cellTemplateFactoryType = value; }
-		}
+		public string CellTemplateFactoryType { get; set; } = typeof(CellTemplateFactory).FullName;
 
 		protected EntityMetadata EntityMetadata { get; set; }
 

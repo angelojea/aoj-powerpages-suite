@@ -14,7 +14,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 {
 	public class CrmWebsiteSetting
 	{
-		public virtual Entity Entity { get; private set; }
+		public virtual Entity Entity { get; }
 		public virtual string Name { get { return Entity.GetAttributeValue<string>("adx_name"); } }
 		public virtual string Value { get { return Entity.GetAttributeValue<string>("adx_value"); } }
 
@@ -26,7 +26,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 	public class CrmWebsiteBinding
 	{
-		public virtual Entity Entity { get; private set; }
+		public virtual Entity Entity { get; }
 		public virtual string Name { get { return Entity.GetAttributeValue<string>("adx_name"); } }
 		public virtual string SiteName { get { return Entity.GetAttributeValue<string>("adx_sitename"); } }
 		public virtual string VirtualPath { get { return Entity.GetAttributeValue<string>("adx_virtualpath"); } }
@@ -219,32 +219,32 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		{
 			var websiteBinding = new Entity("adx_websitebinding");
 			websiteBinding.SetAttributeValue<string>("adx_name", "Binding: {0}".FormatWith(environment.SiteName));
-			websiteBinding.SetAttributeValue<EntityReference>("adx_websiteid", this.Entity.ToEntityReference());
+			websiteBinding.SetAttributeValue<EntityReference>("adx_websiteid", Entity.ToEntityReference());
 			websiteBinding.SetAttributeValue<string>("adx_sitename", environment.SiteName);
 
-			if (this.Entity.RelatedEntities.ContainsKey(WebsiteConstants.WebsiteBindingRelationship))
+			if (Entity.RelatedEntities.ContainsKey(WebsiteConstants.WebsiteBindingRelationship))
 			{
-				this.Entity.RelatedEntities[WebsiteConstants.WebsiteBindingRelationship].Entities.Add(websiteBinding);
+				Entity.RelatedEntities[WebsiteConstants.WebsiteBindingRelationship].Entities.Add(websiteBinding);
 			}
 			else
 			{
-				this.Entity.RelatedEntities.Add(WebsiteConstants.WebsiteBindingRelationship, new EntityCollection(new[] { websiteBinding }));
+				Entity.RelatedEntities.Add(WebsiteConstants.WebsiteBindingRelationship, new EntityCollection(new[] { websiteBinding }));
 			}
 
 			// reset binding collection
-			this.RefreshWebsiteBindings();
+			RefreshWebsiteBindings();
 
-			return this.ToBinding(websiteBinding);
+			return ToBinding(websiteBinding);
 		}
 
 		public bool RemoveWebsiteBinding(CrmWebsiteBinding websiteBinding)
 		{
-			if (this.Entity.RelatedEntities.ContainsKey(WebsiteConstants.WebsiteBindingRelationship))
+			if (Entity.RelatedEntities.ContainsKey(WebsiteConstants.WebsiteBindingRelationship))
 			{
-				if (this.Entity.RelatedEntities[WebsiteConstants.WebsiteBindingRelationship].Entities.Remove(websiteBinding.Entity))
+				if (Entity.RelatedEntities[WebsiteConstants.WebsiteBindingRelationship].Entities.Remove(websiteBinding.Entity))
 				{
 					// reset binding collection
-					this.RefreshWebsiteBindings();
+					RefreshWebsiteBindings();
 				}
 			}
 

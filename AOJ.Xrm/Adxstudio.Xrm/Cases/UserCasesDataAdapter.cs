@@ -24,7 +24,7 @@ namespace Adxstudio.Xrm.Cases
 			Dependencies = dependencies;
 		}
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
 		public virtual IEnumerable<ICase> SelectCases()
 		{

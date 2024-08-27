@@ -46,13 +46,13 @@ namespace Adxstudio.Xrm.Blogs
 
 		public TagBlogDataAdapter(IBlog blog, string tag, string portalName = null) : this(blog, tag, new PortalConfigurationDataAdapterDependencies(portalName)) { }
 
-		protected EntityReference Blog { get; private set; }
+		protected EntityReference Blog { get; }
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
-		protected BlogSecurityInfo Security { get; private set; }
+		protected BlogSecurityInfo Security { get; }
 
-		protected string Tag { get; private set; }
+		protected string Tag { get; }
 
 		public IBlog Select()
 		{

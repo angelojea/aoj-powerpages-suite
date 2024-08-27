@@ -21,6 +21,6 @@ namespace Adxstudio.Xrm.Events
 			Entity = entity;
 		}
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 	}
 }

@@ -38,6 +38,6 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			get { return Ad.ImageWidth; }
 		}
 
-		protected IAd Ad { get; private set; }
+		protected IAd Ad { get; }
 	}
 }

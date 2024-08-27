@@ -45,7 +45,7 @@ namespace Adxstudio.Xrm.Core.Telemetry
 		{
 			// invalid validation if the useragent is null
 			string userAgent;
-			if (!TelemetryState.HasRequestContext || (userAgent = HttpContext.Current.Request.UserAgent) == null)
+			if (!HasRequestContext || (userAgent = HttpContext.Current.Request.UserAgent) == null)
 			{
 				return false;
 			}
@@ -70,7 +70,7 @@ namespace Adxstudio.Xrm.Core.Telemetry
 		public static bool IsTelemetryEnabledRequestExtension()
 		{
 			string requestExtension;
-			if (!TelemetryState.HasRequestContext
+			if (!HasRequestContext
 				|| (requestExtension = HttpContext.Current.Request.CurrentExecutionFilePathExtension) == null)
 			{
 				return false;
@@ -95,13 +95,13 @@ namespace Adxstudio.Xrm.Core.Telemetry
 		/// <returns>true if valid path; otherwise false</returns>
 		public static bool IsTelemetryEnabledRequestPath()
 		{
-			if (!TelemetryState.HasRequestContext)
+			if (!HasRequestContext)
 			{
 				return false;
 			}
 
 			var path = HttpContext.Current.Request.Path;
-			return !TelemetryState.IsPathMatch(path);
+			return !IsPathMatch(path);
 		}
 
 		/// <summary>
@@ -128,7 +128,7 @@ namespace Adxstudio.Xrm.Core.Telemetry
 		/// <returns>true if valid path; otherwise false</returns>
 		public static bool IsTelemetryEnabledRequestPage()
 		{
-			if (!TelemetryState.HasRequestContext)
+			if (!HasRequestContext)
 			{
 				return false;
 			}
@@ -136,10 +136,10 @@ namespace Adxstudio.Xrm.Core.Telemetry
 			Uri referrer = null;
 			if ((referrer = HttpContext.Current.Request.UrlReferrer) == null)
 			{
-				return TelemetryState.IsTelemetryEnabledRequestPath();
+				return IsTelemetryEnabledRequestPath();
 			}
 
-			return !TelemetryState.IsPathMatch(referrer.AbsolutePath);
+			return !IsPathMatch(referrer.AbsolutePath);
 		}
 
 		/// <summary>

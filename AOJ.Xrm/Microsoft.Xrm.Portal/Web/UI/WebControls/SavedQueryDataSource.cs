@@ -24,7 +24,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		/// Gets or sets the name of the saved query.
 		/// </summary>
 		[Category("Data")]
-		[DefaultValue((string)null)]
+		[DefaultValue(null)]
 		public string SavedQueryName { get; set; }
 
 		protected override DataSourceView GetView(string viewName)

@@ -213,47 +213,32 @@ namespace Adxstudio.Xrm.Web
 
 		public static CrmWebsite GetWebsite(this HttpContext context)
         {
-            return new CrmWebsite()
-            {
-
-            };
+            return new CrmWebsite();
         }
 
 		public static CrmWebsite GetWebsite(this HttpContextBase context)
         {
-            return new CrmWebsite()
-            {
-
-            };
+            return new CrmWebsite();
         }
 
 		public static CrmWebsite GetWebsite(this IOwinContext context)
 		{
-			return new CrmWebsite()
-			{
-
-			};
+			return new CrmWebsite();
 		}
 
 		public static CrmUser GetUser(this HttpContext context)
 		{
-			return new CrmUser()
-			{
-			};
+			return new CrmUser();
 		}
 
 		public static CrmUser GetUser(this HttpContextBase context)
         {
-            return new CrmUser()
-            {
-            };
+            return new CrmUser();
         }
 
 		public static CrmUser GetUser(this IOwinContext context)
         {
-            return new CrmUser()
-            {
-            };
+            return new CrmUser();
         }
 
 		public static CrmSiteMapNode GetNode(this HttpContext context)

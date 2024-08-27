@@ -33,9 +33,9 @@ namespace Adxstudio.Xrm.SharePoint.Handlers
 			get { return false; }
 		}
 
-		protected virtual Uri SharePointFileUrl { get; private set; }
+		protected virtual Uri SharePointFileUrl { get; }
 
-		protected virtual string FileName { get; private set; }
+		protected virtual string FileName { get; }
 
 		public void ProcessRequest(HttpContext context)
 		{
@@ -93,7 +93,7 @@ namespace Adxstudio.Xrm.SharePoint.Handlers
 					}
 
                     ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception thrown trying to download {0}", SharePointFileUrl));
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("ProcessRequest", "Exception details: {0}", we.ToString()));
+					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("ProcessRequest", "Exception details: {0}", we));
 
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
@@ -148,7 +148,7 @@ namespace Adxstudio.Xrm.SharePoint.Handlers
 			catch (Exception e)
 			{
                 ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception thrown trying to download {0}", SharePointFileUrl));
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception details: {0}", e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception details: {0}", e));
 
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 			}

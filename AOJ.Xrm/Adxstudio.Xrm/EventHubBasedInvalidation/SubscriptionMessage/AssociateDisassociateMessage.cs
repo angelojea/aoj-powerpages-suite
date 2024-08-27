@@ -55,9 +55,9 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		{
 			get
 			{
-				return !string.IsNullOrEmpty(this.RelationshipName)
-					&& !string.IsNullOrEmpty(this.RelatedEntity1Name)
-					&& !string.IsNullOrEmpty(this.RelatedEntity2Name)
+				return !string.IsNullOrEmpty(RelationshipName)
+					&& !string.IsNullOrEmpty(RelatedEntity1Name)
+					&& !string.IsNullOrEmpty(RelatedEntity2Name)
 					&& base.ValidMessage;
 			}
 		}

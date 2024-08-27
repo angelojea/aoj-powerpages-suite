@@ -353,7 +353,7 @@ namespace Adxstudio.Xrm.Commerce
 		{
 			ColumnSet invoiceColumns = new ColumnSet("invoiceid", "totalamount");
 
-			var convertOrderRequest = new ConvertSalesOrderToInvoiceRequest()
+			var convertOrderRequest = new ConvertSalesOrderToInvoiceRequest
 			{
 				SalesOrderId = salesOrderId,
 				ColumnSet = invoiceColumns
@@ -363,7 +363,7 @@ namespace Adxstudio.Xrm.Commerce
 
 			var invoice = convertOrderResponse.Entity;
 
-            var setStateRequest = new SetStateRequest()
+            var setStateRequest = new SetStateRequest
             {
                 EntityMoniker = invoice.ToEntityReference(),
                 State = new OptionSetValue(2),

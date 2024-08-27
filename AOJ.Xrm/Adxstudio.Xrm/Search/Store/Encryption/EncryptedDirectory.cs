@@ -32,7 +32,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// <summary>
 		/// The certificate
 		/// </summary>
-		private X509Certificate2 certificate;
+		private readonly X509Certificate2 certificate;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="EncryptedDirectory"/> class.
@@ -45,14 +45,14 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </param>
 		public EncryptedDirectory(string path, X509Certificate2 certificate)
 		{
-			this.directory = new DirectoryInfo(path);
+			directory = new DirectoryInfo(path);
 
-			if (!this.directory.Exists)
+			if (!directory.Exists)
 			{
-				this.directory.Create();
+				directory.Create();
 			}
 
-			this.interalLockFactory = new NativeFSLockFactory(this.directory.FullName);
+			interalLockFactory = new NativeFSLockFactory(directory.FullName);
 
 			this.certificate = certificate;
 		}
@@ -68,13 +68,13 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </returns>
 		public override IndexOutput CreateOutput(string name)
 		{
-			var record = this.GetRecord(name);
+			var record = GetRecord(name);
 
 			if (record.Exists)
 			{
 				try
 				{
-					this.DeleteFile(name);
+					DeleteFile(name);
 				}
 				catch (Exception)
 				{
@@ -82,7 +82,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 				}
 			}
 
-			IBufferedPageWriter writer = this.GetReaderWriter(record, false);
+			IBufferedPageWriter writer = GetReaderWriter(record, false);
 
 			return new EncryptedIndexOutput(writer);
 		}
@@ -95,7 +95,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </param>
 		public override void DeleteFile(string name)
 		{
-			var file = this.GetRecord(name);
+			var file = GetRecord(name);
 			try
 			{
 				file.Delete();
@@ -117,7 +117,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </returns>
 		public override bool FileExists(string name)
 		{
-			var record = this.GetRecord(name);
+			var record = GetRecord(name);
 
 			return record.Exists;
 		}
@@ -133,14 +133,14 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </returns>
 		public override long FileLength(string name)
 		{
-			var record = this.GetRecord(name);
+			var record = GetRecord(name);
 
 			if (!record.Exists)
 			{
 				return 0;
 			}
 
-			using (var reader = this.GetReaderWriter(record, true))
+			using (var reader = GetReaderWriter(record, true))
 			{
 				return reader.Length;
 			}
@@ -157,7 +157,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </returns>
 		public override long FileModified(string name)
 		{
-			var record = this.GetRecord(name);
+			var record = GetRecord(name);
 
 			if (!record.Exists)
 			{
@@ -176,7 +176,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		public override string[] ListAll()
 		{
 			return
-				this.directory.EnumerateFiles()
+				directory.EnumerateFiles()
 					.Select(file => file.Name)
 					.ToArray();
 		}
@@ -195,7 +195,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </exception>
 		public override IndexInput OpenInput(string name)
 		{
-			var record = this.GetRecord(name);
+			var record = GetRecord(name);
 
 			if (!record.Exists)
 			{
@@ -203,7 +203,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 				throw new FileNotFoundException("File not found", name);
 			}
 
-			IBufferedPageReader reader = this.GetReaderWriter(record, true);
+			IBufferedPageReader reader = GetReaderWriter(record, true);
 
 			return new EncryptedIndexInput(reader);
 		}
@@ -216,7 +216,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </param>
 		public override void TouchFile(string name)
 		{
-			var record = this.GetRecord(name);
+			var record = GetRecord(name);
 
 			if (!record.Exists)
 			{
@@ -248,7 +248,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </returns>
 		protected virtual FsBufferedReaderWriter GetReaderWriter(FileInfo record, bool readOnly)
 		{
-			return new FsBufferedReaderWriter(record, this.certificate, readOnly);
+			return new FsBufferedReaderWriter(record, certificate, readOnly);
 		}
 
 		/// <summary>
@@ -262,7 +262,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </returns>
 		private FileInfo GetRecord(string name)
 		{
-			return new FileInfo(Path.Combine(this.directory.FullName, name));
+			return new FileInfo(Path.Combine(directory.FullName, name));
 		}
 	}
 }

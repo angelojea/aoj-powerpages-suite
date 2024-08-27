@@ -34,7 +34,7 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 			{ "mspp_webpage",         EntitySetRights.AllRead | EntitySetRights.WriteAppend | EntitySetRights.WriteMerge | EntitySetRights.WriteReplace },
 		};
 
-		public string PortalName { get; private set; }
+		public string PortalName { get; }
 
 		public CmsDataServiceProvider(string portalName)
 		{
@@ -195,9 +195,6 @@ namespace Microsoft.Xrm.Portal.Web.Data.Services
 
 				case "mspp_webpage":
 					InterceptWebPageUpdate(context, entity, operations);
-					break;
-				default:
-					// Let other change interceptors worry about other entity types.
 					break;
 				}
 			}

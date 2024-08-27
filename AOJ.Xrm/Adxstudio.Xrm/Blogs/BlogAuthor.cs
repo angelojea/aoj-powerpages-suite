@@ -18,12 +18,12 @@ namespace Adxstudio.Xrm.Blogs
 			ApplicationPath = applicationPath;
 		}
 
-		public ApplicationPath ApplicationPath { get; private set; }
+		public ApplicationPath ApplicationPath { get; }
 
-		public string EmailAddress { get; private set; }
+		public string EmailAddress { get; }
 
-		public Guid Id { get; private set; }
+		public Guid Id { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 	}
 }

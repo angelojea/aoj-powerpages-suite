@@ -10,8 +10,8 @@ namespace Adxstudio.Xrm.AspNet.Identity
 	using System.Linq;
 	using System.Threading.Tasks;
 	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Resources;
-	using Adxstudio.Xrm.Services.Query;
+	using Resources;
+	using Services.Query;
 	using Microsoft.AspNet.Identity;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Sdk;
@@ -88,7 +88,7 @@ namespace Adxstudio.Xrm.AspNet.Identity
 			var request = new RetrieveRequest
 			{
 				Target = id,
-				ColumnSet = new ColumnSet(this.GetContactAttributes().ToArray()),
+				ColumnSet = new ColumnSet(GetContactAttributes().ToArray()),
 				RelatedEntitiesQuery = relatedEntitiesQuery
 			};
 
@@ -113,7 +113,7 @@ namespace Adxstudio.Xrm.AspNet.Identity
 
 		protected virtual IEnumerable<string> GetContactAttributes()
 		{
-			return UserConstants.ContactAttributes.ToFilteredColumns(this.BaseSolutionCrmVersion);
+			return UserConstants.ContactAttributes.ToFilteredColumns(BaseSolutionCrmVersion);
 		}
 
 		#region IUserPasswordStore

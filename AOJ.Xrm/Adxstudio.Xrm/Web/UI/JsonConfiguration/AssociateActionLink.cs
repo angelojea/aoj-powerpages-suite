@@ -20,8 +20,8 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 	/// </summary>
 	public class AssociateActionLink : RedirectActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-link' aria-hidden='true'></span>" + ResourceManager.GetString("Associate_Button_Text");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Associate_Button_Text");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-link' aria-hidden='true'></span>" + ResourceManager.GetString("Associate_Button_Text");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Associate_Button_Text");
 
 		/// <summary>
 		/// The relationship for the associate request

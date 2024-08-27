@@ -13,7 +13,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 	using DevTrends.MvcDonutCaching;
 	using DotLiquid;
 	using DotLiquid.Tags;
-	using Adxstudio.Xrm.Web.Mvc.Html;
+	using Html;
 
 	/// <summary>
 	/// Renders the donut cache substitution placeholder for some arbitrary Liquid source contained within

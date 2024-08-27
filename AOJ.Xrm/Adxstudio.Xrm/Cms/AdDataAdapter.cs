@@ -28,7 +28,7 @@ namespace Adxstudio.Xrm.Cms
 			Dependencies = dependencies;
 		}
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
 		public IAd SelectAd(Guid adId)
 		{

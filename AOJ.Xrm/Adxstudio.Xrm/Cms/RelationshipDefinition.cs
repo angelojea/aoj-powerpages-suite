@@ -30,10 +30,10 @@ namespace Adxstudio.Xrm.Cms
 				ForeignEntityLogicalname = foreignEntityLogicalName,
 				ForeignIdAttributeName = foreignIdAttributeName,
 				Solution = solution,
-				ToOne = toOne != null ? node => toOne(node as T1) : (Func<EntityNode, EntityNode>)null,
-				ToMany = toMany != null ? node => toMany(node as T2) : (Func<EntityNode, IEnumerable<EntityNode>>)null,
-				Associate = associate != null ? (source, target) => associate(source as T2, target as T1) : (Action<EntityNode, EntityNode>)null,
-				Disassociate = disassociate != null ? (source, target, id) => disassociate(source as T2, target as T1, id as T2) : (Action<EntityNode, EntityNode, EntityNode>)null,
+				ToOne = toOne != null ? node => toOne(node as T1) : null,
+				ToMany = toMany != null ? node => toMany(node as T2) : null,
+				Associate = associate != null ? (source, target) => associate(source as T2, target as T1) : null,
+				Disassociate = disassociate != null ? (source, target, id) => disassociate(source as T2, target as T1, id as T2) : null,
 				IntroducedVersion = version,
 			};
 		}

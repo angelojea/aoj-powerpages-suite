@@ -140,7 +140,7 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Error initializing provider ""{0}"": {1}", name, e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Error initializing provider ""{0}"": {1}", name, e));
 
                 throw;
 			}
@@ -224,7 +224,7 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e.ToString()));
+				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
 
                 throw;
 			}
@@ -276,7 +276,7 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e.ToString()));
+					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
 
                     throw;
 				}
@@ -376,7 +376,7 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e.ToString()));
+					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
 
                     throw;
 				}
@@ -479,7 +479,7 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e.ToString()));
+					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
 
                     throw;
 				}
@@ -493,7 +493,7 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e.ToString()));
+					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
 
                     throw;
 				}
@@ -507,7 +507,7 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e.ToString()));
+					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
 
                     throw;
 				}
@@ -521,7 +521,7 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e.ToString()));
+					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
 
                     throw;
 				}
@@ -529,12 +529,10 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 
 			public void UpdateEntitySet(string entityLogicalName, string entityAttribute, List<Guid> entityIds)
 			{
-				return;
 			}
 
 			public void UpdateCmsEntityTree(string entityLogicalName, Guid rootEntityId, int? lcid = null)
             {
-                return;
             }
 
 			public void Dispose()

@@ -80,7 +80,7 @@ namespace Adxstudio.Xrm.Ideas
 			IsApproved = entity.GetAttributeValue<bool?>("adx_approved").GetValueOrDefault(false);
 			PartialUrl = entity.GetAttributeValue<string>("adx_partialurl");
 			Status = entity.GetAttributeValue<OptionSetValue>("statuscode") == null ? (int)IdeaStatusCode.Inactive : entity.GetAttributeValue<OptionSetValue>("statuscode").Value;
-			StatusDisplayName = entity.FormattedValues["statuscode"] == null ? string.Empty : entity.FormattedValues["statuscode"].ToString();
+			StatusDisplayName = entity.FormattedValues["statuscode"] == null ? string.Empty : entity.FormattedValues["statuscode"];
 			StatusComment = entity.GetAttributeValue<string>("adx_statuscomment");
 			SubmittedOn = entity.GetAttributeValue<DateTime?>("adx_date") ?? entity.GetAttributeValue<DateTime>("createdon");
 			Summary = entity.GetAttributeValue<string>("adx_summary");
@@ -104,112 +104,112 @@ namespace Adxstudio.Xrm.Ideas
 		/// <summary>
 		/// The email of the author for this idea.
 		/// </summary>
-		public string AuthorEmail { get; private set; }
+		public string AuthorEmail { get; }
 
 		/// <summary>
 		/// The ID of the author for this idea.
 		/// </summary>
-		public Guid? AuthorId { get; private set; }
+		public Guid? AuthorId { get; }
 
 		/// <summary>
 		/// The name of the author for this idea.
 		/// </summary>
-		public string AuthorName { get; private set; }
+		public string AuthorName { get; }
 
 		/// <summary>
 		/// The number of comments for this idea.
 		/// </summary>
-		public int CommentCount { get; private set; }
+		public int CommentCount { get; }
 
 		/// <summary>
 		/// The comment policy for this idea.
 		/// </summary>
-		public IdeaForumCommentPolicy CommentPolicy { get; private set; }
+		public IdeaForumCommentPolicy CommentPolicy { get; }
 
 		/// <summary>
 		/// The copy/description for this idea.
 		/// </summary>
-		public string Copy { get; private set; }
+		public string Copy { get; }
 
 		/// <summary>
 		/// Whether or not the current user is allowed to comment on this idea.
 		/// </summary>
-		public bool CurrentUserCanComment { get; private set; }
+		public bool CurrentUserCanComment { get; }
 
 		/// <summary>
 		/// The number of votes casted by the current user in the parent idea forum.
 		/// </summary>
-		public int CurrentUserIdeaForumActiveVoteCount { get; private set; }
+		public int CurrentUserIdeaForumActiveVoteCount { get; }
 
 		/// <summary>
 		/// The number of votes casted by the current user for this idea.
 		/// </summary>
-		public int CurrentUserIdeaVoteCount { get; private set; }
+		public int CurrentUserIdeaVoteCount { get; }
 
 		/// <summary>
 		/// An adx_idea entity.
 		/// </summary>
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
 		/// <summary>
 		/// The unique identifier for this idea.
 		/// </summary>
-		public Guid Id { get; private set; }
+		public Guid Id { get; }
 
 		/// <summary>
 		/// The URL slug for the parent idea forum of this idea.
 		/// </summary>
-		public string IdeaForumPartialUrl { get; private set; }
+		public string IdeaForumPartialUrl { get; }
 
 		/// <summary>
 		/// The title for the parent idea forum of this idea.
 		/// </summary>
-		public string IdeaForumTitle { get; private set; }
+		public string IdeaForumTitle { get; }
 
 		/// <summary>
 		/// Whether or not this idea should be visible in the portal.
 		/// </summary>
-		public bool IsApproved { get; private set; }
+		public bool IsApproved { get; }
 
 		/// <summary>
 		/// The URL slug for this idea.
 		/// </summary>
-		public string PartialUrl { get; private set; }
+		public string PartialUrl { get; }
 
 		/// <summary>
 		/// The idea's current status.
 		/// </summary>
-		public int Status { get; private set; }
+		public int Status { get; }
 
 		/// <summary>
 		/// Comments on the idea's current status.
 		/// </summary>
-		public string StatusComment { get; private set; }
+		public string StatusComment { get; }
 
 		/// <summary>
 		/// When the idea was submitted.
 		/// </summary>
-		public DateTime SubmittedOn { get; private set; }
+		public DateTime SubmittedOn { get; }
 
 		/// <summary>
 		/// An abstract for this idea.
 		/// </summary>
-		public string Summary { get; private set; }
+		public string Summary { get; }
 
 		/// <summary>
 		/// The title for this idea.
 		/// </summary>
-		public string Title { get; private set; }
+		public string Title { get; }
 
 		/// <summary>
 		/// The number of negative votes this idea has.
 		/// </summary>
-		public int VoteDownCount { get; private set; }
+		public int VoteDownCount { get; }
 
 		/// <summary>
 		/// The number of positive votes this idea has.
 		/// </summary>
-		public int VoteUpCount { get; private set; }
+		public int VoteUpCount { get; }
 
 		/// <summary>
 		/// The result from subtracting the vote down count from the vote up count.
@@ -219,7 +219,7 @@ namespace Adxstudio.Xrm.Ideas
 		/// <summary>
 		/// The number of users that have voted for this idea.
 		/// </summary>
-		public int VoterCount { get; private set; }
+		public int VoterCount { get; }
 
 		/// <summary>
 		/// The total number of votes casted for this idea.
@@ -229,22 +229,22 @@ namespace Adxstudio.Xrm.Ideas
 		/// <summary>
 		/// The number of votes a user can cast for this idea.
 		/// </summary>
-		public int VotesPerIdea { get; private set; }
+		public int VotesPerIdea { get; }
 
 		/// <summary>
 		/// The number of votes a user can cast in the parent idea forum.
 		/// </summary>
-		public int? VotesPerUser { get; private set; }
+		public int? VotesPerUser { get; }
 
 		/// <summary>
 		/// The voting policy for this idea.
 		/// </summary>
-		public IdeaForumVotingPolicy VotingPolicy { get; private set; }
+		public IdeaForumVotingPolicy VotingPolicy { get; }
 
 		/// <summary>
 		/// The type of voting (up, up or down, or rating).
 		/// </summary>
-		public IdeaForumVotingType VotingType { get; private set; }
+		public IdeaForumVotingType VotingType { get; }
 
 		/// <summary>
 		/// Returns whether or not the current user is able to cast a specified number of votes.

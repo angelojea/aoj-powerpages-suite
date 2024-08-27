@@ -41,7 +41,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 		public string SortExpression { get { return View.SortExpression; } }
 
-		internal EntityView View { get; private set; }
+		internal EntityView View { get; }
 
 		internal Guid ViewId { get { return View.Id; } }
 	}

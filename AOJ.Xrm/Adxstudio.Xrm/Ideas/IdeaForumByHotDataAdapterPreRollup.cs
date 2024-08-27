@@ -13,7 +13,7 @@ namespace Adxstudio.Xrm.Ideas
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Messages;
 	using Microsoft.Xrm.Sdk.Query;
-	using Adxstudio.Xrm.Services.Query;
+	using Services.Query;
 
 	/// <summary>
 	/// Provides methods to get and set data for an Adxstudio Portals Idea Forum such as ideas.
@@ -74,7 +74,7 @@ namespace Adxstudio.Xrm.Ideas
 				Aggregate = true,
 				PageSize = pageInfo.Count,
 				PageNumber = pageInfo.PageNumber,
-				Entity = new FetchEntity()
+				Entity = new FetchEntity
 				{
 					Name = "feedback",
 					Attributes = new List<FetchAttribute>
@@ -143,7 +143,7 @@ namespace Adxstudio.Xrm.Ideas
 
 			if (Status.HasValue)
 			{
-				linkEntityConditions.Add(new Condition("statuscode", ConditionOperator.Equal, (int)Status.Value));
+				linkEntityConditions.Add(new Condition("statuscode", ConditionOperator.Equal, Status.Value));
 			}
 
 			var response = (RetrieveMultipleResponse)serviceContext.Execute(fetch.ToRetrieveMultipleRequest());

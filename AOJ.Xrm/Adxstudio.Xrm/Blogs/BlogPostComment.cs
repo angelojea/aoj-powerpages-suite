@@ -48,9 +48,9 @@ namespace Adxstudio.Xrm.Blogs
 			RatingEnabled = ratingEnabled;
 		}
 
-		public string AnchorName { get; private set; }
+		public string AnchorName { get; }
 
-		public IAuthor Author { get; private set; }
+		public IAuthor Author { get; }
 
 		public ApplicationPath DeletePath
 		{
@@ -67,9 +67,9 @@ namespace Adxstudio.Xrm.Blogs
 			get { return _editable != null && _editable.Value; }
 		}
 
-		public Entity Entity { get; private set; }
+		public Entity Entity { get; }
 
-		public bool IsApproved { get; private set; }
+		public bool IsApproved { get; }
 
 		public string Content
 		{
@@ -86,8 +86,8 @@ namespace Adxstudio.Xrm.Blogs
 			return "comment-{0}".FormatWith(commentId);
 		}
 
-		public IRatingInfo RatingInfo { get; private set; }
+		public IRatingInfo RatingInfo { get; }
 
-		public bool RatingEnabled { get; private set; }
+		public bool RatingEnabled { get; }
 	}
 }

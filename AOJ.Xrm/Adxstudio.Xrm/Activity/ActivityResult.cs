@@ -25,11 +25,11 @@ namespace Adxstudio.Xrm.Activity
 
 		public IPortalComment PortalComment { get; set; }
 
-		public bool CanAppend { get; private set; }
+		public bool CanAppend { get; }
 
-		public bool CanAppendTo { get; private set; }
+		public bool CanAppendTo { get; }
 
-		public bool CanCreate { get; private set; }
+		public bool CanCreate { get; }
 
 		public bool PermissionsExist { get; private set; }
 

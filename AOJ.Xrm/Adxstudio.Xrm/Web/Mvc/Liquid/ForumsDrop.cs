@@ -17,11 +17,11 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 		private readonly IForumThreadAggregationDataAdapter _aggregation;
 
-		private Adxstudio.Xrm.Forums.IDataAdapterDependencies _dependencies;
+		private readonly IDataAdapterDependencies _dependencies;
 
 		private readonly Lazy<ForumDrop[]> _forums;
 
-		public ForumsDrop(IPortalLiquidContext portalLiquidContext, Adxstudio.Xrm.Forums.IDataAdapterDependencies dependencies)
+		public ForumsDrop(IPortalLiquidContext portalLiquidContext, IDataAdapterDependencies dependencies)
 			: base(portalLiquidContext)
 		{
 			if (dependencies == null) throw new ArgumentException("dependencies");

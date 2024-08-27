@@ -10,7 +10,7 @@ namespace Adxstudio.Xrm.Services
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Messages;
 	using Microsoft.Xrm.Sdk.Query;
-	using Adxstudio.Xrm.Services.Query;
+	using Query;
 	using Newtonsoft.Json;
 
 	/// <summary>
@@ -38,7 +38,7 @@ namespace Adxstudio.Xrm.Services
 		/// </summary>
 		public QueryBase Query
 		{
-			get { return this.Request.Query; }
+			get { return Request.Query; }
 		}
 
 		/// <summary>
@@ -48,7 +48,7 @@ namespace Adxstudio.Xrm.Services
 		public FetchMultipleRequest(Fetch fetch)
 			: this(fetch.ToFetchExpression())
 		{
-			this.Fetch = fetch;
+			Fetch = fetch;
 		}
 
 		/// <summary>
@@ -66,11 +66,11 @@ namespace Adxstudio.Xrm.Services
 		/// <param name="request">The wrapped request.</param>
 		private FetchMultipleRequest(RetrieveMultipleRequest request)
 		{
-			this.Request = request;
-			this.ExtensionData = request.ExtensionData;
-			this.Parameters = request.Parameters;
-			this.RequestId = request.RequestId;
-			this.RequestName = request.RequestName;
+			Request = request;
+			ExtensionData = request.ExtensionData;
+			Parameters = request.Parameters;
+			RequestId = request.RequestId;
+			RequestName = request.RequestName;
 		}
 
 		/// <summary>

@@ -57,7 +57,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// Form field.
 		/// </summary>
-		public CrmEntityFormViewField Field { get; private set; }
+		public CrmEntityFormViewField Field { get; }
 
 		//NOTE: this hack is neccessary until we know some other way of determining the display option for boolean fields.  Class ID in formXml determines control type
 		/// <summary>
@@ -229,7 +229,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 				Get = () =>
 				{
 					int value;
-					return int.TryParse(hiddenValue.Value, out value) ? (object)(value == 1) : null;
+					return int.TryParse(hiddenValue.Value, out value) ? value == 1 : null;
 				},
 				Set = obj =>
 				{
@@ -266,7 +266,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 				Get = () =>
 				{
 					int value;
-					return int.TryParse(hiddenValue.Value, out value) ? (object)(value == 1) : null;
+					return int.TryParse(hiddenValue.Value, out value) ? value == 1 : null;
 				},
 				Set = obj =>
 				{
@@ -334,7 +334,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 					Get = () =>
 					{
 						int value;
-						return int.TryParse(listControl.SelectedValue, out value) ? (object)(value == 1) : null;
+						return int.TryParse(listControl.SelectedValue, out value) ? value == 1 : null;
 					},
 					Set = obj =>
 					{

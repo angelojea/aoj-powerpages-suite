@@ -9,11 +9,11 @@ namespace Adxstudio.Xrm.Owin
 	using System.Web;
 	using System.Threading.Tasks;
 	using Microsoft.Owin;
-	using Adxstudio.Xrm.Core.Telemetry;
-	using Adxstudio.Xrm.Decorators;
-	using Adxstudio.Xrm.Diagnostics.Metrics;
-	using Adxstudio.Xrm.Performance;
-	using Adxstudio.Xrm.Performance.AggregateEvent;
+	using Core.Telemetry;
+	using Decorators;
+	using Diagnostics.Metrics;
+	using Performance;
+	using Performance.AggregateEvent;
 
 	/// <summary>
 	/// Encapsulates the Telemetry for requests
@@ -33,7 +33,7 @@ namespace Adxstudio.Xrm.Owin
 		public RequestTelemetryMiddleware(OwinMiddleware next, Func<bool> isPortalConfigured)
 			: base(next)
 		{
-			this.IsPortalConfigured = isPortalConfigured;
+			IsPortalConfigured = isPortalConfigured;
 		}
 
 		/// <summary>
@@ -43,11 +43,11 @@ namespace Adxstudio.Xrm.Owin
 		/// <returns>type: IOwinContext</returns>
 		public override async Task Invoke(IOwinContext context)
 		{
-			this.BeginRequest(context);
+			BeginRequest(context);
 
-			await this.Next.Invoke(context);
+			await Next.Invoke(context);
 
-			this.EndRequest(context);
+			EndRequest(context);
 		}
 
 		/// <summary>
@@ -80,7 +80,7 @@ namespace Adxstudio.Xrm.Owin
 				//// ignore requests to specific extensions
 				&& TelemetryState.IsTelemetryEnabledRequestExtension()
 				//// make sure the portal is configured
-				&& this.IsPortalConfigured())
+				&& IsPortalConfigured())
 			{
 				var requestStartTime = (DateTime)startTime;
 				var elapsedTime = DateTime.UtcNow - requestStartTime;

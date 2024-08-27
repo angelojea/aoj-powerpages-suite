@@ -7,7 +7,7 @@ namespace Adxstudio.Xrm.Json
 {
 	using System;
 	using System.Linq;
-	using Adxstudio.Xrm.Services.Query;
+	using Services.Query;
 
 	/// <summary>
 	/// A <see cref="Condition"/> serialization surrogate class.
@@ -49,18 +49,18 @@ namespace Adxstudio.Xrm.Json
 		{
 			var condition = new Condition
 			{
-				Aggregate = this.Aggregate,
-				Attribute = this.Attribute,
-				Alias = this.Alias,
-				Column = this.Column,
-				EntityName = this.EntityName,
-				Extensions = this.Extensions,
-				Operator = this.Operator,
-				UiHidden = this.UiHidden,
-				UiName = this.UiName,
-				UiType = this.UiType,
-				Value = deserialize(this.Value),
-				Values = this.Values != null ? this.Values.Select(deserialize).ToList() : null
+				Aggregate = Aggregate,
+				Attribute = Attribute,
+				Alias = Alias,
+				Column = Column,
+				EntityName = EntityName,
+				Extensions = Extensions,
+				Operator = Operator,
+				UiHidden = UiHidden,
+				UiName = UiName,
+				UiType = UiType,
+				Value = deserialize(Value),
+				Values = Values != null ? Values.Select(deserialize).ToList() : null
 			};
 
 			return condition;

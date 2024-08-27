@@ -16,10 +16,10 @@ namespace Adxstudio.Xrm.Web.UI.JsonConfiguration
 	/// </summary>
 	public class DownloadActionLink : ViewActionLink
 	{
-		private static string DefaultButtonLabel = "<span class='fa fa-download' aria-hidden='true'></span> " + ResourceManager.GetString("Download_Button_Label");
-		private static string DefaultButtonTooltip = ResourceManager.GetString("Download_Button_Label");
-		private static string DefaultCurrentPageLabel = ResourceManager.GetString("Download_Records_From_Current_Page_Label");
-		private static string DefaultAllPagesLabel = ResourceManager.GetString("Download_Records_From_All_Pages");
+		private static readonly string DefaultButtonLabel = "<span class='fa fa-download' aria-hidden='true'></span> " + ResourceManager.GetString("Download_Button_Label");
+		private static readonly string DefaultButtonTooltip = ResourceManager.GetString("Download_Button_Label");
+		private static readonly string DefaultCurrentPageLabel = ResourceManager.GetString("Download_Records_From_Current_Page_Label");
+		private static readonly string DefaultAllPagesLabel = ResourceManager.GetString("Download_Records_From_All_Pages");
 
 		/// <summary>
 		/// Format of download

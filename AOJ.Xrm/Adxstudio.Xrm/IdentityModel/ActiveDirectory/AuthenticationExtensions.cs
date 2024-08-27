@@ -8,7 +8,7 @@ namespace Adxstudio.Xrm.IdentityModel.ActiveDirectory
 	using System;
 	using System.Security.Cryptography.X509Certificates;
 	using System.Threading.Tasks;
-	using Adxstudio.Xrm.Configuration;
+	using Configuration;
 	using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
 	/// <summary>

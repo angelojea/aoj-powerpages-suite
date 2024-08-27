@@ -11,8 +11,8 @@ namespace Adxstudio.Xrm.AspNet.Mvc
 	using System.Security.Claims;
 	using System.Security.Cryptography;
 	using System.Text;
-	using Adxstudio.Xrm.AspNet.Cms;
-	using Adxstudio.Xrm.AspNet.Identity;
+	using Cms;
+	using Identity;
 	using Microsoft.AspNet.Identity;
 	using Microsoft.AspNet.Identity.Owin;
 	using Microsoft.Owin;

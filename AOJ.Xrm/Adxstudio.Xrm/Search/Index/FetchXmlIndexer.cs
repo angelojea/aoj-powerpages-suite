@@ -9,11 +9,11 @@ namespace Adxstudio.Xrm.Search.Index
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Xml.Linq;
-	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.ContentAccess;
-	using Adxstudio.Xrm.Core.Flighting;
-	using Adxstudio.Xrm.Diagnostics.Trace;
-	using Adxstudio.Xrm.Resources;
+	using Cms;
+	using ContentAccess;
+	using Core.Flighting;
+	using Diagnostics.Trace;
+	using Resources;
 	using Microsoft.Xrm.Portal.Configuration;
 	using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Messages;
@@ -56,121 +56,121 @@ namespace Adxstudio.Xrm.Search.Index
 			_fetchXml = fetchXml;
 			_titleAttributeLogicalName = titleAttributeLogicalName;
 
-			if (!this._fetchXml.ContainsAttribute("modifiedon") && this._fetchXml.LogicalName != "annotation")
+			if (!_fetchXml.ContainsAttribute("modifiedon") && _fetchXml.LogicalName != "annotation")
 			{
-				this._fetchXml.AddAttribute("modifiedon");
+				_fetchXml.AddAttribute("modifiedon");
 			}
 
 			if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.CmsEnabledSearching))
 			{
-				if (this._fetchXml.LogicalName == "adx_blog")
+				if (_fetchXml.LogicalName == "adx_blog")
 				{
-					if (!this._fetchXml.ContainsAttribute("adx_parentpageid"))
+					if (!_fetchXml.ContainsAttribute("adx_parentpageid"))
 					{
-						this._fetchXml.AddAttribute("adx_parentpageid");
+						_fetchXml.AddAttribute("adx_parentpageid");
 					}
 				}
 
-				if (this._fetchXml.LogicalName == "adx_blogpost")
+				if (_fetchXml.LogicalName == "adx_blogpost")
 				{
-					if (!this._fetchXml.ContainsAttribute("adx_blogid"))
+					if (!_fetchXml.ContainsAttribute("adx_blogid"))
 					{
-						this._fetchXml.AddAttribute("adx_blogid");
+						_fetchXml.AddAttribute("adx_blogid");
 					}
 
 					// Add the published attribute as we need it for indexing for CMS
-					if (!this._fetchXml.ContainsAttribute("adx_published"))
+					if (!_fetchXml.ContainsAttribute("adx_published"))
 					{
-						this._fetchXml.AddAttribute("adx_published");
+						_fetchXml.AddAttribute("adx_published");
 					}
 
-					if (!this._fetchXml.ContainsLinkEntity("adx_blog_blogpost"))
+					if (!_fetchXml.ContainsLinkEntity("adx_blog_blogpost"))
 					{
-						this._fetchXml.AddLinkEntity("adx_blog", "adx_blogid", "adx_blogid", "adx_blog_blogpost", "inner");
+						_fetchXml.AddLinkEntity("adx_blog", "adx_blogid", "adx_blogid", "adx_blog_blogpost", "inner");
 					}
-					this._fetchXml.AddLinkEntityAttribute("adx_blog_blogpost", "adx_parentpageid");
-					this._fetchXml.AddLinkEntityAttribute("adx_blog_blogpost", "adx_partialurl");
+					_fetchXml.AddLinkEntityAttribute("adx_blog_blogpost", "adx_parentpageid");
+					_fetchXml.AddLinkEntityAttribute("adx_blog_blogpost", "adx_partialurl");
 
-					if (!this._fetchXml.ContainsAttribute("adx_partialurl"))
+					if (!_fetchXml.ContainsAttribute("adx_partialurl"))
 					{
-						this._fetchXml.AddAttribute("adx_partialurl");
+						_fetchXml.AddAttribute("adx_partialurl");
 					}
 				}
 
-				if (this._fetchXml.LogicalName == "adx_idea")
+				if (_fetchXml.LogicalName == "adx_idea")
 				{
-					if (!this._fetchXml.ContainsAttribute("adx_ideaforumid"))
+					if (!_fetchXml.ContainsAttribute("adx_ideaforumid"))
 					{
-						this._fetchXml.AddAttribute("adx_ideaforumid");
+						_fetchXml.AddAttribute("adx_ideaforumid");
 					}
 
 					// Add the approved flag as this is needed for indexing CMS
-					this._fetchXml.AddConditionalStatement("and", "adx_approved", "eq", "true");
+					_fetchXml.AddConditionalStatement("and", "adx_approved", "eq", "true");
 
-					if (!this._fetchXml.ContainsLinkEntity("adx_idea_ideaforum"))
+					if (!_fetchXml.ContainsLinkEntity("adx_idea_ideaforum"))
 					{
-						this._fetchXml.AddLinkEntity("adx_ideaforum", "adx_ideaforumid", "adx_ideaforumid", "adx_idea_ideaforum", "inner");
+						_fetchXml.AddLinkEntity("adx_ideaforum", "adx_ideaforumid", "adx_ideaforumid", "adx_idea_ideaforum", "inner");
 					}
-					this._fetchXml.AddLinkEntityAttribute("adx_idea_ideaforum", "adx_partialurl");
-					this._fetchXml.AddConditionalStatement("and", "adx_partialurl", "not-null", null, "adx_idea_ideaforum");
+					_fetchXml.AddLinkEntityAttribute("adx_idea_ideaforum", "adx_partialurl");
+					_fetchXml.AddConditionalStatement("and", "adx_partialurl", "not-null", null, "adx_idea_ideaforum");
 
-					this._fetchXml.AddConditionalStatement("and", "adx_partialurl", "not-null");
-					this._fetchXml.AddAttribute("adx_partialurl");
+					_fetchXml.AddConditionalStatement("and", "adx_partialurl", "not-null");
+					_fetchXml.AddAttribute("adx_partialurl");
 				}
 
-				if (this._fetchXml.LogicalName == "adx_communityforumthread")
+				if (_fetchXml.LogicalName == "adx_communityforumthread")
 				{
-					if (!this._fetchXml.ContainsAttribute("adx_forumid"))
+					if (!_fetchXml.ContainsAttribute("adx_forumid"))
 					{
-						this._fetchXml.AddAttribute("adx_forumid");
+						_fetchXml.AddAttribute("adx_forumid");
 					}
 				}
 
-				if (this._fetchXml.LogicalName == "adx_communityforumpost")
+				if (_fetchXml.LogicalName == "adx_communityforumpost")
 				{
-					if (!this._fetchXml.ContainsLinkEntity("adx_communityforumpost_communityforumthread"))
+					if (!_fetchXml.ContainsLinkEntity("adx_communityforumpost_communityforumthread"))
 					{
-						this._fetchXml.AddLinkEntity("adx_communityforumthread", "adx_communityforumthreadid", "adx_forumthreadid", "adx_communityforumpost_communityforumthread", "inner");
+						_fetchXml.AddLinkEntity("adx_communityforumthread", "adx_communityforumthreadid", "adx_forumthreadid", "adx_communityforumpost_communityforumthread", "inner");
 					}
-					this._fetchXml.AddLinkEntityAttribute("adx_communityforumpost_communityforumthread", "adx_forumid");
+					_fetchXml.AddLinkEntityAttribute("adx_communityforumpost_communityforumthread", "adx_forumid");
 				}
 
-				if (this._fetchXml.LogicalName == "adx_webfile")
+				if (_fetchXml.LogicalName == "adx_webfile")
 				{
-					if (!this._fetchXml.ContainsAttribute("adx_parentpageid"))
+					if (!_fetchXml.ContainsAttribute("adx_parentpageid"))
 					{
-						this._fetchXml.AddAttribute("adx_parentpageid");
+						_fetchXml.AddAttribute("adx_parentpageid");
 					}
-					if (!this._fetchXml.ContainsAttribute("adx_partialurl"))
+					if (!_fetchXml.ContainsAttribute("adx_partialurl"))
 					{
-						this._fetchXml.AddAttribute("adx_partialurl");
+						_fetchXml.AddAttribute("adx_partialurl");
 					}
 				}
 
-				if (this._fetchXml.LogicalName == "incident")
+				if (_fetchXml.LogicalName == "incident")
 				{
 					// It is marked as Resolved (1)
-					this._fetchXml.AddConditionalStatement("and", "statecode", "eq", "1");
-					this._fetchXml.AddConditionalStatement("and", "adx_publishtoweb", "eq", "1");
+					_fetchXml.AddConditionalStatement("and", "statecode", "eq", "1");
+					_fetchXml.AddConditionalStatement("and", "adx_publishtoweb", "eq", "1");
 				}
 
 				// CMS filtering for KnowledgeArticles if they don't have these rules then don't add to index.
-				if (this._fetchXml.LogicalName == "knowledgearticle")
+				if (_fetchXml.LogicalName == "knowledgearticle")
 				{
 					// make sure statecode is published = 3
-					this._fetchXml.AddConditionalStatement("and", "statecode", "eq", "3");
-					this._fetchXml.AddConditionalStatement("and", "isrootarticle", "eq", "false");
-					this._fetchXml.AddConditionalStatement("and", "isinternal", "eq", "false");
+					_fetchXml.AddConditionalStatement("and", "statecode", "eq", "3");
+					_fetchXml.AddConditionalStatement("and", "isrootarticle", "eq", "false");
+					_fetchXml.AddConditionalStatement("and", "isinternal", "eq", "false");
 
 					// Add this filter for url filtering
-					this._fetchXml.AddConditionalStatement("and", "articlepublicnumber", "not-null");
+					_fetchXml.AddConditionalStatement("and", "articlepublicnumber", "not-null");
 
-					this.AddRelatedEntityFetch("connection", "connectionid", "record1id",
+					AddRelatedEntityFetch("connection", "connectionid", "record1id",
 						"knowledgearticleid", "record2id", "product", "productid", "record2id", "productid");
 
-					if (this._index.DataContext.AssertEntityExists("adx_contentaccesslevel"))
+					if (_index.DataContext.AssertEntityExists("adx_contentaccesslevel"))
 					{
-						this.AddRelatedEntityFetch("adx_knowledgearticlecontentaccesslevel",
+						AddRelatedEntityFetch("adx_knowledgearticlecontentaccesslevel",
 							"adx_knowledgearticlecontentaccesslevelid", "knowledgearticleid", "knowledgearticleid", "adx_contentaccesslevelid",
 							"adx_contentaccesslevel", "adx_contentaccesslevelid", "adx_contentaccesslevelid", "adx_contentaccesslevelid");
 					}
@@ -189,7 +189,7 @@ namespace Adxstudio.Xrm.Search.Index
 				// This ensures we get knowledge article search result along with annotation in case knowledge article doesn't have keywords contained in annotation
 				if (_index.DisplayNotes)
 				{
-					this.AddNotesLinkEntity(_index.NotesFilter);
+					AddNotesLinkEntity(_index.NotesFilter);
 				}
 
 				_localeConfig = FetchXmlLocaleConfig.CreateKnowledgeArticleConfig();
@@ -203,8 +203,8 @@ namespace Adxstudio.Xrm.Search.Index
 			if (_fetchXml.LogicalName == "annotation")
 			{
 				_fetchXml.AddConditionalStatement("and", "filename", "not-null");
-				this.AddNotesFilter(_index.NotesFilter);
-				this.AddRelatedKnowledgeArticleAndProductFetch();
+				AddNotesFilter(_index.NotesFilter);
+				AddRelatedKnowledgeArticleAndProductFetch();
 			}
 		}
 
@@ -240,13 +240,13 @@ namespace Adxstudio.Xrm.Search.Index
 
 				if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.CmsEnabledSearching))
 				{
-					if (this._fetchXml.LogicalName == "knowledgearticle")
+					if (_fetchXml.LogicalName == "knowledgearticle")
 					{
 						fetchXmlResponse = knowledgeArticleFilter.Aggregate(fetchXmlResponse, "knowledgearticleid", "record2id.productid",
 							"adx_contentaccesslevelid.adx_contentaccesslevelid", "record2id.connectionid", "annotation.filename",
 							"annotation.notetext", "annotation.annotationid");
 					}
-					if (this._fetchXml.LogicalName == "annotation")
+					if (_fetchXml.LogicalName == "annotation")
 					{
 						fetchXmlResponse = knowledgeArticleFilter.Aggregate(fetchXmlResponse, "annotationid", "product.productid");
 					}
@@ -254,7 +254,7 @@ namespace Adxstudio.Xrm.Search.Index
 
 				var resultSet = new FetchXmlResultSet(fetchXmlResponse);
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("FetchXmlResult:LogicalName={0}, Count={1}", EntityNamePrivacy.GetEntityName(this._fetchXml.LogicalName), resultSet.Count()));
+				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("FetchXmlResult:LogicalName={0}, Count={1}", EntityNamePrivacy.GetEntityName(_fetchXml.LogicalName), resultSet.Count()));
 
 				foreach (var document in resultSet.Select(documentFactory.GetDocument))
 				{
@@ -290,7 +290,7 @@ namespace Adxstudio.Xrm.Search.Index
 					</link-entity >
 				</link-entity > ";
 
-			this._fetchXml.AddLinkEntity(XElement.Parse(string.Format(xml, intersectLinkEntityName, intersectLinkEntityFrom,
+			_fetchXml.AddLinkEntity(XElement.Parse(string.Format(xml, intersectLinkEntityName, intersectLinkEntityFrom,
 				intersectLinkEntityTo, intersectLinkEntityAlias, intersectLinkEntityNamePrimaryAttribute, linkEntityName,
 				 linkEntityFrom, linkEntityTo, attributeName)));
 		}
@@ -313,7 +313,7 @@ namespace Adxstudio.Xrm.Search.Index
 								</link-entity >
 							</link-entity >";
 
-			this._fetchXml.AddLinkEntity(XElement.Parse(fetchXml));
+			_fetchXml.AddLinkEntity(XElement.Parse(fetchXml));
 		}
 
 		private void AddNotesFilter(string notePrefix)
@@ -322,7 +322,7 @@ namespace Adxstudio.Xrm.Search.Index
 							<condition attribute='notetext' operator='begins-with' value='{0}' />
 							</filter > ";
 
-			this._fetchXml.AddLinkEntity(XElement.Parse(string.Format(fetchXml, notePrefix)));
+			_fetchXml.AddLinkEntity(XElement.Parse(string.Format(fetchXml, notePrefix)));
 		}
 
 		private void AddNotesLinkEntity(string notePrefix)
@@ -336,7 +336,7 @@ namespace Adxstudio.Xrm.Search.Index
 									<condition attribute='filename' operator='not-null' />
 								</filter>
 							</link-entity>";
-			this._fetchXml.AddLinkEntity(XElement.Parse(string.Format(fetchXml, notePrefix)));
+			_fetchXml.AddLinkEntity(XElement.Parse(string.Format(fetchXml, notePrefix)));
 		}
 	}
 }

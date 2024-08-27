@@ -32,9 +32,9 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			_resourceRegex = new Regex(@"^{0}\.(?<name>[a-zA-Z0-9_\.]+)\.(liquid|json)$".FormatWith(Regex.Escape(Root)), RegexOptions.CultureInvariant);
 		}
 
-		public Assembly Assembly { get; private set; }
+		public Assembly Assembly { get; }
 
-		public string Root { get; private set; }
+		public string Root { get; }
 
 		public IEnumerable<TemplateFileInfo> GetTemplateFiles()
 		{

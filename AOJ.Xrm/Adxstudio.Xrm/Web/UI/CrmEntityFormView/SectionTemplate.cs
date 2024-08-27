@@ -24,7 +24,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 			string description;
 
-			if (sectionNode.TryGetLanguageSpecificLabelValue(this.LanguageCode, out description))
+			if (sectionNode.TryGetLanguageSpecificLabelValue(LanguageCode, out description))
 			{
 				Label = description;
 			}
@@ -44,13 +44,13 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			}
 		}
 
-		public string Label { get; private set; }
+		public string Label { get; }
 
-		public bool ShowLabel { get; private set; }
+		public bool ShowLabel { get; }
 
-		public bool ShowBar { get; private set; }
+		public bool ShowBar { get; }
 
-		protected TableLayoutRowTemplateFactory RowTemplateFactory { get; private set; }
+		protected TableLayoutRowTemplateFactory RowTemplateFactory { get; }
 
 		public override void InstantiateIn(Control container)
 		{

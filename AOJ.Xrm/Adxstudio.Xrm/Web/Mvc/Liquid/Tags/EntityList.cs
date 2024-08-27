@@ -19,10 +19,10 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Metadata;
 	using Microsoft.Xrm.Sdk.Query;
-	using Adxstudio.Xrm.Core;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
-	using Condition = Adxstudio.Xrm.Services.Query.Condition;
+	using Core;
+	using Services;
+	using Services.Query;
+	using Condition = Services.Query.Condition;
 
 	public class EntityList : Block
 	{
@@ -42,7 +42,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 				_variableName = syntaxMatch.Groups["variable"].Value.Trim();
 				_attributes = new Dictionary<string, string>(Template.NamingConvention.StringComparer);
 
-				R.Scan(markup, DotLiquid.Liquid.TagAttributes, (key, value) => _attributes[key] = value);
+				R.Scan(markup, Liquid.TagAttributes, (key, value) => _attributes[key] = value);
 			}
 			else
 			{

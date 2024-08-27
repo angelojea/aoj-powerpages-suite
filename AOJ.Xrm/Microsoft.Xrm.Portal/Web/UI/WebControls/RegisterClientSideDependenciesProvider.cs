@@ -21,13 +21,11 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 			AddStyleReferencesToPage(control.Page);
 		}
 
-		private static readonly string[] ScriptReferencePaths = new[]
-		{
+		private static readonly string[] ScriptReferencePaths = {
 			PortalContextElement.DefaultXrmFilesBaseUri + "/js/xrm-combined-js.aspx"
 		};
 
-		private static readonly string[] StyleReferencePaths = new[]
-		{
+		private static readonly string[] StyleReferencePaths = {
 			PortalContextElement.DefaultXrmFilesBaseUri + "/css/editable.css"
 		};
 

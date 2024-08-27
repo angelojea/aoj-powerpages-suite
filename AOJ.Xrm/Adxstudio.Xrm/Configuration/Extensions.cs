@@ -32,7 +32,7 @@ namespace Adxstudio.Xrm.Configuration
 		{
 			bool result;
 
-			return bool.TryParse(text, out result) ? result : (bool?)null;
+			return bool.TryParse(text, out result) ? result : null;
 		}
 
 		/// <summary>
@@ -44,7 +44,7 @@ namespace Adxstudio.Xrm.Configuration
 		{
 			TimeSpan result;
 
-			return TimeSpan.TryParse(text, out result) ? result : (TimeSpan?)null;
+			return TimeSpan.TryParse(text, out result) ? result : null;
 		}
 	}
 }

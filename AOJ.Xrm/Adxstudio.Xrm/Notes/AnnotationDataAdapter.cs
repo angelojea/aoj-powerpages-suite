@@ -26,17 +26,17 @@ namespace Adxstudio.Xrm.Notes
 	using Microsoft.Xrm.Sdk.Metadata;
 	using Microsoft.Xrm.Sdk.Query;
 	using Newtonsoft.Json;
-	using Filter = Adxstudio.Xrm.Services.Query.Filter;
-	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Cms.Replication;
-	using Adxstudio.Xrm.Metadata;
-	using Adxstudio.Xrm.Security;
-	using Adxstudio.Xrm.Services.Query;
-	using Adxstudio.Xrm.Text;
-	using Adxstudio.Xrm.Web.Handlers;
-	using Adxstudio.Xrm.ContentAccess;
-	using Adxstudio.Xrm.Core.Flighting;
-	using Adxstudio.Xrm.Services;
+	using Filter = Services.Query.Filter;
+	using Cms;
+	using Cms.Replication;
+	using Metadata;
+	using Security;
+	using Services.Query;
+	using Text;
+	using Web.Handlers;
+	using ContentAccess;
+	using Core.Flighting;
+	using Services;
 
 	public class AnnotationDataAdapter : IAnnotationDataAdapter
 	{
@@ -242,8 +242,8 @@ namespace Adxstudio.Xrm.Notes
 
 				if (note.FileAttachment != null)
 				{
-					var acceptMimeTypes = AnnotationDataAdapter.GetAcceptRegex(settings.AcceptMimeTypes);
-					var acceptExtensionTypes = AnnotationDataAdapter.GetAcceptRegex(settings.AcceptExtensionTypes);
+					var acceptMimeTypes = GetAcceptRegex(settings.AcceptMimeTypes);
+					var acceptExtensionTypes = GetAcceptRegex(settings.AcceptExtensionTypes);
 					if (!(acceptExtensionTypes.IsMatch(Path.GetExtension(note.FileAttachment.FileName).ToLower()) ||
 							acceptMimeTypes.IsMatch(note.FileAttachment.MimeType)))
 					{
@@ -967,7 +967,7 @@ namespace Adxstudio.Xrm.Notes
 
 			// Escape any quotes in the filename. (There should rarely if ever be any, but still.)
 			var escaped = filename.Replace(@"""", @"\""");
-			var encoded = HttpUtility.UrlEncode(escaped, System.Text.Encoding.UTF8);
+			var encoded = HttpUtility.UrlEncode(escaped, Encoding.UTF8);
 			// Quote the filename parameter value.
 			contentDisposition.AppendFormat(@";filename=""{0}""", encoded);
 		}

@@ -64,9 +64,9 @@ namespace Adxstudio.Xrm.Search.Analysis
 				return new StandardAnalyzer(version);
 			}
 
-			if (this.stopWords.Any())
+			if (stopWords.Any())
 			{
-				return new SnowballAnalyzer(version, stemmer, this.stopWords);
+				return new SnowballAnalyzer(version, stemmer, stopWords);
 			}
 
 			ISet<string> defaultStopWords;

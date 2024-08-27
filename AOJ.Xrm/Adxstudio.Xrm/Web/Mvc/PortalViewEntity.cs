@@ -61,14 +61,14 @@ namespace Adxstudio.Xrm.Web.Mvc
 			get { return _editable.Value; }
 		}
 
-		public EntityReference EntityReference { get; private set; }
+		public EntityReference EntityReference { get; }
 
 		public string Url
 		{
 			get { return _url.Value; }
 		}
 
-		protected Entity Entity { get; private set; }
+		protected Entity Entity { get; }
 
 		public IPortalViewAttribute GetAttribute(string attributeLogicalName)
 		{

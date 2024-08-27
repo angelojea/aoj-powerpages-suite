@@ -60,7 +60,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		/// <returns>Returns task</returns>
 		public override async Task Invoke(IOwinContext context)
 		{
-			if (object.Equals(context.Request.Path, this.callbackPath))
+			if (Equals(context.Request.Path, callbackPath))
 			{
 				string body = context.GetRequestBody();
 

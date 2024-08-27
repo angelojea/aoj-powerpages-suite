@@ -52,8 +52,8 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			{
 				throw new ArgumentNullException(nameof(website));
 			}
-			this.MaxAge = DefaultMaxAge;
-			this.IncludeSubDomains = true;
+			MaxAge = DefaultMaxAge;
+			IncludeSubDomains = true;
 		}
 	}
 }

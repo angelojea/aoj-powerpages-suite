@@ -14,7 +14,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 	public class EntityCollectionDrop : PortalDrop
 	{
 		private readonly EntityCollection _entityCollection;
-		private Lazy<EntityDrop[]> _entities;
+		private readonly Lazy<EntityDrop[]> _entities;
 
 		public EntityCollectionDrop(IPortalLiquidContext portalLiquidContext, EntityCollection entityCollection) : base(portalLiquidContext)
 		{

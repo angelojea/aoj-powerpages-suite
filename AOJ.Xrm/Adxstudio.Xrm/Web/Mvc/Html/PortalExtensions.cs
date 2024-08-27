@@ -185,7 +185,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 				script.Attributes["type"] = "text/css";
 				script.InnerHtml = @"@import url(""{0}"");".FormatWith(VirtualPathUtility.ToAbsolute(path));
 
-				output.Append(script.ToString());
+				output.Append(script);
 			}
 
 			return new HtmlString(output.ToString());
@@ -340,11 +340,11 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 				IsCurrent = isCurrent;
 			}
 
-			public Entity Entity { get; private set; }
+			public Entity Entity { get; }
 
-			public bool IsCurrent { get; private set; }
+			public bool IsCurrent { get; }
 
-			public bool IsMaster { get; private set; }
+			public bool IsMaster { get; }
 		}
 
 		private static string GetTargetUrl(OrganizationServiceContext serviceContext, RelatedWebsite website, IPortalViewEntity current)
@@ -364,10 +364,10 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 								webPage => webPage.GetAttributeValue<Guid?>("adx_webpageid"),
 								subscriberWebPage => subscriberWebPage.GetAttributeValue<EntityReference>("adx_masterwebpageid").Id,
 								(webPage, subscriberWebPage) => new { webPage, subscriberWebPage })
-							.Where(@t => @t.subscriberWebPage.GetAttributeValue<Guid?>("adx_webpageid") == current.EntityReference.Id)
-							.Where(@t => @t.webPage.GetAttributeValue<EntityReference>("adx_websiteid") == website.Entity.ToEntityReference())
-							.Where(@t => @t.webPage.GetAttributeValue<OptionSetValue>("statecode") != null && @t.webPage.GetAttributeValue<OptionSetValue>("statecode").Value == 0)
-							.Select(@t => @t.webPage);
+							.Where(t => t.subscriberWebPage.GetAttributeValue<Guid?>("adx_webpageid") == current.EntityReference.Id)
+							.Where(t => t.webPage.GetAttributeValue<EntityReference>("adx_websiteid") == website.Entity.ToEntityReference())
+							.Where(t => t.webPage.GetAttributeValue<OptionSetValue>("statecode") != null && t.webPage.GetAttributeValue<OptionSetValue>("statecode").Value == 0)
+							.Select(t => t.webPage);
 
 					var masterWebPage = masterWebPageQuery.FirstOrDefault();
 
@@ -407,9 +407,9 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 		public bool Any { get; private set; }
 
-		public RelatedWebsiteLink Current { get; private set; }
+		public RelatedWebsiteLink Current { get; }
 
-		public IEnumerable<RelatedWebsiteLink> Links { get; private set; }
+		public IEnumerable<RelatedWebsiteLink> Links { get; }
 	}
 
 	public class RelatedWebsiteLink
@@ -421,9 +421,9 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			IsCurrent = isCurrent;
 		}
 
-		public bool IsCurrent { get; private set; }
+		public bool IsCurrent { get; }
 
-		public string Title { get; private set; }
+		public string Title { get; }
 
 		public string Url { get; private set; }
 	}

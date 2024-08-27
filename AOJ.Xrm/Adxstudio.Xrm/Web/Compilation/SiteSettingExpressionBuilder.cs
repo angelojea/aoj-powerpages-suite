@@ -13,7 +13,7 @@ namespace Adxstudio.Xrm.Web.Compilation
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Portal.Web.Compilation;
 	using Microsoft.Xrm.Sdk;
-	using Adxstudio.Xrm.Cms;
+	using Cms;
 
 	/// <summary>
 	/// Expression builder for retrieving site setting content for the current portal.

@@ -37,7 +37,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			Owner = owner as TagCloudDataSource;
 		}
 
-		protected TagCloudDataSource Owner { get; private set; }
+		protected TagCloudDataSource Owner { get; }
 
 		protected override IEnumerable ExecuteSelect(DataSourceSelectArguments arguments)
 		{
@@ -50,9 +50,9 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			IEnumerable<TagCloudDataItem> items = new TagCloudData(
 				Owner.NumberOfWeights,
 				StringComparer.InvariantCultureIgnoreCase,
-				pageTags.Cast<ITagInfo>(),
-				eventTags.Cast<ITagInfo>(),
-				threadTags.Cast<ITagInfo>()).ToList();
+				pageTags,
+				eventTags,
+				threadTags).ToList();
 
 			if (string.Equals(Owner.SortExpression, "TaggedItemCount", StringComparison.InvariantCultureIgnoreCase))
 			{

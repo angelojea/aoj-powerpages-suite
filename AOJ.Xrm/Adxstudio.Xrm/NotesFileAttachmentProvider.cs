@@ -22,7 +22,7 @@ namespace Adxstudio.Xrm
 {
 	internal class NotesFileAttachmentProvider : ICrmEntityFileAttachmentProvider
 	{
-		public string PortalName { get; private set; }
+		public string PortalName { get; }
 
 		public NotesFileAttachmentProvider(string portalName)
 		{
@@ -90,9 +90,9 @@ namespace Adxstudio.Xrm
 				LastModified = lastModified;
 			}
 
-			public DateTime? LastModified { get; private set; }
+			public DateTime? LastModified { get; }
 
-			public string Url { get; private set; }
+			public string Url { get; }
 		}
 	}
 }

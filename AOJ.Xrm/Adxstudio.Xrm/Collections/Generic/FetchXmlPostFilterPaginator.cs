@@ -21,7 +21,7 @@ namespace Adxstudio.Xrm.Collections.Generic
 		private readonly int _initialLimitMultiple;
 		private readonly OrganizationServiceContext _serviceContext;
 		
-		private XDocument _fetchXml;
+		private readonly XDocument _fetchXml;
 
 		public FetchXmlPostFilterPaginator(OrganizationServiceContext serviceContext, XDocument fetchXml, Predicate<Entity> filter, int initialLimitMultiple = 1)
 		{

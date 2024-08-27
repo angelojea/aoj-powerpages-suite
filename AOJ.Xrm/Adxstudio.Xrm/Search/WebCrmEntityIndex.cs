@@ -7,7 +7,7 @@ namespace Adxstudio.Xrm.Search
 {
 	using System;
 	using System.Collections.Generic;
-	using Adxstudio.Xrm.Search.Index;
+	using Index;
 	using Fetch = Adxstudio.Xrm.Services.Query;
 	using Lucene.Net.Analysis;
 	using Lucene.Net.Search;
@@ -78,7 +78,7 @@ namespace Adxstudio.Xrm.Search
 			get { return true; }
 		}
 
-		public virtual Analyzer Analyzer { get; private set; }
+		public virtual Analyzer Analyzer { get; }
 
 		public virtual string ContentFieldName
 		{
@@ -97,7 +97,7 @@ namespace Adxstudio.Xrm.Search
 			}
 		}
 
-		public Directory Directory { get; private set; }
+		public Directory Directory { get; }
 
 		public virtual string IsUrlDefinedFieldName
 		{
@@ -129,7 +129,7 @@ namespace Adxstudio.Xrm.Search
 			get { return _logicalNameFieldName; }
 		}
 
-		public virtual string Name { get; private set; }
+		public virtual string Name { get; }
 
 		public virtual string PrimaryKeyFieldName
 		{
@@ -202,9 +202,9 @@ namespace Adxstudio.Xrm.Search
 			}
 		}
 
-		public Version Version { get; private set; }
+		public Version Version { get; }
 
-		protected virtual string IndexQueryName { get; private set; }
+		protected virtual string IndexQueryName { get; }
 
 		public virtual IEnumerable<ICrmEntityIndexer> GetIndexers()
 		{

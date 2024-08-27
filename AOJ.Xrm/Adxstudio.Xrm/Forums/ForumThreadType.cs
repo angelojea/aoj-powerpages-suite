@@ -33,16 +33,16 @@ namespace Adxstudio.Xrm.Forums
 			if (entity == null) throw new ArgumentNullException("entity");
 		}
 
-		public bool AllowsVoting { get; private set; }
+		public bool AllowsVoting { get; }
 
-		public int DisplayOrder { get; private set; }
+		public int DisplayOrder { get; }
 
-		public EntityReference EntityReference { get; private set; }
+		public EntityReference EntityReference { get; }
 
-		public bool IsDefault { get; private set; }
+		public bool IsDefault { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public bool RequiresAnswer { get; private set; }
+		public bool RequiresAnswer { get; }
 	}
 }

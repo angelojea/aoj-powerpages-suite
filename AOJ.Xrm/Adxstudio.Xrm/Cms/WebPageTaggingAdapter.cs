@@ -34,9 +34,9 @@ namespace Adxstudio.Xrm.Cms
 			ServiceContext = PortalCrmConfigurationManager.CreateServiceContext(PortalName);
 		}
 
-		public string PortalName { get; private set; }
+		public string PortalName { get; }
 
-		public OrganizationServiceContext ServiceContext { get; private set; }
+		public OrganizationServiceContext ServiceContext { get; }
 
 		public IEnumerable<Entity> Tags
 		{
@@ -48,7 +48,7 @@ namespace Adxstudio.Xrm.Cms
 			}
 		}
 
-		public Entity WebPage { get; private set; }
+		public Entity WebPage { get; }
 
 		/// <summary>
 		/// Adds a tag association by name to <see cref="WebPage"/>, through <see cref="OrganizationServiceContext"/>.

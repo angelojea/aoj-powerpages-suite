@@ -39,16 +39,16 @@ namespace Adxstudio.Xrm.Services
 		{
 			get
 			{
-				if (this.Request.EnforceSingle)
+				if (Request.EnforceSingle)
 				{
-					return this.Response.EntityCollection.Entities.Count > 1
+					return Response.EntityCollection.Entities.Count > 1
 						? null
-						: this.Response.EntityCollection.Entities.SingleOrDefault();
+						: Response.EntityCollection.Entities.SingleOrDefault();
 				}
 
-				return this.Request.EnforceFirst 
-					? this.Response.EntityCollection.Entities.First() 
-					: this.Response.EntityCollection.Entities.FirstOrDefault();
+				return Request.EnforceFirst 
+					? Response.EntityCollection.Entities.First() 
+					: Response.EntityCollection.Entities.FirstOrDefault();
 			}
 		}
 
@@ -59,11 +59,11 @@ namespace Adxstudio.Xrm.Services
 		/// <param name="response">The wrapped response.</param>
 		public RetrieveSingleResponse(RetrieveSingleRequest request, RetrieveMultipleResponse response)
 		{
-			this.Request = request;
-			this.Response = response;
-			this.ExtensionData = response.ExtensionData;
-			this.Results = response.Results;
-			this.ResponseName = response.ResponseName;
+			Request = request;
+			Response = response;
+			ExtensionData = response.ExtensionData;
+			Results = response.Results;
+			ResponseName = response.ResponseName;
 		}
 
 		/// <summary>

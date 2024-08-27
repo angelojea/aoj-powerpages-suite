@@ -8,11 +8,11 @@ namespace Adxstudio.Xrm.Cms
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using Adxstudio.Xrm.Resources;
+	using Resources;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Sdk;
 	using Newtonsoft.Json.Linq;
-	using Adxstudio.Xrm.Cms.SolutionVersions;
+	using SolutionVersions;
 
 	[Serializable]
 	public abstract class EntityNode
@@ -189,8 +189,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class PublishingStateNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_publishingstateid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_name", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_displayorder", BaseSolutionVersions.NaosAndOlderVersions),
@@ -229,8 +228,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class WebRoleNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_webroleid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_name", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_authenticatedusersrole", BaseSolutionVersions.NaosAndOlderVersions),
@@ -289,8 +287,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class WebPageAccessControlRuleNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_webpageaccesscontrolruleid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_name", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_description", BaseSolutionVersions.NaosAndOlderVersions),
@@ -341,8 +338,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class WebPageNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_webpageid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_name", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_authorid", BaseSolutionVersions.NaosAndOlderVersions),
@@ -384,8 +380,7 @@ namespace Adxstudio.Xrm.Cms
 			new EntityNodeColumn("adx_alloworigin", BaseSolutionVersions.PotassiumVersion),
 		};
 
-		public static readonly string[] ColumnSetWebForms = new[]
-		{
+		public static readonly string[] ColumnSetWebForms = {
 			"adx_entityform",
 			"adx_entitylist",
 			"adx_webform",
@@ -444,23 +439,23 @@ namespace Adxstudio.Xrm.Cms
 			get
 			{
 				// Property is language-agnostic, so return the Root WebPage's copy of this, unless this is the Root.
-				if (this.IsRoot == false && this.RootWebPage != null && !this.RootWebPage.IsReference)
+				if (IsRoot == false && RootWebPage != null && !RootWebPage.IsReference)
 				{
-					if (this == this.RootWebPage)
+					if (this == RootWebPage)
 					{
-						ADXTrace.Instance.TraceError(TraceCategory.Application, $"Invalid content: Cyclic reference on RootWebPage: {this.Id}");
+						ADXTrace.Instance.TraceError(TraceCategory.Application, $"Invalid content: Cyclic reference on RootWebPage: {Id}");
 					}
-					else if (this.RootWebPage.IsRoot == false)
+					else if (RootWebPage.IsRoot == false)
 					{
-						ADXTrace.Instance.TraceError(TraceCategory.Application, $"Invalid content: RootWebPage lookup is not root: {this.Id}");
+						ADXTrace.Instance.TraceError(TraceCategory.Application, $"Invalid content: RootWebPage lookup is not root: {Id}");
 					}
-					else if (this.RootWebPage.WebPageAccessControlRules != null)
+					else if (RootWebPage.WebPageAccessControlRules != null)
 					{
 						// Return a memberwise clone of the root's WebPageAccessControlRules so even if caller removes items from the collection, it won't affect the root's copy.
-						return new List<WebPageAccessControlRuleNode>(this.RootWebPage.WebPageAccessControlRules);
+						return new List<WebPageAccessControlRuleNode>(RootWebPage.WebPageAccessControlRules);
 					}
 				}
-				return this._webPageAccessControlRules;
+				return _webPageAccessControlRules;
 			}
 		}
 
@@ -469,23 +464,23 @@ namespace Adxstudio.Xrm.Cms
 			get
 			{
 				// Property is language-agnostic, so return the Root WebPage's copy of this, unless this is the Root.
-				if (this.IsRoot == false && this.RootWebPage != null && !this.RootWebPage.IsReference)
+				if (IsRoot == false && RootWebPage != null && !RootWebPage.IsReference)
 				{
-					if (this == this.RootWebPage)
+					if (this == RootWebPage)
 					{
-						ADXTrace.Instance.TraceError(TraceCategory.Application, $"Invalid content: Cyclic reference on RootWebPage: {this.Id}");
+						ADXTrace.Instance.TraceError(TraceCategory.Application, $"Invalid content: Cyclic reference on RootWebPage: {Id}");
 					}
-					else if (this.RootWebPage.IsRoot == false)
+					else if (RootWebPage.IsRoot == false)
 					{
-						ADXTrace.Instance.TraceError(TraceCategory.Application, $"Invalid content: RootWebPage lookup is not root: {this.Id}");
+						ADXTrace.Instance.TraceError(TraceCategory.Application, $"Invalid content: RootWebPage lookup is not root: {Id}");
 					}
-					else if (this.RootWebPage.WebFiles != null)
+					else if (RootWebPage.WebFiles != null)
 					{
 						// Return a memberwise clone of the root's WebFiles so even if caller removes items from the collection, it won't affect the root's copy.
-						return new List<WebFileNode>(this.RootWebPage.WebFiles);
+						return new List<WebFileNode>(RootWebPage.WebFiles);
 					}
 				}
-				return this._webFiles;
+				return _webFiles;
 			}
 		}
 
@@ -505,8 +500,8 @@ namespace Adxstudio.Xrm.Cms
 			PublishingState = entity.GetEntityIdentifier<PublishingStateNode>("adx_publishingstateid", alias);
 			Subject = entity.GetEntityIdentifier<SubjectNode>("adx_subjectid", alias);
 			Website = entity.GetEntityIdentifier<WebsiteNode>("adx_websiteid", alias);
-			this.RootWebPage = entity.GetEntityIdentifier<WebPageNode>("adx_rootwebpageid", alias);
-			this.WebPageLanguage = entity.GetEntityIdentifier<WebsiteLanguageNode>("adx_webpagelanguageid", alias);
+			RootWebPage = entity.GetEntityIdentifier<WebPageNode>("adx_rootwebpageid", alias);
+			WebPageLanguage = entity.GetEntityIdentifier<WebsiteLanguageNode>("adx_webpagelanguageid", alias);
 			IsCircularReference = null;
 
 			Shortcuts = new List<ShortcutNode>();
@@ -516,8 +511,8 @@ namespace Adxstudio.Xrm.Cms
 			Subscribers = new List<WebPageNode>();
 			Forums = new List<ForumNode>();
 
-			this._webPageAccessControlRules = new List<WebPageAccessControlRuleNode>();
-			this._webFiles = new List<WebFileNode>();
+			_webPageAccessControlRules = new List<WebPageAccessControlRuleNode>();
+			_webFiles = new List<WebFileNode>();
 		}
 
 		protected override JObject ToJson(JObject d)
@@ -613,8 +608,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class WebLinkSetNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_weblinksetid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_name", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_copy", BaseSolutionVersions.NaosAndOlderVersions),
@@ -649,8 +643,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class WebLinkNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_weblinkid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_name", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_createdbyipaddress", BaseSolutionVersions.NaosAndOlderVersions),
@@ -712,8 +705,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class WebsiteAccessNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_websiteaccessid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_name", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_managecontentsnippets", BaseSolutionVersions.NaosAndOlderVersions),
@@ -754,8 +746,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class SubjectNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("subjectid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("title", BaseSolutionVersions.NaosAndOlderVersions),
 		};
@@ -774,8 +765,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class WebFileNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_webfileid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_name", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_cloudblobaddress", BaseSolutionVersions.NaosAndOlderVersions),
@@ -804,8 +794,7 @@ namespace Adxstudio.Xrm.Cms
 			new EntityNodeColumn("adx_alloworigin", BaseSolutionVersions.PotassiumVersion),
 		};
 
-		public static readonly string[] ColumnSetBlogs = new[]
-		{
+		public static readonly string[] ColumnSetBlogs = {
 			"adx_blogpostid",
 		};
 
@@ -887,8 +876,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class SiteMarkerNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_sitemarkerid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_name", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_pageid", BaseSolutionVersions.NaosAndOlderVersions),
@@ -920,8 +908,7 @@ namespace Adxstudio.Xrm.Cms
 			WebTemplate = 756150001
 		}
 
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_pagetemplateid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_name", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_isdefault", BaseSolutionVersions.NaosAndOlderVersions),
@@ -959,8 +946,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class ContentSnippetNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_contentsnippetid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_name", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_createdbyipaddress", BaseSolutionVersions.NaosAndOlderVersions),
@@ -1003,8 +989,7 @@ namespace Adxstudio.Xrm.Cms
 		/// <summary>
 		/// The column set for Ideas
 		/// </summary>
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_ideaforumid", IdeaSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_name", IdeaSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_websiteid", IdeaSolutionVersions.NaosAndOlderVersions),
@@ -1019,7 +1004,7 @@ namespace Adxstudio.Xrm.Cms
 		{
 			get
 			{
-				return this.GetValue<int?>("statecode");
+				return GetValue<int?>("statecode");
 			}
 		}
 
@@ -1030,7 +1015,7 @@ namespace Adxstudio.Xrm.Cms
 		{
 			get
 			{
-				return this.GetValue<int?>("statuscode");
+				return GetValue<int?>("statuscode");
 			}
 		}
 
@@ -1049,7 +1034,7 @@ namespace Adxstudio.Xrm.Cms
 		/// </summary>
 		public IEnumerable<WebRoleNode> WebRolesRead
 		{
-			get { return this.WebRoleReadIntersects.Select(rulerole => rulerole.WebRole); }
+			get { return WebRoleReadIntersects.Select(rulerole => rulerole.WebRole); }
 		}
 
 		/// <summary>
@@ -1062,7 +1047,7 @@ namespace Adxstudio.Xrm.Cms
 		/// </summary>
 		public IEnumerable<WebRoleNode> WebRolesWrite
 		{
-			get { return this.WebRoleWriteIntersects.Select(rulerole => rulerole.WebRole); }
+			get { return WebRoleWriteIntersects.Select(rulerole => rulerole.WebRole); }
 		}
 
 		/// <summary>
@@ -1088,10 +1073,10 @@ namespace Adxstudio.Xrm.Cms
 		public IdeaForumNode(Entity entity, string alias)
 			: base(entity, alias, "adx_ideaforum", "adx_ideaforumid")
 		{
-			this.WebRoleReadIntersects = new List<IdeaForumReadToWebRoleNode>();
-			this.WebRoleWriteIntersects = new List<IdeaForumWriteToWebRoleNode>();
+			WebRoleReadIntersects = new List<IdeaForumReadToWebRoleNode>();
+			WebRoleWriteIntersects = new List<IdeaForumWriteToWebRoleNode>();
 
-			this.Website = entity.GetEntityIdentifier<WebsiteNode>("adx_websiteid", alias);
+			Website = entity.GetEntityIdentifier<WebsiteNode>("adx_websiteid", alias);
 		}
 
 	}
@@ -1105,8 +1090,7 @@ namespace Adxstudio.Xrm.Cms
 		/// <summary>
 		/// The column set.
 		/// </summary>
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_webrole_ideaforum_readid", IdeaSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_ideaforumid", IdeaSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_webroleid", IdeaSolutionVersions.NaosAndOlderVersions),
@@ -1150,8 +1134,8 @@ namespace Adxstudio.Xrm.Cms
 		public IdeaForumReadToWebRoleNode(Entity entity, string alias)
 			: base(entity, alias, "adx_webrole_ideaforum_read", "adx_webrole_ideaforum_readid", null)
 		{
-			this.Idea = entity.GetIntersectEntityIdentifier<IdeaForumNode>("adx_ideaforum", "adx_ideaforumid", alias);
-			this.WebRole = entity.GetIntersectEntityIdentifier<WebRoleNode>("adx_webrole", "adx_webroleid", alias);
+			Idea = entity.GetIntersectEntityIdentifier<IdeaForumNode>("adx_ideaforum", "adx_ideaforumid", alias);
+			WebRole = entity.GetIntersectEntityIdentifier<WebRoleNode>("adx_webrole", "adx_webroleid", alias);
 		}
 	}
 
@@ -1164,8 +1148,7 @@ namespace Adxstudio.Xrm.Cms
 		/// <summary>
 		/// The column set.
 		/// </summary>
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_webrole_ideaforum_writeid", IdeaSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_ideaforumid", IdeaSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_webroleid", IdeaSolutionVersions.NaosAndOlderVersions),
@@ -1209,8 +1192,8 @@ namespace Adxstudio.Xrm.Cms
 		public IdeaForumWriteToWebRoleNode(Entity entity, string alias)
 			: base(entity, alias, "adx_webrole_ideaforum_write", "adx_webrole_ideaforum_writeid", null)
 		{
-			this.Idea = entity.GetIntersectEntityIdentifier<IdeaForumNode>("adx_ideaforum", "adx_ideaforumid", alias);
-			this.WebRole = entity.GetIntersectEntityIdentifier<WebRoleNode>("adx_webrole", "adx_webroleid", alias);
+			Idea = entity.GetIntersectEntityIdentifier<IdeaForumNode>("adx_ideaforum", "adx_ideaforumid", alias);
+			WebRole = entity.GetIntersectEntityIdentifier<WebRoleNode>("adx_webrole", "adx_webroleid", alias);
 		}
 	}
 
@@ -1220,8 +1203,7 @@ namespace Adxstudio.Xrm.Cms
 		/// <summary>
 		/// The column set for Fourms
 		/// </summary>
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_communityforumid", ForumSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_parentpageid", ForumSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_name", ForumSolutionVersions.NaosAndOlderVersions),
@@ -1260,7 +1242,7 @@ namespace Adxstudio.Xrm.Cms
 		{
 			get
 			{
-				return this.GetValue<string>("adx_partialurl");
+				return GetValue<string>("adx_partialurl");
 			}
 		}
 
@@ -1271,7 +1253,7 @@ namespace Adxstudio.Xrm.Cms
 		{
 			get
 			{
-				return this.GetValue<int?>("statecode");
+				return GetValue<int?>("statecode");
 			}
 		}
 
@@ -1282,7 +1264,7 @@ namespace Adxstudio.Xrm.Cms
 		{
 			get
 			{
-				return this.GetValue<int?>("statuscode");
+				return GetValue<int?>("statuscode");
 			}
 		}
 
@@ -1296,10 +1278,10 @@ namespace Adxstudio.Xrm.Cms
 		public ForumNode(Entity entity, string alias)
 			: base(entity, alias, "adx_communityforum", "adx_communityforumid")
 		{
-			this.Website = entity.GetEntityIdentifier<WebsiteNode>("adx_websiteid", alias);
-			this.ParentPage = entity.GetEntityIdentifier<WebPageNode>("adx_parentpageid", alias);
-			this.PublishingState = entity.GetEntityIdentifier<PublishingStateNode>("adx_publishingstateid", alias);
-			this.ForumAccessPermissions = new List<ForumAccessPermissionNode>();
+			Website = entity.GetEntityIdentifier<WebsiteNode>("adx_websiteid", alias);
+			ParentPage = entity.GetEntityIdentifier<WebPageNode>("adx_parentpageid", alias);
+			PublishingState = entity.GetEntityIdentifier<PublishingStateNode>("adx_publishingstateid", alias);
+			ForumAccessPermissions = new List<ForumAccessPermissionNode>();
 		}
 	}
 
@@ -1310,8 +1292,7 @@ namespace Adxstudio.Xrm.Cms
 		/// <summary>
 		/// The column set for Fourms
 		/// </summary>
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_communityforumaccesspermissionid", ForumSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_forumid", ForumSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_name", ForumSolutionVersions.NaosAndOlderVersions),
@@ -1327,7 +1308,7 @@ namespace Adxstudio.Xrm.Cms
 		{
 			get
 			{
-				return this.GetValue<int>("adx_right").ToEnum<RightOption>();
+				return GetValue<int>("adx_right").ToEnum<RightOption>();
 			}
 		}
 
@@ -1355,7 +1336,7 @@ namespace Adxstudio.Xrm.Cms
 		/// </summary>
 		public IEnumerable<WebRoleNode> WebRoles
 		{
-			get { return this.WebRoleIntersect.Select(rulerole => rulerole.WebRole); }
+			get { return WebRoleIntersect.Select(rulerole => rulerole.WebRole); }
 		}
 
 		/// <summary>
@@ -1365,7 +1346,7 @@ namespace Adxstudio.Xrm.Cms
 		{
 			get
 			{
-				return this.GetValue<int?>("statecode");
+				return GetValue<int?>("statecode");
 			}
 		}
 
@@ -1376,7 +1357,7 @@ namespace Adxstudio.Xrm.Cms
 		{
 			get
 			{
-				return this.GetValue<int?>("statuscode");
+				return GetValue<int?>("statuscode");
 			}
 		}
 
@@ -1403,9 +1384,9 @@ namespace Adxstudio.Xrm.Cms
 		public ForumAccessPermissionNode(Entity entity, string alias)
 			: base(entity, alias, "adx_communityforumaccesspermission", "adx_communityforumaccesspermissionid")
 		{
-			this.Forum = entity.GetEntityIdentifier<ForumNode>("adx_forumid", alias);
+			Forum = entity.GetEntityIdentifier<ForumNode>("adx_forumid", alias);
 
-			this.WebRoleIntersect = new List<ForumAccessPermissionsToWebRoleNode>();
+			WebRoleIntersect = new List<ForumAccessPermissionsToWebRoleNode>();
 		}
 
 	}
@@ -1416,8 +1397,7 @@ namespace Adxstudio.Xrm.Cms
 		/// <summary>
 		/// The column set.
 		/// </summary>
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_communityforumaccesspermission_webroleid", ForumSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_communityforumaccesspermissionid", ForumSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_webroleid", ForumSolutionVersions.NaosAndOlderVersions),
@@ -1461,16 +1441,15 @@ namespace Adxstudio.Xrm.Cms
 		public ForumAccessPermissionsToWebRoleNode(Entity entity, string alias)
 			: base(entity, alias, "adx_communityforumaccesspermission_webrole", "adx_communityforumaccesspermission_webroleid", null)
 		{
-			this.ForumAccessPermission = entity.GetIntersectEntityIdentifier<ForumAccessPermissionNode>("adx_communityforumaccesspermission", "adx_communityforumaccesspermissionid", alias);
-			this.WebRole = entity.GetIntersectEntityIdentifier<WebRoleNode>("adx_webrole", "adx_webroleid", alias);
+			ForumAccessPermission = entity.GetIntersectEntityIdentifier<ForumAccessPermissionNode>("adx_communityforumaccesspermission", "adx_communityforumaccesspermissionid", alias);
+			WebRole = entity.GetIntersectEntityIdentifier<WebRoleNode>("adx_webrole", "adx_webroleid", alias);
 		}
 	}
 
 	[Serializable]
 	public class ShortcutNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_shortcutid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_name", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_description", BaseSolutionVersions.NaosAndOlderVersions),
@@ -1533,8 +1512,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class AnnotationNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("annotationid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("subject", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("createdon", BaseSolutionVersions.NaosAndOlderVersions),
@@ -1584,8 +1562,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class WebPageAccessControlRuleToPublishingStateNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_accesscontrolrule_publishingstateid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_webpageaccesscontrolruleid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_publishingstateid", BaseSolutionVersions.NaosAndOlderVersions),
@@ -1611,8 +1588,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class WebPageAccessControlRuleToWebRoleNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_webpageaccesscontrolrule_webroleid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_webpageaccesscontrolruleid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_webroleid", BaseSolutionVersions.NaosAndOlderVersions),
@@ -1638,8 +1614,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class WebsiteAccessToWebRoleNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_websiteaccess_webroleid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_websiteaccessid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_webroleid", BaseSolutionVersions.NaosAndOlderVersions),
@@ -1665,8 +1640,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class PortalLanguageNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_portallanguageid", BaseSolutionVersions.CentaurusVersion),
 			new EntityNodeColumn("adx_name", BaseSolutionVersions.CentaurusVersion),
 			new EntityNodeColumn("adx_lcid", BaseSolutionVersions.CentaurusVersion),
@@ -1696,8 +1670,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class WebsiteLanguageNode : EntityNode
 	{
-		public static readonly EntityNodeColumn[] ColumnSet = new[]
-		{
+		public static readonly EntityNodeColumn[] ColumnSet = {
 			new EntityNodeColumn("adx_websitelanguageid", BaseSolutionVersions.CentaurusVersion),
 			new EntityNodeColumn("adx_websiteid", BaseSolutionVersions.CentaurusVersion),
 			new EntityNodeColumn("adx_publishingstate", BaseSolutionVersions.CentaurusVersion),
@@ -1729,8 +1702,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class BlogNode : EntityNode
 	{
-		private static readonly EntityNodeColumn[] columnSet = new[]
-		{
+		private static readonly EntityNodeColumn[] columnSet = {
 			new EntityNodeColumn("adx_blogid", BaseSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_websiteid", BaseSolutionVersions.NaosAndOlderVersions)
 		};
@@ -1746,14 +1718,14 @@ namespace Adxstudio.Xrm.Cms
 
 		public IEnumerable<WebRoleNode> WebRoles
 		{
-			get { return this.WebRoleIntersect.Select(rulerole => rulerole.WebRole); }
+			get { return WebRoleIntersect.Select(rulerole => rulerole.WebRole); }
 		}
 
 		public BlogNode(Entity entity, string alias)
 			: base(entity, alias, "adx_blog", "adx_blogid")
 		{
-			this.Website = entity.GetEntityIdentifier<WebsiteNode>("adx_websiteid", alias);
-			this.WebRoleIntersect = new List<BlogToWebRoleNode>();
+			Website = entity.GetEntityIdentifier<WebsiteNode>("adx_websiteid", alias);
+			WebRoleIntersect = new List<BlogToWebRoleNode>();
 		}
 
 		public BlogNode(EntityReference reference)
@@ -1765,8 +1737,7 @@ namespace Adxstudio.Xrm.Cms
 	[Serializable]
 	public class BlogToWebRoleNode : EntityNode
 	{
-		private static readonly EntityNodeColumn[] columnSet = new[]
-		{
+		private static readonly EntityNodeColumn[] columnSet = {
 			new EntityNodeColumn("adx_blog_webroleid", BlogSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_blogid", BlogSolutionVersions.NaosAndOlderVersions),
 			new EntityNodeColumn("adx_webroleid", BlogSolutionVersions.NaosAndOlderVersions),
@@ -1791,8 +1762,8 @@ namespace Adxstudio.Xrm.Cms
 		public BlogToWebRoleNode(Entity entity, string alias)
 			: base(entity, alias, "adx_blog_webrole", "adx_blog_webroleid", null)
 		{
-			this.Blog = entity.GetIntersectEntityIdentifier<BlogNode>("adx_blog", "adx_blogid", alias);
-			this.WebRole = entity.GetIntersectEntityIdentifier<WebRoleNode>("adx_webrole", "adx_webroleid", alias);
+			Blog = entity.GetIntersectEntityIdentifier<BlogNode>("adx_blog", "adx_blogid", alias);
+			WebRole = entity.GetIntersectEntityIdentifier<WebRoleNode>("adx_webrole", "adx_webroleid", alias);
 		}
 	}
 }

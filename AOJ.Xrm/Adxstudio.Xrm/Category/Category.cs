@@ -25,39 +25,39 @@ namespace Adxstudio.Xrm.Category
         /// <summary>
         /// Category Id
         /// </summary>
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
 
         /// <summary>
         /// Category Title
         /// </summary>
-        public string Title { get; private set; }
+        public string Title { get; }
 
         /// <summary>
         /// Category Number
         /// </summary>
-        public string CategoryNumber { get; private set; }
+        public string CategoryNumber { get; }
 
         /// <summary>
         /// Entity to hold the Category entity
         /// </summary>
-        public Entity Entity { get; private set; }
+        public Entity Entity { get; }
 
         /// <summary>
         /// Entity Reference to hold the Category reference
         /// </summary>
-        public EntityReference EntityReference { get; private set; }
+        public EntityReference EntityReference { get; }
 
         /// <summary>
         /// Entity Reference to hold the Parent category reference
         /// </summary>
-        public EntityReference ParentCategory { get; private set; }
+        public EntityReference ParentCategory { get; }
 
         /// <summary>
         /// Category URL
         /// </summary>
         public string Url
         {
-            get { return this.url.Value; }
+            get { return url.Value; }
         }
 
         /// <summary>
@@ -71,11 +71,11 @@ namespace Adxstudio.Xrm.Category
 
             Entity = category;
             EntityReference = category.ToEntityReference();
-            this.Id = category.Id;
-            this.Title = category.GetAttributeValue<string>("title");
-            this.CategoryNumber = category.GetAttributeValue<string>("categorynumber");
-            this.url = new Lazy<string>(this.GetUrl, LazyThreadSafetyMode.None);
-            this.ParentCategory = category.GetAttributeValue<EntityReference>("parentcategoryid");
+            Id = category.Id;
+            Title = category.GetAttributeValue<string>("title");
+            CategoryNumber = category.GetAttributeValue<string>("categorynumber");
+            url = new Lazy<string>(GetUrl, LazyThreadSafetyMode.None);
+            ParentCategory = category.GetAttributeValue<EntityReference>("parentcategoryid");
         }
 
         /// <summary>

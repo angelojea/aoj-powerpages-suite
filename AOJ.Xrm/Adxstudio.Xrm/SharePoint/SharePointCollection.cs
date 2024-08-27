@@ -26,11 +26,11 @@ namespace Adxstudio.Xrm.SharePoint
 			TotalCount = totalCount;
 		}
 
-		public bool AccessDenied { get; private set; }
+		public bool AccessDenied { get; }
 
-		public string PagingInfo { get; private set; }
+		public string PagingInfo { get; }
 		
-		public int TotalCount { get; private set; }
+		public int TotalCount { get; }
 
 		public IEnumerable<SharePointItem> SharePointItems { get; set; }
 

@@ -31,7 +31,7 @@ namespace Adxstudio.Xrm.Web.UI
 			Container = container;
 		}
 
-		protected Control Container { get; private set; }
+		protected Control Container { get; }
 
 		public void AddAttribute(string name, string value)
 		{
@@ -49,8 +49,6 @@ namespace Adxstudio.Xrm.Web.UI
 			if (webControl != null)
 			{
 				webControl.Attributes[name] = value;
-
-				return;
 			}
 		}
 

@@ -43,11 +43,11 @@ namespace Adxstudio.Xrm.Cms
 
 		protected EntityReference RateableReference { get; set; }
 
-		protected IDataAdapterDependencies Dependencies { get; private set; }
+		protected IDataAdapterDependencies Dependencies { get; }
 
 		protected IRatingInfo RatingInfo { get; set; }
 
-		private string LogicalName { get; set; }
+		private string LogicalName { get; }
 
 		public virtual bool RatingsEnabled
 		{
@@ -134,7 +134,7 @@ namespace Adxstudio.Xrm.Cms
 
 				ratingSum = ratingSum + value;
 
-				averageRating = (double)ratingSum / (double)totalCount;
+				averageRating = ratingSum / (double)totalCount;
 			}
 
 			RatingInfo = new RatingInfo(yesCount, noCount, averageRating, totalCount, ratingSum);
@@ -308,7 +308,7 @@ namespace Adxstudio.Xrm.Cms
 		/// <returns>EntityMetadata</returns>
 		private EntityMetadata GetRelatedEntityMetadata(OrganizationServiceContext serviceContext)
 		{
-			var metadataRequest = new RetrieveEntityRequest()
+			var metadataRequest = new RetrieveEntityRequest
 			{
 				EntityFilters = EntityFilters.All,
 				LogicalName = LogicalName,

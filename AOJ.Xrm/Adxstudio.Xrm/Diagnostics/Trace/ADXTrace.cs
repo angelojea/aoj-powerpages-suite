@@ -8,9 +8,9 @@ namespace Adxstudio.Xrm
 	using System;
 	using System.Diagnostics;
 	using System.Diagnostics.Tracing;
-	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.Core.Telemetry.EventSources;
-	using Adxstudio.Xrm.Diagnostics.Trace;
+	using Configuration;
+	using Core.Telemetry.EventSources;
+	using Diagnostics.Trace;
 
 	/// <summary>
 	/// Trace implementation for ADX which will emit ETW events.
@@ -74,17 +74,17 @@ namespace Adxstudio.Xrm
 		[NonEvent]
 		public void TraceError(TraceCategory category, string message, [System.Runtime.CompilerServices.CallerMemberName] string memberName = "", [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "", [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
 		{
-			this.TraceError(
+			TraceError(
 				category,
 				message,
 				memberName,
 				sourceFilePath,
 				sourceLineNumber,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 		}
 
 		/// <summary>
@@ -98,17 +98,17 @@ namespace Adxstudio.Xrm
 		[NonEvent]
 		public void TraceWarning(TraceCategory category, string message, [System.Runtime.CompilerServices.CallerMemberName] string memberName = "", [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "", [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
 		{
-			this.TraceWarning(
+			TraceWarning(
 				category,
 				message,
 				memberName,
 				sourceFilePath,
 				sourceLineNumber,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 		}
 
 		/// <summary>
@@ -122,17 +122,17 @@ namespace Adxstudio.Xrm
 		[NonEvent]
 		public void TraceInfo(TraceCategory category, string message, [System.Runtime.CompilerServices.CallerMemberName] string memberName = "", [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "", [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
 		{
-			this.TraceInfo(
+			TraceInfo(
 				category,
 				message,
 				memberName,
 				sourceFilePath,
 				sourceLineNumber,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 		}
 
 		/// <summary>
@@ -146,17 +146,17 @@ namespace Adxstudio.Xrm
 		[NonEvent]
 		public void TraceVerbose(TraceCategory category, string message, [System.Runtime.CompilerServices.CallerMemberName] string memberName = "", [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "", [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
 		{
-			this.TraceVerbose(
+			TraceVerbose(
 				category,
 				message,
 				memberName,
 				sourceFilePath,
 				sourceLineNumber,
-				this.PortalUrl,
-				this.PortalVersion,
-				this.ProductionOrTrial,
-				this.SessionId,
-				this.ElapsedTime());
+				PortalUrl,
+				PortalVersion,
+				ProductionOrTrial,
+				SessionId,
+				ElapsedTime());
 		}
 
 		/// <summary>
@@ -177,7 +177,7 @@ namespace Adxstudio.Xrm
 		{
 			TraceEvent(TraceEventType.Error, EventNames.Error, category, message, memberName, sourceFilePath, sourceLineNumber);
 
-			this.WriteEvent((int)EventNames.Error, category, message, memberName, sourceFilePath, sourceLineNumber, portalUrl, portalVersion, portalProductionOrTrialType, sessionId, elapsedTime);
+			WriteEvent((int)EventNames.Error, category, message, memberName, sourceFilePath, sourceLineNumber, portalUrl, portalVersion, portalProductionOrTrialType, sessionId, elapsedTime);
 		}
 
 		/// <summary>
@@ -198,7 +198,7 @@ namespace Adxstudio.Xrm
 		{
 			TraceEvent(TraceEventType.Warning, EventNames.Warning, category, message, memberName, sourceFilePath, sourceLineNumber);
 
-			this.WriteEvent((int)EventNames.Warning, category, message, memberName, sourceFilePath, sourceLineNumber, portalUrl, portalVersion, portalProductionOrTrialType, sessionId, elapsedTime);
+			WriteEvent((int)EventNames.Warning, category, message, memberName, sourceFilePath, sourceLineNumber, portalUrl, portalVersion, portalProductionOrTrialType, sessionId, elapsedTime);
 		}
 
 		/// <summary>
@@ -219,7 +219,7 @@ namespace Adxstudio.Xrm
 		{
 			TraceEvent(TraceEventType.Information, EventNames.Informational, category, message, memberName, sourceFilePath, sourceLineNumber);
 
-			this.WriteEvent((int)EventNames.Informational, category, message, memberName, sourceFilePath, sourceLineNumber, portalUrl, portalVersion, portalProductionOrTrialType, sessionId, elapsedTime);
+			WriteEvent((int)EventNames.Informational, category, message, memberName, sourceFilePath, sourceLineNumber, portalUrl, portalVersion, portalProductionOrTrialType, sessionId, elapsedTime);
 		}
 
 		/// <summary>
@@ -240,7 +240,7 @@ namespace Adxstudio.Xrm
 		{
 			TraceEvent(TraceEventType.Verbose, EventNames.Verbose, category, message, memberName, sourceFilePath, sourceLineNumber);
 
-			this.WriteEvent((int)EventNames.Verbose, category, message, memberName, sourceFilePath, sourceLineNumber, portalUrl, portalVersion, portalProductionOrTrialType, sessionId, elapsedTime);
+			WriteEvent((int)EventNames.Verbose, category, message, memberName, sourceFilePath, sourceLineNumber, portalUrl, portalVersion, portalProductionOrTrialType, sessionId, elapsedTime);
 		}
 
 		/// <summary>

@@ -9,8 +9,8 @@ namespace Adxstudio.Xrm.Visualizations.Controllers
 	using System.Globalization;
 	using System.Web.Mvc;
 
-	using Adxstudio.Xrm.Web;
-	using Adxstudio.Xrm.Web.Mvc;
+	using Web;
+	using Web.Mvc;
 	using Microsoft.Xrm.Portal.Configuration;
 
 	/// <summary>
@@ -31,9 +31,9 @@ namespace Adxstudio.Xrm.Visualizations.Controllers
 			var portal = PortalCrmConfigurationManager.CreatePortalContext();
 			var context = portal.ServiceContext;
 
-			var crmChartBuilder = new CrmChartBuilder(context, chartId, this.HttpContext.GetContextLanguageInfo(), viewId, languageCode: CultureInfo.CurrentCulture.LCID);
+			var crmChartBuilder = new CrmChartBuilder(context, chartId, HttpContext.GetContextLanguageInfo(), viewId, languageCode: CultureInfo.CurrentCulture.LCID);
 
-			return this.Json(crmChartBuilder, JsonRequestBehavior.AllowGet);
+			return Json(crmChartBuilder, JsonRequestBehavior.AllowGet);
 		}
 	}
 }

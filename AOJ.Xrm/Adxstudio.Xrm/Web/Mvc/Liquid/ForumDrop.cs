@@ -10,7 +10,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 {
 	public class ForumDrop : PortalViewEntityDrop
 	{
-		private IDataAdapterDependencies _dependencies;
+		private readonly IDataAdapterDependencies _dependencies;
 
 		public ForumDrop(IPortalLiquidContext portalLiquidContext, IForum forum, IDataAdapterDependencies dependencies)
 			: base(portalLiquidContext, forum)
@@ -22,7 +22,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			_dependencies = dependencies;
 		}
 
-		protected IForum Forum { get; private set; }
+		protected IForum Forum { get; }
 
 		public string Name
 		{

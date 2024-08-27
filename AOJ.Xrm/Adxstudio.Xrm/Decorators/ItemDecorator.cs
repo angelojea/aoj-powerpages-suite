@@ -72,12 +72,12 @@ namespace Adxstudio.Xrm.Decorators
 		/// <returns>true if successful; false otherwise</returns>
 		public override bool Decorate()
 		{
-			if (!this.IsContextAvailable)
+			if (!IsContextAvailable)
 			{
 				return false;
 			}
 
-			this.Context.Items[ItemDecorator.RequestStartTime] = DateTime.UtcNow;
+			Context.Items[RequestStartTime] = DateTime.UtcNow;
 
 			return true;
 		}
@@ -91,8 +91,8 @@ namespace Adxstudio.Xrm.Decorators
 		{
 			get
 			{
-				return this.IsContextAvailable && this.Context.Items.Contains(key)
-					? this.Context.Items[ItemDecorator.RequestStartTime]
+				return IsContextAvailable && Context.Items.Contains(key)
+					? Context.Items[RequestStartTime]
 					: null;
 			}
 		}

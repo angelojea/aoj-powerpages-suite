@@ -10,7 +10,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 	using System.IO;
 	using System.Text.RegularExpressions;
 	using System.Threading;
-	using Adxstudio.Xrm.Web.Mvc.Html;
+	using Html;
 	using DotLiquid;
 	using DotLiquid.Exceptions;
 	using DotLiquid.Util;
@@ -42,9 +42,9 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 
 			if (syntaxMatch.Success)
 			{
-				this.attributes = new Dictionary<string, string>(Template.NamingConvention.StringComparer);
+				attributes = new Dictionary<string, string>(Template.NamingConvention.StringComparer);
 
-				R.Scan(markup, DotLiquid.Liquid.TagAttributes, (key, value) => this.attributes[key] = value);
+				R.Scan(markup, Liquid.TagAttributes, (key, value) => attributes[key] = value);
 			}
 			else
 			{
@@ -71,7 +71,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 			string chartId;
 			Guid parsedChartId;
 
-			if (!this.TryGetAttributeValue(context, "id", out chartId) || !Guid.TryParse(chartId, out parsedChartId))
+			if (!TryGetAttributeValue(context, "id", out chartId) || !Guid.TryParse(chartId, out parsedChartId))
 			{
 				throw new SyntaxException("Syntax Error in 'chart' tag. Missing required attribute 'id:[string]'");
 			}
@@ -79,7 +79,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 			string viewId;
 			var parsedViewId = Guid.Empty;
 			Guid? outViewId = null;
-			var hasView = this.TryGetAttributeValue(context, "viewid", out viewId) && Guid.TryParse(viewId, out parsedViewId);
+			var hasView = TryGetAttributeValue(context, "viewid", out viewId) && Guid.TryParse(viewId, out parsedViewId);
 
 			if (hasView)
 			{
@@ -88,7 +88,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 
 			string serviceUrl;
 
-			if (!this.TryGetAttributeValue(context, "serviceurl", out serviceUrl))
+			if (!TryGetAttributeValue(context, "serviceurl", out serviceUrl))
 			{
 				serviceUrl = GetLazyServiceUrl(portalLiquidContext).Value;
 			}
@@ -126,7 +126,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 
 			string variable;
 
-			if (!this.attributes.TryGetValue(name, out variable))
+			if (!attributes.TryGetValue(name, out variable))
 			{
 				return false;
 			}

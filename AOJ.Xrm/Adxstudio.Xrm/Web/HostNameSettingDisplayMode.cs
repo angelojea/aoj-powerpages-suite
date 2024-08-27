@@ -18,7 +18,7 @@ namespace Adxstudio.Xrm.Web
 			ContextCondition = IsHostNameMatch;
 		}
 
-		protected string HostName { get; private set; }
+		protected string HostName { get; }
 
 		private bool IsHostNameMatch(HttpContextBase httpContext)
 		{

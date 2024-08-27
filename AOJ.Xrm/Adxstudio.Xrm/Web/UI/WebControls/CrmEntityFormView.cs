@@ -18,15 +18,15 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 	using System.Web.UI.WebControls;
 	using System.Xml.Linq;
 	using System.Xml.XPath;
-	using Adxstudio.Xrm.Cms;
+	using Cms;
 	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.Globalization;
-	using Adxstudio.Xrm.Mapping;
-	using Adxstudio.Xrm.Resources;
+	using Globalization;
+	using Mapping;
+	using Resources;
 	using Adxstudio.Xrm.Security;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Services.Query;
-	using Adxstudio.Xrm.Web.Mvc;
+	using Services;
+	using Services.Query;
+	using Mvc;
 	using Adxstudio.Xrm.Web.UI.CrmEntityFormView;
     using global::AOJ.Configuration;
     using Microsoft.Xrm.Client;
@@ -49,10 +49,8 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 	/// </summary>
 	public class CrmEntityFormView : Microsoft.Xrm.Portal.Web.UI.WebControls.CrmEntityFormView
 	{
-		private string _cellTemplateFactoryType = typeof(CellTemplateFactory).FullName;
 		private static readonly object _eventItemUpdated = new object();
 		private static readonly object _eventItemUpdating = new object();
-		private string _entityDisplayName;
 		private const string JapaneseFormPostfix = " - Japanese";
 
 		private ITemplate _readOnlyItemTemplate;
@@ -185,11 +183,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// The name of newly created entity.
 		/// </summary>
 		[Category("EntityDisplayName")] [Description("The name of the newly created entity.")]
-		public string EntityDisplayName
-		{
-			get { return _entityDisplayName; }
-			set { _entityDisplayName = value; }
-		}
+		public string EntityDisplayName { get; set; }
 
 		/// <summary>
 		/// The description of the field in the metadata will be used as the text for fields' tooltip.
@@ -490,7 +484,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// <summary>
 		/// Template used to render a read-only form.
 		/// </summary>
-		[PersistenceMode(PersistenceMode.InnerProperty), Browsable(false), DefaultValue((string)null)]
+		[PersistenceMode(PersistenceMode.InnerProperty), Browsable(false), DefaultValue(null)]
 		public virtual ITemplate ReadOnlyItemTemplate
 		{
 			get { return _readOnlyItemTemplate ?? new DefaultReadOnlyItemTemplate(); }
@@ -500,7 +494,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// <summary>
 		/// Template used to render a create form.
 		/// </summary>
-		[PersistenceMode(PersistenceMode.InnerProperty), Browsable(false), DefaultValue((string)null)]
+		[PersistenceMode(PersistenceMode.InnerProperty), Browsable(false), DefaultValue(null)]
 		public new ITemplate InsertItemTemplate
 		{
 			get { return _insertItemTemplate ?? new UI.CrmEntityFormView.DefaultInsertItemTemplate(ValidationGroup, SubmitButtonText, SubmitButtonCssClass); }
@@ -510,7 +504,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// <summary>
 		/// Template used to render an edit form.
 		/// </summary>
-		[PersistenceMode(PersistenceMode.InnerProperty), Browsable(false), DefaultValue((string)null)]
+		[PersistenceMode(PersistenceMode.InnerProperty), Browsable(false), DefaultValue(null)]
 		public ITemplate UpdateItemTemplate
 		{
 			get { return _updateItemTemplate ?? new DefaultUpdateItemTemplate(ValidationGroup, string.IsNullOrWhiteSpace(SubmitButtonText) ? DefaultUpdateItemTemplate.DefaultUpdateButtonText : SubmitButtonText, SubmitButtonCssClass); }
@@ -520,7 +514,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// <summary>
 		/// Template used to render an action for navigating to the next step.
 		/// </summary>
-		[PersistenceMode(PersistenceMode.InnerProperty), Browsable(false), DefaultValue((string)null)]
+		[PersistenceMode(PersistenceMode.InnerProperty), Browsable(false), DefaultValue(null)]
 		public ITemplate NextStepTemplate
 		{
 			get { return _nextStepTemplate ?? new DefaultNextStepTemplate(ValidationGroup, NextButtonText, NextButtonCssClass); }
@@ -530,7 +524,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// <summary>
 		/// Template used to render an action for navigating to the previous step.
 		/// </summary>
-		[PersistenceMode(PersistenceMode.InnerProperty), Browsable(false), DefaultValue((string)null)]
+		[PersistenceMode(PersistenceMode.InnerProperty), Browsable(false), DefaultValue(null)]
 		public ITemplate PreviousStepTemplate
 		{
 			get { return _previousStepTemplate ?? new DefaultPreviousStepTemplate(PreviousButtonText, PreviousButtonCssClass); }
@@ -546,11 +540,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		/// <summary>
 		/// CellTemplateFactory class type name to create an instance of.
 		/// </summary>
-		public new string CellTemplateFactoryType
-		{
-			get { return _cellTemplateFactoryType; }
-			set { _cellTemplateFactoryType = value; }
-		}
+		public new string CellTemplateFactoryType { get; set; } = typeof(CellTemplateFactory).FullName;
 
 		internal int StepCount
 		{
@@ -580,7 +570,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			get
 			{
-				return this.Context.GetPortalSolutionsDetails().OrganizationBaseLanguageCode;
+				return Context.GetPortalSolutionsDetails().OrganizationBaseLanguageCode;
 			}
 		}
 
@@ -589,7 +579,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			get
 			{
 				if (_entityNameHiddenField != null) return _entityNameHiddenField;
-				return this.FindControl(string.Format("{0}_EntityName", ID)) as HiddenField;
+				return FindControl(string.Format("{0}_EntityName", ID)) as HiddenField;
 			}
 			set { _entityNameHiddenField = value; }
 		}
@@ -599,7 +589,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			get
 			{
 				if (_entityIdHiddenField != null) return _entityIdHiddenField;
-				return this.FindControl(string.Format("{0}_EntityID", ID)) as HiddenField;
+				return FindControl(string.Format("{0}_EntityID", ID)) as HiddenField;
 			}
 			set { _entityIdHiddenField = value; }
 		}
@@ -609,7 +599,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			get
 			{
 				if (_entityStateHiddenField != null) return _entityStateHiddenField;
-				return this.FindControl(string.Format("{0}_EntityState", ID)) as HiddenField;
+				return FindControl(string.Format("{0}_EntityState", ID)) as HiddenField;
 			}
 			set { _entityStateHiddenField = value; }
 		}
@@ -619,7 +609,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			get
 			{
 				if (_entityStatusHiddenField != null) return _entityStatusHiddenField;
-				return this.FindControl(string.Format("{0}_EntityStatus", ID)) as HiddenField;
+				return FindControl(string.Format("{0}_EntityStatus", ID)) as HiddenField;
 			}
 			set { _entityStatusHiddenField = value; }
 		}
@@ -629,7 +619,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			get
 			{
 				if (_formConfigurationHtmlGenericControl != null) return _formConfigurationHtmlGenericControl;
-				return this.FindControl(string.Format("{0}_EntityLayoutConfig", ID)) as HtmlGenericControl;
+				return FindControl(string.Format("{0}_EntityLayoutConfig", ID)) as HtmlGenericControl;
 			}
 			set { _formConfigurationHtmlGenericControl = value; }
 		}
@@ -669,7 +659,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		public void AOJCreateChildControls(Control container)
         {
-            CssClass = string.Join(" ", new[] { "entity-form", CssClass }).TrimEnd(' ');
+            CssClass = string.Join(" ", "entity-form", CssClass).TrimEnd(' ');
 
             if (string.IsNullOrEmpty(EntityName)) throw new InvalidOperationException("EntityName can't be null or empty.");
 
@@ -712,7 +702,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
             if (string.IsNullOrEmpty(FormName) || !AutoGenerateSteps)
             {
-                this.Page = new Page();
+                Page = new Page();
                 GetFormTemplate().InstantiateIn(this);
 
                 switch (Mode)
@@ -724,7 +714,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
                         InsertItemTemplate.InstantiateIn(container);
                         break;
                     case FormViewMode.ReadOnly:
-                        CssClass = string.Join(" ", new[] { "form-readonly", CssClass }).TrimEnd(' ');
+                        CssClass = string.Join(" ", "form-readonly", CssClass).TrimEnd(' ');
                         ReadOnlyItemTemplate.InstantiateIn(container);
                         MakeControlsReadonly(this);
                         break;
@@ -763,7 +753,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
                     InsertItemTemplate.InstantiateIn(submitStepContainer);
                     break;
                 case FormViewMode.ReadOnly:
-                    CssClass = string.Join(" ", new[] { "form-readonly", CssClass }).TrimEnd(' ');
+                    CssClass = string.Join(" ", "form-readonly", CssClass).TrimEnd(' ');
                     ReadOnlyItemTemplate.InstantiateIn(submitStepContainer);
                     MakeControlsReadonly(this);
                     break;
@@ -773,7 +763,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
         protected override void CreateChildControls()
 		{
-			CssClass = string.Join(" ", new[] { "entity-form", CssClass }).TrimEnd(' ');
+			CssClass = string.Join(" ", "entity-form", CssClass).TrimEnd(' ');
 
 			if (string.IsNullOrEmpty(EntityName)) throw new InvalidOperationException("EntityName can't be null or empty.");
 
@@ -827,7 +817,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						InsertItemTemplate.InstantiateIn(container);
 						break;
 					case FormViewMode.ReadOnly:
-						CssClass = string.Join(" ", new[] { "form-readonly", CssClass }).TrimEnd(' ');
+						CssClass = string.Join(" ", "form-readonly", CssClass).TrimEnd(' ');
 						ReadOnlyItemTemplate.InstantiateIn(container);
 						MakeControlsReadonly(this);
 						break;
@@ -866,7 +856,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					InsertItemTemplate.InstantiateIn(submitStepContainer);
 					break;
 				case FormViewMode.ReadOnly:
-					CssClass = string.Join(" ", new[] { "form-readonly", CssClass }).TrimEnd(' ');
+					CssClass = string.Join(" ", "form-readonly", CssClass).TrimEnd(' ');
 					ReadOnlyItemTemplate.InstantiateIn(submitStepContainer);
 					MakeControlsReadonly(this);
 					break;
@@ -970,8 +960,8 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 							{
 								Conditions = new[]
 								{
-									new Condition("name", ConditionOperator.Equal, this.SavedQueryName),
-									new Condition("returnedtypecode", ConditionOperator.Equal, this.EntityName)
+									new Condition("name", ConditionOperator.Equal, SavedQueryName),
+									new Condition("returnedtypecode", ConditionOperator.Equal, EntityName)
 								}
 							}
 						}
@@ -1012,7 +1002,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					filterExpression.Conditions.Add(new ConditionExpression("type", ConditionOperator.NotEqual, 5));
 				}
 
-				var systemForms = Adxstudio.Xrm.Metadata.OrganizationServiceContextExtensions.GetMultipleSystemFormsWithAllLabels(filterExpression, context);
+				var systemForms = Metadata.OrganizationServiceContextExtensions.GetMultipleSystemFormsWithAllLabels(filterExpression, context);
 
 				var systemForm = PickLocalizedForm(systemForms);
 
@@ -1141,7 +1131,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			filterExpression = AddNameCondition(filterExpression, FormName);
 
-			var systemForms = Adxstudio.Xrm.Metadata.OrganizationServiceContextExtensions.GetMultipleSystemFormsWithAllLabels(filterExpression, context);
+			var systemForms = Metadata.OrganizationServiceContextExtensions.GetMultipleSystemFormsWithAllLabels(filterExpression, context);
 
 			var systemForm = PickLocalizedForm(systemForms);
 
@@ -1799,7 +1789,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				var serviceContext = CrmConfigurationManager.CreateContext(ContextName, true);
 
 				EntityReference accountEntityReference = null;
-				var entityRetrieveResponse = (RetrieveResponse)serviceContext.Execute(new RetrieveRequest() { ColumnSet = new ColumnSet(new string[] { "parentaccountid" }), Target = new EntityReference("opportunity", entityId) });
+				var entityRetrieveResponse = (RetrieveResponse)serviceContext.Execute(new RetrieveRequest { ColumnSet = new ColumnSet("parentaccountid"), Target = new EntityReference("opportunity", entityId) });
 
 				if (null != entityRetrieveResponse && null != entityRetrieveResponse.Entity)
 				{
@@ -1822,7 +1812,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			foreach (var control in controls)
 			{
 				FormXmlCellMetadata fieldMetadata;
-				this.formXmlCellMetadataFactory.TryGetCellMetadata(control, out fieldMetadata);
+				formXmlCellMetadataFactory.TryGetCellMetadata(control, out fieldMetadata);
 				// Don't update data if control is readonly
 				if (fieldMetadata == null || fieldMetadata.ReadOnly) continue;
 
@@ -1844,7 +1834,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		private void InsertFullNameControlValues(IDictionary<string, object> values)
 		{
 			FormXmlCellMetadata fieldMetadata;
-			this.formXmlCellMetadataFactory.TryGetCellMetadata("fullname", out fieldMetadata);
+			formXmlCellMetadataFactory.TryGetCellMetadata("fullname", out fieldMetadata);
 
 			if (fieldMetadata == null || fieldMetadata.ReadOnly) { return; }
 

@@ -22,7 +22,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 		{
 			return date.HasValue
 				? date.Value.AddDays(value)
-				: (DateTime?)null;
+				: null;
 		}
 
 		/// <summary>
@@ -36,7 +36,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 		{
 			return date.HasValue
 				? date.Value.AddHours(value)
-				: (DateTime?)null;
+				: null;
 		}
 
 		/// <summary>
@@ -50,7 +50,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 		{
 			return date.HasValue
 				? date.Value.AddMinutes(value)
-				: (DateTime?)null;
+				: null;
 		}
 
 		/// <summary>
@@ -64,7 +64,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 		{
 			return date.HasValue
 				? date.Value.AddMonths(value)
-				: (DateTime?)null;
+				: null;
 		}
 
 		/// <summary>
@@ -78,7 +78,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 		{
 			return date.HasValue
 				? date.Value.AddSeconds(value)
-				: (DateTime?)null;
+				: null;
 		}
 
 		/// <summary>
@@ -92,7 +92,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 		{
 			return date.HasValue
 				? date.Value.AddYears(value)
-				: (DateTime?)null;
+				: null;
 		}
 
 		/// <summary>
@@ -102,7 +102,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 		{
 			return date.HasValue
 				? date.Value.ToLocalTime()
-				: (DateTime?)null;
+				: null;
 		}
 
 		/// <summary>
@@ -112,7 +112,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 		{
 			return date.HasValue
 				? date.Value.ToUniversalTime()
-				: (DateTime?)null;
+				: null;
 		}
 
 		/// <summary>

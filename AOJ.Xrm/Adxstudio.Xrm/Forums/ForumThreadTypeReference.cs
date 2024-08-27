@@ -27,7 +27,7 @@ namespace Adxstudio.Xrm.Forums
 			get { throw new NotSupportedException(); }
 		}
 
-		public EntityReference EntityReference { get; private set; }
+		public EntityReference EntityReference { get; }
 
 		public bool IsDefault
 		{

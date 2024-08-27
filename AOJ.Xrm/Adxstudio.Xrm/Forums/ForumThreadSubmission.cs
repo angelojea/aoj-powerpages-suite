@@ -33,17 +33,17 @@ namespace Adxstudio.Xrm.Forums
 
 		public string Url { get { return null; } }
 
-		public IForumAuthor Author { get; private set; }
+		public IForumAuthor Author { get; }
 
 		public IForumPostInfo LatestPost { get { return null; } }
 
 		public string LatestPostUrl { get { return null; } }
 
-		public DateTime PostedOn { get; private set; }
+		public DateTime PostedOn { get; }
 
 		public IEnumerable<IForumThreadTag> Tags { get; set; }
 
-		public IForumThreadType ThreadType { get; private set; }
+		public IForumThreadType ThreadType { get; }
 
 		public Entity Entity { get { return null; } }
 
@@ -53,7 +53,7 @@ namespace Adxstudio.Xrm.Forums
 
 		public bool Locked { get; set; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
 		public int PostCount { get { return 0; } }
 

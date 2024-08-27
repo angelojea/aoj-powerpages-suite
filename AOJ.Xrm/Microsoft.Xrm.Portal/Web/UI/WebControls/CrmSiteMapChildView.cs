@@ -33,8 +33,6 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 	/// </remarks>
 	public class CrmSiteMapChildView : ListView, IEditableCrmEntityControl
 	{
-		private bool _editable = true;
-
 		/// <summary>
 		/// Gets or sets the base URI of the data service to be used for front-side editing functionality
 		/// provided by this control. Set to use a data service other than the system global/default service.
@@ -70,11 +68,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 		/// (provided the user has edit permission, and no other properties have been set on this control which
 		/// disable inline editing support).
 		/// </summary>
-		public virtual bool Editable
-		{
-			get { return _editable; }
-			set { _editable = value; }
-		}
+		public virtual bool Editable { get; set; } = true;
 
 		/// <summary>
 		/// Gets or sets the custom content for the root container.
@@ -141,7 +135,7 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 					throw new ArgumentException("Starting node offsets of greater than 0 are not supported by this control.", "value");
 				}
 
-				ViewState["StartingNodeOffset"] = new int?(value);
+				ViewState["StartingNodeOffset"] = value;
 			}
 		}
 

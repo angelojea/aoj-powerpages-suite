@@ -75,7 +75,7 @@ namespace Adxstudio.Xrm.EntityList
 			AddSearchFilterToFetchEntity(fetch.Entity, settings, search, searchableAttributes);
 			AddPermissionFilterToFetch(fetch, settings, serviceContext, CrmEntityPermissionRight.Read);
 
-			if (this.EntityPermissionDenied)
+			if (EntityPermissionDenied)
 			{
 				throw new LocalizedException("Access_Denied_No_Permissions_To_View_These_Records_Message");
 			}

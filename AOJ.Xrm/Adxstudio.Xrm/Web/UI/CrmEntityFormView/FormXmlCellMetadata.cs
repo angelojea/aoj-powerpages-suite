@@ -27,17 +27,12 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		private readonly AttributeMetadata _attributeMetadata;
 		private readonly string _controlID;
 		private readonly string _dataFieldName;
-		private readonly bool _isNotesControl;
-		private readonly bool _isActivityTimelineControl;
-		private readonly bool _isWebResource;
 		private readonly string _webResourceAltText;
 		private readonly bool _webResourceBorder;
 		private readonly string _webResourceData;
 		private readonly int? _webResourceHeight;
 		private readonly string _webResourceHorizontalAlignment;
 		private readonly bool _webResourceIsHtml;
-		private readonly bool _webResourceIsImage;
-		private readonly bool _webResourceIsSilverlight;
 		private readonly bool _webResourcePassParameters;
 		private readonly string _webResourceScrolling;
 		private readonly bool _webResourceSecurity;
@@ -47,34 +42,8 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		private readonly int? _webResourceWidth;
 		private readonly Guid _classID;
 		private readonly string _validationText;
-		private readonly WebFormMetadata.ControlStyle _controlStyle;
-		private readonly string _geolocationValidatorErrorMessage;
 		private readonly Guid _lookupViewID;
-		private readonly bool _ignoreDefaultValue;
-		private readonly bool _addDescription;
-		private readonly string _description;
-		private readonly WebFormMetadata.DescriptionPosition _descriptionPosition;
-		private readonly bool _webformForcefieldIsRequired;
-		private readonly string _requiredFieldValidationErrorMessage;
-		private readonly string _validationRegularExpression;
-		private readonly string _validationRegularExpressionErrorMessage;
-		private readonly string _validationErrorMessage;
-		private readonly string _rangeValidationErrorMessage;
-		private readonly string _constantSumValidationErrorMessage;
-		private readonly string _rankOrderNoTiesValidationErrorMessage;
-		private readonly string _multipleChoiceValidationErrorMessage;
-		private readonly string _groupName;
-		private readonly string[] _constantSumAttributeNames;
-		private readonly bool _randomizeOptionSetValues;
-		private readonly int _minMultipleChoiceSelectedCount;
-		private readonly int _maxMultipleChoiceSelectedCount;
 		private readonly bool _forceAllFieldsRequired;
-		private readonly bool _enableValidationSummaryLinks;
-		private readonly string _validationSummaryLinkText;
-		private readonly int _constantSumMinimumTotal;
-		private readonly int _constantSumMaximumTotal;
-		private readonly string _cssClass;
-		private readonly Dictionary<string, string> _messages;
 		private readonly string _viewID;
 		private readonly string _viewRelationshipName;
 		private readonly string _viewTargetEntityType;
@@ -82,16 +51,8 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		private readonly bool _viewEnableViewPicker;
 		private readonly string _viewIds;
 		private readonly int? _viewRecordsPerPage;
-		private readonly bool _isSharePointDocuments;
 		private readonly bool _isSubgrid;
-		private readonly string _targetEntityName;
-		private readonly string _targetEntityPrimaryKeyName;
-		private readonly string _targetEntityPrimaryAttributeName;
-		private readonly GridMetadata _subgridSettings;
-		private readonly JsonConfiguration.NotesMetadata _notesSettings;
-		private readonly JsonConfiguration.TimelineMetadata _timelineSettings;
 		private readonly int? _notesPageSize;
-		private readonly SharePointGridMetadata _sharePointSettings;
 		private readonly int? _sharePointGridPageSize;
 		private readonly bool _lookupDisableQuickFind;
 		private readonly bool _lookupDisableViewPicker;
@@ -100,14 +61,6 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		private readonly string _lookupFilterRelationshipName;
 		private readonly string _lookupDependentAttributeName;
 		private readonly string _lookupDependentAttributeType;
-		private readonly OptionMetadataCollection _stateOptionSetOptions;
-		private readonly OptionMetadataCollection _statusOptionSetOptions;
-		private readonly bool _labelNotAssociated;
-		private readonly bool _isQuickForm;
-		private readonly CrmQuickForm _quickForm;
-		private readonly Guid? _lookupReferenceEntityFormId = null;
-		private readonly bool _isFullnameControl;
-		private readonly bool _isAddressCompositeControl;
 
 		/// <summary>
 		/// Default text displayed in the field's validator control.
@@ -145,30 +98,30 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		public FormXmlCellMetadata(XNode cellNode, EntityMetadata entityMetadata, int languageCode, bool? toolTipEnabled, bool? recommendedFieldsRequired, string validationText, IEnumerable<Entity> webFormMetadata, bool? forceAllFieldsRequired, bool? enableValidationSummaryLinks, string validationSummaryLinkText, Dictionary<string, string> messages, int baseOrganizationLanguageCode = 0)
 			: base(cellNode, entityMetadata, languageCode)
 		{
-			_targetEntityName = entityMetadata.LogicalName;
+			TargetEntityName = entityMetadata.LogicalName;
 
-			_targetEntityPrimaryKeyName = entityMetadata.PrimaryIdAttribute;
+			TargetEntityPrimaryKeyName = entityMetadata.PrimaryIdAttribute;
 			
-			_targetEntityPrimaryAttributeName = entityMetadata.PrimaryNameAttribute;
+			TargetEntityPrimaryAttributeName = entityMetadata.PrimaryNameAttribute;
 
-			_messages = messages ?? new Dictionary<string, string>();
+			Messages = messages ?? new Dictionary<string, string>();
 
-			_enableValidationSummaryLinks = enableValidationSummaryLinks ?? true;
+			EnableValidationSummaryLinks = enableValidationSummaryLinks ?? true;
 
-			_validationSummaryLinkText = string.IsNullOrWhiteSpace(validationSummaryLinkText) ? string.Empty : validationSummaryLinkText;
+			ValidationSummaryLinkText = string.IsNullOrWhiteSpace(validationSummaryLinkText) ? string.Empty : validationSummaryLinkText;
 
 			_forceAllFieldsRequired = forceAllFieldsRequired ?? false;
 
-			_stateOptionSetOptions = new OptionMetadataCollection();
+			StateOptionSetOptions = new OptionMetadataCollection();
 
-			_statusOptionSetOptions = new OptionMetadataCollection();
+			StatusOptionSetOptions = new OptionMetadataCollection();
 
 			Label = base.Label;
 
 			if (string.IsNullOrWhiteSpace(Label))
 			{
 				string label;
-				cellNode.TryGetLanguageSpecificLabelValue(this.LanguageCode, out label, baseOrganizationLanguageCode);
+				cellNode.TryGetLanguageSpecificLabelValue(LanguageCode, out label, baseOrganizationLanguageCode);
 				Label = label;
 			}
 
@@ -208,7 +161,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 			if (_controlID == "notescontrol" && (!string.IsNullOrEmpty(defaultTabId) && defaultTabId == "ActivitiesTab"))
 			{
-				_isActivityTimelineControl = true;
+				IsActivityTimelineControl = true;
 
 				cellNode.TryGetIntegerAttributeValue(".", "rowspan", out _notesPageSize);
 
@@ -228,12 +181,12 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 						{
 							try
 							{
-								_timelineSettings = JsonConvert.DeserializeObject<JsonConfiguration.TimelineMetadata>(timelineSettingsJson,
+								TimelineSettings = JsonConvert.DeserializeObject<TimelineMetadata>(timelineSettingsJson,
 									new JsonSerializerSettings { ContractResolver = JsonConfigurationContractResolver.Instance, TypeNameHandling = TypeNameHandling.Objects, Binder = new ActionSerializationBinder() });
 							}
 							catch (Exception e)
 							{
-								ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("FormXmlCellMetadata Constructor {0}", e.ToString()));
+								ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("FormXmlCellMetadata Constructor {0}", e));
                             }
 						}
 					}
@@ -241,7 +194,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			}
 			else if (_controlID == "notescontrol")
 			{
-				_isNotesControl = true;
+				IsNotesControl = true;
 
 				cellNode.TryGetIntegerAttributeValue(".", "rowspan", out _notesPageSize);
 
@@ -261,12 +214,12 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 						{
 							try
 							{
-								_notesSettings = JsonConvert.DeserializeObject<JsonConfiguration.NotesMetadata>(notesSettingsJson,
+								NotesSettings = JsonConvert.DeserializeObject<JsonConfiguration.NotesMetadata>(notesSettingsJson,
 									new JsonSerializerSettings { ContractResolver = JsonConfigurationContractResolver.Instance, TypeNameHandling = TypeNameHandling.Objects, Binder = new ActionSerializationBinder() });
 							}
 							catch (Exception e)
 							{
-								ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("FormXmlCellMetadata Constructor {0}", e.ToString()));
+								ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("FormXmlCellMetadata Constructor {0}", e));
                             }
 						}
 					}
@@ -274,13 +227,13 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			}
 			else if (_controlID.StartsWith("WebResource_"))
 			{
-				_isWebResource = true;
+				IsWebResource = true;
 
 				// HACK: There is no data in the formxml that tells us what the web resource type is,
 				// so we're using a very fragile logical deduction based on the parameters passed.
 				_webResourceIsHtml = cellNode.TryGetBooleanElementValue("control/parameters/Border", out _webResourceBorder);
-				_webResourceIsImage = cellNode.TryGetElementValue("control/parameters/HorizontalAlignment", out _webResourceHorizontalAlignment);
-				_webResourceIsSilverlight = cellNode.TryGetBooleanElementValue("control/parameters/PassParameters", out _webResourcePassParameters) && !_webResourceIsHtml;
+				WebResourceIsImage = cellNode.TryGetElementValue("control/parameters/HorizontalAlignment", out _webResourceHorizontalAlignment);
+				WebResourceIsSilverlight = cellNode.TryGetBooleanElementValue("control/parameters/PassParameters", out _webResourcePassParameters) && !_webResourceIsHtml;
 				
 				cellNode.TryGetElementValue("control/parameters/AltText", out _webResourceAltText);
 				cellNode.TryGetElementValue("control/parameters/Data", out _webResourceData);
@@ -312,7 +265,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 				if (_viewTargetEntityType == "sharepointdocumentlocation")
 				{
-					_isSharePointDocuments = true;
+					IsSharePointDocuments = true;
 
 					cellNode.TryGetIntegerAttributeValue(".", "rowspan", out _sharePointGridPageSize);
 				}
@@ -336,7 +289,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 							{
 								try
 								{
-									_subgridSettings = JsonConvert.DeserializeObject<GridMetadata>(subgridSettingsJson,
+									SubgridSettings = JsonConvert.DeserializeObject<GridMetadata>(subgridSettingsJson,
 										new JsonSerializerSettings
 										{
 											ContractResolver = JsonConfigurationContractResolver.Instance,
@@ -348,7 +301,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 								}
 								catch (Exception e)
 								{
-									ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("FormXmlCellMetadata Constructor {0}", e.ToString()));
+									ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("FormXmlCellMetadata Constructor {0}", e));
                                 }
 							}
 						}
@@ -357,7 +310,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			}
 			else if (_classID == QuickformClassId) // QuickForm
 			{
-				_isQuickForm = true;
+				IsQuickForm = true;
 				cellNode.TryGetAttributeValue("control", "datafieldname", out _dataFieldName);
 				if (string.IsNullOrWhiteSpace(_dataFieldName))
 				{
@@ -401,15 +354,15 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 					quickFormIds.Add(new CrmQuickForm.QuickFormId(entityName, quickFormId));
 				}
 				if (!quickFormIds.Any()) return;
-				_quickForm = new CrmQuickForm(_dataFieldName, quickFormIds.ToArray());
+				QuickForm = new CrmQuickForm(_dataFieldName, quickFormIds.ToArray());
 			}
 			else if (_controlID == "fullname")
 			{
-				_isFullnameControl = true;
+				IsFullNameControl = true;
 			}
-			else if (this._controlID.StartsWith("address") && this._controlID.EndsWith("composite"))
+			else if (_controlID.StartsWith("address") && _controlID.EndsWith("composite"))
 			{
-				this._isAddressCompositeControl = true;
+				IsAddressCompositeControl = true;
 			}
 			else
 			{
@@ -432,11 +385,11 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 							&& attributeWebFormMetadata.GetAttributeValue<EntityReference>("mspp_entityformforcreate") != null
 							&& attributeWebFormMetadata.GetAttributeValue<OptionSetValue>("statuscode") != null
 							&& attributeWebFormMetadata.GetAttributeValue<OptionSetValue>("statuscode").Value == (int)Enums.EntityFormStatusCode.Active)
-							_lookupReferenceEntityFormId = attributeWebFormMetadata.GetAttributeValue<EntityReference>("mspp_entityformforcreate").Id;
+							LookupReferenceEntityFormId = attributeWebFormMetadata.GetAttributeValue<EntityReference>("mspp_entityformforcreate").Id;
 
-						_groupName = attributeWebFormMetadata.GetAttributeValue<string>("mspp_groupname") ?? string.Empty;
+						GroupName = attributeWebFormMetadata.GetAttributeValue<string>("mspp_groupname") ?? string.Empty;
 
-						_cssClass = attributeWebFormMetadata.GetAttributeValue<string>("mspp_cssclass") ?? string.Empty;
+						CssClass = attributeWebFormMetadata.GetAttributeValue<string>("mspp_cssclass") ?? string.Empty;
 
 						var overrideLabel = attributeWebFormMetadata.GetAttributeValue<string>("mspp_label");
 
@@ -456,52 +409,52 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 							switch (controlStyle.Value)
 							{
 								case (int)WebFormMetadata.ControlStyle.VerticalRadioButtonList:
-									_controlStyle = WebFormMetadata.ControlStyle.VerticalRadioButtonList;
+									ControlStyle = WebFormMetadata.ControlStyle.VerticalRadioButtonList;
 									break;
 								case (int)WebFormMetadata.ControlStyle.HorizontalRadioButtonList:
-									_controlStyle = WebFormMetadata.ControlStyle.HorizontalRadioButtonList;
+									ControlStyle = WebFormMetadata.ControlStyle.HorizontalRadioButtonList;
 									break;
 								case (int)WebFormMetadata.ControlStyle.GeolocationLookupValidator:
-									_controlStyle = WebFormMetadata.ControlStyle.GeolocationLookupValidator;
-									_geolocationValidatorErrorMessage =
+									ControlStyle = WebFormMetadata.ControlStyle.GeolocationLookupValidator;
+									GeolocationValidatorErrorMessage =
 										Localization.GetLocalizedString(
 											attributeWebFormMetadata.GetAttributeValue<string>("mspp_geolocationvalidatorerrormessage"), LanguageCode);
 									break;
 								case (int)WebFormMetadata.ControlStyle.ConstantSum:
-									_controlStyle = WebFormMetadata.ControlStyle.ConstantSum;
-									_constantSumAttributeNames =
+									ControlStyle = WebFormMetadata.ControlStyle.ConstantSum;
+									ConstantSumAttributeNames =
 										webFormMetadata.Where(
 											w =>
 												w.GetAttributeValue<OptionSetValue>("mspp_controlstyle") != null &&
 												w.GetAttributeValue<OptionSetValue>("mspp_controlstyle").Value ==
-												(int)WebFormMetadata.ControlStyle.ConstantSum && w.GetAttributeValue<string>("mspp_groupname") == _groupName)
+												(int)WebFormMetadata.ControlStyle.ConstantSum && w.GetAttributeValue<string>("mspp_groupname") == GroupName)
 											.Select(w => w.GetAttributeValue<string>("mspp_attributelogicalname"))
 											.ToArray();
 									break;
 								case (int)WebFormMetadata.ControlStyle.RankOrderNoTies:
-									_controlStyle = WebFormMetadata.ControlStyle.RankOrderNoTies;
+									ControlStyle = WebFormMetadata.ControlStyle.RankOrderNoTies;
 									break;
 								case (int)WebFormMetadata.ControlStyle.RankOrderAllowTies:
-									_controlStyle = WebFormMetadata.ControlStyle.RankOrderAllowTies;
+									ControlStyle = WebFormMetadata.ControlStyle.RankOrderAllowTies;
 									break;
 								case (int)WebFormMetadata.ControlStyle.MultipleChoiceMatrix:
-									_controlStyle = WebFormMetadata.ControlStyle.MultipleChoiceMatrix;
+									ControlStyle = WebFormMetadata.ControlStyle.MultipleChoiceMatrix;
 									break;
 								case (int)WebFormMetadata.ControlStyle.MultipleChoice:
-									_controlStyle = WebFormMetadata.ControlStyle.MultipleChoice;
+									ControlStyle = WebFormMetadata.ControlStyle.MultipleChoice;
 									break;
 								case (int)WebFormMetadata.ControlStyle.StackRank:
-									_controlStyle = WebFormMetadata.ControlStyle.StackRank;
+									ControlStyle = WebFormMetadata.ControlStyle.StackRank;
 									break;
 								case (int)WebFormMetadata.ControlStyle.LookupDropdown:
-									_controlStyle = WebFormMetadata.ControlStyle.LookupDropdown;
+									ControlStyle = WebFormMetadata.ControlStyle.LookupDropdown;
 									break;
 							}
 						}
 
-						_ignoreDefaultValue = attributeWebFormMetadata.GetAttributeValue<bool?>("mspp_ignoredefaultvalue") ?? false;
+						IgnoreDefaultValue = attributeWebFormMetadata.GetAttributeValue<bool?>("mspp_ignoredefaultvalue") ?? false;
 
-						_addDescription = attributeWebFormMetadata.GetAttributeValue<bool?>("mspp_adddescription") ?? false;
+						AddDescription = attributeWebFormMetadata.GetAttributeValue<bool?>("mspp_adddescription") ?? false;
 
 						var useAttributeDescription =
 							attributeWebFormMetadata.GetAttributeValue<bool?>("mspp_useattributedescriptionproperty") ?? false;
@@ -513,12 +466,12 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 							if (localizedDescription != null)
 							{
-								_description = localizedDescription.Label;
+								Description = localizedDescription.Label;
 							}
 						}
 						else
 						{
-							_description =
+							Description =
 								Localization.GetLocalizedString(attributeWebFormMetadata.GetAttributeValue<string>("mspp_description"),
 									LanguageCode);
 						}
@@ -530,60 +483,60 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 							switch (descriptionPosition.Value)
 							{
 								case (int)WebFormMetadata.DescriptionPosition.AboveControl:
-									_descriptionPosition = WebFormMetadata.DescriptionPosition.AboveControl;
+									DescriptionPosition = WebFormMetadata.DescriptionPosition.AboveControl;
 									break;
 								case (int)WebFormMetadata.DescriptionPosition.BelowControl:
-									_descriptionPosition = WebFormMetadata.DescriptionPosition.BelowControl;
+									DescriptionPosition = WebFormMetadata.DescriptionPosition.BelowControl;
 									break;
 								case (int)WebFormMetadata.DescriptionPosition.AboveLabel:
-									_descriptionPosition = WebFormMetadata.DescriptionPosition.AboveLabel;
+									DescriptionPosition = WebFormMetadata.DescriptionPosition.AboveLabel;
 									break;
 							}
 						}
 
-						_minMultipleChoiceSelectedCount =
+						MinMultipleChoiceSelectedCount =
 							attributeWebFormMetadata.GetAttributeValue<int?>("mspp_minmultiplechoiceselectedcount") ?? 0;
 
-						_maxMultipleChoiceSelectedCount =
+						MaxMultipleChoiceSelectedCount =
 							attributeWebFormMetadata.GetAttributeValue<int?>("mspp_maxmultiplechoiceselectedcount") ?? 0;
 
-						_constantSumMinimumTotal = attributeWebFormMetadata.GetAttributeValue<int?>("mspp_constantsumminimumtotal") ?? 0;
+						ConstantSumMinimumTotal = attributeWebFormMetadata.GetAttributeValue<int?>("mspp_constantsumminimumtotal") ?? 0;
 
-						_constantSumMaximumTotal = attributeWebFormMetadata.GetAttributeValue<int?>("mspp_constantsummaximumtotal") ?? 100;
+						ConstantSumMaximumTotal = attributeWebFormMetadata.GetAttributeValue<int?>("mspp_constantsummaximumtotal") ?? 100;
 
-						_randomizeOptionSetValues = attributeWebFormMetadata.GetAttributeValue<bool?>("mspp_randomizeoptionsetvalues") ??
+						RandomizeOptionSetValues = attributeWebFormMetadata.GetAttributeValue<bool?>("mspp_randomizeoptionsetvalues") ??
 						                            false;
 
-						_webformForcefieldIsRequired = attributeWebFormMetadata.GetAttributeValue<bool?>("mspp_fieldisrequired") ?? false;
+						WebFormForceFieldIsRequired = attributeWebFormMetadata.GetAttributeValue<bool?>("mspp_fieldisrequired") ?? false;
 
-						_requiredFieldValidationErrorMessage =
+						RequiredFieldValidationErrorMessage =
 							Localization.GetLocalizedString(
 								attributeWebFormMetadata.GetAttributeValue<string>("mspp_requiredfieldvalidationerrormessage"), LanguageCode);
 
-						_validationRegularExpression =
+						ValidationRegularExpression =
 							attributeWebFormMetadata.GetAttributeValue<string>("mspp_validationregularexpression") ?? string.Empty;
 
-						_validationRegularExpressionErrorMessage =
+						ValidationRegularExpressionErrorMessage =
 							Localization.GetLocalizedString(
 								attributeWebFormMetadata.GetAttributeValue<string>("mspp_validationregularexpressionerrormessage"), LanguageCode);
 
-						_validationErrorMessage =
+						ValidationErrorMessage =
 							Localization.GetLocalizedString(
 								attributeWebFormMetadata.GetAttributeValue<string>("mspp_validationerrormessage"), LanguageCode);
 
-						_rangeValidationErrorMessage =
+						RangeValidationErrorMessage =
 							Localization.GetLocalizedString(
 								attributeWebFormMetadata.GetAttributeValue<string>("mspp_rangevalidationerrormessage"), LanguageCode);
 
-						_constantSumValidationErrorMessage =
+						ConstantSumValidationErrorMessage =
 							Localization.GetLocalizedString(
 								attributeWebFormMetadata.GetAttributeValue<string>("mspp_constantsumvalidationerrormessage"), LanguageCode);
 
-						_rankOrderNoTiesValidationErrorMessage =
+						RankOrderNoTiesValidationErrorMessage =
 							Localization.GetLocalizedString(
 								attributeWebFormMetadata.GetAttributeValue<string>("mspp_rankordernotiesvalidationerrormessage"), LanguageCode);
 
-						_multipleChoiceValidationErrorMessage =
+						MultipleChoiceValidationErrorMessage =
 							Localization.GetLocalizedString(
 								attributeWebFormMetadata.GetAttributeValue<string>("mspp_multiplechoicevalidationerrormessage"), LanguageCode);
 					}
@@ -770,26 +723,26 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 						break;
 					case AttributeTypeCode.State:
 					{
-						_labelNotAssociated = true;
+						LabelNotAssociated = true;
 						ReadOnly = true;
 						var stateAttributeMetadata = attributeMetadata as StateAttributeMetadata;
 						if (stateAttributeMetadata == null)
 						{
 							return;
 						}
-						_stateOptionSetOptions = stateAttributeMetadata.OptionSet.Options;
+						StateOptionSetOptions = stateAttributeMetadata.OptionSet.Options;
 					}
 						break;
 					case AttributeTypeCode.Status:
 					{
-						_labelNotAssociated = true;
+						LabelNotAssociated = true;
 						ReadOnly = true;
 						var statusAttributeMetadata = attributeMetadata as StatusAttributeMetadata;
 						if (statusAttributeMetadata == null)
 						{
 							return;
 						}
-						_statusOptionSetOptions = statusAttributeMetadata.OptionSet.Options;
+						StatusOptionSetOptions = statusAttributeMetadata.OptionSet.Options;
 					}
 						break;
 				}
@@ -873,42 +826,27 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// Indicates if the cell contains a notes control.
 		/// </summary>
-		public virtual bool IsNotesControl
-		{
-			get { return _isNotesControl; }
-		}
+		public virtual bool IsNotesControl { get; }
 
 		/// <summary>
 		/// Indicates if the cell contains a full name control.
 		/// </summary>
-		public virtual bool IsFullNameControl
-		{
-			get { return _isFullnameControl; }
-		}
+		public virtual bool IsFullNameControl { get; }
 
 		/// <summary>
 		/// Indicates if the cell contains a Address Composite Control.
 		/// </summary>
-		public virtual bool IsAddressCompositeControl
-		{
-			get { return _isAddressCompositeControl; }
-		}
+		public virtual bool IsAddressCompositeControl { get; }
 
 		/// <summary>
 		/// Indicates if the cell contains an activity timeline control.
 		/// </summary>
-		public virtual bool IsActivityTimelineControl
-		{
-			get { return _isActivityTimelineControl; }
-		}
+		public virtual bool IsActivityTimelineControl { get; }
 
 		/// <summary>
 		/// Indicates if the cell contains a web resource.
 		/// </summary>
-		public virtual bool IsWebResource
-		{
-			get { return _isWebResource; }
-		}
+		public virtual bool IsWebResource { get; }
 
 		/// <summary>
 		/// Array of targets of a given lookup control.
@@ -981,18 +919,12 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// Indicates if the web resource type is Image.
 		/// </summary>
-		public virtual bool WebResourceIsImage
-		{
-			get { return _webResourceIsImage; }
-		}
+		public virtual bool WebResourceIsImage { get; }
 
 		/// <summary>
 		/// Indicates if the web resource type is Silverlight.
 		/// </summary>
-		public virtual bool WebResourceIsSilverlight
-		{
-			get { return _webResourceIsSilverlight; }
-		}
+		public virtual bool WebResourceIsSilverlight { get; }
 
 		/// <summary>
 		/// Indicates if the web resource passes parameters.
@@ -1058,18 +990,12 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// Web Form Metadata property used to specify a control style for a field to provide advanced functionality.
 		/// </summary>
-		public virtual WebFormMetadata.ControlStyle ControlStyle
-		{
-			get { return _controlStyle; }
-		}
+		public virtual WebFormMetadata.ControlStyle ControlStyle { get; }
 
 		/// <summary>
 		/// Web Form Metadata property used to specify the error message to be displayed when the geolocation validator validation fails.
 		/// </summary>
-		public string GeolocationValidatorErrorMessage
-		{
-			get { return _geolocationValidatorErrorMessage; }
-		}
+		public string GeolocationValidatorErrorMessage { get; }
 
 		/// <summary>
 		/// The id of the saved query view used to retrieve data to populate the lookup field. An Empty Guid indicates we need to find the default view.
@@ -1082,203 +1008,128 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// Web Form metadata provides the option to ignore a field's default value. Useful for Two Option control radio buttons.
 		/// </summary>
-		public bool IgnoreDefaultValue
-		{
-			get { return _ignoreDefaultValue; }
-		}
+		public bool IgnoreDefaultValue { get; }
 
 		/// <summary>
 		/// Web Form Metadata property used to indicate a description should be added.
 		/// </summary>
-		public bool AddDescription
-		{
-			get { return _addDescription; }
-		}
+		public bool AddDescription { get; }
 
 		/// <summary>
 		/// Web Form Metadata property used to add a description or special instructions for a field.
 		/// </summary>
-		public string Description
-		{
-			get { return _description; }
-		}
+		public string Description { get; }
 
 		/// <summary>
 		/// Web Form Metadata property used to specify the position of the description relative to the position of the field is is associated with.
 		/// </summary>
-		public WebFormMetadata.DescriptionPosition DescriptionPosition
-		{
-			get { return _descriptionPosition; }
-		}
+		public WebFormMetadata.DescriptionPosition DescriptionPosition { get; }
 
 		/// <summary>
 		/// Web Form Metadata property used to make a field required.
 		/// </summary>
-		public bool WebFormForceFieldIsRequired
-		{
-			get { return _webformForcefieldIsRequired; }
-		}
+		public bool WebFormForceFieldIsRequired { get; }
 
 		/// <summary>
 		/// Web Form Metadata property used to add a custom error message for a field's Required Field Validator.
 		/// </summary>
-		public string RequiredFieldValidationErrorMessage
-		{
-			get { return _requiredFieldValidationErrorMessage; }
-		}
+		public string RequiredFieldValidationErrorMessage { get; }
 
 		/// <summary>
 		/// Web Form Metadata property used to add a Regular Expression Validator for a field.
 		/// </summary>
-		public string ValidationRegularExpression
-		{
-			get { return _validationRegularExpression; }
-		}
+		public string ValidationRegularExpression { get; }
 
 		/// <summary>
 		/// Web Form Metadata property used to add an error message for the Regular Expression Validator for a field.
 		/// </summary>
-		public string ValidationRegularExpressionErrorMessage
-		{
-			get { return _validationRegularExpressionErrorMessage; }
-		}
+		public string ValidationRegularExpressionErrorMessage { get; }
 
 		/// <summary>
 		/// Web Form Metadata property used to add an error message for the Range Validator for a field.
 		/// </summary>
-		public string RangeValidationErrorMessage
-		{
-			get { return _rangeValidationErrorMessage; }
-		}
+		public string RangeValidationErrorMessage { get; }
 
 		/// <summary>
 		/// Web Form Metadata property used to add an error message for the Custom Validator for a field.
 		/// </summary>
-		public string ValidationErrorMessage
-		{
-			get { return _validationErrorMessage; }
-		}
+		public string ValidationErrorMessage { get; }
 
 		/// <summary>
 		/// Web Form Metadata property used to add an error message for the Constant Sum Custom Validator.
 		/// </summary>
-		public string ConstantSumValidationErrorMessage
-		{
-			get { return _constantSumValidationErrorMessage; }
-		}
+		public string ConstantSumValidationErrorMessage { get; }
 
 		/// <summary>
 		/// Web Form Metadata property used to add an error message for the Rank Order No Ties Custom Validator.
 		/// </summary>
-		public string RankOrderNoTiesValidationErrorMessage
-		{
-			get { return _rankOrderNoTiesValidationErrorMessage; }
-		}
+		public string RankOrderNoTiesValidationErrorMessage { get; }
 
 		/// <summary>
 		/// Web Form Metadata property used to add an error message for the Multiple Choice Custom Validator.
 		/// </summary>
-		public string MultipleChoiceValidationErrorMessage
-		{
-			get { return _multipleChoiceValidationErrorMessage; }
-		}
-		
+		public string MultipleChoiceValidationErrorMessage { get; }
+
 		/// <summary>
 		/// Web Form Metadata property used to group fields by adding a CSS class name to like fields to allow custom processing.
 		/// </summary>
-		public string GroupName
-		{
-			get { return _groupName; }
-		}
+		public string GroupName { get; }
 
 		/// <summary>
 		/// Array of attribute names of the constant sum group
 		/// </summary>
-		public string[] ConstantSumAttributeNames
-		{
-			get { return _constantSumAttributeNames; }
-		}
+		public string[] ConstantSumAttributeNames { get; }
 
 		/// <summary>
 		/// Randomizes the rendering order of the option set values.
 		/// </summary>
-		public bool RandomizeOptionSetValues
-		{
-			get { return _randomizeOptionSetValues; }
-		}
+		public bool RandomizeOptionSetValues { get; }
 
 		/// <summary>
 		/// Minimum required number of multiple choice check boxes in a group that must be selected.
 		/// </summary>
-		public int MinMultipleChoiceSelectedCount
-		{
-			get { return _minMultipleChoiceSelectedCount; }
-		}
+		public int MinMultipleChoiceSelectedCount { get; }
 
 		/// <summary>
 		/// Maximum allowable number of multiple choice check boxes in a group that can be selected.
 		/// </summary>
-		public int MaxMultipleChoiceSelectedCount
-		{
-			get { return _maxMultipleChoiceSelectedCount; }
-		}
+		public int MaxMultipleChoiceSelectedCount { get; }
 
 		/// <summary>
 		/// Enable or disable the rendering of anchor links in the validation summary.
 		/// </summary>
-		public bool EnableValidationSummaryLinks
-		{
-			get { return _enableValidationSummaryLinks; }
-		}
+		public bool EnableValidationSummaryLinks { get; }
 
 		/// <summary>
 		/// Validation summary render hyperlinks to control anchors using this text.
 		/// </summary>
-		public string ValidationSummaryLinkText
-		{
-			get { return _validationSummaryLinkText; }
-		}
+		public string ValidationSummaryLinkText { get; }
 
 		/// <summary>
 		/// Minimum allowable total of the constant sum.
 		/// </summary>
-		public int ConstantSumMinimumTotal
-		{
-			get { return _constantSumMinimumTotal; }
-		}
+		public int ConstantSumMinimumTotal { get; }
 
 		/// <summary>
 		/// Maximum allowable total of the constant sum.
 		/// </summary>
-		public int ConstantSumMaximumTotal
-		{
-			get { return _constantSumMaximumTotal; }
-		}
+		public int ConstantSumMaximumTotal { get; }
 
 		/// <summary>
 		/// Web Form Metadata property used to add a CSS class name(s) to a field.
 		/// </summary>
-		public string CssClass
-		{
-			get { return _cssClass; }
-		}
+		public string CssClass { get; }
 
 		/// <summary>
 		/// Collecton of Format Strings specified in the CrmEntityFormView templating used for validation messages.
 		/// </summary>
-		public Dictionary<string, string> Messages
-		{
-			get { return _messages; }
-		}
+		public Dictionary<string, string> Messages { get; }
 
 		/// <summary>
 		/// Indicates if the cell contains a SharePoint documents control.
 		/// </summary>
-		public virtual bool IsSharePointDocuments
-		{
-			get { return _isSharePointDocuments; }
-		}
-		
+		public virtual bool IsSharePointDocuments { get; }
+
 		/// <summary>
 		/// Indicates if the cell contains a subgrid control.
 		/// </summary>
@@ -1346,50 +1197,32 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// The logical name of the form's target entity.
 		/// </summary>
-		public virtual string TargetEntityName
-		{
-			get { return _targetEntityName; }
-		}
+		public virtual string TargetEntityName { get; }
 
 		/// <summary>
 		/// The logical name of the form's target entity primary key.
 		/// </summary>
-		public virtual string TargetEntityPrimaryKeyName
-		{
-			get { return _targetEntityPrimaryKeyName; }
-		}
+		public virtual string TargetEntityPrimaryKeyName { get; }
 
 		/// <summary>
 		/// The logical name of the form's target entity primary attribute.
 		/// </summary>
-		public virtual string TargetEntityPrimaryAttributeName
-		{
-			get { return _targetEntityPrimaryAttributeName; }
-		}
+		public virtual string TargetEntityPrimaryAttributeName { get; }
 
 		/// <summary>
 		/// The settings of a subgrid.
 		/// </summary>
-		public virtual JsonConfiguration.GridMetadata SubgridSettings
-		{
-			get { return _subgridSettings; }
-		}
+		public virtual GridMetadata SubgridSettings { get; }
 
 		/// <summary>
 		/// The settings of a notes control.
 		/// </summary>
-		public virtual JsonConfiguration.NotesMetadata NotesSettings
-		{
-			get { return _notesSettings; }
-		}
+		public virtual JsonConfiguration.NotesMetadata NotesSettings { get; }
 
 		/// <summary>
 		/// The settings of a timeline control.
 		/// </summary>
-		public virtual JsonConfiguration.TimelineMetadata TimelineSettings
-		{
-			get { return _timelineSettings; }
-		}
+		public virtual TimelineMetadata TimelineSettings { get; }
 
 		/// <summary>
 		/// The number of notes per page to display for a notes control.
@@ -1402,10 +1235,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// The settings of a SharePoint grid.
 		/// </summary>
-		public virtual SharePointGridMetadata SharePointSettings
-		{
-			get { return _sharePointSettings; }
-		}
+		public virtual SharePointGridMetadata SharePointSettings { get; }
 
 		/// <summary>
 		/// The number of folders and files per page to display for a SharePoint grid.
@@ -1474,42 +1304,27 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// The OptionSetValues of the state option set.
 		/// </summary>
-		public virtual OptionMetadataCollection StateOptionSetOptions
-		{
-			get { return _stateOptionSetOptions;  }
-		}
+		public virtual OptionMetadataCollection StateOptionSetOptions { get; }
 
 		/// <summary>
 		/// The OptionSetValues of the status reason option set.
 		/// </summary>
-		public virtual OptionMetadataCollection StatusOptionSetOptions
-		{
-			get { return _statusOptionSetOptions; }
-		}
+		public virtual OptionMetadataCollection StatusOptionSetOptions { get; }
 
 		/// <summary>
 		/// Indicates if the label should not be associated to a control
 		/// </summary>
-		public virtual bool LabelNotAssociated
-		{
-			get { return _labelNotAssociated; }
-		}
+		public virtual bool LabelNotAssociated { get; }
 
 		/// <summary>
 		/// Indicates if the cell contains a quick form
 		/// </summary>
-		public virtual bool IsQuickForm
-		{
-			get { return _isQuickForm; }
-		}
+		public virtual bool IsQuickForm { get; }
 
 		/// <summary>
 		/// The definition of the quick form
 		/// </summary>
-		public virtual CrmQuickForm QuickForm
-		{
-			get { return _quickForm; }
-		}
+		public virtual CrmQuickForm QuickForm { get; }
 
 		/// <summary>
 		/// Gets whether the value can be set when a record is created.
@@ -1530,9 +1345,6 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// <summary>
 		/// Gets the lookup reference entity form id
 		/// </summary>
-		public virtual Guid? LookupReferenceEntityFormId
-		{
-			get { return _lookupReferenceEntityFormId; }
-		}
-    }
+		public virtual Guid? LookupReferenceEntityFormId { get; }
+	}
 }

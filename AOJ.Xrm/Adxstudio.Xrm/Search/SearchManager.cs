@@ -133,7 +133,7 @@ namespace Adxstudio.Xrm.Search
 						const string message = "Default Search Provider could not be found.";
 
 						throw defaultProviderPropertyInformation == null
-							? (Exception)new ProviderException(message)
+							? new ProviderException(message)
 							: new ConfigurationErrorsException(message, defaultProviderPropertyInformation.Source, defaultProviderPropertyInformation.LineNumber);
 					}
 				}

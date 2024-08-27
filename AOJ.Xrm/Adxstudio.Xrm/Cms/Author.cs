@@ -35,12 +35,12 @@ namespace Adxstudio.Xrm.Cms
 		/// <param name="websiteUrl">Url to the author's website.</param>
 		public Author(string displayName, string emailAddress = null, string websiteUrl = null) : this(null, displayName, emailAddress, websiteUrl) { }
 
-		public string DisplayName { get; private set; }
+		public string DisplayName { get; }
 
-		public string EmailAddress { get; private set; }
+		public string EmailAddress { get; }
 
-		public EntityReference EntityReference { get; private set; }
+		public EntityReference EntityReference { get; }
 
-		public string WebsiteUrl { get; private set; }
+		public string WebsiteUrl { get; }
 	}
 }

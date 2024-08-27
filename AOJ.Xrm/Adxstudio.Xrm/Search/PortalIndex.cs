@@ -12,35 +12,31 @@ namespace Adxstudio.Xrm.Search
 
 	public class PortalIndex : WebCrmEntityIndex
 	{
-		private readonly bool _displayNotes;
-
-		private readonly string _notesFilter;
-
 		private readonly string _articlesLanguageCode;
 
 		public PortalIndex(string portalName, string articlesLanguageCode, string notesFilter, bool displayNotes, Directory directory, Analyzer analyzer, Version version, string indexQueryName) : base(directory, analyzer, version, indexQueryName)
 		{
 			PortalName = portalName;
 			_articlesLanguageCode = articlesLanguageCode;
-			_notesFilter = notesFilter;
-			_displayNotes = displayNotes;
+			NotesFilter = notesFilter;
+			DisplayNotes = displayNotes;
 		}
 
 		public PortalIndex(string portalName, string articlesLanguageCode, string notesFilter, bool displayNotes, Directory directory, Analyzer analyzer, Version version, string indexQueryName, string dataContextName) : base(directory, analyzer, version, indexQueryName, dataContextName)
 		{
 			PortalName = portalName;
 			_articlesLanguageCode = articlesLanguageCode;
-			_notesFilter = notesFilter;
-			_displayNotes = displayNotes;
+			NotesFilter = notesFilter;
+			DisplayNotes = displayNotes;
 		}
 
 		public override string LanguageLocaleCode { get { return _articlesLanguageCode; } }
 
-		public override bool DisplayNotes { get { return _displayNotes; } }
+		public override bool DisplayNotes { get; }
 
-		public override string NotesFilter { get { return _notesFilter; } }
+		public override string NotesFilter { get; }
 
-		protected string PortalName { get; private set; }
+		protected string PortalName { get; }
 
 		public override ICrmEntitySearchResultFactory GetSearchResultFactory(Query query)
 		{

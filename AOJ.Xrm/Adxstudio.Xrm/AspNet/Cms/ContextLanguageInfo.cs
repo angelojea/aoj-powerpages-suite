@@ -19,8 +19,8 @@ namespace Adxstudio.Xrm.AspNet.Cms
 	using Microsoft.Xrm.Sdk.Client;
 	using Microsoft.Crm.Sdk.Messages;
 	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Configuration;
-	using Adxstudio.Xrm.Web;
+	using Configuration;
+	using Web;
     using global::AOJ.Configuration;
 
     /// <summary>
@@ -125,7 +125,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		/// </summary>
 		public bool IsCrmMultiLanguageEnabled
 		{
-			get { return this.ContextLanguage != null && this.ContextLanguage.PortalLanguageId != Guid.Empty; }
+			get { return ContextLanguage != null && ContextLanguage.PortalLanguageId != Guid.Empty; }
 		}
 
 		/// <summary>
@@ -134,14 +134,14 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		/// <param name="context">The HTTP request context.</param>
 		public ContextLanguageInfo(HttpContextBase context)
 		{
-			this.BuildContextLanguageInfo(context);
-			ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo built - lang:{0} url=[{1}]", this.ContextLanguage == null ? "N/A" : this.ContextLanguage.Code, context.Request.Url.AbsolutePath));
+			BuildContextLanguageInfo(context);
+			ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo built - lang:{0} url=[{1}]", ContextLanguage == null ? "N/A" : ContextLanguage.Code, context.Request.Url.AbsolutePath));
 
 			// Update the current culture so correct resources are loaded.
 			// Note: for legacy CRM environments withOUT multi-language, the CurrentCulture will be set by IAppBuilder.UseLocalizedBundles(...)
-			if (this.ContextLanguage != null)
+			if (ContextLanguage != null)
 			{
-				SetCultureInfo(this.ContextLanguage.Lcid);
+				SetCultureInfo(ContextLanguage.Lcid);
 			}
 		}
 
@@ -178,9 +178,9 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		{
 			// Note: this will only set the culture for this request. 
 			// System.Globalization.CultureInfo.DefaultThreadCurrentCulture will set the culture for the entire application which would incorrectly propogate to all other browser sessions as well.
-			var culture = ContextLanguageInfo.GetCulture(lcid);
-			System.Threading.Thread.CurrentThread.CurrentCulture = culture;
-			System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+			var culture = GetCulture(lcid);
+			Thread.CurrentThread.CurrentCulture = culture;
+			Thread.CurrentThread.CurrentUICulture = culture;
 		}
 
 		/// <summary>
@@ -191,9 +191,9 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		{
 			// Note: this will only set the culture for this request. 
 			// System.Globalization.CultureInfo.DefaultThreadCurrentCulture will set the culture for the entire application which would incorrectly propogate to all other browser sessions as well.
-			var culture = ContextLanguageInfo.GetCulture(code);
-			System.Threading.Thread.CurrentThread.CurrentCulture = culture;
-			System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+			var culture = GetCulture(code);
+			Thread.CurrentThread.CurrentCulture = culture;
+			Thread.CurrentThread.CurrentUICulture = culture;
 		}
 
 		/// <summary>
@@ -325,7 +325,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		public static bool ResolveCultureCode(string code, out string match)
 		{
 			match = string.Empty;
-			var websiteLanguages = ContextLanguageInfo.GetActiveWebsiteLanguages().ToArray();
+			var websiteLanguages = GetActiveWebsiteLanguages().ToArray();
 			var reqLanguage = FindWebsiteLanguage(websiteLanguages, code, false);
 			if (reqLanguage == null && !TryGetLanguageFromMapping(websiteLanguages, code, out reqLanguage))
 			{
@@ -632,7 +632,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 			IContentMapProvider contentMapProvider = httpContext != null && httpContext.GetContentMapProvider() != null
 									? httpContext.GetContentMapProvider()
-									: Configuration.AdxstudioCrmConfigurationManager.CreateContentMapProvider();
+									: AdxstudioCrmConfigurationManager.CreateContentMapProvider();
 
 			if (contentMapProvider == null)
 			{
@@ -812,7 +812,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			string absolutePathWithoutLanguageCode;
 			bool pathHasLanguageCode;
 			IWebsiteLanguage websiteLanguage;
-			var activeLanguages = this.ActiveWebsiteLanguages;
+			var activeLanguages = ActiveWebsiteLanguages;
 
 			ExtractLanguageCode(overridePath, activeLanguages, out pathHasLanguageCode, out websiteLanguage, out absolutePathWithoutLanguageCode);
 
@@ -830,23 +830,23 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		/// <returns>Translated context WebPageNode that matches the context language.</returns>
 		public WebPageNode FindLanguageSpecificWebPageNode(WebPageNode node, bool onlyFindPublished)
 		{
-			if (this.IsCrmMultiLanguageEnabled)
+			if (IsCrmMultiLanguageEnabled)
 			{
 				IEnumerable<WebPageNode> results = new WebPageNode[0];
 				if (node.IsRoot == true)
 				{
-					results = node.LanguageContentPages.Where(p => p.WebPageLanguage != null && p.WebPageLanguage.Id == this.ContextLanguage.EntityReference.Id);
+					results = node.LanguageContentPages.Where(p => p.WebPageLanguage != null && p.WebPageLanguage.Id == ContextLanguage.EntityReference.Id);
 				}
 				else if (node.RootWebPage != null)
 				{
 					// Find this node's root webpage, and search its content pages
-					results = node.RootWebPage.LanguageContentPages.Where(p => p.WebPageLanguage != null && p.WebPageLanguage.Id == this.ContextLanguage.EntityReference.Id);
+					results = node.RootWebPage.LanguageContentPages.Where(p => p.WebPageLanguage != null && p.WebPageLanguage.Id == ContextLanguage.EntityReference.Id);
 				}
-				else if (node.WebPageLanguage != null && node.WebPageLanguage.Id == this.ContextLanguage.EntityReference.Id)
+				else if (node.WebPageLanguage != null && node.WebPageLanguage.Id == ContextLanguage.EntityReference.Id)
 				{
 					// The given web page doesn't have a root, but the page's language matches the context language,
 					// so just include the given node in results since it's a language match.
-					results = new WebPageNode[] { node };
+					results = new[] { node };
 				}
 
 				// Note: if we fell through without hitting any of the if's, then it means the given page is not a root page, doesn't have a root page, and is the wrong language.
@@ -874,13 +874,13 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		public Entity FindLangaugeSpecificWebPage(OrganizationServiceContext serviceContext, Guid rootPageId)
 		{
 			// this is a root page. Find it's translated page in the language we want
-			if (this.IsCrmMultiLanguageEnabled)
+			if (IsCrmMultiLanguageEnabled)
 			{
 				return serviceContext.CreateQuery("adx_webpage")
 					.FirstOrDefault(e =>
 						e.GetAttributeValue<bool>("adx_isroot") == false &&
 						e.GetAttributeValue<EntityReference>("adx_rootwebpageid").Id == rootPageId &&
-						e.GetAttributeValue<EntityReference>("adx_webpagelanguageid").Id == this.ContextLanguage.EntityReference.Id);
+						e.GetAttributeValue<EntityReference>("adx_webpagelanguageid").Id == ContextLanguage.EntityReference.Id);
 			}
 
 			return null;
@@ -895,7 +895,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		public Entity GetRootWebPageEntity(OrganizationServiceContext context, Entity webPage)
 		{
 			webPage.AssertEntityName("adx_webpage");
-			if (this.IsCrmMultiLanguageEnabled && !webPage.GetAttributeValue<bool>("adx_isroot"))
+			if (IsCrmMultiLanguageEnabled && !webPage.GetAttributeValue<bool>("adx_isroot"))
 			{
 				var rootPageReference = webPage.GetEntityReferenceValue<EntityReference>("adx_rootwebpageid");
 
@@ -913,7 +913,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		/// <returns>List of website languages</returns>
 		public IEnumerable<IWebsiteLanguage> GetWebPageWebsiteLanguages(EntityReference webPageReference, HttpContext context)
 		{
-			IContentMapProvider contentMapPrvd = context.GetContentMapProvider() ?? Configuration.AdxstudioCrmConfigurationManager.CreateContentMapProvider();
+			IContentMapProvider contentMapPrvd = context.GetContentMapProvider() ?? AdxstudioCrmConfigurationManager.CreateContentMapProvider();
 			string pageName = string.Empty;
 			List<IWebsiteLanguage> pageWebsiteLanguages = new List<IWebsiteLanguage>();
 			contentMapPrvd.Using(map =>
@@ -1015,23 +1015,23 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		public string FormatUrlWithLanguage(bool excludeLeadingSlash = false, string overrideLanguageCode = null, Uri overrideUri = null, bool? overrideDisplayLanguageCodeInUrl = null)
 		{
 			string pathAndQueryWithLanguageCode;
-			if (this.IsCrmMultiLanguageEnabled)
+			if (IsCrmMultiLanguageEnabled)
 			{
 				// Resolve override values
-				string languageCode = string.IsNullOrEmpty(overrideLanguageCode) ? this.ContextLanguage.Code : overrideLanguageCode;
+				string languageCode = string.IsNullOrEmpty(overrideLanguageCode) ? ContextLanguage.Code : overrideLanguageCode;
 				bool displayLanguageCodeInUrl = overrideDisplayLanguageCodeInUrl ?? DisplayLanguageCodeInUrl;
 
 				string absolutePathWithoutLanguageCode;
-				string currentPath = overrideUri == null ? this.ContextUrl.PathAndQuery : overrideUri.PathAndQuery;
+				string currentPath = overrideUri == null ? ContextUrl.PathAndQuery : overrideUri.PathAndQuery;
 				
 				bool pathHasLanguageCode;
 				IWebsiteLanguage language;
-				ExtractLanguageCode(currentPath, this.ActiveWebsiteLanguages, out pathHasLanguageCode, out language, out absolutePathWithoutLanguageCode);
+				ExtractLanguageCode(currentPath, ActiveWebsiteLanguages, out pathHasLanguageCode, out language, out absolutePathWithoutLanguageCode);
 
 				// if a fallback language was returned and it matches the language family of the current language, use the current language
-				if (language != null && language.UsedAsFallback && this.ContextLanguage.CrmLcid == language.CrmLcid)
+				if (language != null && language.UsedAsFallback && ContextLanguage.CrmLcid == language.CrmLcid)
 				{
-					languageCode = this.ContextLanguage.Code;
+					languageCode = ContextLanguage.Code;
 				}
 
 				pathAndQueryWithLanguageCode = displayLanguageCodeInUrl
@@ -1041,7 +1041,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			else
 			{
 				// If multi-language is not active, just return the Uri's PathAndQuery as is.
-				pathAndQueryWithLanguageCode = (overrideUri ?? this.ContextUrl).PathAndQuery;
+				pathAndQueryWithLanguageCode = (overrideUri ?? ContextUrl).PathAndQuery;
 			}
 
 			// If requested, strip out leading forward-slash
@@ -1096,7 +1096,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		/// <returns>application path with language code prefix</returns>
 		public static ApplicationPath PrependLanguageCode(ApplicationPath path)
 		{
-			var language = ContextLanguageInfo.ResolveContextLanguage(new HttpContextWrapper(HttpContext.Current));
+			var language = ResolveContextLanguage(new HttpContextWrapper(HttpContext.Current));
 
 			if (language == null)
 			{
@@ -1107,7 +1107,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			// first part will not be used. Just adding for MLP api consistency 
 			var uri = new Uri(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + path.AbsolutePath);
 
-			var newPath = ContextLanguageInfo.FormatUrl(language.Code, uri, ContextLanguageInfo.DisplayLanguageCodeInUrl);
+			var newPath = FormatUrl(language.Code, uri, DisplayLanguageCodeInUrl);
 
 			return newPath;
 		}
@@ -1126,7 +1126,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			{
 				return false;
 			}
-			return websiteLanguages.Count(l => !l.WebsiteLanguageNode.IsReference) == 1 && string.Equals(first.EntityReference.Id, defaultLanguage.EntityReference.Id);
+			return websiteLanguages.Count(l => !l.WebsiteLanguageNode.IsReference) == 1 && Equals(first.EntityReference.Id, defaultLanguage.EntityReference.Id);
 		}
 
 		/// <summary>
@@ -1136,7 +1136,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		private void BuildContextLanguageInfo(HttpContextBase context)
 		{
 			// Set this by default to the request URL path. AbsolutePath will always have leading forward-slash (even if it's just '/') so we're ok from that standpoint.
-			this.ContextUrl = context.Request.Url;
+			ContextUrl = context.Request.Url;
 
 			// 1. Get the context active website languages.
 			var website = context.GetWebsite();
@@ -1145,9 +1145,9 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			if (websiteLanguages.Length == 1 && websiteLanguages[0].PortalLanguageId == Guid.Empty)
 			{
 				// Disable MLP if there are not portal languages
-				this.ContextUrl = context.Request.Url;
-				this.ContextLanguage = websiteLanguages[0];
-				this.RequestUrlHasLanguageCode = false;
+				ContextUrl = context.Request.Url;
+				ContextLanguage = websiteLanguages[0];
+				RequestUrlHasLanguageCode = false;
 				return;
 			}
 
@@ -1158,74 +1158,74 @@ namespace Adxstudio.Xrm.AspNet.Cms
 				var preferredLanguage = crmUser.PreferredLanguage;
 				if (preferredLanguage != null)
 				{
-					this.UserPreferredLanguage = this.GetWebsiteLanguageByPortalLanguageId(preferredLanguage.Id, websiteLanguages);
+					UserPreferredLanguage = GetWebsiteLanguageByPortalLanguageId(preferredLanguage.Id, websiteLanguages);
 				}
 			}
 
 			// 2c. Default web site language
 			if (website.DefaultLanguage != null)
 			{
-				this.DefaultLanguage = this.GetWebsiteLanguage(website.DefaultLanguage.Id, websiteLanguages);
+				DefaultLanguage = GetWebsiteLanguage(website.DefaultLanguage.Id, websiteLanguages);
 			}
 
 			// 3. Figure out what the context language should be. There's 4 places that we can check for this info:
-			this.ContextLanguage = null;
+			ContextLanguage = null;
 
 			// 3a. Check the URL for language code.
 			IWebsiteLanguage language = null;
 			string absolutePathWithoutLanguageCode;
 			bool pathHasLanguageCode;
-			ExtractLanguageCode(this.ContextUrl.PathAndQuery, websiteLanguages, out pathHasLanguageCode, out language, out absolutePathWithoutLanguageCode);
-			this.RequestUrlHasLanguageCode = pathHasLanguageCode;
-			this.AbsolutePathWithoutLanguageCode = absolutePathWithoutLanguageCode; // While we're here, save the partial URL without language code
+			ExtractLanguageCode(ContextUrl.PathAndQuery, websiteLanguages, out pathHasLanguageCode, out language, out absolutePathWithoutLanguageCode);
+			RequestUrlHasLanguageCode = pathHasLanguageCode;
+			AbsolutePathWithoutLanguageCode = absolutePathWithoutLanguageCode; // While we're here, save the partial URL without language code
 			if (pathHasLanguageCode && language != null)
 			{
-				this.RequestUrlHasLanguageCode = true;
-				this.ContextLanguage = language;
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo found in URL lang:{0} url=[{1}]", this.ContextLanguage.Code, context.Request.Url));
+				RequestUrlHasLanguageCode = true;
+				ContextLanguage = language;
+				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo found in URL lang:{0} url=[{1}]", ContextLanguage.Code, context.Request.Url));
 				return;
 			}
 
 			// if this is a single language portal and language is not in the url then we don't need to look further
-			if (this.IsSingleLanguageWebsite(websiteLanguages, this.DefaultLanguage))
+			if (IsSingleLanguageWebsite(websiteLanguages, DefaultLanguage))
 			{
-				this.ContextLanguage = this.DefaultLanguage;
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo found in single language portal's default lang:{0} url=[{1}]", this.ContextLanguage.Code, context.Request.Url));
+				ContextLanguage = DefaultLanguage;
+				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo found in single language portal's default lang:{0} url=[{1}]", ContextLanguage.Code, context.Request.Url));
 				return;
 			}
 
 			// 3b. Else, check the session cookie for previously stored language code.
-			if (this.ContextLanguage == null)
+			if (ContextLanguage == null)
 			{
 				string cookieLanguageCode;
 				if (TryReadLanguageCodeFromCookie(context, out cookieLanguageCode))
 				{
-					this.ContextLanguage = this.GetWebsiteLanguage(cookieLanguageCode, websiteLanguages);
-					if (this.ContextLanguage == null)
+					ContextLanguage = GetWebsiteLanguage(cookieLanguageCode, websiteLanguages);
+					if (ContextLanguage == null)
 					{
 						ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo cookie has invalid lang:{0} url=[{1}]", cookieLanguageCode, context.Request.Url));
 					}
 					else
 					{
-						ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo found in cookie lang:{0} url=[{1}]", this.ContextLanguage.Code, context.Request.Url));
+						ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo found in cookie lang:{0} url=[{1}]", ContextLanguage.Code, context.Request.Url));
 						return;
 					}
 				}
 			}
 
 			// 3c. Else, check authenticated user's preferred language.
-			if (this.ContextLanguage == null && this.UserPreferredLanguage != null)
+			if (ContextLanguage == null && UserPreferredLanguage != null)
 			{
-				this.ContextLanguage = this.UserPreferredLanguage;
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo found in user pref lang:{0} url=[{1}]", this.ContextLanguage.Code, context.Request.Url));
+				ContextLanguage = UserPreferredLanguage;
+				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo found in user pref lang:{0} url=[{1}]", ContextLanguage.Code, context.Request.Url));
 				return;
 			}
 
 			// 3d. Else, use website default language
-			if (this.ContextLanguage == null && this.DefaultLanguage != null)
+			if (ContextLanguage == null && DefaultLanguage != null)
 			{
-				this.ContextLanguage = this.DefaultLanguage;
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo use web default lang:{0} url=[{1}]", this.ContextLanguage.Code, context.Request.Url));
+				ContextLanguage = DefaultLanguage;
+				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("ContextLanguageInfo use web default lang:{0} url=[{1}]", ContextLanguage.Code, context.Request.Url));
 			}
 
 			// At this point if we still haven't figured out what the context language is, then we must be dealing with a legacy CRM instance

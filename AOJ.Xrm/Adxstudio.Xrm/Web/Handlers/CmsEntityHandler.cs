@@ -30,7 +30,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 		/// <summary>
 		/// The ID of the entity whose attribute is being requested.
 		/// </summary>
-		protected virtual Guid? Id { get; private set; }
+		protected virtual Guid? Id { get; }
 
 		protected override void ProcessRequest(HttpContext context, ICmsEntityServiceProvider serviceProvider, Guid portalScopeId, IPortalContext portal, OrganizationServiceContext serviceContext, string entityLogicalName)
 		{

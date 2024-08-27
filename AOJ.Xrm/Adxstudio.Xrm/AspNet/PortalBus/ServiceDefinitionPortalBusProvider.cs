@@ -38,8 +38,8 @@ namespace Adxstudio.Xrm.AspNet.PortalBus
 	/// <typeparam name="TMessage"></typeparam>
 	public class ServiceDefinitionPortalBusProvider<TMessage> : PortalBusProvider<TMessage>
 	{
-		protected ServiceDefinitionPortalBusOptions<TMessage> Options { get; private set; }
-		protected ServiceDefinition FullServiceDefinition { get; private set; }
+		protected ServiceDefinitionPortalBusOptions<TMessage> Options { get; }
+		protected ServiceDefinition FullServiceDefinition { get; }
 
 		public ServiceDefinitionPortalBusProvider(IAppBuilder app, ServiceDefinitionPortalBusOptions<TMessage> options)
 			: base(app)

@@ -18,14 +18,14 @@ namespace Adxstudio.Xrm.Web
 {
 	public class SurveyReporter
 	{
-		private Entity _survey;
+		private readonly Entity _survey;
 
-		private IEnumerable<Entity> _surveyChoiceQuestions;
-		private IEnumerable<Entity> _surveyTextQuestions;
-		private List<Entity> _surveySubmissions;
-		private Entity[] _surveyContacts;
-		private IEnumerable<Entity>[] _submissionTextAnswers;
-		private IEnumerable<Entity>[] _submissionChoiceAnswers;
+		private readonly IEnumerable<Entity> _surveyChoiceQuestions;
+		private readonly IEnumerable<Entity> _surveyTextQuestions;
+		private readonly List<Entity> _surveySubmissions;
+		private readonly Entity[] _surveyContacts;
+		private readonly IEnumerable<Entity>[] _submissionTextAnswers;
+		private readonly IEnumerable<Entity>[] _submissionChoiceAnswers;
 
 		public string ContextName { get; set; }
 

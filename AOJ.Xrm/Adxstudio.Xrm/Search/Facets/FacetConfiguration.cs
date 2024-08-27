@@ -59,12 +59,12 @@ namespace Adxstudio.Xrm.Search.Facets
 		/// </param>
 		public FacetConfiguration(string fieldName, FacetSortOrder sortOrder, FacetHandlerType handlerType, FacetSpec facetSpec, IFacetHandler facetHandler)
 		{
-			this.FieldName = fieldName;
-			this.SortOrder = sortOrder;
-			this.FacetHandlerType = handlerType;
-			this.Spec = facetSpec ?? new FacetSpec() { MinHitCount = 1 };
-			this.Spec.OrderBy = GetFacetSpecSortOrder(sortOrder);
-			this.FacetHandler = facetHandler ?? new SimpleFacetHandler(fieldName);
+			FieldName = fieldName;
+			SortOrder = sortOrder;
+			FacetHandlerType = handlerType;
+			Spec = facetSpec ?? new FacetSpec { MinHitCount = 1 };
+			Spec.OrderBy = GetFacetSpecSortOrder(sortOrder);
+			FacetHandler = facetHandler ?? new SimpleFacetHandler(fieldName);
 		}
 
 		/// <summary>

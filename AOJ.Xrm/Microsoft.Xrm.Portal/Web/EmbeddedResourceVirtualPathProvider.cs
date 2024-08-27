@@ -143,7 +143,7 @@ namespace Microsoft.Xrm.Portal.Web
 
 			// load the mappings from all available assemblies
 
-			Mappings = Enumerable.ToList<EmbeddedResourceAssemblyAttribute>(Utility.GetEmbeddedResourceMappingAttributes());
+			Mappings = Utility.GetEmbeddedResourceMappingAttributes().ToList();
 		}
 
 		public override bool FileExists(string virtualPath)

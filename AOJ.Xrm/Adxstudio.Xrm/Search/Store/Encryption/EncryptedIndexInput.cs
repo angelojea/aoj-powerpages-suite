@@ -35,7 +35,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		{
 			get
 			{
-				return this.reader.Position;
+				return reader.Position;
 			}
 		}
 
@@ -47,7 +47,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </returns>
 		public override long Length()
 		{
-			return this.reader.Length;
+			return reader.Length;
 		}
 
 		/// <summary>
@@ -58,7 +58,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </returns>
 		public override byte ReadByte()
 		{
-			return this.reader.ReadByte();
+			return reader.ReadByte();
 		}
 
 		/// <summary>
@@ -75,7 +75,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </param>
 		public override void ReadBytes(byte[] b, int offset, int len)
 		{
-			this.reader.ReadBytes(b, offset, len);
+			reader.ReadBytes(b, offset, len);
 		}
 
 		/// <summary>
@@ -86,7 +86,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// </param>
 		public override void Seek(long pos)
 		{
-			this.reader.Seek(pos);
+			reader.Seek(pos);
 		}
 
 		/// <summary>
@@ -102,7 +102,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 				return;
 			}
 
-			this.reader.Dispose();
+			reader.Dispose();
 		}
 
 		/// <summary>
@@ -111,7 +111,7 @@ namespace Adxstudio.Xrm.Search.Store.Encryption
 		/// <returns>copy of instance</returns>
 		public override object Clone()
 		{
-			var newReader = (IBufferedPageReader)this.reader.Clone();
+			var newReader = (IBufferedPageReader)reader.Clone();
 
 			return new EncryptedIndexInput(newReader);
 		}

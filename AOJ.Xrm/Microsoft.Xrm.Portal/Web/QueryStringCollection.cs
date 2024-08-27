@@ -15,12 +15,12 @@ namespace Microsoft.Xrm.Portal.Web
 	/// </summary>
 	public sealed class QueryStringCollection : NameValueCollection
 	{
-		public QueryStringCollection(System.Web.HttpContext context)
+		public QueryStringCollection(HttpContext context)
 			: base(context.Request.QueryString)
 		{
 		}
 
-		public QueryStringCollection(System.Web.HttpRequest request)
+		public QueryStringCollection(HttpRequest request)
 			: base(request.QueryString)
 		{
 		}
@@ -79,7 +79,7 @@ namespace Microsoft.Xrm.Portal.Web
 
 		public void EnableReadOnly()
 		{
-			base.IsReadOnly = true;
+			IsReadOnly = true;
 		}
 
 		/// <summary>
@@ -91,10 +91,10 @@ namespace Microsoft.Xrm.Portal.Web
 			StringBuilder queryString = new StringBuilder();
 
 			// build out each attribute name/value pair in the collection
-			foreach (string key in this.Keys)
+			foreach (string key in Keys)
 			{
 				// split up multi-valued attributes into separate pairs
-				string[] values = this.GetValues(key);
+				string[] values = GetValues(key);
 
 				if (values != null)
 				{

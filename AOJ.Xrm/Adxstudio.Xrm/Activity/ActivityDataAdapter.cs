@@ -9,21 +9,21 @@ namespace Adxstudio.Xrm.Activity
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.IO;
-	using Adxstudio.Xrm.Cms;
-	using Adxstudio.Xrm.Security;
-	using Adxstudio.Xrm.Services.Query;
-	using Adxstudio.Xrm.Notes;
-	using Adxstudio.Xrm.Services;
-	using Adxstudio.Xrm.Web.UI;
-	using Adxstudio.Xrm.Web.UI.CrmEntityListView;
+	using Cms;
+	using Security;
+	using Services.Query;
+	using Notes;
+	using Services;
+	using Web.UI;
+	using Web.UI.CrmEntityListView;
 	using Microsoft.Xrm.Client;
 	using Microsoft.Xrm.Sdk;
 	using Microsoft.Xrm.Sdk.Messages;
 	using Microsoft.Xrm.Sdk.Metadata;
 	using Microsoft.Xrm.Sdk.Query;
-	using Adxstudio.Xrm.Text;
+	using Text;
 	using Microsoft.Practices.ObjectBuilder2;
-	using Filter = Adxstudio.Xrm.Services.Query.Filter;
+	using Filter = Services.Query.Filter;
 
 	/// <summary>
 	/// Data Adapter for ActivityPointer related data access.
@@ -254,7 +254,7 @@ namespace Adxstudio.Xrm.Activity
 				entity.SetAttributeValue("description", portalComment.Description);
 				entity.SetAttributeValue("regardingobjectid", portalComment.Regarding);
 				entity.SetAttributeValue("regardingobjecttypecode", portalComment.Regarding.LogicalName);
-				entity.SetAttributeValue("from", new Entity[] { portalComment.From });
+				entity.SetAttributeValue("from", new[] { portalComment.From });
 				entity.SetAttributeValue("adx_portalcommentdirectioncode", new OptionSetValue((int)portalComment.DirectionCode));
 				
 				if (owner != null)
@@ -263,7 +263,7 @@ namespace Adxstudio.Xrm.Activity
 
 					if (!string.Equals(owner.LogicalName, "team", StringComparison.OrdinalIgnoreCase))
 					{
-						entity.SetAttributeValue("to", new Entity[] { portalComment.To });
+						entity.SetAttributeValue("to", new[] { portalComment.To });
 					}
 				}
 

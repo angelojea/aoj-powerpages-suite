@@ -127,7 +127,7 @@ namespace Adxstudio.Xrm.Performance
 				Tag = tag;
 			}
 
-			public PerformanceMarkerArea Area { get; private set; }
+			public PerformanceMarkerArea Area { get; }
 
 			public virtual TimeSpan? Elapsed
 			{
@@ -135,27 +135,27 @@ namespace Adxstudio.Xrm.Performance
 				protected set { }
 			}
 
-			public string Id { get; private set; }
+			public string Id { get; }
 
-			public string Name { get; private set; }
+			public string Name { get; }
 
-			public string RequestId { get; private set; }
+			public string RequestId { get; }
 
-			public string SessionId { get; private set; }
+			public string SessionId { get; }
 
 			public PerformanceMarkerSource Source
 			{
 				get { return PerformanceMarkerSource.Server; }
 			}
 
-			public DateTime Timestamp { get; private set; }
+			public DateTime Timestamp { get; }
 
 			public virtual PerformanceMarkerType Type
 			{
 				get { return PerformanceMarkerType.Marker; }
 			}
 
-			public string Tag { get; private set; }
+			public string Tag { get; }
 
 			public virtual void Dispose() { }
 
