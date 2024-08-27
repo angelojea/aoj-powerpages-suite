@@ -167,7 +167,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config_bkp" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

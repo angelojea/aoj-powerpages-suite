@@ -234,13 +234,12 @@
   <PropertyGroup>
     <WorkingDirectory>$(MSBuildThisFileDirectory)bin\$(Configuration)\$(TargetFramework)</WorkingDirectory>
   </PropertyGroup>
-  <Target Name="ILRepack" AfterTargets="Build">
+  <Target Name="ILRepack" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
     <ItemGroup>
       <InputAssemblies Include="Adxstudio.Xrm.dll" />
       <InputAssemblies Include="Adxstudio.Xrm.Resources.dll" />
       <InputAssemblies Include="AntiXssLibrary.dll" />
       <InputAssemblies Include="AOJ.Configuration.dll" />
-      <InputAssemblies Include="AOJ.Plugins.dll" />
       <InputAssemblies Include="BoboBrowse.Net.dll" />
       <InputAssemblies Include="C5.dll" />
       <InputAssemblies Include="Common.Logging.Core.dll" />
@@ -332,6 +331,11 @@
       <InputAssemblies Include="../../../DllImports/WindowsAzureEventSource.dll" />
       <InputAssemblies Include="../../../DllImports/System.Data.Services.Client.dll" />
     </ItemGroup>
-    <ILRepack OutputType="$(OutputType)" MainAssembly="$(AssemblyName).dll" OutputAssembly="$(AssemblyName).dll" InputAssemblies="@(InputAssemblies)" InternalizeExcludeAssemblies="@(InternalizeExcludeAssemblies)" WorkingDirectory="$(WorkingDirectory)" />
+    
+    <ILRepack
+    OutputType="$(OutputType)"
+    MainAssembly="$(AssemblyName).dll" OutputAssembly="$(AssemblyName).dll" InputAssemblies="@(InputAssemblies)" InternalizeExcludeAssemblies="@(InternalizeExcludeAssemblies)" WorkingDirectory="$(WorkingDirectory)"
+    KeyFile="$(MSBuildThisFileDirectory)AOJ.Xrm.snk"
+    />
   </Target>
 </Project>
