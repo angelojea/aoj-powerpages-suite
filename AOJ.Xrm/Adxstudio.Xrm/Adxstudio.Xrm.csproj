@@ -514,6 +514,9 @@
     <Compile Include="Activity\PortalComment.cs" />
     <Compile Include="Activity\PortalTimeline.cs" />
     <Compile Include="AOJ.cs" />
+    <Compile Include="AspNet\Cms\ApplicationRestartPluginMessageMiddleware.cs" />
+    <Compile Include="AspNet\Cms\StrictTransportSecurityMiddleware.cs" />
+    <Compile Include="AspNet\Cms\StrictTransportSecurityOptions.cs" />
     <Compile Include="Configuration\CertificateExtensions.cs" />
     <Compile Include="Configuration\CertificateNotFoundException.cs" />
     <Compile Include="Configuration\Extensions.cs" />
@@ -554,10 +557,18 @@
     <Compile Include="Services\CacheDependencyCalculator.cs" />
     <Compile Include="Services\Cache\Extensions.cs" />
     <Compile Include="Services\Cache\PersistCachedRequestsJob.cs" />
+    <Compile Include="AspNet\Cms\ETWMiddleware.cs" />
+    <Compile Include="AspNet\Cms\Extensions.cs" />
+    <Compile Include="AspNet\Cms\AppInfoMiddleware.cs" />
     <Compile Include="KnowledgeArticles\IRelatedNote.cs" />
     <Compile Include="KnowledgeArticles\RelatedNote.cs" />
+    <Compile Include="AspNet\Cms\HealthMiddleware.cs" />
     <Compile Include="Services\Cache\WarmupCacheJob.cs" />
     <Compile Include="Services\Cache\WarmupCacheSettings.cs" />
+    <Compile Include="AspNet\Cms\PortalHostingEnvironment.cs" />
+    <Compile Include="AspNet\Cms\PortalSolutions.cs" />
+    <Compile Include="AspNet\Cms\ScaleOutMiddleware.cs" />
+    <Compile Include="AspNet\Cms\WebAppSettings.cs" />
     <Compile Include="Caching\OrganizationServiceCacheBatchedPluginMessage.cs" />
     <Compile Include="Cms\ContentMapDataAdapter.cs" />
     <Compile Include="Cms\RatingController.cs" />
@@ -596,6 +607,44 @@
     <Compile Include="Threading\FluentSchedulerJob.cs" />
     <Compile Include="KnowledgeArticles\KnowledgeArticleState.cs" />
     <Compile Include="Web\Mvc\Html\LocalizedScripts.cs" />
+    <Compile Include="AspNet\Cms\PluginMessageMiddleware.cs" />
+    <Compile Include="AspNet\Cms\RequireSslMiddleware.cs" />
+    <Compile Include="AspNet\Cms\WebsiteHeaderSettingsMiddleware.cs" />
+    <Compile Include="AspNet\CrmDbContext.cs" />
+    <Compile Include="AspNet\BaseManager.cs" />
+    <Compile Include="AspNet\BaseStore.cs" />
+    <Compile Include="AspNet\Cms\CrmWebsite.cs" />
+    <Compile Include="AspNet\Cms\CrmWebsiteStore.cs" />
+    <Compile Include="AspNet\Cms\SiteMapAuthenticationMiddleware.cs" />
+    <Compile Include="AspNet\Cms\StartupSettingsManager.cs" />
+    <Compile Include="AspNet\Cms\WebsiteManager.cs" />
+    <Compile Include="AspNet\CrmEntityStore.cs" />
+    <Compile Include="AspNet\CrmModel.cs" />
+    <Compile Include="AspNet\EntityManager.cs" />
+    <Compile Include="AspNet\Extensions.cs" />
+    <Compile Include="AspNet\Identity\CrmClaimsIdentityFactory.cs" />
+    <Compile Include="AspNet\Identity\CrmEmailTokenProvider.cs" />
+    <Compile Include="AspNet\Identity\CrmInvitationStore.cs" />
+    <Compile Include="AspNet\Identity\CrmPasswordValidator.cs" />
+    <Compile Include="AspNet\Identity\CrmPhoneNumberTokenProvider.cs" />
+    <Compile Include="AspNet\Identity\CrmSignInManager.cs" />
+    <Compile Include="AspNet\Identity\CrmUser.cs" />
+    <Compile Include="AspNet\Identity\CrmUserLogin.cs" />
+    <Compile Include="AspNet\Identity\CrmUserManager.cs" />
+    <Compile Include="AspNet\Identity\CrmUserStore.cs" />
+    <Compile Include="AspNet\Identity\IdentityErrorDescriber.cs" />
+    <Compile Include="AspNet\Identity\InvitationManager.cs" />
+    <Compile Include="AspNet\Mvc\Extensions.cs" />
+    <Compile Include="AspNet\PortalBus\AppDataPortalBusProvider.cs" />
+    <Compile Include="AspNet\PortalBus\ApplicationRestartPortalBusMessage.cs" />
+    <Compile Include="AspNet\PortalBus\CacheInvalidationPortalBusMessage.cs" />
+    <Compile Include="AspNet\PortalBus\LocalOnlyPortalBusProvider.cs" />
+    <Compile Include="AspNet\PortalBus\PortalBusMessage.cs" />
+    <Compile Include="AspNet\PortalBus\PortalBusManager.cs" />
+    <Compile Include="AspNet\PortalBus\PortalBusProvider.cs" />
+    <Compile Include="AspNet\PortalBus\PortalBusMiddleware.cs" />
+    <Compile Include="AspNet\PortalBus\RoleEnvironmentPortalBusProvider.cs" />
+    <Compile Include="AspNet\PortalBus\ServiceDefinitionPortalBusProvider.cs" />
     <Compile Include="Blogs\BlogSecurityInfo.cs" />
     <Compile Include="Caching\CacheEventSource.cs" />
     <Compile Include="Category\Category.cs" />
@@ -680,6 +729,7 @@
     <Compile Include="Web\Mvc\Html\RatingExtensions.cs" />
     <Compile Include="Web\Mvc\Html\VisualizationExtensions.cs" />
     <Compile Include="Web\Mvc\Liquid\Tags\Chart.cs" />
+    <Compile Include="AspNet\Cms\ContextLanguageInfo.cs" />
     <Compile Include="Search\Index\CrmEntityIndexExtensions.cs" />
     <Compile Include="Search\Index\FetchXmlLocaleConfig.cs" />
     <Compile Include="Search\Facets\FacetValueDescComparatorFactory.cs" />
@@ -871,6 +921,8 @@
     <Compile Include="Web\Mvc\Liquid\Tags\WebForm.cs" />
     <Compile Include="Web\Mvc\Liquid\Tags\EntityForm.cs" />
     <Compile Include="Web\Mvc\RedirectToSiteMarkerResult.cs" />
+    <Compile Include="AspNet\Organization\CrmOrganizationStore.cs" />
+    <Compile Include="AspNet\Organization\OrganizationManager.cs" />
     <Compile Include="Blogs\AuthorBlogDataAdapter.cs" />
     <Compile Include="Blogs\AuthorWebsiteBlogAggregationDataAdapter.cs" />
     <Compile Include="Blogs\Blog.cs" />
@@ -1953,7 +2005,6 @@
     <Compile Include="WindowsAzure\ServiceRuntime\Configuration\ServiceDefinition.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Adxstudio.Xrm.ruleset" />
     <None Include="Adxstudio.Xrm.snk" />
     <EmbeddedResource Include="Liquid\ad.liquid" />
     <EmbeddedResource Include="Liquid\blogs.liquid" />
@@ -1967,7 +2018,7 @@
     <EmbeddedResource Include="Liquid\side_navigation.liquid" />
     <EmbeddedResource Include="Liquid\snippet.liquid" />
     <EmbeddedResource Include="Liquid\top_navigation.liquid" />
-    <None Include="app.config_bkp">
+    <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
     <EmbeddedResource Include="Liquid\layout_1_column.liquid" />
