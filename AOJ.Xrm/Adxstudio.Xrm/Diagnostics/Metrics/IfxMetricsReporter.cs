@@ -10,9 +10,6 @@ namespace Adxstudio.Xrm.Diagnostics.Metrics
 	using System.Globalization;
 	using System.Threading;
 	using Configuration;
-#if CLOUDINSTRUMENTATION
-	using Microsoft.Cloud.InstrumentationFramework;
-#endif
 
 	/// <summary>
 	/// Default metric implementation, uses <see cref="IfxMetricsReporter"/> to send data.
@@ -29,11 +26,6 @@ namespace Adxstudio.Xrm.Diagnostics.Metrics
 
 		public void LogValue(long rawValue)
 		{
-#if CLOUDINSTRUMENTATION
-			IfxMetricsReporter.Instance.LogValueForMetric(this, rawValue);
-#else
-			ADXTrace.Instance.TraceWarning(TraceCategory.Application, "Microsoft.Cloud.InstrumentationFramework assemblies could not be found.");
-#endif
 		}
 		public bool Equals(IAdxMetric other)
 		{
@@ -109,47 +101,9 @@ namespace Adxstudio.Xrm.Diagnostics.Metrics
 			public const string PortalVersion = "PortalVersion";
 		}
 
-#if CLOUDINSTRUMENTATION
-		readonly ConcurrentDictionary<IAdxMetric, MeasureMetric10D> _metricsCache = new ConcurrentDictionary<IAdxMetric, MeasureMetric10D>();
-		readonly string _mdmAccountName, _mdmNamespace, _geo, _tenant, _role, _roleInstance, _org, _portalType, _portalId, _portalApp, _portalUrl, _portalVersion;
-		readonly bool _initializationFailed;
-#endif
 
 		private IfxMetricsReporter()
 		{
-#if CLOUDINSTRUMENTATION
-			try
-			{
-				_mdmAccountName = GetCloudConfigurationSettingWithValue(SettingNames.MdmAccountName);
-				_mdmNamespace = GetCloudConfigurationSettingWithValue(SettingNames.MdmNamespace);
-				_geo = GetCloudConfigurationSettingWithValue(SettingNames.Geo);
-				_tenant = GetCloudConfigurationSettingWithValue(SettingNames.Tenant);
-				_role = GetCloudConfigurationSettingWithValue(SettingNames.Role);
-				_roleInstance = GetCloudConfigurationSettingWithValue(SettingNames.RoleInstance);
-				_org = GetCloudConfigurationSettingWithValue(SettingNames.Org);
-				_portalType = GetCloudConfigurationSettingWithValue(SettingNames.PortalType);
-				_portalId = GetCloudConfigurationSettingWithValue(SettingNames.PortalId);
-				_portalApp = GetCloudConfigurationSettingWithValue(SettingNames.PortalApp);
-				_portalUrl = GetCloudConfigurationSettingWithValue(SettingNames.PortalUrl);
-				_portalVersion = GetCloudConfigurationSettingWithValue(SettingNames.PortalVersion);
-
-				if (IfxInitializer.IfxInitializeStatus == IfxInitializer.IfxInitState.IfxUninitalized)
-				{
-					IfxInitializer.Initialize(_tenant, _role, _roleInstance);
-				}
-
-				_initializationFailed = false;
-			}
-			catch (Exception ex)
-			{
-				if (ex is OutOfMemoryException || ex is ThreadAbortException)
-				{
-					throw;
-				}
-				MetricsReportingEvents.Instance.MetricInitializationFailed(ex.ToString());
-				_initializationFailed = true;
-			}
-#endif
 		}
 
 		private static string GetCloudConfigurationSettingWithValue(string settingName)
@@ -163,57 +117,6 @@ namespace Adxstudio.Xrm.Diagnostics.Metrics
 
 		public void LogValueForMetric(IAdxMetric metric, long rawValue)
 		{
-#if CLOUDINSTRUMENTATION
-			if (_initializationFailed) return;
-			var ifxMetric = _metricsCache.GetOrAdd(metric, CreateMetric);
-
-			try
-			{
-				ErrorContext errorContext = new ErrorContext();
-				ifxMetric.LogValue(rawValue, _geo, _tenant, _role, _roleInstance, _org, _portalType, _portalId, _portalApp, _portalUrl, _portalVersion, ref errorContext);
-				if (errorContext.ErrorCode != 0)
-				{
-					MetricsReportingEvents.Instance.MetricReportingFailed(metric.MetricName, "LogValue failed: " + errorContext.ErrorMessage);
-				}
-			}
-			catch (Exception ex)
-			{
-				if (ex is ThreadAbortException || ex is OutOfMemoryException)
-				{
-					throw;
-				}
-				MetricsReportingEvents.Instance.MetricReportingFailed(metric.MetricName, ex.ToString());
-			}
-#endif
 		}
-
-#if CLOUDINSTRUMENTATION
-		private MeasureMetric10D CreateMetric(IAdxMetric metric)
-		{
-			ErrorContext errorContext = new ErrorContext();
-			MeasureMetric10D instance = MeasureMetric10D.Create(
-				_mdmAccountName,
-				_mdmNamespace,
-				metric.MetricName,
-				MdmDimensionNames.Geo,
-				MdmDimensionNames.Tenant,
-				MdmDimensionNames.Role,
-				MdmDimensionNames.RoleInstance,
-				MdmDimensionNames.Org,
-				MdmDimensionNames.PortalType,
-				MdmDimensionNames.PortalId,
-				MdmDimensionNames.PortalApp,
-				MdmDimensionNames.PortalUrl,
-				MdmDimensionNames.PortalVersion,
-				ref errorContext);
-
-			if (errorContext.ErrorCode != 0)
-			{
-				MetricsReportingEvents.Instance.MetricReportingFailed(metric.MetricName, "CreateMetric failed: " + errorContext.ErrorMessage);
-			}
-
-			return instance;
-		}
-#endif
 	}
 }

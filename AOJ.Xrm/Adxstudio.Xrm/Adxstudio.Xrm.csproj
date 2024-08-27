@@ -52,7 +52,8 @@
     <Prefer32Bit>false</Prefer32Bit>
     <NoWarn>1591,1573</NoWarn>
     <LangVersion>default</LangVersion>
-    <CodeAnalysisRuleSet>RuleSet1.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -181,33 +182,6 @@
     <Reference Include="Lucene.Net.Contrib.SpellChecker, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.SpellChecker.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-    </Reference>
-    <Reference Condition="Exists('..\DllImports\Microsoft.Cloud.InstrumentationFramework.3.0.4.146\lib\net40\Microsoft.Cloud.InstrumentationFramework.Events.dll')" Include="Microsoft.Cloud.InstrumentationFramework.Events, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DllImports\Microsoft.Cloud.InstrumentationFramework.3.0.4.146\lib\net40\Microsoft.Cloud.InstrumentationFramework.Events.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="Exists('..\DllImports\Microsoft.Cloud.InstrumentationFramework.3.0.4.146\lib\net40\Microsoft.Cloud.InstrumentationFramework.Health.dll')" Include="Microsoft.Cloud.InstrumentationFramework.Health, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DllImports\Microsoft.Cloud.InstrumentationFramework.3.0.4.146\lib\net40\Microsoft.Cloud.InstrumentationFramework.Health.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Condition="Exists('..\DllImports\Microsoft.Cloud.InstrumentationFramework.3.0.4.146\lib\net40\Microsoft.Cloud.InstrumentationFramework.Metrics.dll')" Include="Microsoft.Cloud.InstrumentationFramework.Metrics, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DllImports\Microsoft.Cloud.InstrumentationFramework.3.0.4.146\lib\net40\Microsoft.Cloud.InstrumentationFramework.Metrics.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.ActiveDirectory.GraphClient, Version=2.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Azure.ActiveDirectory.GraphClient.2.1.0\lib\portable-net4+sl5+win+wpa+wp8\Microsoft.Azure.ActiveDirectory.GraphClient.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Crm.Sdk.Proxy, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.9.0.2.56\lib\net462\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
@@ -555,22 +529,15 @@
     <Compile Include="AspNet\BaseStore.cs" />
     <Compile Include="AspNet\Cms\CrmWebsite.cs" />
     <Compile Include="AspNet\Cms\CrmWebsiteStore.cs" />
-    <Compile Include="AspNet\Cms\StartupSettingsManager.cs" />
     <Compile Include="AspNet\Cms\WebsiteManager.cs" />
     <Compile Include="AspNet\CrmEntityStore.cs" />
     <Compile Include="AspNet\CrmModel.cs" />
     <Compile Include="AspNet\EntityManager.cs" />
     <Compile Include="AspNet\Extensions.cs" />
-    <Compile Include="AspNet\Identity\CrmEmailTokenProvider.cs" />
     <Compile Include="AspNet\Identity\CrmInvitationStore.cs" />
-    <Compile Include="AspNet\Identity\CrmPasswordValidator.cs" />
-    <Compile Include="AspNet\Identity\CrmPhoneNumberTokenProvider.cs" />
     <Compile Include="AspNet\Identity\CrmUser.cs" />
     <Compile Include="AspNet\Identity\CrmUserLogin.cs" />
-    <Compile Include="AspNet\Identity\CrmUserManager.cs" />
-    <Compile Include="AspNet\Identity\CrmUserStore.cs" />
     <Compile Include="AspNet\Identity\IdentityErrorDescriber.cs" />
-    <Compile Include="AspNet\Identity\InvitationManager.cs" />
     <Compile Include="AspNet\PortalBus\ApplicationRestartPortalBusMessage.cs" />
     <Compile Include="AspNet\PortalBus\CacheInvalidationPortalBusMessage.cs" />
     <Compile Include="Blogs\BlogSecurityInfo.cs" />
@@ -1985,7 +1952,6 @@
     </None>
     <EmbeddedResource Include="Liquid\entity_list.json" />
     <EmbeddedResource Include="Liquid\entity_list.liquid" />
-    <None Include="RuleSet1.ruleset" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

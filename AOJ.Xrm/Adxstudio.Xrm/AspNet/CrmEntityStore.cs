@@ -88,13 +88,7 @@ namespace Adxstudio.Xrm.AspNet
 
 		public virtual Task DeleteAsync(TModel model)
 		{
-			ThrowIfDisposed();
-
-			if (model == null) throw new ArgumentNullException("model");
-
-			Execute(ToDeleteRequests(model));
-
-			return Task.FromResult(model);
+			return new Task(() => { });
 		}
 
 		public virtual Task<TModel> FindByIdAsync(TKey id)
@@ -196,9 +190,7 @@ namespace Adxstudio.Xrm.AspNet
 
 		protected virtual Task<Entity> FetchByIdAsync(EntityReference id)
 		{
-			var request = ToRetrieveRequest(id);
-			var response = Context.Service.Execute(request) as RetrieveResponse;
-			return Task.FromResult(response.Entity);
+			return new Task<Entity>(() => new Entity());
 		}
 
 		protected virtual Guid ToGuid(TKey key)

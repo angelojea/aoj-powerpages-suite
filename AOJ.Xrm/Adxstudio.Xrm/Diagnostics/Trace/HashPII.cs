@@ -9,7 +9,6 @@ namespace Adxstudio.Xrm.Diagnostics.Trace
 	using System.Security.Cryptography;
 	using System.Text;
 	using System.Web;
-	using Microsoft.AspNet.Identity;
 
 	/// <summary>
 	/// Class used to HASH personally identifying information (PII) with SHA256 encryption
@@ -48,9 +47,7 @@ namespace Adxstudio.Xrm.Diagnostics.Trace
 		/// <returns>The hashed user ID.</returns>
 		public static string GetHashedUserId(HttpContextBase context)
 		{
-			return context != null && context.User.Identity.IsAuthenticated && !string.IsNullOrWhiteSpace(context.User.Identity.GetUserId())
-				? ComputeHashPiiSha256(context.User.Identity.GetUserId())
-				: string.Empty;
+			return string.Empty;
 		}
 
 		/// <summary>

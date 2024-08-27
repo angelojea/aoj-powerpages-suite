@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNet.Identity;
 using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Sdk;
 
@@ -16,21 +15,13 @@ namespace Adxstudio.Xrm.AspNet.Identity
 	{
 		public static readonly CrmUser Anonymous = new CrmUser();
 
-		public bool IsDirty { get; set; }
-
 		public CrmUser()
 		{
 		}
-
-		public CrmUser(Entity entity)
-			: base(entity)
-		{
-		}
-
 		void IDisposable.Dispose() { }
 	}
 
-	public class CrmUser<TKey> : CrmModel<TKey>, IUser<TKey>
+	public class CrmUser<TKey> : CrmModel<TKey>
 		where TKey : IEquatable<TKey>
 	{
 		private Lazy<IEnumerable<CrmUserLogin>> _logins;
@@ -158,44 +149,9 @@ namespace Adxstudio.Xrm.AspNet.Identity
 			_logins = new Lazy<IEnumerable<CrmUserLogin>>(GetUserLogins);
 		}
 
-		public virtual void AddLogin(UserLoginInfo login)
-		{
-			var entity = new Entity("adx_externalidentity");
-			entity.SetAttributeValue("adx_identityprovidername", login.LoginProvider);
-			entity.SetAttributeValue("adx_username", login.ProviderKey);
-
-			if (!Entity.RelatedEntities.ContainsKey(UserConstants.ContactExternalIdentityRelationship))
-			{
-				Entity.RelatedEntities.Add(UserConstants.ContactExternalIdentityRelationship, new EntityCollection(new[] { entity }));
-			}
-			else
-			{
-				Entity.RelatedEntities[UserConstants.ContactExternalIdentityRelationship].Entities.Add(entity);
-			}
-
-			_logins = new Lazy<IEnumerable<CrmUserLogin>>(GetUserLogins);
-		}
-
-		public virtual void RemoveLogin(UserLoginInfo login)
-		{
-			if (!Entity.RelatedEntities.ContainsKey(UserConstants.ContactExternalIdentityRelationship)) return;
-
-			var entities = Entity
-				.RelatedEntities[UserConstants.ContactExternalIdentityRelationship].Entities
-				.Where(e => e.GetAttributeValue<string>("adx_identityprovidername") == login.LoginProvider && e.GetAttributeValue<string>("adx_username") == login.ProviderKey)
-				.ToArray();
-
-			foreach (var entity in entities)
-			{
-				Entity.RelatedEntities[UserConstants.ContactExternalIdentityRelationship].Entities.Remove(entity);
-			}
-
-			_logins = new Lazy<IEnumerable<CrmUserLogin>>(GetUserLogins);
-		}
-
 		protected virtual IEnumerable<CrmUserLogin> GetUserLogins()
 		{
-			return GetRelatedEntities(UserConstants.ContactExternalIdentityRelationship).Select(ToLogin).ToList();
+			return new List<CrmUserLogin>() { new CrmUserLogin(new Entity()) };
 		}
 
 		protected virtual CrmUserLogin ToLogin(Entity entity)
