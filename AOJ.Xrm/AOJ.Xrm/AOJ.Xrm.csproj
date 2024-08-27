@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\ILRepack.MSBuild.Task.2.0.13\build\ILRepack.MSBuild.Task.props" Condition="Exists('..\packages\ILRepack.MSBuild.Task.2.0.13\build\ILRepack.MSBuild.Task.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,6 +14,8 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,6 +34,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>AOJ.Xrm.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotLiquid, Version=2.0.64.0, Culture=neutral, PublicKeyToken=82e46016ecf9f07c, processorArchitecture=MSIL">
       <HintPath>..\packages\DotLiquid.2.0.64\lib\net451\DotLiquid.dll</HintPath>
@@ -38,8 +47,23 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Build.Framework, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Build.Framework.15.9.20\lib\net46\Microsoft.Build.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build.Utilities.Core, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Build.Utilities.Core.15.9.20\lib\net46\Microsoft.Build.Utilities.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Crm.Sdk.Proxy, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.9.0.2.56\lib\net462\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Edm, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Edm.5.6.4\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.OData.5.6.4\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Services.Client.5.6.4\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=3.19.8.16603, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.3.19.8\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
@@ -49,6 +73,10 @@
     </Reference>
     <Reference Include="Microsoft.Rest.ClientRuntime, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.CoreAssembly.9.1.1.65\lib\net462\Microsoft.Rest.ClientRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Setup.Configuration.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Setup.Configuration.Interop.1.16.30\lib\net35\Microsoft.VisualStudio.Setup.Configuration.Interop.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -75,6 +103,10 @@
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.5.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
@@ -92,6 +124,11 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
@@ -102,6 +139,9 @@
       <HintPath>..\packages\System.ServiceModel.Primitives.4.10.3\lib\net461\System.ServiceModel.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Spatial, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
+    </Reference>
     <Reference Include="System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encodings.Web.6.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
@@ -137,6 +177,7 @@
     <Reference Include="System.Workflow.Activities" />
     <Reference Include="System.Workflow.ComponentModel" />
     <Reference Include="System.Workflow.Runtime" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -151,6 +192,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AOJ.Xrm.snk" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -181,4 +223,115 @@
     <Content Include="post-build.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\ILRepack.Lib.MSBuild.Task.2.0.34.2\build\ILRepack.Lib.MSBuild.Task.targets" Condition="Exists('..\packages\ILRepack.Lib.MSBuild.Task.2.0.34.2\build\ILRepack.Lib.MSBuild.Task.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\ILRepack.Lib.MSBuild.Task.2.0.34.2\build\ILRepack.Lib.MSBuild.Task.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ILRepack.Lib.MSBuild.Task.2.0.34.2\build\ILRepack.Lib.MSBuild.Task.targets'))" />
+    <Error Condition="!Exists('..\packages\ILRepack.MSBuild.Task.2.0.13\build\ILRepack.MSBuild.Task.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ILRepack.MSBuild.Task.2.0.13\build\ILRepack.MSBuild.Task.props'))" />
+  </Target>
+  <PropertyGroup>
+    <WorkingDirectory>$(MSBuildThisFileDirectory)bin\$(Configuration)\$(TargetFramework)</WorkingDirectory>
+  </PropertyGroup>
+  <Target Name="ILRepack" AfterTargets="Build">
+    <ItemGroup>
+      <InputAssemblies Include="Adxstudio.Xrm.dll" />
+      <InputAssemblies Include="Adxstudio.Xrm.Resources.dll" />
+      <InputAssemblies Include="AntiXssLibrary.dll" />
+      <InputAssemblies Include="AOJ.Configuration.dll" />
+      <InputAssemblies Include="AOJ.Plugins.dll" />
+      <InputAssemblies Include="BoboBrowse.Net.dll" />
+      <InputAssemblies Include="C5.dll" />
+      <InputAssemblies Include="Common.Logging.Core.dll" />
+      <InputAssemblies Include="Common.Logging.dll" />
+      <InputAssemblies Include="DevTrends.MvcDonutCaching.dll" />
+      <InputAssemblies Include="DotLiquid.dll" />
+      <InputAssemblies Include="FluentScheduler.dll" />
+      <InputAssemblies Include="HtmlAgilityPack.dll" />
+      <InputAssemblies Include="ITfoxtec.Saml2.dll" />
+      <InputAssemblies Include="Lucene.Net.Contrib.Highlighter.dll" />
+      <InputAssemblies Include="Lucene.Net.Contrib.Memory.dll" />
+      <InputAssemblies Include="Lucene.Net.Contrib.Snowball.dll" />
+      <InputAssemblies Include="Lucene.Net.dll" />
+      <InputAssemblies Include="Microsoft.AspNet.Identity.Core.dll" />
+      <InputAssemblies Include="Microsoft.AspNet.Identity.Owin.dll" />
+      <InputAssemblies Include="Microsoft.Bcl.AsyncInterfaces.dll" />
+      <InputAssemblies Include="Microsoft.Cloud.InstrumentationFramework.Events.dll" />
+      <InputAssemblies Include="Microsoft.Cloud.InstrumentationFramework.Metrics.dll" />
+      <InputAssemblies Include="Microsoft.Crm.Sdk.Proxy.dll" />
+      <InputAssemblies Include="Microsoft.Data.Edm.dll" />
+      <InputAssemblies Include="Microsoft.Data.OData.dll" />
+      <InputAssemblies Include="Microsoft.IdentityModel.Clients.ActiveDirectory.dll" />
+      <InputAssemblies Include="Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll" />
+      <InputAssemblies Include="Microsoft.IdentityModel.dll" />
+      <InputAssemblies Include="Microsoft.IdentityModel.Protocol.Extensions.dll" />
+      <InputAssemblies Include="Microsoft.Owin.dll" />
+      <InputAssemblies Include="Microsoft.Owin.Host.SystemWeb.dll" />
+      <InputAssemblies Include="Microsoft.Owin.Security.Cookies.dll" />
+      <InputAssemblies Include="Microsoft.Owin.Security.dll" />
+      <InputAssemblies Include="Microsoft.Owin.Security.Facebook.dll" />
+      <InputAssemblies Include="Microsoft.Owin.Security.Google.dll" />
+      <InputAssemblies Include="Microsoft.Owin.Security.MicrosoftAccount.dll" />
+      <InputAssemblies Include="Microsoft.Owin.Security.OpenIdConnect.dll" />
+      <InputAssemblies Include="Microsoft.Owin.Security.Twitter.dll" />
+      <InputAssemblies Include="Microsoft.Owin.Security.WsFederation.dll" />
+      <InputAssemblies Include="Microsoft.Practices.EnterpriseLibrary.Common.dll" />
+      <InputAssemblies Include="Microsoft.Practices.EnterpriseLibrary.WindowsAzure.TransientFaultHandling.dll" />
+      <InputAssemblies Include="Microsoft.Practices.ServiceLocation.dll" />
+      <InputAssemblies Include="Microsoft.Practices.TransientFaultHandling.Core.dll" />
+      <InputAssemblies Include="Microsoft.Practices.Unity.dll" />
+      <InputAssemblies Include="Microsoft.Practices.Unity.Interception.dll" />
+      <InputAssemblies Include="Microsoft.Rest.ClientRuntime.dll" />
+      <InputAssemblies Include="Microsoft.ServiceBus.dll" />
+      <InputAssemblies Include="Microsoft.SharePoint.Client.dll" />
+      <InputAssemblies Include="Microsoft.SharePoint.Client.Runtime.dll" />
+      <InputAssemblies Include="Microsoft.Web.Infrastructure.dll" />
+      <InputAssemblies Include="Microsoft.WindowsAzure.Configuration.dll" />
+      <InputAssemblies Include="Microsoft.WindowsAzure.ServiceRuntime.dll" />
+      <InputAssemblies Include="Microsoft.WindowsAzure.Storage.dll" />
+      <InputAssemblies Include="Microsoft.Xrm.Client.dll" />
+      <InputAssemblies Include="Microsoft.Xrm.Portal.dll" />
+      <InputAssemblies Include="Microsoft.Xrm.Sdk.Deployment.dll" />
+      <InputAssemblies Include="Microsoft.Xrm.Sdk.dll" />
+      <InputAssemblies Include="Microsoft.Xrm.Sdk.Workflow.dll" />
+      <InputAssemblies Include="Microsoft.Xrm.Tooling.Connector.dll" />
+      <InputAssemblies Include="Newtonsoft.Json.dll" />
+      <InputAssemblies Include="Owin.dll" />
+      <InputAssemblies Include="Owin.Security.Providers.dll" />
+      <InputAssemblies Include="System.Buffers.dll" />
+      <InputAssemblies Include="System.IdentityModel.Tokens.Jwt.dll" />
+      <InputAssemblies Include="System.Memory.dll" />
+      <InputAssemblies Include="System.Net.Http.Formatting.dll" />
+      <InputAssemblies Include="System.Numerics.Vectors.dll" />
+      <InputAssemblies Include="System.Runtime.CompilerServices.Unsafe.dll" />
+      <InputAssemblies Include="System.ServiceModel.Http.dll" />
+      <InputAssemblies Include="System.ServiceModel.Primitives.dll" />
+      <InputAssemblies Include="System.Spatial.dll" />
+      <InputAssemblies Include="System.Text.Encodings.Web.dll" />
+      <InputAssemblies Include="System.Text.Json.dll" />
+      <InputAssemblies Include="System.Threading.Tasks.Dataflow.dll" />
+      <InputAssemblies Include="System.Threading.Tasks.Extensions.dll" />
+      <InputAssemblies Include="System.ValueTuple.dll" />
+      <InputAssemblies Include="System.Web.Helpers.dll" />
+      <InputAssemblies Include="System.Web.Http.dll" />
+      <InputAssemblies Include="System.Web.Http.OData.dll" />
+      <InputAssemblies Include="System.Web.Mvc.dll" />
+      <InputAssemblies Include="System.Web.Optimization.dll" />
+      <InputAssemblies Include="System.Web.Razor.dll" />
+      <InputAssemblies Include="System.Web.WebPages.Deployment.dll" />
+      <InputAssemblies Include="System.Web.WebPages.dll" />
+      <InputAssemblies Include="System.Web.WebPages.Razor.dll" />
+      <InputAssemblies Include="Microsoft.Data.Services.Client.dll" />
+      <InputAssemblies Include="../../../DllImports/Antlr3.Runtime.dll" />
+      <InputAssemblies Include="../../../DllImports/Bond.Attributes.dll" />
+      <InputAssemblies Include="../../../DllImports/Bond.dll" />
+      <InputAssemblies Include="../../../DllImports/Bond.IO.dll" />
+      <InputAssemblies Include="../../../DllImports/Microsoft.Owin.Security.OAuth.dll" />
+      <InputAssemblies Include="../../../DllImports/webgrease.dll" />
+      <InputAssemblies Include="../../../DllImports/WindowsAzureEventSource.dll" />
+      <InputAssemblies Include="../../../DllImports/System.Data.Services.Client.dll" />
+    </ItemGroup>
+    <ILRepack OutputType="$(OutputType)" MainAssembly="$(AssemblyName).dll" OutputAssembly="$(AssemblyName).dll" InputAssemblies="@(InputAssemblies)" InternalizeExcludeAssemblies="@(InternalizeExcludeAssemblies)" WorkingDirectory="$(WorkingDirectory)" />
+  </Target>
 </Project>
