@@ -23,10 +23,17 @@ namespace Microsoft.Xrm.Client.Configuration
 	/// </summary>
 	public class CrmConfigurationProvider
 	{
-		private static CrmSection CreateConfiguration()
+        public CrmConnection Connection { get; set; }
+
+        private static CrmSection CreateConfiguration()
 		{
 			var configuration = ConfigurationManager.GetSection(CrmSection.SectionName) as CrmSection ?? new CrmSection();
-			var args = new CrmSectionCreatedEventArgs { Configuration = configuration };
+            configuration.Contexts.Add(new OrganizationServiceContextElement()
+            {
+                Name = "Xrm",
+                Type = "Microsoft.Xrm.Client.CrmOrganizationServiceContext, Microsoft.Xrm.Client"
+            });
+            var args = new CrmSectionCreatedEventArgs { Configuration = configuration };
 
 			var handler = ConfigurationCreated;
 
@@ -164,6 +171,7 @@ namespace Microsoft.Xrm.Client.Configuration
 		/// <returns></returns>
 		public virtual IOrganizationService CreateService(CrmConnection connection = null, string serviceName = null, bool allowDefaultFallback = false)
 		{
+			Connection = connection;
 			var section = GetCrmSection();
 
 			var serviceElement = section.Services.GetElementOrDefault(serviceName, allowDefaultFallback);
@@ -202,6 +210,7 @@ namespace Microsoft.Xrm.Client.Configuration
 
         private IOrganizationService CreateService(OrganizationServiceElement serviceElement, CrmConnection connection)
         {
+            Connection = connection;
             if (connection.Service != null)
             {
                 var serviceCache = CreateServiceCache(null, connection.GetConnectionId(), true);
@@ -263,8 +272,9 @@ namespace Microsoft.Xrm.Client.Configuration
 		/// <param name="allowDefaultFallback"></param>
 		/// <returns></returns>
 		public virtual IOrganizationServiceCache CreateServiceCache(string serviceCacheName, CrmConnection connection, bool allowDefaultFallback = false)
-		{
-			return CreateServiceCache(serviceCacheName, connection.GetConnectionId(), allowDefaultFallback);
+        {
+            Connection = connection;
+            return CreateServiceCache(serviceCacheName, connection.GetConnectionId(), allowDefaultFallback);
 		}
 
 		private ObjectCache _objectCache;

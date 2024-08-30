@@ -22,6 +22,25 @@ namespace Microsoft.Xrm.Portal.Configuration
 		private static PortalCrmSection CreateConfiguration()
 		{
 			var configuration = ConfigurationManager.GetSection(PortalCrmSection.SectionName) as PortalCrmSection ?? new PortalCrmSection();
+			configuration.Portals.Add(new PortalContextElement()
+			{
+				Name = "Xrm",
+				ContextName = "Xrm",
+				CmsServiceBaseUri = "~/Services/Cms.svc",
+                WebsiteSelector = new WebsiteSelectorElement()
+                {
+                    Type = "Microsoft.Xrm.Portal.Cms.WebsiteSelectors.NameWebsiteSelector, Microsoft.Xrm.Portal"
+                },
+                DependencyProvider = new DependencyProviderElement()
+                {
+                    Type = "Microsoft.Xrm.Portal.Configuration.DependencyProvider, Microsoft.Xrm.Portal"
+                },
+                CrmEntitySecurityProvider = new CrmEntitySecurityProviderElement()
+                {
+                    Type = "Microsoft.Xrm.Portal.Cms.Security.CmsCrmEntitySecurityProvider, Microsoft.Xrm.Portal"
+                },
+
+            });
 			var args = new PortalCrmSectionCreatedEventArgs { Configuration = configuration };
 
 			var handler = ConfigurationCreated;
@@ -34,10 +53,11 @@ namespace Microsoft.Xrm.Portal.Configuration
 			return args.Configuration;
 		}
 
-		/// <summary>
-		/// Occurs after the <see cref="PortalCrmSection"/> configuration is created.
-		/// </summary>
-		public static event EventHandler<PortalCrmSectionCreatedEventArgs> ConfigurationCreated;
+
+        /// <summary>
+        /// Occurs after the <see cref="PortalCrmSection"/> configuration is created.
+        /// </summary>
+        public static event EventHandler<PortalCrmSectionCreatedEventArgs> ConfigurationCreated;
 
 		private PortalCrmSection _portalCrmSection;
 

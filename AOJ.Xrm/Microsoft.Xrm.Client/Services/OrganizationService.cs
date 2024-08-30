@@ -33,7 +33,8 @@ namespace Microsoft.Xrm.Client.Services
 		private static IServiceConfiguration<IOrganizationService> _config;
 		private static readonly ConcurrentDictionary<string, IServiceConfiguration<IOrganizationService>> _configLookup = new ConcurrentDictionary<string, IServiceConfiguration<IOrganizationService>>();
 		private static readonly ConcurrentDictionary<string, SecurityTokenResponse> _userTokenLookup = new ConcurrentDictionary<string, SecurityTokenResponse>();
-		private readonly InnerOrganizationService _service;
+        public Uri ServiceUri { get; set; }
+        private readonly InnerOrganizationService _service;
 
 		internal static void Reset()
 		{
@@ -56,20 +57,9 @@ namespace Microsoft.Xrm.Client.Services
 		}
 
 		public OrganizationService(CrmConnection connection)
-		{
-            if (connection.Service != null)
-            {
-                _service = new InnerOrganizationService(error => connection.Service, null);
-            }
-			else
-            {
-                using (var svc = new CrmServiceClient(
-                    $@"AuthenticationType=Office365; url=https://orgd53f2c17.crm.dynamics.com/; UserName={connection.ClientCredentials.UserName.UserName}; Password={connection.ClientCredentials.UserName.Password};"))
-                {
-                    _service = new InnerOrganizationService(error => svc, null);
-                }
-            }
-		}
+        {
+            _service = new InnerOrganizationService(error => connection.Service, null);
+        }
 
 		public OrganizationService(IOrganizationService service)
 		{

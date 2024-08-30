@@ -7,7 +7,9 @@ namespace Adxstudio.Xrm.Configuration
 {
 	using System;
 	using System.Linq;
-	using Microsoft.Xrm.Sdk.WebServiceClient;
+    using Microsoft.Xrm.Client.Configuration;
+    using Microsoft.Xrm.Portal.Configuration;
+    using Microsoft.Xrm.Sdk.WebServiceClient;
 
 	public interface IEssSettings
 	{
@@ -235,9 +237,8 @@ namespace Adxstudio.Xrm.Configuration
 				return null;
 			}
 
-			const string path = "XRMServices/2011/Organization.svc/web";
-			var separator = url.EndsWith("/") ? string.Empty : "/";
-			var svcUri = new Uri(url + separator + path);
+			//TODO
+            var svcUri = new Uri("https://test.crm.dynamics.com");
 			var version = System.Diagnostics.FileVersionInfo.GetVersionInfo(typeof(OrganizationWebProxyClient).Assembly.Location).FileVersion;
 			var fullUrl = new UriBuilder(svcUri) { Query = "SDKClientVersion=" + version };
 

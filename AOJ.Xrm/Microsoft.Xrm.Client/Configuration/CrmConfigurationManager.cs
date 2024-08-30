@@ -156,7 +156,14 @@ namespace Microsoft.Xrm.Client.Configuration
 	{
 		private static Lazy<CrmConfigurationProvider> _provider = new Lazy<CrmConfigurationProvider>(CreateProvider);
 
-		private static CrmConfigurationProvider CreateProvider()
+        public static CrmConfigurationProvider Provider {
+			get
+			{
+				return _provider.Value;
+			}
+		}
+
+        private static CrmConfigurationProvider CreateProvider()
 		{
 			var section = ConfigurationManager.GetSection(CrmSection.SectionName) as CrmSection ?? new CrmSection();
 

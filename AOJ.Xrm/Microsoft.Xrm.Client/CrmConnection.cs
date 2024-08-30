@@ -91,6 +91,20 @@ namespace Microsoft.Xrm.Client
         public CrmConnection(IOrganizationService service)
         {
 			Service = service;
+
+			var client = service as Tooling.Connector.CrmServiceClient;
+            if (client != null)
+			{
+				ServiceUri = client.CrmConnectOrgUriActual;
+
+            }
+
+            //var org = service as OrganizationService;
+            //if (client != null)
+            //{
+            //    ServiceUri = org.;
+
+            //}
         }
         private static readonly bool _defaultProxyTypesEnabled = true;
 		private static readonly ServiceConfigurationInstanceMode _defaultServiceConfigurationInstanceMode = ServiceConfigurationInstanceMode.PerName;

@@ -35,7 +35,7 @@ namespace AOJ.Xrm.Common
         {
             _client = client;
 
-            AojConfigurationManager.Service = new OrganizationService(client);
+            AojConfigurationManager.Service = client;
             AojConfigurationManager.Website = client.Retrieve("mspp_website", websiteId, new ColumnSet(true));
             AojConfigurationManager.User = client.Retrieve("contact", userId, new ColumnSet(true));
             MockHttpContext();
