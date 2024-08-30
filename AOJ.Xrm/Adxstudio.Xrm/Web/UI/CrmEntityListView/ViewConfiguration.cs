@@ -497,7 +497,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityListView
 				}
 				else
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Filter Orientation value '{0}' is not a valid value defined by FilterConfiguration.FilterOrientation class.", filterOrientation.Value));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Filter Orientation value '{0}' is not a valid value defined by FilterConfiguration.FilterOrientation class.", filterOrientation.Value));
 				}
 			}
 		}

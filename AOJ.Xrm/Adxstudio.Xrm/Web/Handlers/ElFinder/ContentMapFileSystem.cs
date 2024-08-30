@@ -346,7 +346,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error getting URL for entity [adx_webpage:{0}]: {1}", Node.Id, e));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Error getting URL for entity [adx_webpage:{0}]: {1}", Node.Id, e));
 
                 return null;
 			}
@@ -377,7 +377,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error getting URL for entity [adx_webfile:{0}]: {1}", Node.Id, e));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Error getting URL for entity [adx_webfile:{0}]: {1}", Node.Id, e));
 
                 return null;
 			}
@@ -407,7 +407,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			}
 			catch (InvalidOperationException e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error validating security for entity [adx_webfile:{0}]: {1}", Node.Id, e));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Error validating security for entity [adx_webfile:{0}]: {1}", Node.Id, e));
 
                 return null;
 			}

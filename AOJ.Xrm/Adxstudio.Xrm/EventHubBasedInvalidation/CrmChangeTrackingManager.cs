@@ -106,7 +106,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
                 }
             }
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Number of timestamp query requests {0}", mRequests.Count.ToString()));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Number of timestamp query requests {0}", mRequests.Count.ToString()));
 
             if (mRequests.Count > 0)
             {
@@ -118,7 +118,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
                 {
                     if (item.Response != null && item.Response.Results.Count > 0)
                     {
-                        ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Result count for response {0}", item.Response.Results.Count));
+                        ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Result count for response {0}", item.Response.Results.Count));
 
                         EntityCollection collection = item.Response.Results.FirstOrDefault().Value as EntityCollection;
 
@@ -138,7 +138,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
                                 var timestampToken = timestamp + "!" + WebAppConfigurationProvider.AppStartTime;
                                 updatedEntites[collection[index].LogicalName] = timestampToken;
 
-                                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Last timestamp token set for Entity {0} {1}", collection[index].LogicalName, timestampToken));
+                                ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Last timestamp token set for Entity {0} {1}", collection[index].LogicalName, timestampToken));
                             }
                         }
                     }
@@ -163,22 +163,22 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 				UpdateTimeStamp(entitiesWithLastTimestamp);
 				var request = ExecuteMultipleRequest(entitiesWithLastTimestamp);
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Running 'ExecuteMultipleRequest' with {0} requests.", request.Requests.Count().ToString()));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Running 'ExecuteMultipleRequest' with {0} requests.", request.Requests.Count().ToString()));
 
 				var entities = string.Join(",", entitiesWithLastTimestamp.Keys);
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Retrieving changes for entities = {0}.", entities));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Retrieving changes for entities = {0}.", entities));
 
 				var response = (ExecuteMultipleResponse)context.Service.Execute(request);
 
 				if (response == null || response.Responses == null)
 				{
-					ADXTrace.Instance.TraceWarning(TraceCategory.Application, "Got null response while processing the requests");
+					ADXTrace.TraceWarning(TraceCategory.Application, "Got null response while processing the requests");
 					return null;
 				}
 
 				if (response.IsFaulted)
 				{
-					ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Got faulted response from '{0}' while processing atleast one of the message requests", response.ResponseName));
+					ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Got faulted response from '{0}' while processing atleast one of the message requests", response.ResponseName));
 				}
 
 				var responseCollection = new Dictionary<string, RetrieveEntityChangesResponse>();
@@ -190,7 +190,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 
 					if (resp.Fault != null)
 					{
-						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("RetrieveEntityChangesRequest faulted for entity '{0}'. Message: '{1}' ", entityChangeRequest.EntityName, resp.Fault.Message));
+						ADXTrace.TraceWarning(TraceCategory.Application, string.Format("RetrieveEntityChangesRequest faulted for entity '{0}'. Message: '{1}' ", entityChangeRequest.EntityName, resp.Fault.Message));
 						continue;
 					}
 					responseCollection.Add(entityChangeRequest.EntityName, response.Responses[i].Response as RetrieveEntityChangesResponse);
@@ -200,7 +200,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, e.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, e.ToString());
 			}
 			return null;
 		}
@@ -213,7 +213,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
         private ExecuteMultipleRequest ExecuteMultipleRequest(Dictionary<string, string> entitiesWithLastTimestamp)
         {
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Creating request for getting Retrieve entity changes for entities.");
+            ADXTrace.TraceInfo(TraceCategory.Application, "Creating request for getting Retrieve entity changes for entities.");
 
             var requests = entitiesWithLastTimestamp.Select(updatedEntity => new RetrieveEntityChangesRequest
             {
@@ -330,7 +330,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 				var entityName = kvp.Key;
 				var dataToken = kvp.Value.EntityChanges.DataToken;
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("RetrieveEntityChangesResponse received for entity: {0} with new data token: {1}", entityName, dataToken));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("RetrieveEntityChangesResponse received for entity: {0} with new data token: {1}", entityName, dataToken));
 				KeyValuePair<string, string>? entityNameWithTimestamp = new KeyValuePair<string, string>(entityName, dataToken);
 
 				if (changedData.UpdatedEntitiesWithLastTimestamp.ContainsKey(entityNameWithTimestamp.Value.Key))
@@ -369,7 +369,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 					}
 					else
 					{
-						ADXTrace.Instance.TraceInfo(TraceCategory.Application, 
+						ADXTrace.TraceInfo(TraceCategory.Application, 
 							$"Changes regarding entity (id: {itemGroup.Key.ToString()}) don't belong to website {websiteId.ToString()}");
 					}
 				}
@@ -457,7 +457,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
             // if entity name is null return;
             if (string.IsNullOrEmpty(entityName))
             {
-                ADXTrace.Instance.TraceError(TraceCategory.Application, "TryGetPrimaryKey: the entity name is null");
+                ADXTrace.TraceError(TraceCategory.Application, "TryGetPrimaryKey: the entity name is null");
 				return null;
             }
 

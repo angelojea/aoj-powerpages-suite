@@ -484,7 +484,7 @@ namespace Adxstudio.Xrm.EntityList
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error parsing adx_views JSON: {0}", e));
+					ADXTrace.TraceError(TraceCategory.Application, string.Format("Error parsing adx_views JSON: {0}", e));
 				}
 			}
 

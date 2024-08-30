@@ -59,26 +59,26 @@ namespace Adxstudio.Xrm.Forums
 
 		public int SelectPostCount()
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var serviceContext = Dependencies.GetServiceContext();
 
 			var postCount = SelectForumCounts(serviceContext).PostCount;
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+			ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return postCount;
 		}
 
 		public int SelectThreadCount()
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var serviceContext = Dependencies.GetServiceContext();
 
 			var threadCount = SelectForumCounts(serviceContext).ThreadCount;
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+			ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return threadCount;
 		}
@@ -117,7 +117,7 @@ namespace Adxstudio.Xrm.Forums
 
 		private IEnumerable<IForumThread> SelectThreadsWithSecurity(int startRowIndex, int maximumRows)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("startRowIndex={0}, maximumRows={1}: Start", startRowIndex, maximumRows));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("startRowIndex={0}, maximumRows={1}: Start", startRowIndex, maximumRows));
 
 			var serviceContext = Dependencies.GetServiceContext();
 			var website = Dependencies.GetWebsite();
@@ -144,14 +144,14 @@ namespace Adxstudio.Xrm.Forums
 
 			var threads = CreateForumThreads(serviceContext, securityProvider, website, paginator.Select(startRowIndex, maximumRows));
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+			ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return threads;
 		}
 
 		private IEnumerable<IForumThread> SelectThreadsWithoutSecurity(int startRowIndex, int maximumRows)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("startRowIndex={0}, maximumRows={1}: Start", startRowIndex, maximumRows));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("startRowIndex={0}, maximumRows={1}: Start", startRowIndex, maximumRows));
 
 			var serviceContext = Dependencies.GetServiceContext();
 
@@ -172,7 +172,7 @@ namespace Adxstudio.Xrm.Forums
 
 			var threads = CreateForumThreads(serviceContext, securityProvider, website, query);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+			ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return threads;
 		}

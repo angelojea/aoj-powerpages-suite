@@ -26,7 +26,7 @@ namespace Adxstudio.Xrm.Caching
 		{
 			if (message == null)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "Cache invalidation failure. Plugin Message is null.");
+				ADXTrace.TraceError(TraceCategory.Application, "Cache invalidation failure. Plugin Message is null.");
 
 				return;
 			}

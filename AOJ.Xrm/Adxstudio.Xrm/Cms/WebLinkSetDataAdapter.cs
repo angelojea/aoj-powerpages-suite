@@ -36,16 +36,16 @@ namespace Adxstudio.Xrm.Cms
 
 		public IWebLinkSet Select(Guid webLinkSetId)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", webLinkSetId));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", webLinkSetId));
 
 			var webLinkSet = Select(e => e.GetAttributeValue<Guid>("adx_weblinksetid") == webLinkSetId);
 
 			if (webLinkSet == null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Not Found");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Not Found");
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}", webLinkSetId));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}", webLinkSetId));
 
 			return webLinkSet;
 		}
@@ -57,16 +57,16 @@ namespace Adxstudio.Xrm.Cms
 				return null;
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var webLinkSet = Select(e => e.GetAttributeValue<string>("adx_name") == webLinkSetName);
 
 			if (webLinkSet == null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Not Found");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Not Found");
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+			ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return webLinkSet;
 		}

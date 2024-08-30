@@ -20,18 +20,18 @@ namespace Adxstudio.Xrm.Threading
 		{
 			var timer = Stopwatch.StartNew();
 
-			ADXTrace.Instance.TraceVerbose(TraceCategory.Application, string.Format("Lock Requested: {0}, Duration: {1} ms", key, timer.ElapsedMilliseconds));
+			ADXTrace.TraceVerbose(TraceCategory.Application, string.Format("Lock Requested: {0}, Duration: {1} ms", key, timer.ElapsedMilliseconds));
 
 			using (_lock.Lock(key, millisecondsTimeout))
 			{
-				ADXTrace.Instance.TraceVerbose(TraceCategory.Application, string.Format("Lock Acquired: {0}, Duration: {1} ms", key, timer.ElapsedMilliseconds));
+				ADXTrace.TraceVerbose(TraceCategory.Application, string.Format("Lock Acquired: {0}, Duration: {1} ms", key, timer.ElapsedMilliseconds));
 
 				action();
 			}
 
 			timer.Stop();
 
-			ADXTrace.Instance.TraceVerbose(TraceCategory.Application, string.Format("Lock Released: {0}, Duration: {1} ms", key, timer.ElapsedMilliseconds));
+			ADXTrace.TraceVerbose(TraceCategory.Application, string.Format("Lock Released: {0}, Duration: {1} ms", key, timer.ElapsedMilliseconds));
 		}
 	}
 }

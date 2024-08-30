@@ -61,7 +61,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 				return new MetadataEntityAttributeUpdate(entity, attributeMetadata);
 			}
 
-			ADXTrace.Instance.TraceWarning(TraceCategory.Application, @"Unable to create CMS update for entity ""{0}"", attribute ""{1}"". Discarding value.".FormatWith(entity.LogicalName, attributeLogicalName));
+			ADXTrace.TraceWarning(TraceCategory.Application, @"Unable to create CMS update for entity ""{0}"", attribute ""{1}"". Discarding value.".FormatWith(entity.LogicalName, attributeLogicalName));
 
 			return new NonexistentAttributeUpdate(entity);
 		}

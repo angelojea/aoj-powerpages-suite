@@ -47,7 +47,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
             var templateNotFoundException = string.Format(ResourceManager.GetString("Template_Not_Found_Exception"), context[templateName] as string);
 
             // Log template not found
-            ADXTrace.Instance.TraceWarning(TraceCategory.Monitoring, templateNotFoundException);
+            ADXTrace.TraceWarning(TraceCategory.Monitoring, templateNotFoundException);
             return templateNotFoundException;
 		}
 
@@ -72,7 +72,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			}
             
             // Log template not found
-            ADXTrace.Instance.TraceWarning(TraceCategory.Monitoring, string.Format(ResourceManager.GetString("Template_Not_Found_Exception"), templateName));
+            ADXTrace.TraceWarning(TraceCategory.Monitoring, string.Format(ResourceManager.GetString("Template_Not_Found_Exception"), templateName));
             return false;
 		}
 
@@ -89,7 +89,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
             }
 
             // Log template not found
-            ADXTrace.Instance.TraceWarning(TraceCategory.Monitoring, string.Format(ResourceManager.GetString("Template_Not_Found_Exception"), templateName));
+            ADXTrace.TraceWarning(TraceCategory.Monitoring, string.Format(ResourceManager.GetString("Template_Not_Found_Exception"), templateName));
             return false;
 		}
 	}

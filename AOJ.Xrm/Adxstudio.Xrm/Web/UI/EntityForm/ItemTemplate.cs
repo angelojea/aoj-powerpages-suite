@@ -154,7 +154,7 @@ namespace Adxstudio.Xrm.Web.UI.EntityForm
 
 				container.Controls.Add(row);
 #else
-				ADXTrace.Instance.TraceWarning(TraceCategory.Application, "Captcha is enabled; however, Telerik.Web.UI.dll could not be found.");
+				ADXTrace.TraceWarning(TraceCategory.Application, "Captcha is enabled; however, Telerik.Web.UI.dll could not be found.");
 #endif
 			}
 

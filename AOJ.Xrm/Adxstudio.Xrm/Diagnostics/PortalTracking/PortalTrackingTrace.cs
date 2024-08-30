@@ -205,7 +205,7 @@ namespace Adxstudio.Xrm
 				// if the user is not logged in, don't bother logging it.
 				var context = HttpContextBase;
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application,
+				ADXTrace.TraceInfo(TraceCategory.Application,
 					$"LogJourneyEvent: Got Log message for LogType: {logType} Id: {entityIdOrSearchTerm}");
 
 				if (context != null && context.User != null && context.User.Identity.IsAuthenticated)
@@ -256,7 +256,7 @@ namespace Adxstudio.Xrm
 							{ Diagnostics.Constants.PortalTrackingPortalId.ResolveAppSetting(), PortalId }
 						};
 
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application,
+					ADXTrace.TraceInfo(TraceCategory.Application,
 						$"LogJourneyEvent: Logging Blog message for Blog CrmInteractionId: {guid} PortalId: {PortalId} TimeStamp: {timestamp}");
 
 					Activate(json);
@@ -269,7 +269,7 @@ namespace Adxstudio.Xrm
 						message = message + " \n" + ex.Message;
 						ex = ex.InnerException;
 					}
-					ADXTrace.Instance.TraceError(TraceCategory.Exception,
+					ADXTrace.TraceError(TraceCategory.Exception,
 						$"LogJourneyEvent: Blog received unexpected exception. Message: {message} CrmInteractionId: {guid} PortalId: {PortalId} TimeStamp: {timestamp}");
 				}
 			}
@@ -302,7 +302,7 @@ namespace Adxstudio.Xrm
 							{ Diagnostics.Constants.PortalTrackingPortalId.ResolveAppSetting(), PortalId }
 						};
 
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application,
+					ADXTrace.TraceInfo(TraceCategory.Application,
 						$"LogJourneyEvent: Logging Forum message for Forum CrmInteractionId: {guid} PortalId: {PortalId} TimeStamp: {timestamp}");
 
 					Activate(json);
@@ -315,7 +315,7 @@ namespace Adxstudio.Xrm
 						message = message + " \n" + ex.Message;
 						ex = ex.InnerException;
 					}
-					ADXTrace.Instance.TraceError(TraceCategory.Exception,
+					ADXTrace.TraceError(TraceCategory.Exception,
 						$"LogJourneyEvent: Forum log received unexpected exception. Message: {message} CrmInteractionId: {guid} PortalId: {PortalId} TimeStamp: {timestamp}");
 				}
 			}
@@ -346,7 +346,7 @@ namespace Adxstudio.Xrm
 							{ Diagnostics.Constants.PortalTrackingPortalId.ResolveAppSetting(), PortalId },
 						};
 
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application,
+					ADXTrace.TraceInfo(TraceCategory.Application,
 						$"LogJourneyEvent: Logging Search message for Forum CrmInteractionId: {guid} PortalId: {PortalId} TimeStamp: {timestamp}");
 
 					Activate(json);
@@ -360,7 +360,7 @@ namespace Adxstudio.Xrm
 						ex = ex.InnerException;
 					}
 
-					ADXTrace.Instance.TraceError(TraceCategory.Exception,
+					ADXTrace.TraceError(TraceCategory.Exception,
 						$"LogJourneyEvent: Search log received unexpected exception. Message: {message} CrmInteractionId: {guid} PortalId: {PortalId} TimeStamp: {timestamp}");
 				}
 			}
@@ -394,7 +394,7 @@ namespace Adxstudio.Xrm
 							{ Diagnostics.Constants.PortalTrackingKnowledgeArticleTitle.ResolveAppSetting(), knowledgeArticleTitle }
 						};
 					
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application,
+					ADXTrace.TraceInfo(TraceCategory.Application,
 						$"LogJourneyEvent: Logging KB message for Forum CrmInteractionId: {guid} PortalId: {PortalId} TimeStamp: {timestamp}");
 
 					Activate(json);
@@ -408,7 +408,7 @@ namespace Adxstudio.Xrm
 						message = message + " \n" + ex.Message;
 						ex = ex.InnerException;
 					}
-					ADXTrace.Instance.TraceError(TraceCategory.Exception,
+					ADXTrace.TraceError(TraceCategory.Exception,
 						$"LogJourneyEvent: DCI log received unexpected exception. Message: {message} CrmInteractionId: {guid} PortalId: {PortalId} TimeStamp: {timestamp}");
 				}
 			}
@@ -437,7 +437,7 @@ namespace Adxstudio.Xrm
 			{
 				if (string.IsNullOrEmpty(hubUri) || string.IsNullOrEmpty(sig) || string.IsNullOrEmpty(policyName) || HttpClient == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Exception,
+					ADXTrace.TraceError(TraceCategory.Exception,
 						$"LogJourneyEvent: The DCI App Settings are not set in webapp {PortalId}");
 
 					return;
@@ -454,21 +454,21 @@ namespace Adxstudio.Xrm
 				request.Headers.Authorization = new AuthenticationHeaderValue("SharedAccessSignature", token);
 				request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application,
+				ADXTrace.TraceInfo(TraceCategory.Application,
 					$"LogJourneyEvent: Pre-DCI Post PortalId: {portalId}");
 
 				var result = await HttpClient.SendAsync(request);
 
 				PortalFeatureTrace.TraceInstance.LogFeatureUsage(FeatureTraceCategory.DCI, HttpContextBase, "dci", 1, null, "create");
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application,
+				ADXTrace.TraceInfo(TraceCategory.Application,
 					$"LogJourneyEvent: Post-DCI Post PortalId: {portalId} {result.StatusCode}");
 
 				if (!result.IsSuccessStatusCode)
 				{
 					var response = await result.Content.ReadAsStringAsync();
 
-					ADXTrace.Instance.TraceError(TraceCategory.Exception,
+					ADXTrace.TraceError(TraceCategory.Exception,
 						$"LogJourneyEvent: The DCI post was not successful. Http Code: {result.StatusCode} HttpContent: {response} PortalId: {portalId}");
 
 					request.Dispose();
@@ -477,7 +477,7 @@ namespace Adxstudio.Xrm
 				}
 				else
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application,
+					ADXTrace.TraceInfo(TraceCategory.Application,
 						$"LogJourneyEvent: The DCI post was successful. Http Code: {result.StatusCode} PortalId: {portalId}");
 
 					request.Dispose();
@@ -494,7 +494,7 @@ namespace Adxstudio.Xrm
 					message = message + " \n" + ex.Message;
 					ex = ex.InnerException;
 				}
-				ADXTrace.Instance.TraceError(TraceCategory.Exception,
+				ADXTrace.TraceError(TraceCategory.Exception,
 					$"LogJourneyEvent: DCI received unexpected exception. Message: {message} CrmInteractionId: {interactionJson[Diagnostics.Constants.PortalTrackingCrmInteractionId]} PortalId: {portalId}");
 			}
 			

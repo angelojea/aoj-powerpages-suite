@@ -342,7 +342,7 @@ namespace Adxstudio.Xrm.Net
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("SetGeoLocationCoordinates", "{0}", ex));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("SetGeoLocationCoordinates", "{0}", ex));
             }
 		}
 	}

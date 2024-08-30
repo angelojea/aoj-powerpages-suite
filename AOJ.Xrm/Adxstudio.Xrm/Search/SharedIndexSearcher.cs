@@ -49,7 +49,7 @@ namespace Adxstudio.Xrm.Search
 			// If there are already waiting writes/refreshes, just bail out, as there's no point in queuing another.
 			if (_searcherLock.WaitingWriteCount > 0)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "There are existing waiting writes to the shared index searcher, exiting.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "There are existing waiting writes to the shared index searcher, exiting.");
 
 				return;
 			}
@@ -78,7 +78,7 @@ namespace Adxstudio.Xrm.Search
 			// If we don't get a read lock quickly, just fail fast to constructing and using a new index searcher.
 			if (!_searcherLock.TryEnterReadLock(TimeSpan.FromSeconds(1)))
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Failed to acquire read lock on shared index searcher. Creating new single-use index searcher.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Failed to acquire read lock on shared index searcher. Creating new single-use index searcher.");
 
 				using (var searcher = _searcherFactory())
 				{

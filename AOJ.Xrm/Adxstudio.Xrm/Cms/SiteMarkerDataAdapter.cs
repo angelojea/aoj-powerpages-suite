@@ -63,7 +63,7 @@ namespace Adxstudio.Xrm.Cms
 
 			if (!contentMap.TryGetValue("adx_sitemarker", out siteMarkers))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "No Sitemarkers found on Content Map");
+				ADXTrace.TraceInfo(TraceCategory.Application, "No Sitemarkers found on Content Map");
 				return false;
 			}
 
@@ -78,13 +78,13 @@ namespace Adxstudio.Xrm.Cms
 
 			if (!contentMap.TryGetValue(siteMarkerNode.WebPage, out targetNode))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("No WebPage found on Sitemarker:{0}", siteMarkerNode.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("No WebPage found on Sitemarker:{0}", siteMarkerNode.Id));
 				return false;
 			}
 
 			if (!Language.IsCrmMultiLanguageEnabled)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("WebPage found for Sitemarker:{0} Page:{1}", siteMarkerNode.Id, targetNode.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("WebPage found for Sitemarker:{0} Page:{1}", siteMarkerNode.Id, targetNode.Id));
 				return true;
 			}
 
@@ -92,12 +92,12 @@ namespace Adxstudio.Xrm.Cms
 			var contentWebPage = targetNode.LanguageContentPages.FirstOrDefault(p => p.WebPageLanguage == Language.ContextLanguage.WebsiteLanguageNode);
 			if (contentWebPage != null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("WebPage found for Sitemarker:{0} Language:{1}", siteMarkerNode.Id, Language.ContextLanguage.Lcid));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("WebPage found for Sitemarker:{0} Language:{1}", siteMarkerNode.Id, Language.ContextLanguage.Lcid));
 				targetNode = contentWebPage;
 				return true;
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("No WebPage found for Sitemarker:{0} Language:{1}", siteMarkerNode.Id, Language.ContextLanguage.Lcid));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("No WebPage found for Sitemarker:{0} Language:{1}", siteMarkerNode.Id, Language.ContextLanguage.Lcid));
 			return false;
 		}
 

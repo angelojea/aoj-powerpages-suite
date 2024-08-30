@@ -126,7 +126,7 @@ namespace Adxstudio.Xrm.Services
 				throw new PortalAdalServiceException("Token is empty.");
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Get token succeeded: index: {0}", index));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Get token succeeded: index: {0}", index));
 
 			if (test != null)
 			{
@@ -134,7 +134,7 @@ namespace Adxstudio.Xrm.Services
 
 				if (testError != null)
 				{
-					ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Test token failed: index: {0}: {1}", index, testError));
+					ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Test token failed: index: {0}: {1}", index, testError));
 
 					errors.Add(testError);
 				}
@@ -155,7 +155,7 @@ namespace Adxstudio.Xrm.Services
 		private static bool TryHandleError(Exception e, int index, ICollection<Exception> errors, out AcquireTokenResult result)
 		{
 			// record the error of the failed certificate
-			ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Get token failed: index: {0}: {1}", index, e));
+			ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Get token failed: index: {0}: {1}", index, e));
 
 			var ase = e as AdalServiceException;
 
@@ -199,7 +199,7 @@ namespace Adxstudio.Xrm.Services
 		{
 			if (TokenIsInvalid())
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Get new token required due to: {0}", tokenCache == null ? "null token" : "expiring token"));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Get new token required due to: {0}", tokenCache == null ? "null token" : "expiring token"));
 
 				using (PerformanceProfiler.Instance.StartMarker(PerformanceMarkerName.Services, PerformanceMarkerArea.Crm, PerformanceMarkerTagName.GetToken))
 				{
@@ -270,7 +270,7 @@ namespace Adxstudio.Xrm.Services
 		{
 			if (TokenIsInvalid())
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Get new token required due to: {0}", tokenCache == null ? "null token" : "expiring token"));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Get new token required due to: {0}", tokenCache == null ? "null token" : "expiring token"));
 
 				using (PerformanceProfiler.Instance.StartMarker(PerformanceMarkerName.Services, PerformanceMarkerArea.Crm, PerformanceMarkerTagName.GetToken))
 				{
@@ -347,7 +347,7 @@ namespace Adxstudio.Xrm.Services
 			if (tokenCache != null)
 			{
 				var duration = tokenCache.ExpiresOn - DateTimeOffset.UtcNow;
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("New token expires on: {0}: after: {1}", tokenCache.ExpiresOn, duration));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("New token expires on: {0}: after: {1}", tokenCache.ExpiresOn, duration));
 			}
 		}
 	}

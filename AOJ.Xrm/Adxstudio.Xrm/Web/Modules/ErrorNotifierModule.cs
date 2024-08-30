@@ -80,7 +80,7 @@ namespace Adxstudio.Xrm.Web.Modules
 		{
 			try
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Begin");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Begin");
 
 				var application = sender as HttpApplication;
 				var context = application.Context;
@@ -92,8 +92,8 @@ namespace Adxstudio.Xrm.Web.Modules
 					var error = application.Server.GetLastError();
 					var statusCode = GetStatusCode(error, context);
 
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("statusCode={0}", statusCode));
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("error={0}", error.Message));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("statusCode={0}", statusCode));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("error={0}", error.Message));
 
 					if (!GetStatusCodesExcluded().Contains(statusCode))
 					{
@@ -103,11 +103,11 @@ namespace Adxstudio.Xrm.Web.Modules
 					}
 				}
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+				ADXTrace.TraceInfo(TraceCategory.Application, "End");
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, ex.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, ex.ToString());
 			}
 		}
 
@@ -127,7 +127,7 @@ namespace Adxstudio.Xrm.Web.Modules
 
 				while (ei.Buffer.TryPeek(out result) && result.AddMinutes(1) < now)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Dequeue: {0}", result));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Dequeue: {0}", result));
 					ei.Buffer.TryDequeue(out result);
 				}
 
@@ -140,7 +140,7 @@ namespace Adxstudio.Xrm.Web.Modules
 					var dropCount = ei.DropCount;
 					ei.DropCount = 0;
 
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Enqueue: {0}", now));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Enqueue: {0}", now));
 
 					// continue with notification
 
@@ -152,7 +152,7 @@ namespace Adxstudio.Xrm.Web.Modules
 
 					ei.DropCount++;
 
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Dropped: {0}", ei.DropCount));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Dropped: {0}", ei.DropCount));
 				}
 			}
 		}
@@ -246,7 +246,7 @@ namespace Adxstudio.Xrm.Web.Modules
 				client.Send(message);
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Message sent.");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Message sent.");
 		}
 
 		protected virtual IEnumerable<KeyValuePair<string, string>> GetHeaders(Exception error, HttpContext context, int dropped)

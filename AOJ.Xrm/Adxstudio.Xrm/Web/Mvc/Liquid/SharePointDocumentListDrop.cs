@@ -81,12 +81,12 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 					if (!crmEntityPermissionProvider.TryAssert(serviceContext, CrmEntityPermissionRight.Read, location))
 					{
-                        ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Read document locations.");
+                        ADXTrace.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Read document locations.");
 
 						return null;
 					}
 
-                    ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Read SharePoint Document Location Permission Granted.");
+                    ADXTrace.TraceInfo(TraceCategory.Application, "Read SharePoint Document Location Permission Granted.");
 
 					var spConnection = new SharePointConnection("SharePoint");
 

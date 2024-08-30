@@ -111,7 +111,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 			if (systemForm == null)
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Quick Form: A form with ID='{0}' could not be found.".FormatWith(quickForm.FormId)));
+                ADXTrace.TraceError(TraceCategory.Application, string.Format("Quick Form: A form with ID='{0}' could not be found.".FormatWith(quickForm.FormId)));
 
                 return;
 			}
@@ -120,7 +120,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 			if (string.IsNullOrWhiteSpace(formName))
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Quick Form: Form with ID='{0}' does not have a name.".FormatWith(quickForm.FormId)));
+                ADXTrace.TraceError(TraceCategory.Application, string.Format("Quick Form: Form with ID='{0}' does not have a name.".FormatWith(quickForm.FormId)));
 
                 return;
 			}
@@ -129,7 +129,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 			if (string.IsNullOrWhiteSpace(templatePath))
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, "Failed to retrieve Quick Form template path.");
+                ADXTrace.TraceError(TraceCategory.Application, "Failed to retrieve Quick Form template path.");
 
                 return;
 			}
@@ -149,14 +149,14 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		
 			if (string.IsNullOrWhiteSpace(primaryKeyAttributeName))
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error retrieving the Primary Key Attribute Name for '{0}'.", EntityNamePrivacy.GetEntityName(quickForm.EntityName)));
+                ADXTrace.TraceError(TraceCategory.Application, string.Format("Error retrieving the Primary Key Attribute Name for '{0}'.", EntityNamePrivacy.GetEntityName(quickForm.EntityName)));
 
                 return;
 			}
 
 			if (string.IsNullOrWhiteSpace(Metadata.DataFieldName))
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Quick Form: datafieldname is null for QuickForm with ID='{0}'", quickForm.FormId));
+                ADXTrace.TraceError(TraceCategory.Application, string.Format("Quick Form: datafieldname is null for QuickForm with ID='{0}'", quickForm.FormId));
 
                 return;
 			}
@@ -165,7 +165,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 			if (formEntity == null)
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to retrieve entity record with ID='{0}'", entityId));
+                ADXTrace.TraceError(TraceCategory.Application, string.Format("Failed to retrieve entity record with ID='{0}'", entityId));
 
                 return;
 			}
@@ -174,7 +174,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 			if (quickFormEntityReference == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Attribute on entity record with ID='{0}' is null. Quick Form not loaded.", entityId));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Attribute on entity record with ID='{0}' is null. Quick Form not loaded.", entityId));
 
 				return;
 			}

@@ -105,7 +105,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 //#else
 
-//			ADXTrace.Instance.TraceWarning(TraceCategory.Application, "Captcha is enabled; however, Telerik.Web.UI.dll could not be found.");
+//			ADXTrace.TraceWarning(TraceCategory.Application, "Captcha is enabled; however, Telerik.Web.UI.dll could not be found.");
 //			return null;
 
 //#endif

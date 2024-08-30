@@ -28,7 +28,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, e.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, e.ToString());
 			}
 
 			return default(T);
@@ -69,7 +69,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			{
 				if (!string.IsNullOrWhiteSpace(entity))
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Entity {0} is Added to Enabled Entity List for Portal Search", entity));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Entity {0} is Added to Enabled Entity List for Portal Search", entity));
 					PortalUsedEntities.TryAdd(entity, true);
 				}
 			}

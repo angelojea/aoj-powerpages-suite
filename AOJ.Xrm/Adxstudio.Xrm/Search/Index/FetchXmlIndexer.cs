@@ -215,7 +215,7 @@ namespace Adxstudio.Xrm.Search.Index
 
 		public IEnumerable<CrmEntityIndexDocument> GetDocuments()
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var dataContext = _index.DataContext;
 			var documentFactory = new FetchXmlIndexDocumentFactory(_index, _fetchXml, _titleAttributeLogicalName, _localeConfig);
@@ -254,7 +254,7 @@ namespace Adxstudio.Xrm.Search.Index
 
 				var resultSet = new FetchXmlResultSet(fetchXmlResponse);
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("FetchXmlResult:LogicalName={0}, Count={1}", EntityNamePrivacy.GetEntityName(_fetchXml.LogicalName), resultSet.Count()));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("FetchXmlResult:LogicalName={0}, Count={1}", EntityNamePrivacy.GetEntityName(_fetchXml.LogicalName), resultSet.Count()));
 
 				foreach (var document in resultSet.Select(documentFactory.GetDocument))
 				{
@@ -271,7 +271,7 @@ namespace Adxstudio.Xrm.Search.Index
 				}
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+			ADXTrace.TraceInfo(TraceCategory.Application, "End");
 		}
 
 		private void AddRelatedEntityFetch(string intersectLinkEntityName, string intersectLinkEntityNamePrimaryAttribute,

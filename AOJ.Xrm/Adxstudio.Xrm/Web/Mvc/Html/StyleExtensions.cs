@@ -114,7 +114,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 		private static IHtmlString ContentStyles(HtmlHelper html, IEnumerable<string> except, IEnumerable<KeyValuePair<string, string>> only)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Begin");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Begin");
 
 			var portalViewContext = PortalExtensions.GetPortalViewContext(html);
 
@@ -136,7 +136,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 			if (!hrefs.Any())
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End: No content styles found.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "End: No content styles found.");
 
 				return null;
 			}
@@ -153,7 +153,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 				output.AppendLine(link.ToString(TagRenderMode.SelfClosing));
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+			ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return new HtmlString(output.ToString());
 		}
@@ -312,7 +312,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 		private static IEnumerable<Tuple<string, string, int>> ContentStyles(IPortalViewContext portalViewContext, List<EntityReference> path)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Getting content styles using query.");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Getting content styles using query.");
 
 			var serviceContext = portalViewContext.CreateServiceContext();
 
@@ -363,7 +363,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 				return Enumerable.Empty<Tuple<string, string, int>>();
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Getting content styles using Content Map.");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Getting content styles using Content Map.");
 
 			var cssWebFileNodes = contentMapProvider.Using(map => path.SelectMany((pathItem, pathOffset) =>
 			{

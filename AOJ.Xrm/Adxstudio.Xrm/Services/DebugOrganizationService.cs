@@ -162,13 +162,13 @@ namespace Adxstudio.Xrm.Services
 			if (query == null) return;
 
 			var fetch = XElement.Parse(query.Query);
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("{0}{1}", member, fetch));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("{0}{1}", member, fetch));
 		}
 
 		private void Trace(string member, object obj)
 		{
 			var json = JsonConvert.SerializeObject(obj, Formatting);
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("{0}{1}", member, json));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("{0}{1}", member, json));
 		}
 	}
 }

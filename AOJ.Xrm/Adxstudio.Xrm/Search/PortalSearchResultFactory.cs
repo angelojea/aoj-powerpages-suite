@@ -50,7 +50,7 @@ namespace Adxstudio.Xrm.Search
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error generating search result URL, returning null URL: {0}", e));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Error generating search result URL, returning null URL: {0}", e));
 
                 return null;
 			}
@@ -67,16 +67,16 @@ namespace Adxstudio.Xrm.Search
 
 			if (result.Url == null)
 			{
-				ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Search result had invalid URL. Logical name: {0}, ID: {1}", EntityNamePrivacy.GetEntityName(result.EntityLogicalName), result.EntityID));
+				ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Search result had invalid URL. Logical name: {0}, ID: {1}", EntityNamePrivacy.GetEntityName(result.EntityLogicalName), result.EntityID));
 				return false;
 			}
 
 			if (!ValidateCmsSecurityProvider(context, result))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Search result failed CMS security check. Logical name: {0}, ID: {1}", EntityNamePrivacy.GetEntityName(result.EntityLogicalName), result.EntityID));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Search result failed CMS security check. Logical name: {0}, ID: {1}", EntityNamePrivacy.GetEntityName(result.EntityLogicalName), result.EntityID));
 				if (!ValidateEntityPermission(context, result))
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Search result failed entity permissions security check. Logical name: {0}, ID: {1}", EntityNamePrivacy.GetEntityName(result.EntityLogicalName), result.EntityID));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Search result failed entity permissions security check. Logical name: {0}, ID: {1}", EntityNamePrivacy.GetEntityName(result.EntityLogicalName), result.EntityID));
 					return false;
 				}
 			}
@@ -90,7 +90,7 @@ namespace Adxstudio.Xrm.Search
 
 				if (!ValidateContentAccessLevelAndProducts(context, result, contentAccessLevelProvider, productAccessProvider))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Search result failed CAL or product filtering. Logical name: {0}, ID: {1}", EntityNamePrivacy.GetEntityName(result.EntityLogicalName), result.EntityID));
+					ADXTrace.TraceError(TraceCategory.Application, string.Format("Search result failed CAL or product filtering. Logical name: {0}, ID: {1}", EntityNamePrivacy.GetEntityName(result.EntityLogicalName), result.EntityID));
 					return false;
 				}
 			}

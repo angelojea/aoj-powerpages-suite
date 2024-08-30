@@ -235,14 +235,14 @@ namespace Adxstudio.Xrm.Products
 		{
 			if (user == null) throw new ArgumentNullException("user");
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}:{1}", user.LogicalName, user.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}:{1}", user.LogicalName, user.Id));
 
 			var serviceContext = Dependencies.GetServiceContext();
 			var existingReview = SelectReview(serviceContext, user);
 
 			var hasReview = existingReview != null;
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}, {2}", user.LogicalName, user.Id, hasReview));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}, {2}", user.LogicalName, user.Id, hasReview));
 
 			return hasReview;
 		}

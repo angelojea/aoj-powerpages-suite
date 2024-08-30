@@ -669,7 +669,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			{
 				if (entity.LogicalName != "mspp_webpage")
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "The current entity must be of type adx_webpage. Please select the correct template for this entity type.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "The current entity must be of type adx_webpage. Please select the correct template for this entity type.");
 					return;
 				}
 
@@ -678,7 +678,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (webformReference == null)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Could not find an Web Form (adx_webform) value on Web Page (adx_webpage) where id equals {0}.", entity.Id));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Could not find an Web Form (adx_webform) value on Web Page (adx_webpage) where id equals {0}.", entity.Id));
 					return;
 				}
 
@@ -686,7 +686,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (webform == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Could not find an Web Form (adx_webpage_webform) value where id equals {0} on Web Page (adx_webpage) where id equals {1}.", webformReference.Id, entity.Id));
+					ADXTrace.TraceError(TraceCategory.Application, string.Format("Could not find an Web Form (adx_webpage_webform) value where id equals {0} on Web Page (adx_webpage) where id equals {1}.", webformReference.Id, entity.Id));
 					return;
 				}
 
@@ -1138,7 +1138,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, e.ToString());
+					ADXTrace.TraceError(TraceCategory.Application, e.ToString());
 				}
 			}
 
@@ -2136,7 +2136,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (context == null || string.IsNullOrWhiteSpace(entityLogicalName) || string.IsNullOrWhiteSpace(id))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "Required Parameters are null.");
+				ADXTrace.TraceError(TraceCategory.Application, "Required Parameters are null.");
 
 				return false;
 			}
@@ -2148,14 +2148,14 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (string.IsNullOrWhiteSpace(primaryKeyAttributeLogicalName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to find primary key attribute name for entity '{0}'.", entityLogicalName));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Failed to find primary key attribute name for entity '{0}'.", entityLogicalName));
 
 				return false;
 			}
 
 			if (!Guid.TryParse(id, out entityID))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("The id specified '{0}' is not valid.", id));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("The id specified '{0}' is not valid.", id));
 
 				return false;
 			}
@@ -2187,21 +2187,21 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (string.IsNullOrWhiteSpace(targetEntityLogicalName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_targetentitylogicalname must not be null.");
+				ADXTrace.TraceError(TraceCategory.Application, "mspp_webformstep.adx_targetentitylogicalname must not be null.");
 
 				return false;
 			}
 
 			if (string.IsNullOrWhiteSpace(portalUserLookupAttributeName))
 			{
-				ADXTrace.Instance.TraceWarning(TraceCategory.Application, "mspp_webformstep.adx_targetentityportaluserlookupattribute is null.");
+				ADXTrace.TraceWarning(TraceCategory.Application, "mspp_webformstep.adx_targetentityportaluserlookupattribute is null.");
 
 				return false;
 			}
 
 			if (!MetadataHelper.IsAttributeLogicalNameValid(context, targetEntityLogicalName, portalUserLookupAttributeName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("'{0}' entity does not contain an attribute.", EntityNamePrivacy.GetEntityName(targetEntityLogicalName)));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("'{0}' entity does not contain an attribute.", EntityNamePrivacy.GetEntityName(targetEntityLogicalName)));
 				return false;
 			}
 
@@ -2225,7 +2225,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				return record != null;
 			}
 
-			ADXTrace.Instance.TraceError(TraceCategory.Application, "Current Portal User is null.");
+			ADXTrace.TraceError(TraceCategory.Application, "Current Portal User is null.");
 
 			return false;
 		}
@@ -2311,7 +2311,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			{
 				if (e.EntityId == null || e.EntityId == Guid.Empty)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "e.EntityId is null or empty. This error usually indicates a plugin has failed or a system required field was not provided a value. Please check the system jobs in CRM for possible failed plugin steps.");
+					ADXTrace.TraceError(TraceCategory.Application, "e.EntityId is null or empty. This error usually indicates a plugin has failed or a system required field was not provided a value. Please check the system jobs in CRM for possible failed plugin steps.");
 				}
 				else
 				{
@@ -2337,7 +2337,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			else
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("e.EntityId is null or empty. This error usually indicates a plugin has failed or a system required field was not provided a value. Please check the system jobs in CRM for possible failed plugin steps. {0}", e.Exception.InnerException));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("e.EntityId is null or empty. This error usually indicates a plugin has failed or a system required field was not provided a value. Please check the system jobs in CRM for possible failed plugin steps. {0}", e.Exception.InnerException));
 			}
 
 			var savedEventArgs = new WebFormSavedEventArgs(e.EntityId, entityLogicalName, e.Exception, false, SavedEventKeyName);
@@ -2385,7 +2385,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			{
 				if (e.Entity == null || e.Entity.Id == Guid.Empty)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "e.Entity is null  or e.Entity.Id is null or empty. This error usually indicates a plugin has failed or a system required field was not provided a value. Please check the system jobs in CRM for possible failed plugin steps.");
+					ADXTrace.TraceError(TraceCategory.Application, "e.Entity is null  or e.Entity.Id is null or empty. This error usually indicates a plugin has failed or a system required field was not provided a value. Please check the system jobs in CRM for possible failed plugin steps.");
 				}
 				else
 				{
@@ -2408,7 +2408,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			else
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("e.Entity is null  or e.Entity.Id is null or empty. This error usually indicates a plugin has failed or a system required field was not provided a value. Please check the system jobs in CRM for possible failed plugin steps. {0}", e.Exception.InnerException));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("e.Entity is null  or e.Entity.Id is null or empty. This error usually indicates a plugin has failed or a system required field was not provided a value. Please check the system jobs in CRM for possible failed plugin steps. {0}", e.Exception.InnerException));
 			}
 
 			var savedEventArgs = new WebFormSavedEventArgs(e.Entity == null ? Guid.Empty : e.Entity.Id, entityLogicalName, e.Exception, false, SavedEventKeyName);
@@ -2762,7 +2762,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (page == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_webformstep_redirectwebpage is null");
+					ADXTrace.TraceError(TraceCategory.Application, "mspp_webformstep.adx_webformstep_redirectwebpage is null");
 					return;
 				}
 
@@ -2770,7 +2770,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (path == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_webformstep_redirectwebpage url is null");
+					ADXTrace.TraceError(TraceCategory.Application, "mspp_webformstep.adx_webformstep_redirectwebpage url is null");
 					return;
 				}
 
@@ -2792,7 +2792,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					var referenceEntityId = GetPreviousStepReferenceEntityID();
 					if (referenceEntityId == Guid.Empty)
 					{
-						ADXTrace.Instance.TraceError(TraceCategory.Application, "Entity Reference ID is empty.");
+						ADXTrace.TraceError(TraceCategory.Application, "Entity Reference ID is empty.");
 					}
 					else
 					{
@@ -2818,7 +2818,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				}
 				catch (Exception ex)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to add adx_redirecturlcustomquerystring to the Query String. {0}", ex));
+					ADXTrace.TraceError(TraceCategory.Application, string.Format("Failed to add adx_redirecturlcustomquerystring to the Query String. {0}", ex));
 				}
 			}
 
@@ -2926,7 +2926,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						var portalContext = PortalCrmConfigurationManager.CreatePortalContext(PortalName);
 						if (portalContext.User == null)
 						{
-							ADXTrace.Instance.TraceError(TraceCategory.Application, "Current portal user record is null.");
+							ADXTrace.TraceError(TraceCategory.Application, "Current portal user record is null.");
 							continue;
 						}
 						try
@@ -2949,7 +2949,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 							{
 								if (!MetadataHelper.IsAttributeLogicalNameValid(context, portalContext.User.LogicalName, fromAttribute))
 								{
-									ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("'{0}' is not a valid attribute on {1}.", fromAttribute, portalContext.User.LogicalName));
+									ADXTrace.TraceError(TraceCategory.Application, string.Format("'{0}' is not a valid attribute on {1}.", fromAttribute, portalContext.User.LogicalName));
 									continue;
 								}
 								value = portalContext.User.GetAttributeValue(fromAttribute);
@@ -2957,7 +2957,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						}
 						catch (Exception ex)
 						{
-							ADXTrace.Instance.TraceError(TraceCategory.Application, ex.ToString());
+							ADXTrace.TraceError(TraceCategory.Application, ex.ToString());
 							continue;
 						}
 						break;
@@ -2977,7 +2977,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (attributeTypeCodes == null || !attributeTypeCodes.Any())
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "Attribute Type Code Dictionary is null or empty");
+				ADXTrace.TraceError(TraceCategory.Application, "Attribute Type Code Dictionary is null or empty");
 
 				return false;
 			}
@@ -2986,7 +2986,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (attributeTypeCode == null)
 			{
-				ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Unable to recognize the attribute '{0}' specified.", attributeName));
+				ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Unable to recognize the attribute '{0}' specified.", attributeName));
 
 				return false;
 			}
@@ -2997,7 +2997,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (field == null)
 				{
-					ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Could not find control with id equal '{0}'", attributeName));
+					ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Could not find control with id equal '{0}'", attributeName));
 
 					return false;
 				}
@@ -3141,7 +3141,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						}
 						break;
 					case AttributeTypeCode.State:
-						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Attribute type '{0}' is unsupported. The state attribute is created automatically when the entity is created. The options available for this attribute are read-only.", attributeTypeCode));
+						ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Attribute type '{0}' is unsupported. The state attribute is created automatically when the entity is created. The options available for this attribute are read-only.", attributeTypeCode));
 						break;
 					case AttributeTypeCode.Status:
 						if (field is ListControl)
@@ -3187,7 +3187,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						}
 						break;
 					default:
-						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Attribute type '{0}' is unsupported.", attributeTypeCode));
+						ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Attribute type '{0}' is unsupported.", attributeTypeCode));
 						return false;
 				}
 			}
@@ -3209,7 +3209,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (field == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Could not find control ");
+					ADXTrace.TraceError(TraceCategory.Application, "Could not find control ");
 
 					return false;
 				}
@@ -3220,7 +3220,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (list == null && hiddenField == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Field is not one of the expected control types.");
+					ADXTrace.TraceError(TraceCategory.Application, "Field is not one of the expected control types.");
 
 					return false;
 				}
@@ -3290,7 +3290,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Field value could not be set. {0}", e));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Field value could not be set. {0}", e));
 
 				return false;
 			}
@@ -3311,7 +3311,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (field == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Could not find control");
+					ADXTrace.TraceError(TraceCategory.Application, "Could not find control");
 					return;
 				}
 
@@ -3321,7 +3321,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (list == null && hiddenField == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Field is not one of the expected control types.");
+					ADXTrace.TraceError(TraceCategory.Application, "Field is not one of the expected control types.");
 					return;
 				}
 
@@ -3344,13 +3344,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (string.IsNullOrWhiteSpace(targetAttributeName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_referenctargetlookupattributelogicalname must not be null.");
+					ADXTrace.TraceError(TraceCategory.Application, "mspp_webformstep.adx_referenctargetlookupattributelogicalname must not be null.");
 					return;
 				}
 
 				if (string.IsNullOrWhiteSpace(referenceEntityLogicalName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_referenceentitylogicalname must not be null.");
+					ADXTrace.TraceError(TraceCategory.Application, "mspp_webformstep.adx_referenceentitylogicalname must not be null.");
 					return;
 				}
 
@@ -3379,7 +3379,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 								if (entity == null)
 								{
-									ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Could not retrieve entity of type '{0}' where '{1}' equals '{2}'.", referenceEntityLogicalName, referenceQueryAttributeName, referenceQueryStringValue));
+									ADXTrace.TraceError(TraceCategory.Application, string.Format("Could not retrieve entity of type '{0}' where '{1}' equals '{2}'.", referenceEntityLogicalName, referenceQueryAttributeName, referenceQueryStringValue));
 									return;
 								}
 								id = entity.Id;
@@ -3389,7 +3389,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 							{
 								if (!Guid.TryParse(referenceQueryStringValue, out id))
 								{
-									ADXTrace.Instance.TraceError(TraceCategory.Application, "id provided in the query string is not a valid guid.");
+									ADXTrace.TraceError(TraceCategory.Application, "id provided in the query string is not a valid guid.");
 									return;
 								}
 							}
@@ -3398,7 +3398,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 							var referenceEntityID = referenceEntityStep != null ? GetStepReferenceEntityID(referenceEntityStep.Id) : GetPreviousStepReferenceEntityID();
 							if (referenceEntityID == Guid.Empty)
 							{
-								ADXTrace.Instance.TraceError(TraceCategory.Application, "entityReferenceId is null");
+								ADXTrace.TraceError(TraceCategory.Application, "entityReferenceId is null");
 								return;
 							}
 							id = referenceEntityID;
@@ -3411,7 +3411,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 					if (referenceEntityID == Guid.Empty)
 					{
-						ADXTrace.Instance.TraceError(TraceCategory.Application, "entityReferenceId is null");
+						ADXTrace.TraceError(TraceCategory.Application, "entityReferenceId is null");
 
 						return;
 					}
@@ -3430,7 +3430,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 						if (string.IsNullOrWhiteSpace(referenceEntityPrimaryKeyLogicalName))
 						{
-							ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error retrieving the Primary Key Attribute Name for '{0}'.", referenceEntityLogicalName));
+							ADXTrace.TraceError(TraceCategory.Application, string.Format("Error retrieving the Primary Key Attribute Name for '{0}'.", referenceEntityLogicalName));
 							return;
 						}
 
@@ -3438,7 +3438,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 						if (entity == null)
 						{
-							ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Could not retrieve entity of type '{0}' where '{1}' equals '{2}'.", referenceEntityLogicalName, referenceEntityPrimaryKeyLogicalName, id));
+							ADXTrace.TraceError(TraceCategory.Application, string.Format("Could not retrieve entity of type '{0}' where '{1}' equals '{2}'.", referenceEntityLogicalName, referenceEntityPrimaryKeyLogicalName, id));
 							return;
 						}
 
@@ -3478,7 +3478,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, ex.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, ex.ToString());
 			}
 		}
 
@@ -3503,19 +3503,19 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (string.IsNullOrWhiteSpace(readOnlyFormName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_referenceentityreadonlyformname must not be null.");
+					ADXTrace.TraceError(TraceCategory.Application, "mspp_webformstep.adx_referenceentityreadonlyformname must not be null.");
 					return;
 				}
 
 				if (string.IsNullOrWhiteSpace(targetAttributeName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_referenctargetlookupattributelogicalname must not be null.");
+					ADXTrace.TraceError(TraceCategory.Application, "mspp_webformstep.adx_referenctargetlookupattributelogicalname must not be null.");
 					return;
 				}
 
 				if (string.IsNullOrWhiteSpace(referenceEntityLogicalName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_referenceentitylogicalname must not be null.");
+					ADXTrace.TraceError(TraceCategory.Application, "mspp_webformstep.adx_referenceentitylogicalname must not be null.");
 					return;
 				}
 
@@ -3526,7 +3526,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (string.IsNullOrWhiteSpace(referenceEntityPrimaryKeyLogicalName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error retrieving the Primary Key Attribute Name for '{0}'.", referenceEntityLogicalName));
+					ADXTrace.TraceError(TraceCategory.Application, string.Format("Error retrieving the Primary Key Attribute Name for '{0}'.", referenceEntityLogicalName));
 					return;
 				}
 
@@ -3549,7 +3549,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 								if (entity == null)
 								{
-									ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Could not retrieve entity of type '{0}' where '{1}' equals '{2}'.", referenceEntityLogicalName, referenceQueryAttributeName, referenceQueryStringValue));
+									ADXTrace.TraceError(TraceCategory.Application, string.Format("Could not retrieve entity of type '{0}' where '{1}' equals '{2}'.", referenceEntityLogicalName, referenceQueryAttributeName, referenceQueryStringValue));
 									return;
 								}
 								id = entity.Id;
@@ -3558,7 +3558,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 							{
 								if (!Guid.TryParse(referenceQueryStringValue, out id))
 								{
-									ADXTrace.Instance.TraceError(TraceCategory.Application, "id provided in the query string is not a valid guid.");
+									ADXTrace.TraceError(TraceCategory.Application, "id provided in the query string is not a valid guid.");
 									return;
 								}
 							}
@@ -3567,7 +3567,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 							var referenceEntityID = referenceEntityStep != null ? GetStepReferenceEntityID(referenceEntityStep.Id) : GetPreviousStepReferenceEntityID();
 							if (referenceEntityID == Guid.Empty)
 							{
-								ADXTrace.Instance.TraceError(TraceCategory.Application, "entityReferenceId is null");
+								ADXTrace.TraceError(TraceCategory.Application, "entityReferenceId is null");
 								return;
 							}
 							id = referenceEntityID;
@@ -3580,7 +3580,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 					if (referenceEntityID == Guid.Empty)
 					{
-						ADXTrace.Instance.TraceError(TraceCategory.Application, "entityReferenceId is null");
+						ADXTrace.TraceError(TraceCategory.Application, "entityReferenceId is null");
 						return;
 					}
 
@@ -3611,7 +3611,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, ex.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, ex.ToString());
 			}
 		}
 
@@ -3633,7 +3633,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (string.IsNullOrWhiteSpace(targetAttributeName))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application,
+				ADXTrace.TraceInfo(TraceCategory.Application,
 					"Lookup Attribute Name not provided. No Entity Reference to set. AssociateEntity will be called during OnInserted event instead.");
 				return;
 			}
@@ -3723,7 +3723,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, ex.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, ex.ToString());
 			}
 		}
 
@@ -3778,7 +3778,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 								var targetEntityDefinition = GetStepReferenceEntityDefinition(referenceEntityStep.Id);
 								if (targetEntityDefinition == null)
 								{
-									ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to retrieve entity definition from history for step with id equal to '{0}'.", referenceEntityStep.Id));
+									ADXTrace.TraceError(TraceCategory.Application, string.Format("Failed to retrieve entity definition from history for step with id equal to '{0}'.", referenceEntityStep.Id));
 									return null;
 								}
 								id = targetEntityDefinition.ID;
@@ -3790,7 +3790,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 								var targetEntityDefinition = GetPreviousStepReferenceEntityDefinition();
 								if (targetEntityDefinition == null)
 								{
-									ADXTrace.Instance.TraceError(TraceCategory.Application, "Failed to retrieve entity definition from the previous step");
+									ADXTrace.TraceError(TraceCategory.Application, "Failed to retrieve entity definition from the previous step");
 									return null;
 								}
 								id = targetEntityDefinition.ID;
@@ -3807,7 +3807,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						var targetEntityDefinition = GetStepReferenceEntityDefinition(referenceEntityStep.Id);
 						if (targetEntityDefinition == null)
 						{
-							ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to retrieve entity definition from history for step with id equal to '{0}'.", referenceEntityStep.Id));
+							ADXTrace.TraceError(TraceCategory.Application, string.Format("Failed to retrieve entity definition from history for step with id equal to '{0}'.", referenceEntityStep.Id));
 							return null;
 						}
 						id = targetEntityDefinition.ID;
@@ -3819,7 +3819,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						var targetEntityDefinition = GetPreviousStepReferenceEntityDefinition();
 						if (targetEntityDefinition == null)
 						{
-							ADXTrace.Instance.TraceError(TraceCategory.Application, "Failed to retrieve entity definition from the previous step");
+							ADXTrace.TraceError(TraceCategory.Application, "Failed to retrieve entity definition from the previous step");
 							return null;
 						}
 						id = targetEntityDefinition.ID;
@@ -3835,7 +3835,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, e.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, e.ToString());
 			}
 
 			return new WebFormEntitySourceDefinition(entityName, keyName, id);
@@ -3858,7 +3858,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (string.IsNullOrWhiteSpace(relationshipName))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Entity Relationship Name not provided. Entity Association not required.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Entity Relationship Name not provided. Entity Association not required.");
 				return;
 			}
 
@@ -3899,7 +3899,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 								var targetEntityDefinition = GetStepReferenceEntityDefinition(referenceEntityStep.Id);
 								if (targetEntityDefinition == null)
 								{
-									ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to retrieve entity definition from history for step with id equal to '{0}'.", referenceEntityStep.Id));
+									ADXTrace.TraceError(TraceCategory.Application, string.Format("Failed to retrieve entity definition from history for step with id equal to '{0}'.", referenceEntityStep.Id));
 									return;
 								}
 								targetEntityId = targetEntityDefinition.ID;
@@ -3911,7 +3911,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 								var targetEntityDefinition = GetPreviousStepReferenceEntityDefinition();
 								if (targetEntityDefinition == null)
 								{
-									ADXTrace.Instance.TraceError(TraceCategory.Application, "Failed to retrieve entity definition from the previous step");
+									ADXTrace.TraceError(TraceCategory.Application, "Failed to retrieve entity definition from the previous step");
 									return;
 								}
 								targetEntityId = targetEntityDefinition.ID;
@@ -3928,7 +3928,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (sourceEntityId == Guid.Empty || targetEntityId == Guid.Empty)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Source and Target entity ids must not be null or empty.");
+					ADXTrace.TraceError(TraceCategory.Application, "Source and Target entity ids must not be null or empty.");
 					return;
 				}
 
@@ -3936,7 +3936,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (string.IsNullOrWhiteSpace(sourceEntityName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_targetentitylogicalname must not be null.");
+					ADXTrace.TraceError(TraceCategory.Application, "mspp_webformstep.adx_targetentitylogicalname must not be null.");
 					return;
 				}
 
@@ -3947,7 +3947,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (string.IsNullOrWhiteSpace(sourceEntityPrimaryKey))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Failed to determine source entity primary key logical name.");
+					ADXTrace.TraceError(TraceCategory.Application, "Failed to determine source entity primary key logical name.");
 					return;
 				}
 
@@ -3955,7 +3955,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (sourceEntity == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Source entity is null.");
+					ADXTrace.TraceError(TraceCategory.Application, "Source entity is null.");
 					return;
 				}
 
@@ -3963,7 +3963,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (string.IsNullOrWhiteSpace(targetEntityName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Target entity name must not be null or empty.");
+					ADXTrace.TraceError(TraceCategory.Application, "Target entity name must not be null or empty.");
 					return;
 				}
 
@@ -3974,7 +3974,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (string.IsNullOrWhiteSpace(targetEntityPrimaryKey))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Failed to determine target entity primary key logical name.");
+					ADXTrace.TraceError(TraceCategory.Application, "Failed to determine target entity primary key logical name.");
 					return;
 				}
 
@@ -3982,7 +3982,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (targetEntity == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Target entity is null.");
+					ADXTrace.TraceError(TraceCategory.Application, "Target entity is null.");
 					return;
 				}
 
@@ -3990,7 +3990,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, ex.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, ex.ToString());
 			}
 		}
 
@@ -4114,14 +4114,14 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (string.IsNullOrWhiteSpace(targetEntityLogicalName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_targetentitylogicalname must not be null.");
+				ADXTrace.TraceError(TraceCategory.Application, "mspp_webformstep.adx_targetentitylogicalname must not be null.");
 
 				return;
 			}
 
 			if (string.IsNullOrWhiteSpace(userHostAddressAttributeName) && string.IsNullOrWhiteSpace(userIdentityNameAttributeName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "LogUserInfoOnInserting", "mspp_webformstep.adx_userhostaddressattributelogicalname is null. adx_webformstep.adx_useridentitynameattributelogicalname is null.");
+				ADXTrace.TraceError(TraceCategory.Application, "LogUserInfoOnInserting", "mspp_webformstep.adx_userhostaddressattributelogicalname is null. adx_webformstep.adx_useridentitynameattributelogicalname is null.");
 
 				return;
 			}
@@ -4161,14 +4161,14 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (string.IsNullOrWhiteSpace(targetEntityLogicalName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_targetentitylogicalname must not be null.");
+				ADXTrace.TraceError(TraceCategory.Application, "mspp_webformstep.adx_targetentitylogicalname must not be null.");
 
 				return;
 			}
 
 			if (string.IsNullOrWhiteSpace(userHostAddressAttributeName) && string.IsNullOrWhiteSpace(userIdentityNameAttributeName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_userhostaddressattributelogicalname is null. adx_webformstep.adx_useridentitynameattributelogicalname is null.");
+				ADXTrace.TraceError(TraceCategory.Application, "mspp_webformstep.adx_userhostaddressattributelogicalname is null. adx_webformstep.adx_useridentitynameattributelogicalname is null.");
 
 				return;
 			}
@@ -4210,21 +4210,21 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (string.IsNullOrWhiteSpace(targetEntityLogicalName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_targetentitylogicalname must not be null.");
+				ADXTrace.TraceError(TraceCategory.Application, "mspp_webformstep.adx_targetentitylogicalname must not be null.");
 
 				return;
 			}
 
 			if (string.IsNullOrWhiteSpace(autoNumberDefinitionName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_autonumberdefinitionname is null.");
+				ADXTrace.TraceError(TraceCategory.Application, "mspp_webformstep.adx_autonumberdefinitionname is null.");
 
 				return;
 			}
 
 			if (string.IsNullOrWhiteSpace(autoNumberAttributeLogicalName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformstep.adx_autonumberattributelogicalname is null.");
+				ADXTrace.TraceError(TraceCategory.Application, "mspp_webformstep.adx_autonumberattributelogicalname is null.");
 
 				return;
 			}
@@ -4233,7 +4233,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (string.IsNullOrWhiteSpace(autoNumber))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "autoNumber returned from plugin request is null.");
+				ADXTrace.TraceError(TraceCategory.Application, "autoNumber returned from plugin request is null.");
 
 				return;
 			}
@@ -4265,7 +4265,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, ex.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, ex.ToString());
 
 				return string.Empty;
 			}
@@ -4284,21 +4284,21 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (string.IsNullOrWhiteSpace(targetEntityLogicalName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, ResourceManager.GetString("TargetEntity_LogicalName_Null_Exception"));
+				ADXTrace.TraceError(TraceCategory.Application, ResourceManager.GetString("TargetEntity_LogicalName_Null_Exception"));
 
 				return;
 			}
 
 			if (string.IsNullOrWhiteSpace(portalUserLookupAttributeName))
 			{
-				ADXTrace.Instance.TraceWarning(TraceCategory.Application, "mspp_webformstep.adx_targetentityportaluserlookupattribute is null.");
+				ADXTrace.TraceWarning(TraceCategory.Application, "mspp_webformstep.adx_targetentityportaluserlookupattribute is null.");
 
 				return;
 			}
 
 			if (!MetadataHelper.IsAttributeLogicalNameValid(context, targetEntityLogicalName, portalUserLookupAttributeName))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("'{0}' entity does not contain an attribute.", EntityNamePrivacy.GetEntityName(targetEntityLogicalName)));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("'{0}' entity does not contain an attribute.", EntityNamePrivacy.GetEntityName(targetEntityLogicalName)));
 
 				return;
 			}
@@ -4325,13 +4325,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				}
 				catch (Exception ex)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, ex.ToString());
+					ADXTrace.TraceError(TraceCategory.Application, ex.ToString());
 				}
 
 			}
 			else
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "Current Portal User is null.");
+				ADXTrace.TraceError(TraceCategory.Application, "Current Portal User is null.");
 
 			}
 		}
@@ -4368,7 +4368,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (entityid == null || entityid == Guid.Empty)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "File not saved entityid is null or empty.");
+				ADXTrace.TraceError(TraceCategory.Application, "File not saved entityid is null or empty.");
 
 				return;
 			}
@@ -4380,7 +4380,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (string.IsNullOrWhiteSpace(logicalName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_entityform.adx_entityname must not be null.");
+					ADXTrace.TraceError(TraceCategory.Application, "mspp_entityform.adx_entityname must not be null.");
 					return;
 				}
 
@@ -4391,7 +4391,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (string.IsNullOrWhiteSpace(primaryKey))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, ResourceManager.GetString("Failed_To_Determine_Target_Entity_Pk_Logical_Name_Exception"));
+					ADXTrace.TraceError(TraceCategory.Application, ResourceManager.GetString("Failed_To_Determine_Target_Entity_Pk_Logical_Name_Exception"));
 					return;
 				}
 
@@ -4449,7 +4449,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, ex.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, ex.ToString());
 			}
 		}
 
@@ -4489,7 +4489,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				var attributeName = item.GetAttributeValue<string>("mspp_attributelogicalname");
 				if (string.IsNullOrWhiteSpace(attributeName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformmetadata.adx_attributelogicalname is null.");
+					ADXTrace.TraceError(TraceCategory.Application, "mspp_webformmetadata.adx_attributelogicalname is null.");
 					continue;
 				}
 				var value = GetOnSaveValue(context, item);
@@ -4503,7 +4503,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					}
 					catch (Exception)
 					{
-						ADXTrace.Instance.TraceError(TraceCategory.Application, "Failed to convert statecode value to int.");
+						ADXTrace.TraceError(TraceCategory.Application, "Failed to convert statecode value to int.");
 					}
 				}
 
@@ -4532,7 +4532,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, ex.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, ex.ToString());
 
 				return false;
 			}
@@ -4553,7 +4553,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, ex.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, ex.ToString());
 
 				return false;
 			}
@@ -4614,7 +4614,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				var attributeName = item.GetAttributeValue<string>("mspp_attributelogicalname");
 				if (string.IsNullOrWhiteSpace(attributeName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformmetadata.adx_attributelogicalname is null.");
+					ADXTrace.TraceError(TraceCategory.Application, "mspp_webformmetadata.adx_attributelogicalname is null.");
 					continue;
 				}
 				var value = GetOnSaveValue(context, item);
@@ -4628,7 +4628,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					}
 					catch (Exception)
 					{
-						ADXTrace.Instance.TraceError(TraceCategory.Application, "Failed to convert statecode value to int.");
+						ADXTrace.TraceError(TraceCategory.Application, "Failed to convert statecode value to int.");
 					}
 				}
 
@@ -4636,7 +4636,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (attributeValue == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Attribute '{0}' not set. Attribute value is null.", attributeName);
+					ADXTrace.TraceError(TraceCategory.Application, "Attribute '{0}' not set. Attribute value is null.", attributeName);
 					continue;
 				}
 
@@ -4646,7 +4646,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				}
 				catch (Exception ex)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, ex.ToString());
+					ADXTrace.TraceError(TraceCategory.Application, ex.ToString());
 				}
 			}
 
@@ -4718,7 +4718,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				var attributeName = item.GetAttributeValue<string>("mspp_attributelogicalname");
 				if (string.IsNullOrWhiteSpace(attributeName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "mspp_webformmetadata.adx_attributelogicalname is null.");
+					ADXTrace.TraceError(TraceCategory.Application, "mspp_webformmetadata.adx_attributelogicalname is null.");
 					continue;
 				}
 				var value = GetOnSaveValue(context, item);
@@ -4727,7 +4727,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (attributeValue == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Attribute not set. Attribute value is null.");
+					ADXTrace.TraceError(TraceCategory.Application, "Attribute not set. Attribute value is null.");
 					continue;
 				}
 
@@ -4738,7 +4738,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				}
 				catch (Exception ex)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, ex.ToString());
+					ADXTrace.TraceError(TraceCategory.Application, ex.ToString());
 				}
 			}
 
@@ -4763,7 +4763,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						var portalContext = PortalCrmConfigurationManager.CreatePortalContext(PortalName);
 						if (portalContext.User == null)
 						{
-							ADXTrace.Instance.TraceError(TraceCategory.Application, "Current portal user record is null.");
+							ADXTrace.TraceError(TraceCategory.Application, "Current portal user record is null.");
 							return null;
 						}
 						try
@@ -4775,14 +4775,14 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 							}
 							if (!MetadataHelper.IsAttributeLogicalNameValid(context, portalContext.User.LogicalName, fromAttribute))
 							{
-								ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Not a valid attribute on {0}.", EntityNamePrivacy.GetEntityName(portalContext.User.LogicalName)));
+								ADXTrace.TraceError(TraceCategory.Application, string.Format("Not a valid attribute on {0}.", EntityNamePrivacy.GetEntityName(portalContext.User.LogicalName)));
 								return null;
 							}
 							return portalContext.User.GetAttributeValue(fromAttribute);
 						}
 						catch (Exception ex)
 						{
-							ADXTrace.Instance.TraceError(TraceCategory.Application, ex.ToString());
+							ADXTrace.TraceError(TraceCategory.Application, ex.ToString());
 							return null;
 						}
 				}
@@ -4800,7 +4800,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to set statecode. {0}", ex));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Failed to set statecode. {0}", ex));
 			}
 		}
 
@@ -4835,7 +4835,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						newValue = value == null ? null : Convert.ToBoolean(value);
 						break;
 					case AttributeTypeCode.Customer:
-						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Attribute type '{0}' is unsupported.", attributeTypeCode));
+						ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Attribute type '{0}' is unsupported.", attributeTypeCode));
 						return false;
 					case AttributeTypeCode.DateTime:
 						newValue = value == null ? null : Convert.ToDateTime(value).ToUniversalTime();
@@ -4850,7 +4850,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						newValue = value == null ? null : Convert.ToInt32(value);
 						break;
 					case AttributeTypeCode.Lookup:
-						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Attribute specified has an unsupported type '{0}'.", attributeTypeCode));
+						ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Attribute specified has an unsupported type '{0}'.", attributeTypeCode));
 						return false;
 					case AttributeTypeCode.Memo:
 						newValue = value as string;
@@ -4884,10 +4884,10 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 								}
 							}
 						}
-						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Attribute type '{0}' is unsupported. The value provided is not valid.", attributeTypeCode));
+						ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Attribute type '{0}' is unsupported. The value provided is not valid.", attributeTypeCode));
 						return false;
 					case AttributeTypeCode.State:
-						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Attribute type '{0}' is unsupported. The state attribute is created automatically when the entity is created. The options available for this attribute are read-only.", attributeTypeCode));
+						ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Attribute type '{0}' is unsupported. The state attribute is created automatically when the entity is created. The options available for this attribute are read-only.", attributeTypeCode));
 						return false;
 					case AttributeTypeCode.Status:
 						if (value == null) return false;
@@ -4898,7 +4898,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						newValue = value as string;
 						break;
 					default:
-						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Attribute type '{0}' is unsupported.", attributeTypeCode));
+						ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Attribute type '{0}' is unsupported.", attributeTypeCode));
 						return false;
 				}
 				e.Values[attributeName] = newValue;
@@ -4926,7 +4926,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (attributeTypeCode == null)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "Unable to recognize the attribute specified.");
+				ADXTrace.TraceError(TraceCategory.Application, "Unable to recognize the attribute specified.");
 				return string.Empty;
 			}
 
@@ -4986,7 +4986,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 						newValue = id.ToString();
 						break;
 					default:
-						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Attribute type '{0}' is unsupported.", attributeTypeCode));
+						ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Attribute type '{0}' is unsupported.", attributeTypeCode));
 						break;
 				}
 			}
@@ -5193,7 +5193,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 		{
 			if (entityID == Guid.Empty)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "entityID is empty");
+				ADXTrace.TraceError(TraceCategory.Application, "entityID is empty");
 				return;
 			}
 

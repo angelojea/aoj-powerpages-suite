@@ -43,9 +43,9 @@ namespace Adxstudio.Xrm.ServiceModel
 			var behavior = host.Description.Behaviors.Find<ServiceBehaviorAttribute>();
 			behavior.UseSynchronizationContext = useSynchronizationContext;
 
-			host.Opened += (s, a) => ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Opened");
-			host.Closed += (s, a) => ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Closed");
-			host.Faulted += (s, a) => ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Faulted");
+			host.Opened += (s, a) => ADXTrace.TraceInfo(TraceCategory.Application, "Opened");
+			host.Closed += (s, a) => ADXTrace.TraceInfo(TraceCategory.Application, "Closed");
+			host.Faulted += (s, a) => ADXTrace.TraceInfo(TraceCategory.Application, "Faulted");
 
 			if (_retryPolicy != null)
 			{
@@ -72,7 +72,7 @@ namespace Adxstudio.Xrm.ServiceModel
 		{
 			if (_host != null && _host.Value != null && _host.Value.State == CommunicationState.Faulted)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("{0}={1}", _host.Value, _host.Value.State));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format("{0}={1}", _host.Value, _host.Value.State));
 
 				_host.Value.Abort();
 				_host = null;
@@ -87,7 +87,7 @@ namespace Adxstudio.Xrm.ServiceModel
 
 			if (host != null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("{0}={1}", host, host.State));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format("{0}={1}", host, host.State));
 			}
 		}
 

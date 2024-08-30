@@ -199,7 +199,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Exception, string.Format("Not able to read solution information{0}{1}", Environment.NewLine, e));
+				ADXTrace.TraceInfo(TraceCategory.Exception, string.Format("Not able to read solution information{0}{1}", Environment.NewLine, e));
 			}
 
 			return version;
@@ -220,7 +220,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Exception, string.Format("Failed to retrieve the base language of the organization:{0}{1}", Environment.NewLine, e));
+				ADXTrace.TraceError(TraceCategory.Exception, string.Format("Failed to retrieve the base language of the organization:{0}{1}", Environment.NewLine, e));
 			}
 
 			return result;
@@ -265,7 +265,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 				stringBuilder.AppendLine();
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Installed portal solutions on CRM {0}:{1}{2}", CrmVersion, Environment.NewLine, stringBuilder));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Installed portal solutions on CRM {0}:{1}{2}", CrmVersion, Environment.NewLine, stringBuilder));
 		}
 
 		/// <summary>

@@ -302,7 +302,7 @@ namespace Adxstudio.Xrm.Web.UI
 		/// </summary>
 		protected virtual FetchResult FetchEntitiesWithQueryPerRecordLevelLevelFilter()
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Fetching entities with a seperate query for each record level filter.");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Fetching entities with a seperate query for each record level filter.");
 
 			var serviceContext = Dependencies.GetServiceContext();
 
@@ -351,7 +351,7 @@ namespace Adxstudio.Xrm.Web.UI
 
 			if (Configuration.EntityName == "entitlement")
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Doing special case behavior for entitlements.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Doing special case behavior for entitlements.");
 
 				// To ensure that we only return the entitlement records that are applicable to an incident for the given dynamic parameters from the incident submission form we must dynamically and conditionally generate the necessary joins and filter conditions and add them to the FetchXml query.
 				if (CustomParameters != null && CustomParameters.Any())
@@ -371,7 +371,7 @@ namespace Adxstudio.Xrm.Web.UI
 
 			if (!ApplyRecordLevelFilters)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Not applying record-level filters. Falling back to single-query behavior.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Not applying record-level filters. Falling back to single-query behavior.");
 
 				TryAssert(fetch, Configuration, CrmEntityPermissionRight.Read);
 
@@ -384,7 +384,7 @@ namespace Adxstudio.Xrm.Web.UI
 			// allow CRM to do the ordering, and support normal pagination.
 			if (queries.Length <= 1)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Only one record-level filter necessary, falling back to single-query behavior.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Only one record-level filter necessary, falling back to single-query behavior.");
 
 				return FetchEntitiesWithSingleQuery();
 			}

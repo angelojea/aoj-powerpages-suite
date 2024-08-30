@@ -456,7 +456,7 @@ namespace Adxstudio.Xrm.Search.Index
 						EntityNode entity;
 						if (!contentMap.TryGetValue(new EntityReference("adx_webpage", entityId), out entity))
 						{
-							ADXTrace.Instance.TraceWarning(TraceCategory.Monitoring, string.Format("Web Page url is not defined. EntityId: {0}", entityId));
+							ADXTrace.TraceWarning(TraceCategory.Monitoring, string.Format("Web Page url is not defined. EntityId: {0}", entityId));
 							return false;
 						}
 
@@ -482,7 +482,7 @@ namespace Adxstudio.Xrm.Search.Index
 		{
 			if (webPage == null)
 			{
-				ADXTrace.Instance.TraceWarning(TraceCategory.Monitoring, "Web Page url is not defined. Web Page is null");
+				ADXTrace.TraceWarning(TraceCategory.Monitoring, "Web Page url is not defined. Web Page is null");
 				return false;
 			}
 			try
@@ -494,7 +494,7 @@ namespace Adxstudio.Xrm.Search.Index
 			catch (Exception e)
 			{
 				// if the application path wasn't a real path then it will throw an exception so just return false
-				ADXTrace.Instance.TraceWarning(TraceCategory.Monitoring, string.Format("IsWebPageUrlDefined caught exception, returning false - {0}", e));
+				ADXTrace.TraceWarning(TraceCategory.Monitoring, string.Format("IsWebPageUrlDefined caught exception, returning false - {0}", e));
 				return false;
 			}
 		}

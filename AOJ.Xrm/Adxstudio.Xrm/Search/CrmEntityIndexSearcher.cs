@@ -49,7 +49,7 @@ namespace Adxstudio.Xrm.Search
 
 			stopwatch.Stop();
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Lucene IndexSearcher initialized ({0}ms)", stopwatch.ElapsedMilliseconds));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Lucene IndexSearcher initialized ({0}ms)", stopwatch.ElapsedMilliseconds));
 		}
 
         protected ICrmEntityIndex Index { get; }
@@ -63,13 +63,13 @@ namespace Adxstudio.Xrm.Search
 
 		public virtual ICrmEntitySearchResultPage Search(ICrmEntityQuery query)
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(@"query=(PageNumber={0},PageSize={1},LogicalNames=({2}))", query.PageNumber, query.PageSize, string.Join(",", query.LogicalNames.ToArray())));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format(@"query=(PageNumber={0},PageSize={1},LogicalNames=({2}))", query.PageNumber, query.PageSize, string.Join(",", query.LogicalNames.ToArray())));
 
 			var pageNumber = query.PageNumber;
 
 			if (pageNumber < 1)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Page number cannot be less than 1. Forcing PageNumber to 1.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Page number cannot be less than 1. Forcing PageNumber to 1.");
 
 				pageNumber = 1;
 			}
@@ -78,7 +78,7 @@ namespace Adxstudio.Xrm.Search
 
             if (pageSize < 1)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Page size cannot be less than 1. Forcing PageSize to 1.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Page size cannot be less than 1. Forcing PageSize to 1.");
 
 				pageSize = 1;
 			}
@@ -260,7 +260,7 @@ namespace Adxstudio.Xrm.Search
 
             stopwatch.Stop();
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Lucene: {0} total hits ({1}ms)", topDocs.TotalHits, stopwatch.ElapsedMilliseconds));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Lucene: {0} total hits ({1}ms)", topDocs.TotalHits, stopwatch.ElapsedMilliseconds));
 
             PortalFeatureTrace.TraceInstance.LogSearch(FeatureTraceCategory.Search, topDocs.TotalHits, stopwatch.ElapsedMilliseconds, string.Format("Lucene: {0} total hits ({1}ms)", topDocs.TotalHits, stopwatch.ElapsedMilliseconds));
 
@@ -311,7 +311,7 @@ namespace Adxstudio.Xrm.Search
         /// <returns></returns>
         protected ICrmEntitySearchResultPage GetUserSearchResults(ICrmEntityQuery query, int searchLimit, int initialOffset, int resultLimit, ICrmEntitySearchResultFactory resultFactory, int pageNumber, int pageSize, ICollection<ICrmEntitySearchResult> results)
         {
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("(searchLimit={0},rawOffset={1},resultLimit={2})", searchLimit, initialOffset, resultLimit));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("(searchLimit={0},rawOffset={1},resultLimit={2})", searchLimit, initialOffset, resultLimit));
             RawSearchResultSet rawSearchResults = GetRawSearchResults(query, searchLimit, initialOffset);
             
             if (initialOffset >= rawSearchResults.TotalHits)
@@ -369,7 +369,7 @@ namespace Adxstudio.Xrm.Search
                 {
                     stopwatch.Stop();
 
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Gathered {0} results, done ({1}ms)", results.Count, stopwatch.ElapsedMilliseconds));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Gathered {0} results, done ({1}ms)", results.Count, stopwatch.ElapsedMilliseconds));
 
                     PortalFeatureTrace.TraceInstance.LogSearch(FeatureTraceCategory.Search, results.Count, stopwatch.ElapsedMilliseconds, string.Format("Gathered {0} results, done ({1}ms)", results.Count, stopwatch.ElapsedMilliseconds));
 
@@ -383,14 +383,14 @@ namespace Adxstudio.Xrm.Search
             // results. That's all we're going to get, so the number of results we got is the number of hits.
             if (searchLimit >= rawSearchResults.TotalHits)
             {
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("All available results ({0}) gathered, done ({1}ms)", results.Count, stopwatch.ElapsedMilliseconds));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format("All available results ({0}) gathered, done ({1}ms)", results.Count, stopwatch.ElapsedMilliseconds));
 
                 PortalFeatureTrace.TraceInstance.LogSearch(FeatureTraceCategory.Search, results.Count, stopwatch.ElapsedMilliseconds, string.Format("All available results ({0}) gathered, done ({1}ms)", results.Count, stopwatch.ElapsedMilliseconds));
 
                 return GenerateResultPage(results, results.Count, pageNumber, pageSize, rawSearchResults);
             }
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("{0} results gathered so far ({1}ms)", results.Count, stopwatch.ElapsedMilliseconds));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("{0} results gathered so far ({1}ms)", results.Count, stopwatch.ElapsedMilliseconds));
 
             PortalFeatureTrace.TraceInstance.LogSearch(FeatureTraceCategory.Search, results.Count, stopwatch.ElapsedMilliseconds, string.Format("{0} results gathered so far ({1}ms)", results.Count, stopwatch.ElapsedMilliseconds));
 

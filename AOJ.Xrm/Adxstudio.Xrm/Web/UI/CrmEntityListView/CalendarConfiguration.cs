@@ -162,7 +162,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityListView
 				}
 				else
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Calendar Initial View value '{0}' is not a valid value defined by CalendarConfiguration.CalendarView class.", calendarInitialView.Value));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Calendar Initial View value '{0}' is not a valid value defined by CalendarConfiguration.CalendarView class.", calendarInitialView.Value));
 				}
 			}
 
@@ -174,7 +174,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityListView
 				}
 				else
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Calendar Style value '{0}' is not a valid value defined by CalendarConfiguration.CalendarStyle class.", calendarStyle.Value));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Calendar Style value '{0}' is not a valid value defined by CalendarConfiguration.CalendarStyle class.", calendarStyle.Value));
 					Style = CalendarStyle.Full;
 				}
 			}

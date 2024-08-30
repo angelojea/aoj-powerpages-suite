@@ -177,7 +177,7 @@ namespace Adxstudio.Xrm.Services
 		{
 			if (!string.IsNullOrWhiteSpace(entityName))
 			{
-				ADXTrace.Instance.TraceVerbose(TraceCategory.Application, string.Format("Entity {0} is Added to Enabled Entity List for Portal Cache ", EntityNamePrivacy.GetEntityName(entityName)));
+				ADXTrace.TraceVerbose(TraceCategory.Application, string.Format("Entity {0} is Added to Enabled Entity List for Portal Cache ", EntityNamePrivacy.GetEntityName(entityName)));
 				WebAppConfigurationProvider.PortalUsedEntities.TryAdd(entityName, true);
 			}
 
@@ -192,7 +192,7 @@ namespace Adxstudio.Xrm.Services
 		{
 			if (!string.IsNullOrWhiteSpace(entityName))
 			{
-				ADXTrace.Instance.TraceVerbose(TraceCategory.Application, string.Format("Entity {0} is Added to Enabled Entity List for Portal Cache", EntityNamePrivacy.GetEntityName(entityName)));
+				ADXTrace.TraceVerbose(TraceCategory.Application, string.Format("Entity {0} is Added to Enabled Entity List for Portal Cache", EntityNamePrivacy.GetEntityName(entityName)));
 				WebAppConfigurationProvider.PortalUsedEntities.TryAdd(entityName, true);
 			}
 

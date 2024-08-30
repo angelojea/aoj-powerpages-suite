@@ -81,7 +81,7 @@ namespace Adxstudio.Xrm.Services.Cache
 
 						if (!expired)
 						{
-							ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Reading: " + file.FullName);
+							ADXTrace.TraceInfo(TraceCategory.Application, "Reading: " + file.FullName);
 
 							var bytes = Settings.AppDataRetryPolicy.ReadAllBytes(file.FullName);
 							var json = Encoding.UTF8.GetString(MachineKey.Unprotect(bytes, Settings.GetType().ToString()));

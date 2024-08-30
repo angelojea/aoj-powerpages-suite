@@ -92,7 +92,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (Exception e)
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, e.ToString());
+                ADXTrace.TraceError(TraceCategory.Application, e.ToString());
 
                 var selectedArgs = new SearchDataSourceStatusEventArgs(provider, query, new CrmEntitySearchResultPage(new List<ICrmEntitySearchResult>(), 0, pageNumber, pageSize))
 				{

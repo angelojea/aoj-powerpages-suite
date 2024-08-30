@@ -159,7 +159,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error getting URL for entity [{0}:{1}]: {2}", entity.LogicalName, entity.Id, e));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Error getting URL for entity [{0}:{1}]: {2}", entity.LogicalName, entity.Id, e));
 
                 return null;
 			}
@@ -182,7 +182,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			}
 			catch (InvalidOperationException e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error validating security for entity [{0}:{1}]: {2}", entity.LogicalName, entity.Id, e));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Error validating security for entity [{0}:{1}]: {2}", entity.LogicalName, entity.Id, e));
 
                 return null;
 			}
@@ -250,7 +250,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			}
 			catch (InvalidOperationException e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error validating security for entity [{0}:{1}]: {2}", Entity.LogicalName, Entity.Id, e));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Error validating security for entity [{0}:{1}]: {2}", Entity.LogicalName, Entity.Id, e));
 
                 return false;
 			}

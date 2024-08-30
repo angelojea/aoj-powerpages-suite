@@ -21,26 +21,26 @@ namespace Adxstudio.Xrm.Web.Mvc
 	{
 		internal static string GetPortalContextPath(this RouteCollection routes, IPortalContext portalContext, string path)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", path));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", path));
 
 			var match = routes.OfTypeWithLock<IPortalContextRoute>()
 				.Select(portalContextRoute => portalContextRoute.GetPortalContextPath(portalContext, path))
 				.FirstOrDefault(contextPath => contextPath != null);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}", path));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}", path));
 
 			return match;
 		}
 
 		internal static string GetPortalContextPath(this RouteCollection routes, ContentMap contentMap, WebsiteNode website, string path)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", path));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", path));
 
 			var match = routes.OfTypeWithLock<IPortalContextRoute>()
 				.Select(portalContextRoute => portalContextRoute.GetPortalContextPath(contentMap, website, path))
 				.FirstOrDefault(contextPath => contextPath != null);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}", path));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}", path));
 
 			return match;
 		}
@@ -65,18 +65,18 @@ namespace Adxstudio.Xrm.Web.Mvc
 		/// <returns>The action result.</returns>
 		internal static T UseWithReadLock<T>(this RouteCollection routes, Func<RouteCollection, T> action)
 		{
-			ADXTrace.Instance.TraceVerbose(TraceCategory.Application, "RouteCollection lock: Read: Requested");
+			ADXTrace.TraceVerbose(TraceCategory.Application, "RouteCollection lock: Read: Requested");
 
 			T result;
 
 			using (routes.GetReadLock())
 			{
-				ADXTrace.Instance.TraceVerbose(TraceCategory.Application, "RouteCollection lock: Read: Acquired");
+				ADXTrace.TraceVerbose(TraceCategory.Application, "RouteCollection lock: Read: Acquired");
 
 				result = action(routes);
 			}
 
-			ADXTrace.Instance.TraceVerbose(TraceCategory.Application, "RouteCollection lock: Write: Released");
+			ADXTrace.TraceVerbose(TraceCategory.Application, "RouteCollection lock: Write: Released");
 
 			return result;
 		}
@@ -88,16 +88,16 @@ namespace Adxstudio.Xrm.Web.Mvc
 		/// <param name="action">The action to run.</param>
 		internal static void UseWithWriteLock(this RouteCollection routes, Action<RouteCollection> action)
 		{
-			ADXTrace.Instance.TraceVerbose(TraceCategory.Application, "RouteCollection lock: Write: Requested");
+			ADXTrace.TraceVerbose(TraceCategory.Application, "RouteCollection lock: Write: Requested");
 
 			using (routes.GetWriteLock())
 			{
-				ADXTrace.Instance.TraceVerbose(TraceCategory.Application, "RouteCollection lock: Write: Acquired");
+				ADXTrace.TraceVerbose(TraceCategory.Application, "RouteCollection lock: Write: Acquired");
 
 				action(routes);
 			}
 
-			ADXTrace.Instance.TraceVerbose(TraceCategory.Application, "RouteCollection lock: Write: Released");
+			ADXTrace.TraceVerbose(TraceCategory.Application, "RouteCollection lock: Write: Released");
 		}
 
 		/// <summary>

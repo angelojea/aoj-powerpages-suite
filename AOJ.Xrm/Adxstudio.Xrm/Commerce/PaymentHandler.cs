@@ -36,7 +36,7 @@ namespace Adxstudio.Xrm.Commerce
 
 		public void ProcessRequest(HttpContext context)
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+            ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var dataAdapterDependencies = new PortalConfigurationDataAdapterDependencies(PortalName, context.Request.RequestContext);
 
@@ -55,20 +55,20 @@ namespace Adxstudio.Xrm.Commerce
 
 				if (!validation.Success)
 				{
-                    ADXTrace.Instance.TraceError(TraceCategory.Application, "Start");
+                    ADXTrace.TraceError(TraceCategory.Application, "Start");
 
                     HandleUnsuccessfulPayment(context, quoteAndReturnUrl, validation.ErrorMessage);
 
 					return;
 				}
 
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Payment sucessful.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Payment sucessful.");
 
 				string receiptNumber;
 
 				if (!TryGetReceiptNumber(context, out receiptNumber))
 				{
-                    ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Failed to get receipt number.");
+                    ADXTrace.TraceInfo(TraceCategory.Application, "Failed to get receipt number.");
 				}
 
 				var quoteid = quoteAndReturnUrl.Item1;
@@ -97,7 +97,7 @@ namespace Adxstudio.Xrm.Commerce
 
 		protected virtual void ConvertQuoteToOrder(HttpContext context, PortalConfigurationDataAdapterDependencies dataAdapterDependencies, Guid quoteId, string receiptNumber)
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+            ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var quoteEntityReference = new EntityReference("quote", quoteId);
 			var serviceContext = dataAdapterDependencies.GetServiceContextForWrite();
@@ -105,7 +105,7 @@ namespace Adxstudio.Xrm.Commerce
 
 			if (quote == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Quote could not be found with id '{0}'. Sales Order could not be created.", quoteId));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Quote could not be found with id '{0}'. Sales Order could not be created.", quoteId));
 				
 				return;
 			}
@@ -114,7 +114,7 @@ namespace Adxstudio.Xrm.Commerce
 
 			if (status == null || status.Value != 0)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Quote with id '{0}' statecode '{1}' is not in Draft state. Sales Order could not be created.", quoteId, status == null ? "null" : status.Value.ToString(CultureInfo.InvariantCulture)));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Quote with id '{0}' statecode '{1}' is not in Draft state. Sales Order could not be created.", quoteId, status == null ? "null" : status.Value.ToString(CultureInfo.InvariantCulture)));
 
 				return;
 			}
@@ -160,7 +160,7 @@ namespace Adxstudio.Xrm.Commerce
 				}
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+            ADXTrace.TraceInfo(TraceCategory.Application, "End");
 		}
 
 		protected abstract void HandleSuccessfulPayment(HttpContext context, Tuple<Guid, string> quoteAndReturnUrl);

@@ -186,7 +186,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 							}
 							catch (Exception e)
 							{
-								ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("FormXmlCellMetadata Constructor {0}", e));
+								ADXTrace.TraceError(TraceCategory.Application, string.Format("FormXmlCellMetadata Constructor {0}", e));
                             }
 						}
 					}
@@ -219,7 +219,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 							}
 							catch (Exception e)
 							{
-								ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("FormXmlCellMetadata Constructor {0}", e));
+								ADXTrace.TraceError(TraceCategory.Application, string.Format("FormXmlCellMetadata Constructor {0}", e));
                             }
 						}
 					}
@@ -301,7 +301,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 								}
 								catch (Exception e)
 								{
-									ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("FormXmlCellMetadata Constructor {0}", e));
+									ADXTrace.TraceError(TraceCategory.Application, string.Format("FormXmlCellMetadata Constructor {0}", e));
                                 }
 							}
 						}
@@ -314,7 +314,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 				cellNode.TryGetAttributeValue("control", "datafieldname", out _dataFieldName);
 				if (string.IsNullOrWhiteSpace(_dataFieldName))
 				{
-                    ADXTrace.Instance.TraceError(TraceCategory.Application, "QuickForm XML is invalid. The attribute datafieldname value is missing or is null.");
+                    ADXTrace.TraceError(TraceCategory.Application, "QuickForm XML is invalid. The attribute datafieldname value is missing or is null.");
                     return;
 				}
 
@@ -322,7 +322,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 				cellNode.TryGetElementValue("control/parameters/QuickForms", out quickFormsString);
 				if (string.IsNullOrWhiteSpace(quickFormsString))
 				{
-                    ADXTrace.Instance.TraceError(TraceCategory.Application, "QuickForm XML is invalid. The parameter QuickForms is missing or is null.");
+                    ADXTrace.TraceError(TraceCategory.Application, "QuickForm XML is invalid. The parameter QuickForms is missing or is null.");
                     return;
 				}
 				var quickFormsIdsXml = XDocument.Parse(quickFormsString);
@@ -338,17 +338,17 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 					quickFormIdElement.TryGetElementValue(".", out quickFormIdString);
 					if (string.IsNullOrWhiteSpace(entityName))
 					{
-                        ADXTrace.Instance.TraceError(TraceCategory.Application, "QuickForm XML is invalid. The element QuickFormId is missing or is null.");
+                        ADXTrace.TraceError(TraceCategory.Application, "QuickForm XML is invalid. The element QuickFormId is missing or is null.");
                         continue;
 					}
 					if (string.IsNullOrWhiteSpace(quickFormIdString))
 					{
-                        ADXTrace.Instance.TraceError(TraceCategory.Application, "QuickForm XML is invalid. The element QuickFormId is missing or is null.");
+                        ADXTrace.TraceError(TraceCategory.Application, "QuickForm XML is invalid. The element QuickFormId is missing or is null.");
                         continue;
 					}
 					if (!Guid.TryParse(quickFormIdString, out quickFormId))
 					{
-                        ADXTrace.Instance.TraceError(TraceCategory.Application, "QuickForm XML is invalid. The element QuickFormId is not a valid Guid.");
+                        ADXTrace.TraceError(TraceCategory.Application, "QuickForm XML is invalid. The element QuickFormId is not a valid Guid.");
                         continue;
 					}
 					quickFormIds.Add(new CrmQuickForm.QuickFormId(entityName, quickFormId));

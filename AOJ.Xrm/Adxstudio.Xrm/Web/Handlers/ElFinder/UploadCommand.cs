@@ -196,7 +196,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Exception uploading file: {0}",  e));
+					ADXTrace.TraceError(TraceCategory.Application, string.Format(@"Exception uploading file: {0}",  e));
 
                     errors.Add(new Tuple<string, string>(file.FileName, e.Message));
 				}

@@ -62,7 +62,7 @@ namespace Adxstudio.Xrm.Cms
 			serviceContext.AddObject(alert);
 			serviceContext.SaveChanges();
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}", user.LogicalName, user.Id));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}", user.LogicalName, user.Id));
 			
 		}
 
@@ -78,7 +78,7 @@ namespace Adxstudio.Xrm.Cms
 			serviceContext.AddObject(alert);
 			serviceContext.SaveChanges();
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}", user.LogicalName, user.Id));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}", user.LogicalName, user.Id));
 
 		}
 
@@ -91,14 +91,14 @@ namespace Adxstudio.Xrm.Cms
                 throw new ArgumentException(string.Format("Value must have logical name '{0}'", user.LogicalName), "user");
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}:{1}", user.LogicalName, user.Id));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}:{1}", user.LogicalName, user.Id));
 
 
 			var existingAlert = SelectAlert(serviceContext, user);
 
 			if (existingAlert != null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}, Alert Exists", user.LogicalName, user.Id));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}, Alert Exists", user.LogicalName, user.Id));
 
 				return null;
 			}
@@ -143,7 +143,7 @@ namespace Adxstudio.Xrm.Cms
 		{
 			if (user == null) throw new ArgumentNullException("user");
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}:{1}", user.LogicalName, user.Id));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}:{1}", user.LogicalName, user.Id));
 
 			var serviceContext = Dependencies.GetServiceContextForWrite();
 
@@ -151,7 +151,7 @@ namespace Adxstudio.Xrm.Cms
 
 			if (existingAlert == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}, Alert Not Found", user.LogicalName, user.Id));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}, Alert Not Found", user.LogicalName, user.Id));
 
 				return;
 			}
@@ -169,14 +169,14 @@ namespace Adxstudio.Xrm.Cms
 		{
 			if (user == null) throw new ArgumentNullException("user");
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}:{1}", user.LogicalName, user.Id));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}:{1}", user.LogicalName, user.Id));
 
 			var serviceContext = Dependencies.GetServiceContext();
 			var existingAlert = SelectAlert(serviceContext, user);
 
 			var hasAlert = existingAlert != null;
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}, {2}", user.LogicalName, user.Id, hasAlert));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}, {2}", user.LogicalName, user.Id, hasAlert));
 
 			return hasAlert;
 		}

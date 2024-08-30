@@ -69,7 +69,7 @@ namespace Adxstudio.Xrm.Products
 
 		public IEnumerable<IReview> SelectReviews(int startRowIndex, int maximumRows, string sortExpression)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("startRowIndex={0}, maximumRows={1}, sortExpression={2}: Start", startRowIndex, maximumRows, sortExpression));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("startRowIndex={0}, maximumRows={1}, sortExpression={2}: Start", startRowIndex, maximumRows, sortExpression));
 
 			if (startRowIndex < 0)
 			{
@@ -106,7 +106,7 @@ namespace Adxstudio.Xrm.Products
 
 			var reviews = new ReviewFactory(serviceContext, user, website).Create(query);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+			ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.TelemetryFeatureUsage))
 			{
@@ -118,13 +118,13 @@ namespace Adxstudio.Xrm.Products
 
 		public int SelectReviewCount()
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var serviceContext = Dependencies.GetServiceContext();
 
 			var count = SelectCount(serviceContext);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+			ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return count;
 		}

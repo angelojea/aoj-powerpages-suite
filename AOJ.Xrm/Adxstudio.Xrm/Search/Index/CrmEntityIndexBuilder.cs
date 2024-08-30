@@ -38,11 +38,11 @@ namespace Adxstudio.Xrm.Search.Index
 		{
 			var timer = Stopwatch.StartNew();
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var indexers = _index.GetIndexers();
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Retrieving index documents");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Retrieving index documents");
 
 			var entityIndexDocuments = indexers.SelectMany(indexer => indexer.GetDocuments());
 
@@ -56,7 +56,7 @@ namespace Adxstudio.Xrm.Search.Index
 
 			timer.Stop();
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End. Elapsed time: {0}", timer.ElapsedMilliseconds));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End. Elapsed time: {0}", timer.ElapsedMilliseconds));
 		}
 
 		public void Dispose() { }
@@ -67,12 +67,12 @@ namespace Adxstudio.Xrm.Search.Index
 
 			if (!indexers.Any(indexer => indexer.Indexes(entityLogicalName)))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Application does not index entity {0}. No update performed.", entityLogicalName));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Application does not index entity {0}. No update performed.", entityLogicalName));
 
 				return;
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Deleting index for EntityLogicalName: {0}, Guid: {1} ", EntityNamePrivacy.GetEntityName(entityLogicalName), id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Deleting index for EntityLogicalName: {0}, Guid: {1} ", EntityNamePrivacy.GetEntityName(entityLogicalName), id));
 
 			UsingWriter(MethodBase.GetCurrentMethod().Name, false, false, writer => writer.DeleteDocuments(GetEntityQuery(_index, entityLogicalName, id)));
 		}
@@ -83,12 +83,12 @@ namespace Adxstudio.Xrm.Search.Index
 
 			if (!indexers.Any(indexer => indexer.Indexes(entityLogicalName)))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Application does not index entity {0}. No update performed.", entityLogicalName));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Application does not index entity {0}. No update performed.", entityLogicalName));
 
 				return;
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Deleting index set for EntityLogicalName: {0}", EntityNamePrivacy.GetEntityName(entityLogicalName)));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Deleting index set for EntityLogicalName: {0}", EntityNamePrivacy.GetEntityName(entityLogicalName)));
 
 			UsingWriter(MethodBase.GetCurrentMethod().Name, false, true, writer => writer.DeleteDocuments(new Term(_index.LogicalNameFieldName, entityLogicalName)));
 		}
@@ -99,7 +99,7 @@ namespace Adxstudio.Xrm.Search.Index
 
 			if (!indexers.Any(indexer => indexer.Indexes(entityLogicalName)))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Application does not index entity {0}. No update performed.", entityLogicalName));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Application does not index entity {0}. No update performed.", entityLogicalName));
 
 				return;
 			}
@@ -123,7 +123,7 @@ namespace Adxstudio.Xrm.Search.Index
 
 			if (!indexers.Any(indexer => indexer.Indexes(entityLogicalName)))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Application does not index entity {0}. No update performed.", entityLogicalName));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Application does not index entity {0}. No update performed.", entityLogicalName));
 
 				return;
 			}
@@ -163,7 +163,7 @@ namespace Adxstudio.Xrm.Search.Index
 
 		public void UpdateCmsEntityTree(string entityLogicalName, Guid rootEntityId, int? lcid = null)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Begin updating Cms Entity Tree for logical name: {0}, rootEntityId: {1}", entityLogicalName, rootEntityId));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Begin updating Cms Entity Tree for logical name: {0}, rootEntityId: {1}", entityLogicalName, rootEntityId));
 			var timer = Stopwatch.StartNew();
 
 			if (entityLogicalName == "adx_webpage")
@@ -388,14 +388,14 @@ namespace Adxstudio.Xrm.Search.Index
 			}
 
 			timer.Stop();
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Cms Entity Tree updated for logical name: {0}, rootEntityId: {1}, timespan: {2}", entityLogicalName, rootEntityId, timer.ElapsedMilliseconds));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Cms Entity Tree updated for logical name: {0}, rootEntityId: {1}, timespan: {2}", entityLogicalName, rootEntityId, timer.ElapsedMilliseconds));
 		}
 
 		private void UpdateWithIndexers(string entityLogicalName, IEnumerable<ICrmEntityIndexer> indexers)
 		{
 			if (!indexers.Any(indexer => indexer.Indexes(entityLogicalName)))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Application does not index entity {0}. No update performed.", entityLogicalName));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Application does not index entity {0}. No update performed.", entityLogicalName));
 
 				return;
 			}
@@ -440,7 +440,7 @@ namespace Adxstudio.Xrm.Search.Index
 
 		protected virtual void UsingWriter(string description, bool create, bool optimize, Action<IndexWriter> action)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("{0}: Start", description));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("{0}: Start", description));
 
 			var stopwatch = new Stopwatch();
 
@@ -454,20 +454,20 @@ namespace Adxstudio.Xrm.Search.Index
 				{
 					try
 					{
-						ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("{0}: Acquired write lock, writing", description));
+						ADXTrace.TraceInfo(TraceCategory.Application, string.Format("{0}: Acquired write lock, writing", description));
 
 						action(writer);
 
 						if (optimize)
 						{
-							ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("{0}: Optimizing index", description));
+							ADXTrace.TraceInfo(TraceCategory.Application, string.Format("{0}: Optimizing index", description));
 
 							writer.Optimize();
 						}
 					}
 					catch (Exception e)
 					{
-						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("{0}: Error during index write: rollback, rethrow: {1}", description, e));
+						ADXTrace.TraceWarning(TraceCategory.Application, string.Format("{0}: Error during index write: rollback, rethrow: {1}", description, e));
 
 						writer.Rollback();
 
@@ -475,7 +475,7 @@ namespace Adxstudio.Xrm.Search.Index
 					}
 				}
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("{0}: Index writer closed", description));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("{0}: Index writer closed", description));
 			}
 			catch (Exception e)
 			{
@@ -487,7 +487,7 @@ namespace Adxstudio.Xrm.Search.Index
 			{
 				stopwatch.Stop();
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("{0}: End (Elapsed time: {1})", description, stopwatch.Elapsed));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("{0}: End (Elapsed time: {1})", description, stopwatch.Elapsed));
 			}
 		}
 

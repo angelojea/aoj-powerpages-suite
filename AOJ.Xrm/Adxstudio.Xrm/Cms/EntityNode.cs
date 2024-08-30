@@ -443,11 +443,11 @@ namespace Adxstudio.Xrm.Cms
 				{
 					if (this == RootWebPage)
 					{
-						ADXTrace.Instance.TraceError(TraceCategory.Application, $"Invalid content: Cyclic reference on RootWebPage: {Id}");
+						ADXTrace.TraceError(TraceCategory.Application, $"Invalid content: Cyclic reference on RootWebPage: {Id}");
 					}
 					else if (RootWebPage.IsRoot == false)
 					{
-						ADXTrace.Instance.TraceError(TraceCategory.Application, $"Invalid content: RootWebPage lookup is not root: {Id}");
+						ADXTrace.TraceError(TraceCategory.Application, $"Invalid content: RootWebPage lookup is not root: {Id}");
 					}
 					else if (RootWebPage.WebPageAccessControlRules != null)
 					{
@@ -468,11 +468,11 @@ namespace Adxstudio.Xrm.Cms
 				{
 					if (this == RootWebPage)
 					{
-						ADXTrace.Instance.TraceError(TraceCategory.Application, $"Invalid content: Cyclic reference on RootWebPage: {Id}");
+						ADXTrace.TraceError(TraceCategory.Application, $"Invalid content: Cyclic reference on RootWebPage: {Id}");
 					}
 					else if (RootWebPage.IsRoot == false)
 					{
-						ADXTrace.Instance.TraceError(TraceCategory.Application, $"Invalid content: RootWebPage lookup is not root: {Id}");
+						ADXTrace.TraceError(TraceCategory.Application, $"Invalid content: RootWebPage lookup is not root: {Id}");
 					}
 					else if (RootWebPage.WebFiles != null)
 					{

@@ -39,7 +39,7 @@ namespace Adxstudio.Xrm.Core
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, ex.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, ex.ToString());
 
                 return new EntityMetadata();
 			}

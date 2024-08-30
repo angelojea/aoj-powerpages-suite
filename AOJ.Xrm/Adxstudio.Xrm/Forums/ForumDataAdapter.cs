@@ -98,7 +98,7 @@ namespace Adxstudio.Xrm.Forums
 
 		public IForum Select()
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Start", Forum.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Start", Forum.Id));
 
 			var serviceContext = Dependencies.GetServiceContext();
 
@@ -106,7 +106,7 @@ namespace Adxstudio.Xrm.Forums
 
 			if (entity == null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Not Found", Forum.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Not Found", Forum.Id));
 
 				return null;
 			}
@@ -115,7 +115,7 @@ namespace Adxstudio.Xrm.Forums
 
 			if (!securityProvider.TryAssert(serviceContext, entity, CrmEntityRight.Read))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Not Found", Forum.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Not Found", Forum.Id));
 
 				return null;
 			}
@@ -132,14 +132,14 @@ namespace Adxstudio.Xrm.Forums
 				// SelectThreadCount and SelectPostCount will generally be used instead.
 				() => counterStrategy.GetForumCounts(serviceContext, entity));
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: End", Forum.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: End", Forum.Id));
 
 			return forum;
 		}
 
 		public IEnumerable<IForumAnnouncement> SelectAnnouncements()
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Start", Forum.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Start", Forum.Id));
 
 			var serviceContext = Dependencies.GetServiceContext();
 
@@ -171,7 +171,7 @@ namespace Adxstudio.Xrm.Forums
 				new PortalViewEntity(serviceContext, entity, securityProvider, urlProvider)))
 				.ToArray();
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Forum={0}, Count={1}: End", Forum.Id, announcements.Length));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Forum={0}, Count={1}: End", Forum.Id, announcements.Length));
 
 			return announcements;
 		}
@@ -188,7 +188,7 @@ namespace Adxstudio.Xrm.Forums
 
 		public IEnumerable<IForumThreadType> SelectThreadTypes()
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Start", Forum.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Start", Forum.Id));
 
 			var serviceContext = Dependencies.GetServiceContext();
 			var website = Dependencies.GetWebsite();
@@ -216,7 +216,7 @@ namespace Adxstudio.Xrm.Forums
 
 			var threadTypes = entities.Select(entity => new ForumThreadType(entity)).ToArray();
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Forum={0}, Count={1}: End", Forum.Id, threadTypes.Length));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Forum={0}, Count={1}: End", Forum.Id, threadTypes.Length));
 
 			return threadTypes;
 		}
@@ -231,7 +231,7 @@ namespace Adxstudio.Xrm.Forums
 		{
 			if (forumThread == null) throw new ArgumentNullException("forumThread");
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Start", Forum.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Start", Forum.Id));
 
 			var serviceContext = Dependencies.GetServiceContextForWrite();
 
@@ -254,7 +254,7 @@ namespace Adxstudio.Xrm.Forums
 
 			var createdThread = threadDataAdapter.Select();
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: End", Forum.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: End", Forum.Id));
 
 			if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.TelemetryFeatureUsage))
 			{
@@ -373,7 +373,7 @@ namespace Adxstudio.Xrm.Forums
 
 			forumPost.AssertLogicalName("adx_communityforumpost");
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Start", Forum.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Start", Forum.Id));
 
 			var serviceContext = Dependencies.GetServiceContextForWrite();
 
@@ -401,7 +401,7 @@ namespace Adxstudio.Xrm.Forums
 				PortalFeatureTrace.TraceInstance.LogFeatureUsage(FeatureTraceCategory.Forum, HttpContext.Current, "edit_forum_thread", 1, forumPost, "edit");
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: End", Forum.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: End", Forum.Id));
 		}
 
 		public IEnumerable<IForumThread> SelectThreads()

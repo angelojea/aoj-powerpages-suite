@@ -47,11 +47,11 @@ namespace Adxstudio.Xrm.Search.Index
 
 		public IEnumerable<CrmEntityIndexDocument> GetDocuments()
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", SavedQueryName));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", SavedQueryName));
 
 			var documents = Indexers.SelectMany(indexer => indexer.GetDocuments());
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}", SavedQueryName));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}", SavedQueryName));
 
 			return documents;
 		}

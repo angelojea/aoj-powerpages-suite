@@ -53,7 +53,7 @@ namespace Adxstudio.Xrm.Cms
 			{
 				var snippet = GetSnippetNode(snippets.Values.OfType<ContentSnippetNode>(), name, language);
 
-				ADXTrace.Instance.TraceInfo(
+				ADXTrace.TraceInfo(
 					TraceCategory.Application,
 					snippet == null
 						? string.Format(
@@ -72,7 +72,7 @@ namespace Adxstudio.Xrm.Cms
 				return snippet;
 			}
 
-			ADXTrace.Instance.TraceInfo(
+			ADXTrace.TraceInfo(
 				TraceCategory.Application,
 				string.Format(
 					"No content snippets found. SnippetName={0}, UserLanguageId={1}, UserLanguageName={2}",
@@ -116,14 +116,14 @@ namespace Adxstudio.Xrm.Cms
 			var contentMapCallId = Guid.NewGuid();
 
 			CmsEventSource.Log.ContentMapLockStatus(lockType, "Requested", timer.ElapsedMilliseconds);
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("ContentMap[{0}]: LockType - {1}, Requested - {2}", contentMapCallId, lockType, timer.ElapsedMilliseconds),
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("ContentMap[{0}]: LockType - {1}, Requested - {2}", contentMapCallId, lockType, timer.ElapsedMilliseconds),
 				memberName, sourceFilePath, sourceLineNumber);
 
 			if (lockType == ContentMapLockType.Read && !_lock.TryEnterReadLock(LockTimeout))
 			{
 				TraceLock("Using", _lock);
 				CmsEventSource.Log.ContentMapLockTimeout(lockType, _lock);
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("ContentMap[{0}]: Failed to acquire read lock on content map. LockType - {1}", contentMapCallId, lockType),
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("ContentMap[{0}]: Failed to acquire read lock on content map. LockType - {1}", contentMapCallId, lockType),
 					memberName, sourceFilePath, sourceLineNumber);
 
 				throw new TimeoutException("Failed to acquire read lock on content map.");
@@ -133,7 +133,7 @@ namespace Adxstudio.Xrm.Cms
 			{
 				TraceLock("Using", _lock);
 				CmsEventSource.Log.ContentMapLockTimeout(lockType, _lock);
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("ContentMap[{0}]: A write lock couldn't be acquired on the content map. LockType - {1}", contentMapCallId, lockType),
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("ContentMap[{0}]: A write lock couldn't be acquired on the content map. LockType - {1}", contentMapCallId, lockType),
 					memberName, sourceFilePath, sourceLineNumber);
 
 				throw new TimeoutException("A write lock couldn't be acquired on the content map.");
@@ -142,7 +142,7 @@ namespace Adxstudio.Xrm.Cms
 			try
 			{
 				CmsEventSource.Log.ContentMapLockStatus(lockType, "Acquired", timer.ElapsedMilliseconds);
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("ContentMap[{0}]: LockType - {1}, Acquired - {2}", contentMapCallId, lockType, timer.ElapsedMilliseconds),
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("ContentMap[{0}]: LockType - {1}, Acquired - {2}", contentMapCallId, lockType, timer.ElapsedMilliseconds),
 					memberName, sourceFilePath, sourceLineNumber);
 				action();
 			}
@@ -154,7 +154,7 @@ namespace Adxstudio.Xrm.Cms
 				timer.Stop();
 
 				CmsEventSource.Log.ContentMapLockStatus(lockType, "Released", timer.ElapsedMilliseconds);
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("ContentMap[{0}]: LockType - {1}, Released - {2}", contentMapCallId, lockType, timer.ElapsedMilliseconds),
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("ContentMap[{0}]: LockType - {1}, Released - {2}", contentMapCallId, lockType, timer.ElapsedMilliseconds),
 					memberName, sourceFilePath, sourceLineNumber);
 			}
 		}
@@ -248,7 +248,7 @@ namespace Adxstudio.Xrm.Cms
 			}
 			else
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Exists: LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Exists: LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id));
 			}
 
 			return node;
@@ -258,7 +258,7 @@ namespace Adxstudio.Xrm.Cms
 		{
 			entity.ThrowOnNull("entity");
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id));
 
 			var reference = entity.ToEntityReference();
 
@@ -268,7 +268,7 @@ namespace Adxstudio.Xrm.Cms
 
 			if (removed != null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Removed: Id={0}", removed.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Removed: Id={0}", removed.Id));
 			}
 
 			// add the new node
@@ -277,7 +277,7 @@ namespace Adxstudio.Xrm.Cms
 
 			if (added != null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Added: Id={0}", added.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Added: Id={0}", added.Id));
 			}
 
 			return added;
@@ -295,13 +295,13 @@ namespace Adxstudio.Xrm.Cms
 		{
 			entityReference.ThrowOnNull("entityReference");
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entityReference.LogicalName), entityReference.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entityReference.LogicalName), entityReference.Id));
 
 			var removed = Unmerge(entityReference, _ => null);
 
 			if (removed != null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Removed: Id={0}", removed.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Removed: Id={0}", removed.Id));
 			}
 
 			return removed;
@@ -311,13 +311,13 @@ namespace Adxstudio.Xrm.Cms
 		{
 			entityReference.ThrowOnNull("entityReference");
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entityReference.LogicalName), entityReference.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entityReference.LogicalName), entityReference.Id));
 
 			var removed = Unmerge(entityReference, ToEntityIdentifier);
 
 			if (removed != null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Removed: Id={0}", removed.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Removed: Id={0}", removed.Id));
 			}
 
 			return removed;
@@ -425,7 +425,7 @@ namespace Adxstudio.Xrm.Cms
 				}
 				else
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Unknown: LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entityReference.LogicalName), entityReference.Id));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Unknown: LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entityReference.LogicalName), entityReference.Id));
 				}
 
 				if (!originalNode.IsReference)
@@ -485,7 +485,7 @@ namespace Adxstudio.Xrm.Cms
 				}
 				else
 				{
-                    ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Unknown: logicalName={0}", EntityNamePrivacy.GetEntityName(logicalName)));
+                    ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Unknown: logicalName={0}", EntityNamePrivacy.GetEntityName(logicalName)));
 				}
 			}
 		}
@@ -501,7 +501,7 @@ namespace Adxstudio.Xrm.Cms
 
 		private static void TraceLock(string memberName, ReaderWriterLockSlim rwl)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(memberName, "ReaderWriterLockSlim: CurrentReadCount={0}, IsReadLockHeld={1}, IsWriteLockHeld={2}, WaitingReadCount={3}, WaitingUpgradeCount={4}, WaitingWriteCount={5}",
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format(memberName, "ReaderWriterLockSlim: CurrentReadCount={0}, IsReadLockHeld={1}, IsWriteLockHeld={2}, WaitingReadCount={3}, WaitingUpgradeCount={4}, WaitingWriteCount={5}",
 				rwl.CurrentReadCount, rwl.IsReadLockHeld, rwl.IsWriteLockHeld,
 				rwl.WaitingReadCount, rwl.WaitingUpgradeCount, rwl.WaitingWriteCount));
 		}

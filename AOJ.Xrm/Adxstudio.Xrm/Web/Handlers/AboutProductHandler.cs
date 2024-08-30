@@ -92,7 +92,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 		{
 			Caching.CacheInvalidation.InvalidateAllCache();
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "PortalCacheClearAction completed");
+			ADXTrace.TraceInfo(TraceCategory.Application, "PortalCacheClearAction completed");
 		}
 
 		private bool HasAdminPrivileges()

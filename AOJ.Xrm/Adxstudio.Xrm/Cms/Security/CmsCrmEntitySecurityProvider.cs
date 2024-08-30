@@ -112,14 +112,14 @@ namespace Adxstudio.Xrm.Cms.Security
 			{
 				if (entity != null)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format(
 						"right={0}, logicalName={1}, id={2}",
 						right, EntityNamePrivacy.GetEntityName(entity.LogicalName),
 						entity.Id));
 				}
 				else
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("right={0}", right));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("right={0}", right));
 				}
 
 				var timer = Stopwatch.StartNew();
@@ -128,7 +128,7 @@ namespace Adxstudio.Xrm.Cms.Security
 
 				timer.Stop();
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("result={0}, duration={1} ms", result, timer.ElapsedMilliseconds));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("result={0}, duration={1} ms", result, timer.ElapsedMilliseconds));
 
 				return result;
 			}
@@ -584,7 +584,7 @@ namespace Adxstudio.Xrm.Cms.Security
 
 			protected virtual bool TestFeedback(OrganizationServiceContext context, Entity entity, CrmEntityRight right, CrmEntityCacheDependencyTrace dependencies)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on feedback ({1}).", right, entity.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on feedback ({1}).", right, entity.Id));
 
 				dependencies.AddEntityDependency(entity);
 

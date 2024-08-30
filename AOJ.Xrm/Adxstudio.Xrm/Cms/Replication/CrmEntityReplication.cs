@@ -65,7 +65,7 @@ namespace Adxstudio.Xrm.Cms.Replication
 
 			if (entity == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(@"Entity type ""{0}"" with primary key {1} not found.", EntityNamePrivacy.GetEntityName(entityName), Source.Id));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format(@"Entity type ""{0}"" with primary key {1} not found.", EntityNamePrivacy.GetEntityName(entityName), Source.Id));
 
 				return;
 			}
@@ -113,7 +113,7 @@ namespace Adxstudio.Xrm.Cms.Replication
 
 			if (workflow == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(@"Workflow named ""{0}"" with primary entity {1} not found.", workflowName, EntityNamePrivacy.GetEntityName(targetEntityName)));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format(@"Workflow named ""{0}"" with primary entity {1} not found.", workflowName, EntityNamePrivacy.GetEntityName(targetEntityName)));
 
 				return new WorkflowNotFoundResult(ResourceManager.GetString("Could_Not_Find_Workflow_With_Name_And_Target_EntityName_Message").FormatWith(workflowName, targetEntityName));
 			}

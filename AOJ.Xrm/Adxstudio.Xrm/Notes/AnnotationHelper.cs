@@ -124,7 +124,7 @@ namespace Adxstudio.Xrm.Notes
 			}
 			catch (Exception)
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to extract contact EntityReference from note subject. {0}", subject));
+                ADXTrace.TraceError(TraceCategory.Application, string.Format("Failed to extract contact EntityReference from note subject. {0}", subject));
             }
 
 			return null;

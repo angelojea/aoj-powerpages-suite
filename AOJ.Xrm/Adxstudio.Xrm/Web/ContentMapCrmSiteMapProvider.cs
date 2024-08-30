@@ -35,14 +35,14 @@ namespace Adxstudio.Xrm.Web
 		{
 			var rawUrlWithoutLanguage = GetRawUrlWithoutLanguage(rawUrl);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (0)ENTER");
+			ADXTrace.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (0)ENTER");
 
 			return CachePerRequest("FindSiteMapNode", rawUrlWithoutLanguage, () => GetContentMapProvider().Using(map => FindSiteMapNode(rawUrlWithoutLanguage, map)));
 		}
 
 		public virtual SiteMapNode FindSiteMapNodeWithoutSecurityValidation(string rawUrl)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (0)ENTER");
+			ADXTrace.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (0)ENTER");
 
 			return GetContentMapProvider().Using(map => FindSiteMapNode(GetRawUrlWithoutLanguage(rawUrl), map, excludeFromSecurityValidation: true));
 		}
@@ -71,7 +71,7 @@ namespace Adxstudio.Xrm.Web
 
 				if (!TryGetWebsite(map, out site, out urlProvider))
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (1)cannot find WebsiteNode");
+					ADXTrace.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (1)cannot find WebsiteNode");
 					return base.FindSiteMapNode(rawUrl);
 				}
 
@@ -84,7 +84,7 @@ namespace Adxstudio.Xrm.Web
 					&& TryGetCurrentNodeUrlFromRouteData(httpContext, out currentNodeUrl)
 					&& currentNodeUrl != rawUrl && counter < 5000)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (2)override url");
+					ADXTrace.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (2)override url");
 					return FindSiteMapNode(currentNodeUrl, map, counter, excludeFromSecurityValidation);
 				}
 
@@ -95,7 +95,7 @@ namespace Adxstudio.Xrm.Web
 				var contextPath = routeMatch ?? clientUrl.Path;
 				if (routeMatch != null)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (3)FOUND route");
+					ADXTrace.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (3)FOUND route");
 				}
 
 				var languageContext = httpContext.GetContextLanguageInfo();
@@ -104,7 +104,7 @@ namespace Adxstudio.Xrm.Web
 
 				if (mappingResult.Node != null && mappingResult.IsUnique)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (4)FOUND PAGE");
+					ADXTrace.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (4)FOUND PAGE");
 					return GetAccessibleNodeOrAccessDeniedNode(map, mappingResult.Node, urlProvider, excludeFromSecurityValidation);
 				}
 
@@ -118,7 +118,7 @@ namespace Adxstudio.Xrm.Web
 
 				if (file != null)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (5)FOUND FILE");
+					ADXTrace.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (5)FOUND FILE");
 					return GetAccessibleNodeOrAccessDeniedNode(map, file, urlProvider, excludeFromSecurityValidation);
 				}
 
@@ -132,7 +132,7 @@ namespace Adxstudio.Xrm.Web
 
 					if (map.TryGetValue(new EntityReference("adx_webpage", pageid), out pageById))
 					{
-						ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (6)FOUND pageID");
+						ADXTrace.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (6)FOUND pageID");
 						return GetAccessibleNodeOrAccessDeniedNode(map, pageById, urlProvider, excludeFromSecurityValidation);
 					}
 				}
@@ -158,12 +158,12 @@ namespace Adxstudio.Xrm.Web
 
 					if (node != null)
 					{
-						ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (7)FOUND other provider");
+						ADXTrace.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (7)FOUND other provider");
 						return node;
 					}
 				}
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (8)NOT FOUND");
+				ADXTrace.TraceInfo(TraceCategory.Monitoring, "FindSiteMapNode: (8)NOT FOUND");
 				return GetNotFoundNode(map, site, urlProvider);
 			}
 		}
@@ -174,7 +174,7 @@ namespace Adxstudio.Xrm.Web
 
 			if (parent != null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "ParentNode");
+				ADXTrace.TraceInfo(TraceCategory.Application, "ParentNode");
 
 				if ((node.Key == parent.Key) || (node.Url == "/"))
 				{
@@ -201,7 +201,7 @@ namespace Adxstudio.Xrm.Web
 					return base.GetParentNode(node);
 				}
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("key={0}", node.Key));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("key={0}", node.Key));
 
 				// When searching for parent page, it doesn't matter if we look for root or content page, both will have the same parent page.
 				var languageContext = HttpContext.Current.GetContextLanguageInfo();
@@ -224,7 +224,7 @@ namespace Adxstudio.Xrm.Web
 			if (children != null)
 			{
 				var value = string.Join(",", children.OfType<SiteMapNode>().Select(n => n.Url));
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "ChildNodes");
+				ADXTrace.TraceInfo(TraceCategory.Application, "ChildNodes");
 			}
 
 			return children;
@@ -424,7 +424,7 @@ namespace Adxstudio.Xrm.Web
 
 					if (null != root)
 					{
-						ADXTrace.Instance.TraceWarning(TraceCategory.Application, "Cannot find language specific web page for url");
+						ADXTrace.TraceWarning(TraceCategory.Application, "Cannot find language specific web page for url");
 
 						var id = root.Entity.GetAttributeValue("adx_webpageid");
 						throw new HttpException((int)HttpStatusCode.NotFound, "Error ID - {0}.  The Webpage you are looking for at {1} is not found in the {2} language. To display Page Not Found page localize it in {2} language.".FormatWith(id, path, language));
@@ -432,7 +432,7 @@ namespace Adxstudio.Xrm.Web
 				}
 				else if (!isPublished && notFoundNode != null)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Language not available for: {0}", language));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Language not available for: {0}", language));
 
 					var id = notFoundNode.Id;
 					throw new HttpException((int)HttpStatusCode.NotFound, "Error ID – {0} . {1} language is not available. Please ensure it is in published status.".FormatWith(id, language));
@@ -457,7 +457,7 @@ namespace Adxstudio.Xrm.Web
 
 			WebPageNode GetLanguageNode()
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("SiteMapProvider.GetNode Lang:{0} ", webPageNode.IsRoot != false ? "root" : webPageNode.WebPageLanguage.PortalLanguage.Code));
+				ADXTrace.TraceInfo(TraceCategory.Monitoring, string.Format("SiteMapProvider.GetNode Lang:{0} ", webPageNode.IsRoot != false ? "root" : webPageNode.WebPageLanguage.PortalLanguage.Code));
 				var languageNode = webPageNode.LanguageContentPages.FirstOrDefault(p => p.WebPageLanguage.PortalLanguage.Code == contextLanguageInfo.ContextLanguage.Code);
 				return languageNode ?? webPageNode;
 			}
@@ -468,7 +468,7 @@ namespace Adxstudio.Xrm.Web
 
 			if (template == null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Web Page with id '{0}' does not have the required Page Template.", page.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Web Page with id '{0}' does not have the required Page Template.", page.Id));
 
 				return null;
 			}
@@ -584,7 +584,7 @@ namespace Adxstudio.Xrm.Web
 
 			if (cached != null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("CachePerRequest Cache:{0}", key));
+				ADXTrace.TraceInfo(TraceCategory.Monitoring, string.Format("CachePerRequest Cache:{0}", key));
 				return cached;
 			}
 
@@ -592,7 +592,7 @@ namespace Adxstudio.Xrm.Web
 
 			httpContext.Items[cacheKey] = value;
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("CachePerRequest Get:{0}", key));
+			ADXTrace.TraceInfo(TraceCategory.Monitoring, string.Format("CachePerRequest Get:{0}", key));
 			return value;
 		}
 

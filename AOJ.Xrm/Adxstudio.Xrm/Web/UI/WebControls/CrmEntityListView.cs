@@ -763,7 +763,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (string.IsNullOrWhiteSpace(CurrentViewConfiguration.MapSettings.Credentials))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application,
+				ADXTrace.TraceInfo(TraceCategory.Application,
 					"Map Credentials have not been specified. Map could not be rendered.");
 
 				return;
@@ -771,7 +771,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (string.IsNullOrWhiteSpace(CurrentViewConfiguration.MapSettings.RestUrl))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application,
+				ADXTrace.TraceInfo(TraceCategory.Application,
 					"Map REST URL has not been specified. Map could not be rendered.");
 
 				return;
@@ -1069,7 +1069,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (string.IsNullOrWhiteSpace(CurrentViewConfiguration.FilterSettings.Definition))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application,
+				ADXTrace.TraceInfo(TraceCategory.Application,
 					"Filter definition is not specified. Filter control cannot be rendered.");
 
 				return;

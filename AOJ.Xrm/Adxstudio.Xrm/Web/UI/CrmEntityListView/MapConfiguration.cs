@@ -212,7 +212,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityListView
 				}
 				else
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Distance Unit value '{0}' is not a valid value defined by MapConfiguration.DistanceUnits class.",
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Distance Unit value '{0}' is not a valid value defined by MapConfiguration.DistanceUnits class.",
 						mapDistanceUnit.Value));
 				}
 			}

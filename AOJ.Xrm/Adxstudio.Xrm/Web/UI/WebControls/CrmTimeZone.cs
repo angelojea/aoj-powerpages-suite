@@ -73,7 +73,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (organization == null)
 				{
-                    ADXTrace.Instance.TraceError(TraceCategory.Application, "Failed to retrieve organization.");
+                    ADXTrace.TraceError(TraceCategory.Application, "Failed to retrieve organization.");
                 }
 				else
 				{

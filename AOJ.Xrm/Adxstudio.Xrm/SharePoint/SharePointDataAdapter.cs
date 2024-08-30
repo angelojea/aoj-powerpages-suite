@@ -54,7 +54,7 @@ namespace Adxstudio.Xrm.SharePoint
 			// assert permission to create the sharepointdocumentlocation entity
 			if (!result.PermissionsExist || !result.CanCreate || !result.CanAppend || !result.CanAppendTo)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Create or Append document locations or AppendTo the regarding entity.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Create or Append document locations or AppendTo the regarding entity.");
 				return result;
 			}
 
@@ -66,7 +66,7 @@ namespace Adxstudio.Xrm.SharePoint
 			// assert permission to write the sharepointdocumentlocation entity
 			if (!result.CanWrite)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Write document locations.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Write document locations.");
 				return result;
 			}
 
@@ -115,7 +115,7 @@ namespace Adxstudio.Xrm.SharePoint
 			// assert permission to create the sharepointdocumentlocation entity
 			if (!result.PermissionsExist || !result.CanCreate || !result.CanAppend || !result.CanAppendTo)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Create or Append document locations or AppendTo the regarding entity.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Create or Append document locations or AppendTo the regarding entity.");
 				return result;
 			}
 
@@ -127,7 +127,7 @@ namespace Adxstudio.Xrm.SharePoint
 			// assert permission to write the sharepointdocumentlocation entity
 			if (!result.CanWrite)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Write document locations.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Write document locations.");
 				return result;
 			}
 
@@ -155,7 +155,7 @@ namespace Adxstudio.Xrm.SharePoint
 			// assert permission to delete the sharepointdocumentlocation entity
 			if (!result.PermissionsExist || !result.CanDelete)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Create or Append document locations or AppendTo the regarding entity.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Create or Append document locations or AppendTo the regarding entity.");
 				return result;
 			}
 
@@ -196,7 +196,7 @@ namespace Adxstudio.Xrm.SharePoint
 			// assert permission to create the sharepointdocumentlocation entity
 			if (!result.PermissionsExist || !result.CanCreate || !result.CanAppend || !result.CanAppendTo)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Create or Append document locations or AppendTo the regarding entity.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Create or Append document locations or AppendTo the regarding entity.");
 				return SharePointCollection.Empty(true);
 			}
 
@@ -210,11 +210,11 @@ namespace Adxstudio.Xrm.SharePoint
 
 			if (!entityPermissionProvider.TryAssert(context, CrmEntityPermissionRight.Read, location))
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Read document locations.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Read document locations.");
 				return SharePointCollection.Empty(true);
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Read SharePoint Document Location Permission Granted.");
+            ADXTrace.TraceInfo(TraceCategory.Application, "Read SharePoint Document Location Permission Granted.");
 
 			var factory = new ClientFactory();
 

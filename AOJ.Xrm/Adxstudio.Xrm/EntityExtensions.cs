@@ -309,7 +309,7 @@ namespace Adxstudio.Xrm
 
 					if (maxLength > 0 && value.Length > maxLength)
 					{
-                        ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(@"String length ({0}) is greater than attribute ""{1}"" max length ({2}). String has been truncated.", value.Length, attributeLogicalName, maxLength));
+                        ADXTrace.TraceInfo(TraceCategory.Application, string.Format(@"String length ({0}) is greater than attribute ""{1}"" max length ({2}). String has been truncated.", value.Length, attributeLogicalName, maxLength));
 						value = value.Truncate(maxLength);
 					}
 				}

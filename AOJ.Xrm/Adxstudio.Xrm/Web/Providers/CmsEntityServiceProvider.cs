@@ -159,7 +159,7 @@ namespace Adxstudio.Xrm.Web.Providers
 						}
 						catch (InvalidOperationException exception)
 						{
-							ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception during Read permission assertion on {0}:{1}: {2}", e.LogicalName, e.Id, exception));
+							ADXTrace.TraceError(TraceCategory.Application, string.Format("Exception during Read permission assertion on {0}:{1}: {2}", e.LogicalName, e.Id, exception));
 
 							return false;
 						}
@@ -191,7 +191,7 @@ namespace Adxstudio.Xrm.Web.Providers
 						}
 						catch (InvalidOperationException exception)
 						{
-							ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception during Read permission assertion on {0}:{1}: {2}", e.LogicalName, e.Id, exception));
+							ADXTrace.TraceError(TraceCategory.Application, string.Format("Exception during Read permission assertion on {0}:{1}: {2}", e.LogicalName, e.Id, exception));
 
 							return false;
 						}
@@ -261,7 +261,7 @@ namespace Adxstudio.Xrm.Web.Providers
 						}
 						catch (InvalidOperationException exception)
 						{
-							ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception during Read permission assertion on {0}:{1}: {2}", e.LogicalName, e.Id, exception));
+							ADXTrace.TraceError(TraceCategory.Application, string.Format("Exception during Read permission assertion on {0}:{1}: {2}", e.LogicalName, e.Id, exception));
 
 							return false;
 						}
@@ -284,7 +284,7 @@ namespace Adxstudio.Xrm.Web.Providers
                     }
                     catch (InvalidOperationException exception)
                     {
-                        ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception during Read permission assertion on {0}:{1}: {2}", e.LogicalName, e.Id, exception));
+                        ADXTrace.TraceError(TraceCategory.Application, string.Format("Exception during Read permission assertion on {0}:{1}: {2}", e.LogicalName, e.Id, exception));
 
                         return false;
                     }

@@ -87,7 +87,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 
 					if (!entityRecordMessages.ContainsKey(newOrUpdated.NewOrUpdatedEntity.LogicalName))
 					{
-						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Collection of entity name to EntityRecordMessages is not holding the changed item with entity name {0}, which shouldn't happen.", newOrUpdated.NewOrUpdatedEntity.LogicalName));
+						ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Collection of entity name to EntityRecordMessages is not holding the changed item with entity name {0}, which shouldn't happen.", newOrUpdated.NewOrUpdatedEntity.LogicalName));
 						break;
 					}
 
@@ -100,13 +100,13 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 
 					if (!entityRecordMessages.ContainsKey(removedOrDeleted.RemovedItem.LogicalName))
 					{
-						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Collection of entity name to EntityRecordMessages is not holding the the changed item with entity name {0} which shouldn't happen.", removedOrDeleted.RemovedItem.LogicalName));
+						ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Collection of entity name to EntityRecordMessages is not holding the the changed item with entity name {0} which shouldn't happen.", removedOrDeleted.RemovedItem.LogicalName));
 						break;
 					}
 
 					return CreateMessageForRemovedOrDeletedItem(removedOrDeleted, entityRecordMessages[removedOrDeleted.RemovedItem.LogicalName]);
 				default:
-					ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("While casting the changed item to specific type, found unhandled ChangeType: {0}", changedItem.Type.ToString()));
+					ADXTrace.TraceWarning(TraceCategory.Application, string.Format("While casting the changed item to specific type, found unhandled ChangeType: {0}", changedItem.Type.ToString()));
 					break;
 			}
 
@@ -143,7 +143,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			AssociateDisassociateMessage associateDisassociateMessage = entityRecordMessage as AssociateDisassociateMessage;
 			string name = TryGetTargetName(changedItem.NewOrUpdatedEntity);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Converting ChangedItem with EntityName: {0} and Type:{1} to Portal Cache Message ", changedItem.NewOrUpdatedEntity.LogicalName, changedItem.Type.ToString()));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Converting ChangedItem with EntityName: {0} and Type:{1} to Portal Cache Message ", changedItem.NewOrUpdatedEntity.LogicalName, changedItem.Type.ToString()));
 
 			if (associateDisassociateMessage == null || changedItem.NewOrUpdatedEntity.LogicalName == "adx_webpageaccesscontrolrule_webrole")
 			{
@@ -211,7 +211,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			PluginMessage message;
 			AssociateDisassociateMessage associateDisassociateMessage = entityRecordMessage as AssociateDisassociateMessage;
 
-			ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Converting ChangedItem/Deleted with EntityName: {0} and Type:{1} to Portal Cache Message", changedItem.RemovedItem.LogicalName, changedItem.Type.ToString()));
+			ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Converting ChangedItem/Deleted with EntityName: {0} and Type:{1} to Portal Cache Message", changedItem.RemovedItem.LogicalName, changedItem.Type.ToString()));
 
 			if (associateDisassociateMessage == null || changedItem.RemovedItem.LogicalName == "adx_webpageaccesscontrolrule_webrole")
 			{

@@ -22,7 +22,7 @@ namespace Adxstudio.Xrm.Cms
 
 		public override IDictionary<string, object> GetQueryParameters()
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("website.Id={0}", _website.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("website.Id={0}", _website.Id));
 
 			var websiteId = _website.Id;
 

@@ -27,7 +27,7 @@ namespace Adxstudio.Xrm.Cms.Replication
 
 			if (service == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Cannot acquire IOrganizationService; done.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Cannot acquire IOrganizationService; done.");
 
 				return;
 			}
@@ -57,7 +57,7 @@ namespace Adxstudio.Xrm.Cms.Replication
 
 				if (service == null)
 				{
-                    ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Cannot acquire IOrganizationService; done.");
+                    ADXTrace.TraceInfo(TraceCategory.Application, "Cannot acquire IOrganizationService; done.");
 
 					return;
 				}
@@ -77,7 +77,7 @@ namespace Adxstudio.Xrm.Cms.Replication
 
 			if (service == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Cannot acquire IOrganizationService; done.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Cannot acquire IOrganizationService; done.");
 
 				return;
 			}

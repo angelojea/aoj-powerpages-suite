@@ -250,7 +250,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error getting URL for entity [{0}:{1}]: {2}", EntityReference.LogicalName, EntityReference.Id, e));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Error getting URL for entity [{0}:{1}]: {2}", EntityReference.LogicalName, EntityReference.Id, e));
 
                 return null;
 			}

@@ -32,7 +32,7 @@ namespace Adxstudio.Xrm.Forums
 
 		public IEnumerable<IForum> SelectForums()
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var serviceContext = Dependencies.GetServiceContext();
 			var languageInfo = Dependencies.GetRequestContext().HttpContext.GetContextLanguageInfo();
@@ -89,7 +89,7 @@ namespace Adxstudio.Xrm.Forums
 				return new Forum(entity, viewEntity, info, counts);
 			}).ToArray();
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: Count={0}", forums.Length));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: Count={0}", forums.Length));
 
 			if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.TelemetryFeatureUsage))
 			{
@@ -101,16 +101,16 @@ namespace Adxstudio.Xrm.Forums
 
 		public IForum Select(Guid forumId)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", forumId));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", forumId));
 
 			var forum = Select(e => e.GetAttributeValue<Guid>("adx_communityforumid") == forumId);
 
 			if (forum == null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Not Found");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Not Found");
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}", forumId));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}", forumId));
 
 			return forum;
 		}
@@ -122,16 +122,16 @@ namespace Adxstudio.Xrm.Forums
 				return null;
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+            ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
             var forum = Select(e => e.GetAttributeValue<string>("adx_name") == forumName);
 
 			if (forum == null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Not Found");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Not Found");
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+            ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
             return forum;
 		}
@@ -174,7 +174,7 @@ namespace Adxstudio.Xrm.Forums
 
 			if (!securityProvider.TryAssert(serviceContext, entity, CrmEntityRight.Read))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Not Found", entity.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Not Found", entity.Id));
 
 				return null;
 			}

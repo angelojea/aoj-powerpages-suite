@@ -131,11 +131,11 @@ namespace Adxstudio.Xrm.Services
 		{
 			message.ThrowOnNull("message");
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Begin");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Begin");
 
 			var portalBusMessage = new CacheInvalidationPortalBusMessage { Message = message };
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+			ADXTrace.TraceInfo(TraceCategory.Application, "End");
 		}
 
 		public override void RemoveLocal(OrganizationServiceCachePluginMessage message)

@@ -41,7 +41,7 @@ namespace Adxstudio.Xrm.Threading
 
 			try
 			{
-				ADXTrace.Instance.TraceVerbose(TraceCategory.Application, string.Format("Job registered: {0}", name));
+				ADXTrace.TraceVerbose(TraceCategory.Application, string.Format("Job registered: {0}", name));
 
 				lock (shutDownLock)
 				{
@@ -50,11 +50,11 @@ namespace Adxstudio.Xrm.Threading
 						return;
 					}
 
-					ADXTrace.Instance.TraceVerbose(TraceCategory.Application, string.Format("Job begin: {0}", name));
+					ADXTrace.TraceVerbose(TraceCategory.Application, string.Format("Job begin: {0}", name));
 
 					ExecuteInternal(id);
 
-					ADXTrace.Instance.TraceVerbose(TraceCategory.Application, string.Format("Job end: {0}", name));
+					ADXTrace.TraceVerbose(TraceCategory.Application, string.Format("Job end: {0}", name));
 				}
 			}
 			catch (Exception e)
@@ -67,7 +67,7 @@ namespace Adxstudio.Xrm.Threading
 			{
 				HostingEnvironment.UnregisterObject(this);
 
-				ADXTrace.Instance.TraceVerbose(TraceCategory.Application, string.Format("Job unregistered: {0}", name));
+				ADXTrace.TraceVerbose(TraceCategory.Application, string.Format("Job unregistered: {0}", name));
 			}
 		}
 

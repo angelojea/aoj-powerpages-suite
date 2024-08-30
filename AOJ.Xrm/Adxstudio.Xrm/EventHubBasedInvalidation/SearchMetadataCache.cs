@@ -96,7 +96,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			foreach (Entity entity in entities)
 			{
 				var savedQueryItem = new SearchSavedQuery(entity);
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Entity {0} has Portal Search View Present in CRM ", savedQueryItem.EntityName));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Entity {0} has Portal Search View Present in CRM ", savedQueryItem.EntityName));
 				SearchEnabledEntities.Add(savedQueryItem.EntityName);
 				SearchSavedQueries.Add(savedQueryItem);
 			}

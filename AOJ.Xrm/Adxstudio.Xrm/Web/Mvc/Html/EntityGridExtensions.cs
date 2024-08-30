@@ -693,7 +693,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 						}
 						catch (SavedQueryNotFoundException ex)
 						{
-							ADXTrace.Instance.TraceWarning(TraceCategory.Application, ex.Message);
+							ADXTrace.TraceWarning(TraceCategory.Application, ex.Message);
 							return null;
 						}
 					}).Where(l => l != null);
@@ -764,7 +764,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 						}
 						catch (SavedQueryNotFoundException ex)
 						{
-							ADXTrace.Instance.TraceWarning(TraceCategory.Application, ex.Message);
+							ADXTrace.TraceWarning(TraceCategory.Application, ex.Message);
 							return null;
 						}
 					}).Where(l => l != null);

@@ -86,7 +86,7 @@ namespace Adxstudio.Xrm.Cms.Security
 			if (!map.TryGetValue(entity, out page))
 			{
 				// the website context is missing data
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to lookup the web page '{0}' ({1}).", entity.GetAttributeValue<string>("adx_name"), entity.Id));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Failed to lookup the web page '{0}' ({1}).", entity.GetAttributeValue<string>("adx_name"), entity.Id));
 
 				return false;
 			}
@@ -103,11 +103,11 @@ namespace Adxstudio.Xrm.Cms.Security
 		/// <returns> The <see cref="bool"/>. </returns>
 		public virtual bool TryAssert(WebPageNode page, CrmEntityRight right, bool useScope)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Testing right {0} on web page '{1}' ({2}).", right, page.Name, page.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Testing right {0} on web page '{1}' ({2}).", right, page.Name, page.Id));
 
 			if (!Roles.Enabled)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "Roles are not enabled for this application. Allowing Read, but not Change.");
+				ADXTrace.TraceError(TraceCategory.Application, "Roles are not enabled for this application. Allowing Read, but not Change.");
 
 				// If roles are not enabled on the site, grant Read, deny Change.
 				return right == CrmEntityRight.Read;
@@ -158,7 +158,7 @@ namespace Adxstudio.Xrm.Cms.Security
 					// ...and the rule is GrantChange...
 					if (ruleGrouping.Key.Right == RightOption.GrantChange)
 					{
-						ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("User has right Change on web page ({0}). Permission granted.", ruleGrouping.Key.WebPageId));
+						ADXTrace.TraceInfo(TraceCategory.Application, string.Format("User has right Change on web page ({0}). Permission granted.", ruleGrouping.Key.WebPageId));
 
 						// ...the user has all rights.
 						return true;
@@ -172,15 +172,15 @@ namespace Adxstudio.Xrm.Cms.Security
 					if (useScope && ruleGrouping.Any(rule => rule.Scope.HasValue && (ScopeOption)rule.Scope.Value == ScopeOption.ExcludeDirectChildWebFiles))
 					{
 						// Ignore read restriction for web files where scope is ExcludeDirectChildWebFiles
-						ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Ignoring web page ({0}) read restriction due to ExcludeDirectChildWebFiles", ruleGrouping.Key.WebPageId));
+						ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Ignoring web page ({0}) read restriction due to ExcludeDirectChildWebFiles", ruleGrouping.Key.WebPageId));
 					}
 					else
 					{
 						if (page.Parent == null && page.PartialUrl == "/")
 						{
-							ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("\"Restrict Read\" right on web page({0}) ({1}).", ruleGrouping.Key.WebPageId, page.Name));
+							ADXTrace.TraceError(TraceCategory.Application, string.Format("\"Restrict Read\" right on web page({0}) ({1}).", ruleGrouping.Key.WebPageId, page.Name));
 						}
-						ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("User does not have right Read due to read restriction on web page ({0}). Permission denied.", ruleGrouping.Key.WebPageId));
+						ADXTrace.TraceInfo(TraceCategory.Application, string.Format("User does not have right Read due to read restriction on web page ({0}). Permission denied.", ruleGrouping.Key.WebPageId));
 
 						// ...the user has no right.
 						return false;
@@ -188,7 +188,7 @@ namespace Adxstudio.Xrm.Cms.Security
 				}
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "No access control rules apply to the current user and page. Allowing Read, but not Change.");
+			ADXTrace.TraceInfo(TraceCategory.Application, "No access control rules apply to the current user and page. Allowing Read, but not Change.");
 
 			// If none of the above rules apply, grant Read by default, and deny Change by default.
 			return right == CrmEntityRight.Read;

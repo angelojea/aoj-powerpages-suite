@@ -292,7 +292,7 @@ namespace Adxstudio.Xrm.Web.Providers
 				}
 
 				var traceMessage = parent == null ? string.Format("Parent is Null. Page.Id = {0}", page.Id) : string.Format("Parent is Reference. Page.Id = {0}, ParentId = {1}", page.Id, parent.Id);
-				ADXTrace.Instance.TraceWarning(TraceCategory.Application, traceMessage);
+				ADXTrace.TraceWarning(TraceCategory.Application, traceMessage);
 				return null;
 			}
 
@@ -308,7 +308,7 @@ namespace Adxstudio.Xrm.Web.Providers
 			{
 				if (CircularReferenceCheck(page) == true)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Circular reference with page {0}", page.Id));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Circular reference with page {0}", page.Id));
 					return url;
 				}
 
@@ -330,7 +330,7 @@ namespace Adxstudio.Xrm.Web.Providers
 
 			if (parentUrl == null)
 			{
-				ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Parent is Null. PartialUrl = {0}", partialUrl));
+				ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Parent is Null. PartialUrl = {0}", partialUrl));
 				return null;
 			}
 
@@ -441,7 +441,7 @@ namespace Adxstudio.Xrm.Web.Providers
 			if (string.IsNullOrWhiteSpace(basePath) || basePath.Contains("?") || basePath.Contains(":") || basePath.Contains("//") || basePath.Contains("&")
 				|| basePath.Contains("%3f") || basePath.Contains("%2f%2f") || basePath.Contains("%26"))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "The basePath is invalid.");
+				ADXTrace.TraceError(TraceCategory.Application, "The basePath is invalid.");
 
 				return null;
 			}
@@ -449,7 +449,7 @@ namespace Adxstudio.Xrm.Web.Providers
 			if (string.IsNullOrWhiteSpace(extendedPath) || extendedPath.Contains("?") || extendedPath.Contains("&") || extendedPath.Contains("//")
 				|| extendedPath.Contains(":") || extendedPath.Contains("%3f") || extendedPath.Contains("%2f%2f") || extendedPath.Contains("%26"))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "The extendedPath is invalid.");
+				ADXTrace.TraceError(TraceCategory.Application, "The extendedPath is invalid.");
 
 				return null;
 			}

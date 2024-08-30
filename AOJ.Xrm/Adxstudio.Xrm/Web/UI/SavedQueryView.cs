@@ -208,7 +208,7 @@ namespace Adxstudio.Xrm.Web.UI
 
 				if (response == null || response.EntityMetadata == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to get EntityMetadata for entity of type '{0}'.", EntityNamePrivacy.GetEntityName(EntityLogicalName)));
+					ADXTrace.TraceError(TraceCategory.Application, string.Format("Failed to get EntityMetadata for entity of type '{0}'.", EntityNamePrivacy.GetEntityName(EntityLogicalName)));
 
 					return;
 				}
@@ -319,7 +319,7 @@ namespace Adxstudio.Xrm.Web.UI
 			{
 				if (EntityMetadata == null)
 				{
-                    ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to get EntityMetadata for entity of type '{0}'.", EntityNamePrivacy.GetEntityName(EntityLogicalName)));
+                    ADXTrace.TraceError(TraceCategory.Application, string.Format("Failed to get EntityMetadata for entity of type '{0}'.", EntityNamePrivacy.GetEntityName(EntityLogicalName)));
 
                     return new List<ViewColumn>();
 				}
@@ -440,7 +440,7 @@ namespace Adxstudio.Xrm.Web.UI
 			{
 				if (!TryGetAttributeMetadataFromLinkEntityAlias(serviceContext, attributeName, fetchXml, out attributeMetadata))
 				{
-                    ADXTrace.Instance.TraceError(TraceCategory.Application, "Failed to get AttributeMetadata");
+                    ADXTrace.TraceError(TraceCategory.Application, "Failed to get AttributeMetadata");
                 }
 			}
 

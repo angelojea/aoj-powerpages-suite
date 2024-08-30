@@ -37,7 +37,7 @@ namespace Adxstudio.Xrm.Configuration
 					store.Certificates,
 					(certifiates, condition) => certifiates.Find(condition.FindType, condition.FindValue, condition.ValidOnly));
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Found '{0}' certificate(s).", matches.Count));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Found '{0}' certificate(s).", matches.Count));
 
 				return matches;
 			}

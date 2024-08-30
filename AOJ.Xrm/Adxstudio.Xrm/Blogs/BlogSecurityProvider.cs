@@ -64,14 +64,14 @@ namespace Adxstudio.Xrm.Blogs
 
 			if (entity.LogicalName == "adx_blog")
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on adx_blog ({1}).", right, entity.Id));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on adx_blog ({1}).", right, entity.Id));
 
 				return TryAssertBlog(serviceContext, entity, right, dependencies, map);
 			}
 
 			if (entity.LogicalName == "adx_blogpost")
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on adx_blogpost ({1}).", right, entity.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on adx_blogpost ({1}).", right, entity.Id));
 				dependencies.AddEntityDependency(entity);
 
 				return TryAssertBlogPost(serviceContext, entity, right, dependencies);
@@ -79,7 +79,7 @@ namespace Adxstudio.Xrm.Blogs
 
 			if (entity.LogicalName == "adx_blogpostcomment")
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on adx_blogpostcomment ({1}).", right, entity.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on adx_blogpostcomment ({1}).", right, entity.Id));
 				dependencies.AddEntityDependency(entity);
 
 				return TryAssertBlogPostComment(serviceContext, entity, right, dependencies);
@@ -108,7 +108,7 @@ namespace Adxstudio.Xrm.Blogs
 
 			if (!Roles.Enabled)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "Roles are not enabled for this application. Denying Change.");
+				ADXTrace.TraceError(TraceCategory.Application, "Roles are not enabled for this application. Denying Change.");
 
 				return false;
 			}

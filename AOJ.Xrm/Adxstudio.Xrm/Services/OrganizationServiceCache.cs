@@ -207,7 +207,7 @@ namespace Adxstudio.Xrm.Services
 		{
 			if (message.Category != null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Category={0}", message.Category.Value));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Category={0}", message.Category.Value));
 
 				Remove(message.Category.Value);
 			}
@@ -216,7 +216,7 @@ namespace Adxstudio.Xrm.Services
 			{
 				var entity = message.Target.ToEntityReference();
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id));
 
 				Remove(entity);
 			}
@@ -227,7 +227,7 @@ namespace Adxstudio.Xrm.Services
 
 				foreach (var entity in relatedEntities)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id));
 
 					Remove(entity);
 				}
@@ -354,7 +354,7 @@ namespace Adxstudio.Xrm.Services
 					else
 					{
 						// If thread was not able to flip the CacheItemStatus flag, it will access the stale data. Update the stale access count for the given key.
-						ADXTrace.Instance.TraceInfo(TraceCategory.CacheInfra, string.Format("Cache hit with stale Data. Could not flip CacheItemStatus, CacheKey={0}, IsStaleAllowed={1}", cacheKey, cacheItemDetail?.IsStaleDataAllowed == true));
+						ADXTrace.TraceInfo(TraceCategory.CacheInfra, string.Format("Cache hit with stale Data. Could not flip CacheItemStatus, CacheKey={0}, IsStaleAllowed={1}", cacheKey, cacheItemDetail?.IsStaleDataAllowed == true));
 						Cache.IncrementStaleAccessCount(cacheKey, CacheRegionName);
 					}
 				}
@@ -369,14 +369,14 @@ namespace Adxstudio.Xrm.Services
 					using (sessionIdLock.Lock(cacheItemDetail.SessionId))
 					{
 						// Retrieve the latest response from cache.
-						ADXTrace.Instance.TraceInfo(TraceCategory.CacheInfra, string.Format("Cache hit - Session Lock, CacheKey={0}, IsStaleAllowed={1}", cacheKey, cacheItemDetail?.IsStaleDataAllowed == true));
+						ADXTrace.TraceInfo(TraceCategory.CacheInfra, string.Format("Cache hit - Session Lock, CacheKey={0}, IsStaleAllowed={1}", cacheKey, cacheItemDetail?.IsStaleDataAllowed == true));
 						response = GetCachedResult(query, execute, selector, cacheKey, out cacheMissedMetricValue);
 					}
 				}
 				else if (cacheItemDetail.CacheItemStatus == CacheItemStatus.BeingProcessed)
 				{
 					// Update the stale access account for the given cache key.
-					ADXTrace.Instance.TraceInfo(TraceCategory.CacheInfra, string.Format("Cache hit with stale Data, CacheKey={0}, IsStaleAllowed={1}", cacheKey, cacheItemDetail?.IsStaleDataAllowed == true));
+					ADXTrace.TraceInfo(TraceCategory.CacheInfra, string.Format("Cache hit with stale Data, CacheKey={0}, IsStaleAllowed={1}", cacheKey, cacheItemDetail?.IsStaleDataAllowed == true));
 					Cache.IncrementStaleAccessCount(cacheKey, CacheRegionName);
 				}
 
@@ -411,7 +411,7 @@ namespace Adxstudio.Xrm.Services
 			{
 				// HttpContext.Current is null in case of call out of request
 				var isAuthenticated = HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated;
-				ADXTrace.Instance.TraceInfo(TraceCategory.CacheInfra, string.Format("Cache miss, Query={0}, IsAuthenticated={1}, IsStaleAllowed={2}", queryText, isAuthenticated, cacheItemDetail?.IsStaleDataAllowed == true));
+				ADXTrace.TraceInfo(TraceCategory.CacheInfra, string.Format("Cache miss, Query={0}, IsAuthenticated={1}, IsStaleAllowed={2}", queryText, isAuthenticated, cacheItemDetail?.IsStaleDataAllowed == true));
 			}
 
 			return ReturnMode == OrganizationServiceCacheReturnMode.Cloned ? InternalCloneResponse(response) : response;
@@ -437,7 +437,7 @@ namespace Adxstudio.Xrm.Services
 				cache =>
 				{
 					cacheMiss = true;
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("{0}", cacheKey));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("{0}", cacheKey));
 					return InnerExecute(query, execute, selector);
 				},
 				(cache, result) => Insert(cacheKey, query, result),
@@ -458,7 +458,7 @@ namespace Adxstudio.Xrm.Services
 				cacheKey,
 				() =>
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("{0}", cacheKey));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("{0}", cacheKey));
 					MdmMetrics.CacheMissedMetric.LogValue(1);
 
 					result = InnerExecute(query, execute, selector);
@@ -474,7 +474,7 @@ namespace Adxstudio.Xrm.Services
 			string queryText;
 			var cacheKey = GetCacheKey(query, selectorCacheKey, out queryText);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("{0}", cacheKey));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("{0}", cacheKey));
 			MdmMetrics.CacheMissedMetric.LogValue(1);
 
 			return InnerExecute(query, execute, selector);
@@ -832,7 +832,7 @@ namespace Adxstudio.Xrm.Services
 						if (!cacheItem.cacheItemDetail.IsStaleDataAllowed)
 						{
 							// If the stale data is not allowed for the given cache key, remove this item from the cache.
-							ADXTrace.Instance.TraceInfo(TraceCategory.CacheInfra, string.Format("Stale data is not allowed for CacheKey = {0}", cacheItem.key));
+							ADXTrace.TraceInfo(TraceCategory.CacheInfra, string.Format("Stale data is not allowed for CacheKey = {0}", cacheItem.key));
 							CacheEventSource.Log.CacheRemove(cacheItem.key, CacheRegionName);
 							Cache.Remove(cacheItem.key);
 						}
@@ -840,7 +840,7 @@ namespace Adxstudio.Xrm.Services
 						// a) store the session id. This session id we will use later to block the thread from returning stale data, if it is the one which marked the cache-item dirty.
 						else if (cacheItem.cacheItemDetail.TrySetCacheItemStatus(CacheItemStatus.Dirty))
 						{
-							ADXTrace.Instance.TraceInfo(TraceCategory.CacheInfra, string.Format("Cache Item is marked dirty, CacheKey = {0}", cacheItem.key));
+							ADXTrace.TraceInfo(TraceCategory.CacheInfra, string.Format("Cache Item is marked dirty, CacheKey = {0}", cacheItem.key));
 							cacheItem.cacheItemDetail.SessionId = GetSessionId();
 
 							// Remove the secondary cache item to trigger invalidation of output cache.

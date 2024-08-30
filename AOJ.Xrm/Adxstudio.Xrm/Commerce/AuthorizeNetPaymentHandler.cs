@@ -40,7 +40,7 @@ namespace Adxstudio.Xrm.Commerce
 
 			return new SuccessfulPaymentValidation(context.Request.Form.ToString());
 #else
-			ADXTrace.Instance.TraceError(TraceCategory.Application, "Authorize.Net Payment Handler is not able to process validation. AuthorizeNet.dll and AuthorizeNet.Helpers.dll could not be found.");
+			ADXTrace.TraceError(TraceCategory.Application, "Authorize.Net Payment Handler is not able to process validation. AuthorizeNet.dll and AuthorizeNet.Helpers.dll could not be found.");
 			
 			return new UnsuccessfulPaymentValidation(context.Request.Form.ToString(), context.Request.Form["x_response_reason_text"]);
 #endif

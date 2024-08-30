@@ -230,7 +230,7 @@ namespace Adxstudio.Xrm.Web.UI.EntityList.OData
 				var entityPermissionsEnabled = entitylist.GetAttributeValue<bool>("mspp_entitypermissionsenabled");
 				if (entitySetNames.Contains(entitySetName))
 				{
-                    ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("An Entity Set has already been defined with the name '{0}'. Entity Set could not added to the model. You must not have multiple Entity List records with OData enabled and the same Entity Name specified, otherwise specifiy a unique Entity Set Name and Entity Type Name in the Entity List's OData Settings in CRM.", entitySetName));
+                    ADXTrace.TraceError(TraceCategory.Application, string.Format("An Entity Set has already been defined with the name '{0}'. Entity Set could not added to the model. You must not have multiple Entity List records with OData enabled and the same Entity Name specified, otherwise specifiy a unique Entity Set Name and Entity Type Name in the Entity List's OData Settings in CRM.", entitySetName));
                     continue;
 				}
 				entitySetNames.Add(entitySetName);
@@ -339,7 +339,7 @@ namespace Adxstudio.Xrm.Web.UI.EntityList.OData
 				// Ensure the user has permissions to request read access to the entity.
 				if (!perm.PermissionGranted && !perm.GlobalPermissionGranted)
 				{
-					ADXTrace.Instance.TraceWarning(
+					ADXTrace.TraceWarning(
 						TraceCategory.Exception,
 						string.Format(
 							"Access to oData, with the entity set name of '{0}', has been denied for the user with the following webroles: '{1}' due to entity permissions. Grant the webroles read access to the entityset if this was not an error.",

@@ -35,12 +35,12 @@ namespace Adxstudio.Xrm.Commerce
 
 		protected virtual void TraceMethodError(string format, params object[] args)
 		{
-            ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("{0}, {1}", format, args));
+            ADXTrace.TraceError(TraceCategory.Application, string.Format("{0}, {1}", format, args));
         }
 
 		protected virtual void TraceMethodInfo(string format, params object[] args)
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("{0}, {1}", format, args));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("{0}, {1}", format, args));
 		}
 	}
 }

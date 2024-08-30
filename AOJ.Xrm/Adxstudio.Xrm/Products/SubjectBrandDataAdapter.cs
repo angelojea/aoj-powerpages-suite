@@ -28,7 +28,7 @@ namespace Adxstudio.Xrm.Products
 
 		public IBrand SelectBrand(Guid id)
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("id={0}: Start", id));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("id={0}: Start", id));
 
 			var serviceContext = Dependencies.GetServiceContext();
 
@@ -47,14 +47,14 @@ namespace Adxstudio.Xrm.Products
 
 			var brand = new Brand(entity);
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+            ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return brand;
 		}
 
 		public IEnumerable<IBrand> SelectBrands()
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+            ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var serviceContext = Dependencies.GetServiceContext();
 
@@ -66,7 +66,7 @@ namespace Adxstudio.Xrm.Products
 
 			var brands = query.Distinct().ToArray().Select(e => new Brand(e)).ToArray();
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+            ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return brands;
 		}

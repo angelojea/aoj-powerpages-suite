@@ -78,7 +78,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, e.ToString());
+					ADXTrace.TraceError(TraceCategory.Application, e.ToString());
 				}
 			}
 
@@ -98,7 +98,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, e.ToString());
+					ADXTrace.TraceError(TraceCategory.Application, e.ToString());
 				}
 			}
 
@@ -200,7 +200,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 
 		private string GetLayouts(Entity entityList)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Getting Entity List For: {0}, entityId: {1}", entityList.LogicalName, entityList.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Getting Entity List For: {0}, entityId: {1}", entityList.LogicalName, entityList.Id));
 
 			var viewConfigurations =
 				GetEntityViews()
@@ -222,7 +222,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 						}
 						catch (SavedQueryNotFoundException ex)
 						{
-							ADXTrace.Instance.TraceWarning(TraceCategory.Application, ex.Message);
+							ADXTrace.TraceWarning(TraceCategory.Application, ex.Message);
 							return null;
 						}
 					}).Where(l => l != null);

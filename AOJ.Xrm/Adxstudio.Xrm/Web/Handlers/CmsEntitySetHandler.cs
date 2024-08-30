@@ -112,13 +112,13 @@ namespace Adxstudio.Xrm.Web.Handlers
 			}
 			catch (CmsEntityServiceException e)
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, e.ToString());
+                ADXTrace.TraceError(TraceCategory.Application, e.ToString());
 
                 WriteErrorResponse(context.Response, e.StatusCode, e);
 			}
 			catch (Exception e)
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, e.ToString());
+                ADXTrace.TraceError(TraceCategory.Application, e.ToString());
 
                 WriteErrorResponse(context.Response, HttpStatusCode.InternalServerError, e);
 			}

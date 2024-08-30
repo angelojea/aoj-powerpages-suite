@@ -110,11 +110,11 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 		/// </summary>
 		protected virtual bool TryAssertAddNote(Guid regardingId)
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start Assert Add Note Privilege on: {0} {1}", Metadata.TargetEntityName, regardingId));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start Assert Add Note Privilege on: {0} {1}", Metadata.TargetEntityName, regardingId));
 
 			if (!Metadata.FormView.EnableEntityPermissions)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission Denied. Entity Permissions have not been enabled.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Permission Denied. Entity Permissions have not been enabled.");
 				
 				return false;
 			}
@@ -126,7 +126,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			
 			if (!entityPermissionProvider.PermissionsExist)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission Denied. Entity Permissions have not been defined. Your request could not be completed.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Permission Denied. Entity Permissions have not been defined. Your request could not be completed.");
 
 				return false;
 			}
@@ -143,22 +143,22 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 
 			if (canCreate & canAppend & canAppendTo)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Add Note Permission Granted: {0} {1}", EntityNamePrivacy.GetEntityName(Metadata.TargetEntityName), regardingId));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Add Note Permission Granted: {0} {1}", EntityNamePrivacy.GetEntityName(Metadata.TargetEntityName), regardingId));
 
 				return true;
 			}
 
 			if (!canCreate)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Create notes.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Create notes.");
 			}
 			else if (!canAppendTo)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission Denied. You do not have the appropriate Entity Permissions to Append To {0}.", EntityNamePrivacy.GetEntityName(entity.LogicalName)));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission Denied. You do not have the appropriate Entity Permissions to Append To {0}.", EntityNamePrivacy.GetEntityName(entity.LogicalName)));
 			}
 			else
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Append notes.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Permission Denied. You do not have the appropriate Entity Permissions to Append notes.");
 			}
 
 			return false;

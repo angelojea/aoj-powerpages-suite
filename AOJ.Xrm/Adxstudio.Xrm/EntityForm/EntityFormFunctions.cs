@@ -52,7 +52,7 @@ namespace Adxstudio.Xrm.EntityForm
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Failed to set statecode. {0}", ex));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Failed to set statecode. {0}", ex));
 			}
 		}
 
@@ -68,7 +68,7 @@ namespace Adxstudio.Xrm.EntityForm
 
 			if (attributeTypeCode == null)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "Unable to recognize the attribute specified.");
+				ADXTrace.TraceError(TraceCategory.Application, "Unable to recognize the attribute specified.");
 				return string.Empty;
 			}
 
@@ -134,7 +134,7 @@ namespace Adxstudio.Xrm.EntityForm
 						}
 						break;
 					default:
-						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Attribute type '{0}' is unsupported.", attributeTypeCode));
+						ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Attribute type '{0}' is unsupported.", attributeTypeCode));
 						break;
 				}
 			}
@@ -230,13 +230,13 @@ namespace Adxstudio.Xrm.EntityForm
 			if (string.IsNullOrWhiteSpace(targetEntityLogicalName) || string.IsNullOrWhiteSpace(targetEntityId) ||
 				string.IsNullOrWhiteSpace(relationshipName) || related == null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Request did not contain parameters 'refentity', 'refid', 'refrel'");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Request did not contain parameters 'refentity', 'refid', 'refrel'");
 				return;
 			}
 
 			if (!Guid.TryParse(targetEntityId, out targetId))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "Request did not contain a valid guid 'refid'");
+				ADXTrace.TraceError(TraceCategory.Application, "Request did not contain a valid guid 'refid'");
 
 				return;
 			}
@@ -257,7 +257,7 @@ namespace Adxstudio.Xrm.EntityForm
 							return;
 							break;
 						default:
-							ADXTrace.Instance.TraceError(TraceCategory.Application, "Relationship Primary Entity Role provided by parameter named 'refrelrole' is not valid.");
+							ADXTrace.TraceError(TraceCategory.Application, "Relationship Primary Entity Role provided by parameter named 'refrelrole' is not valid.");
 							break;
 					}
 				}
@@ -273,7 +273,7 @@ namespace Adxstudio.Xrm.EntityForm
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, ex.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, ex.ToString());
 
 			}
 		}
@@ -293,7 +293,7 @@ namespace Adxstudio.Xrm.EntityForm
 
 			if (string.IsNullOrWhiteSpace(relationshipName))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Entity Relationship Name not provided. Entity Association not required.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Entity Relationship Name not provided. Entity Association not required.");
 				return;
 			}
 
@@ -319,7 +319,7 @@ namespace Adxstudio.Xrm.EntityForm
 
 				if (sourceEntityId == Guid.Empty || targetEntityId == Guid.Empty)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Source and Target entity ids must not be null or empty.");
+					ADXTrace.TraceError(TraceCategory.Application, "Source and Target entity ids must not be null or empty.");
 					return;
 				}
 
@@ -327,7 +327,7 @@ namespace Adxstudio.Xrm.EntityForm
 
 				if (string.IsNullOrWhiteSpace(sourceEntityName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "adx_entityform.adx_targetentitylogicalname must not be null.");
+					ADXTrace.TraceError(TraceCategory.Application, "adx_entityform.adx_targetentitylogicalname must not be null.");
 					return;
 				}
 
@@ -338,7 +338,7 @@ namespace Adxstudio.Xrm.EntityForm
 
 				if (string.IsNullOrWhiteSpace(sourceEntityPrimaryKey))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Failed to determine source entity primary key logical name.");
+					ADXTrace.TraceError(TraceCategory.Application, "Failed to determine source entity primary key logical name.");
 					return;
 				}
 
@@ -346,7 +346,7 @@ namespace Adxstudio.Xrm.EntityForm
 
 				if (sourceEntity == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Source entity is null.");
+					ADXTrace.TraceError(TraceCategory.Application, "Source entity is null.");
 					return;
 				}
 
@@ -354,7 +354,7 @@ namespace Adxstudio.Xrm.EntityForm
 
 				if (string.IsNullOrWhiteSpace(targetEntityName))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Target entity name must not be null or empty.");
+					ADXTrace.TraceError(TraceCategory.Application, "Target entity name must not be null or empty.");
 					return;
 				}
 
@@ -365,7 +365,7 @@ namespace Adxstudio.Xrm.EntityForm
 
 				if (string.IsNullOrWhiteSpace(targetEntityPrimaryKey))
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Failed to determine target entity primary key logical name.");
+					ADXTrace.TraceError(TraceCategory.Application, "Failed to determine target entity primary key logical name.");
 					return;
 				}
 
@@ -373,7 +373,7 @@ namespace Adxstudio.Xrm.EntityForm
 
 				if (targetEntity == null)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, "Target entity is null.");
+					ADXTrace.TraceError(TraceCategory.Application, "Target entity is null.");
 					return;
 				}
 
@@ -381,7 +381,7 @@ namespace Adxstudio.Xrm.EntityForm
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("{0}", ex));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("{0}", ex));
 			}
 		}
 
@@ -434,7 +434,7 @@ namespace Adxstudio.Xrm.EntityForm
 
 			if (attributeTypeCode == null)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Unable to recognize the attribute '{0}' specified.", attributeName));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Unable to recognize the attribute '{0}' specified.", attributeName));
 				return null;
 			}
 
@@ -533,7 +533,7 @@ namespace Adxstudio.Xrm.EntityForm
 						}
 						break;
 					case AttributeTypeCode.State:
-						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Attribute '{0}' type '{1}' is unsupported. The state attribute is created automatically when the entity is created. The options available for this attribute are read-only.", attributeName, attributeTypeCode));
+						ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Attribute '{0}' type '{1}' is unsupported. The state attribute is created automatically when the entity is created. The options available for this attribute are read-only.", attributeName, attributeTypeCode));
 						break;
 					case AttributeTypeCode.Status:
 						if (value == null)
@@ -547,7 +547,7 @@ namespace Adxstudio.Xrm.EntityForm
 						newValue = value as string;
 						break;
 					default:
-						ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Attribute '{0}' type '{1}' is unsupported.", attributeName, attributeTypeCode));
+						ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Attribute '{0}' type '{1}' is unsupported.", attributeName, attributeTypeCode));
 						break;
 				}
 			}

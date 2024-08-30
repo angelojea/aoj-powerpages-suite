@@ -35,7 +35,7 @@ namespace Adxstudio.Xrm.Ideas
 		{
 			entity.ThrowOnNull("entity");
 			dependencies.AddEntityDependency(entity);
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on {1} ""{2}"" ({3}).", right, entity.LogicalName, entity.GetAttributeValue<string>("adx_name"), entity.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on {1} ""{2}"" ({3}).", right, entity.LogicalName, entity.GetAttributeValue<string>("adx_name"), entity.Id));
 
 			switch (entity.LogicalName)
 			{
@@ -57,7 +57,7 @@ namespace Adxstudio.Xrm.Ideas
 		{
 			if (!Roles.Enabled)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Roles are not enabled for this application. Returning {0}.", defaultIfNoRoles));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Roles are not enabled for this application. Returning {0}.", defaultIfNoRoles));
 				return defaultIfNoRoles;
 			}
 			
@@ -79,7 +79,7 @@ namespace Adxstudio.Xrm.Ideas
 
 			if (!roles.Any())
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Read is not restricted to any particular roles. Returning {0}.", defaultIfNoRoles));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Read is not restricted to any particular roles. Returning {0}.", defaultIfNoRoles));
 				return defaultIfNoRoles;
 			}
 

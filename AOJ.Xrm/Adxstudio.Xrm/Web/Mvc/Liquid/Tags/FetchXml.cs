@@ -88,12 +88,12 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid.Tags
 				//	.TryApplyRecordLevelFiltersToFetch(portalLiquidContext.PortalViewContext.CreateServiceContext(), right, fetch);
 
                 // Apply Content Access Level filtering
-                var contentAccessLevelProvider = new ContentAccessLevelProvider();
-                contentAccessLevelProvider.TryApplyRecordLevelFiltersToFetch(right, fetch);
+                //var contentAccessLevelProvider = new ContentAccessLevelProvider();
+                //contentAccessLevelProvider.TryApplyRecordLevelFiltersToFetch(right, fetch);
                 
-                // Apply Product filtering
-                var productAccessProvider = new ProductAccessProvider();
-                productAccessProvider.TryApplyRecordLevelFiltersToFetch(CrmEntityPermissionRight.Read, fetch);
+                //// Apply Product filtering
+                //var productAccessProvider = new ProductAccessProvider();
+                //productAccessProvider.TryApplyRecordLevelFiltersToFetch(CrmEntityPermissionRight.Read, fetch);
 
                 context.Scopes.Last()[_variableName] = new FetchXmlQueryDrop(portalLiquidContext, fetch);
 			}

@@ -179,16 +179,16 @@ namespace Adxstudio.Xrm.Blogs
 
 		public IBlog Select(Guid blogId)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", blogId));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", blogId));
 
 			var blog = Select(e => e.GetAttributeValue<Guid>("adx_blogid") == blogId);
 
 			if (blog == null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Not Found");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Not Found");
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}", blogId));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}", blogId));
 
 			return blog;
 		}
@@ -200,16 +200,16 @@ namespace Adxstudio.Xrm.Blogs
 				return null;
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+            ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var blog = Select(e => e.GetAttributeValue<string>("adx_name") == blogName);
 
 			if (blog == null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Not Found");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Not Found");
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+			ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return blog;
 		}
@@ -242,7 +242,7 @@ namespace Adxstudio.Xrm.Blogs
 
 			if (!securityProvider.TryAssert(serviceContext, entity, CrmEntityRight.Read))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Not Found", entity.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Not Found", entity.Id));
 
 				return null;
 			}

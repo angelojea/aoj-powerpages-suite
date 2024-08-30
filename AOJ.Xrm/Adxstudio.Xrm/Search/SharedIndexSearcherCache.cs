@@ -42,7 +42,7 @@ namespace Adxstudio.Xrm.Search
 			// If we don't get a read lock quickly, just fail fast to constructing a new index searcher.
 			if (!_cacheLock.TryEnterReadLock(TimeSpan.FromSeconds(1)))
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Failed to acquire read lock on shared index searcher. Returning a new single-use index searcher.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Failed to acquire read lock on shared index searcher. Returning a new single-use index searcher.");
 
 				return searcherFactory();
 			}
@@ -66,7 +66,7 @@ namespace Adxstudio.Xrm.Search
 			// If we don't get a write lock quickly, just fail fast to constructing a new index searcher.
 			if (!_cacheLock.TryEnterWriteLock(TimeSpan.FromSeconds(1)))
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Failed to acquire write lock on shared index searcher cache. Returning a new single-use index searcher.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Failed to acquire write lock on shared index searcher cache. Returning a new single-use index searcher.");
 
 				return searcherFactory();
 			}

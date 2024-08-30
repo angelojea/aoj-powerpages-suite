@@ -80,12 +80,12 @@ namespace Adxstudio.Xrm
             }
             catch (SyntaxException e)
             {
-                ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Liquid parse error{0}: {1}", sourceIdentifier, e));
+                ADXTrace.TraceError(TraceCategory.Application, string.Format("Liquid parse error{0}: {1}", sourceIdentifier, e));
                 output.Write(e.Message);
                 return;
             }
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Rendering Liquid{0}", sourceIdentifier));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Rendering Liquid{0}", sourceIdentifier));
 
             using (PerformanceProfiler.Instance.StartMarker(PerformanceMarkerName.LiquidExtension, PerformanceMarkerArea.Liquid, PerformanceMarkerTagName.RenderLiquid))
             {
@@ -94,7 +94,7 @@ namespace Adxstudio.Xrm
 
             foreach (var error in template.Errors)
             {
-                ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Liquid rendering error{0}: {1}", sourceIdentifier, error));
+                ADXTrace.TraceError(TraceCategory.Application, string.Format("Liquid rendering error{0}: {1}", sourceIdentifier, error));
             }
         }
 

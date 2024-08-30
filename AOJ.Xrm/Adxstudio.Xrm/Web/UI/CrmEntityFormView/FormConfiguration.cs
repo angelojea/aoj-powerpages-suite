@@ -713,13 +713,13 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, ex.Message);
+				ADXTrace.TraceError(TraceCategory.Application, ex.Message);
 				return;
 			}
 
 			if (fetch.Entity == null)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "Fetch XML query is not valid. Entity can't be Null.");
+				ADXTrace.TraceError(TraceCategory.Application, "Fetch XML query is not valid. Entity can't be Null.");
 				return;
 			}
 			// Set number of fields to fetch to 0.
@@ -739,7 +739,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityFormView
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, ex.Message);
+				ADXTrace.TraceError(TraceCategory.Application, ex.Message);
 				return;
 			}
 

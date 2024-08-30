@@ -30,7 +30,7 @@ namespace Adxstudio.Xrm.Cms.Replication
 
 			if (source == null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Source entity is null.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Source entity is null.");
 				return;
 			}
 
@@ -41,7 +41,7 @@ namespace Adxstudio.Xrm.Cms.Replication
 			// If there's no parent page, we'll currently do nothing. (Maybe create a root file?)
 			if (parentPage == null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Source entity has no parent page; ending replication.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Source entity has no parent page; ending replication.");
 				return;
 			}
 
@@ -50,7 +50,7 @@ namespace Adxstudio.Xrm.Cms.Replication
 
 			if (!subscribedPages.Any())
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Source entity parent page has no subscribed pages; ending replication.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Source entity parent page has no subscribed pages; ending replication.");
 				return;
 			}
 

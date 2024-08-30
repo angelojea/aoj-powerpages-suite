@@ -32,7 +32,7 @@ namespace Adxstudio.Xrm.Issues
 
 			if (entity.LogicalName == "adx_issueforum")
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on adx_issueforum ({1}).", right, entity.Id));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on adx_issueforum ({1}).", right, entity.Id));
 
 				dependencies.AddEntityDependency(entity);
 				
@@ -46,7 +46,7 @@ namespace Adxstudio.Xrm.Issues
 
 			if (entity.LogicalName == "adx_issue")
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on adx_issue ({1}).", right, entity.Id));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on adx_issue ({1}).", right, entity.Id));
 
 				dependencies.AddEntityDependency(entity);
 
@@ -70,7 +70,7 @@ namespace Adxstudio.Xrm.Issues
 
 			if (entity.LogicalName == "adx_issuecomment")
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on adx_issuecomment ({1}).", right, entity.Id));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on adx_issuecomment ({1}).", right, entity.Id));
 
 				dependencies.AddEntityDependency(entity);
 
@@ -94,7 +94,7 @@ namespace Adxstudio.Xrm.Issues
 
 			if (entity.LogicalName == "adx_issuevote")
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on adx_issuevote ({1}).", entity.Id));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format(@"Testing right {0} on adx_issuevote ({1}).", entity.Id));
 
 				dependencies.AddEntityDependency(entity);
 
@@ -110,7 +110,7 @@ namespace Adxstudio.Xrm.Issues
 		{
 			if (!Roles.Enabled)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Roles are not enabled for this application. Returning {0}.", defaultIfNoRoles));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Roles are not enabled for this application. Returning {0}.", defaultIfNoRoles));
 
                 return defaultIfNoRoles;
 			}
@@ -128,7 +128,7 @@ namespace Adxstudio.Xrm.Issues
 
 			if (!roles.Any())
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Read is not restricted to any particular roles. Returning {0}.", defaultIfNoRoles));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Read is not restricted to any particular roles. Returning {0}.", defaultIfNoRoles));
 
                 return defaultIfNoRoles;
 			}

@@ -167,11 +167,11 @@ namespace Adxstudio.Xrm.Search.Facets
 					var calQuery = new BooleanQuery();
 					var userCals = contentAccessLevelProvider.GetContentAccessLevels();
 
-					ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "Adding User CALs to Lucene query");
+					ADXTrace.TraceInfo(TraceCategory.Monitoring, "Adding User CALs to Lucene query");
 
 					foreach (var cal in userCals)
 					{
-						ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("User CAL {0}", cal.Id));
+						ADXTrace.TraceInfo(TraceCategory.Monitoring, string.Format("User CAL {0}", cal.Id));
 						calQuery.Add(new TermQuery(new Term(FixedFacetsConfiguration.ContentAccessLevel, cal.Id.ToString())), Occur.SHOULD);
 					}
 					calQuery.Add(new TermQuery(new Term(FixedFacetsConfiguration.ContentAccessLevel, "public")), Occur.SHOULD);
@@ -192,11 +192,11 @@ namespace Adxstudio.Xrm.Search.Facets
 												}
 											};
 					var userProducts = productAccessProvider.GetProducts();
-					ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "Adding User products to Lucene query");
+					ADXTrace.TraceInfo(TraceCategory.Monitoring, "Adding User products to Lucene query");
 
 					foreach (var product in userProducts)
 					{
-						ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("User product {0}", product));
+						ADXTrace.TraceInfo(TraceCategory.Monitoring, string.Format("User product {0}", product));
 						productFilteringQuery.Add(
 							new TermQuery(new Term(FixedFacetsConfiguration.ProductFieldFacetName, product.ToString())),
 							Occur.SHOULD);
@@ -221,7 +221,7 @@ namespace Adxstudio.Xrm.Search.Facets
 					compositeQuery.Add(productFilteringQuery, Occur.MUST);
 				}
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("Adding User WebRoleDefaultValue to Lucene query: {0}", Index.WebRoleDefaultValue));
+				ADXTrace.TraceInfo(TraceCategory.Monitoring, string.Format("Adding User WebRoleDefaultValue to Lucene query: {0}", Index.WebRoleDefaultValue));
 
 				var cmsQuery = new BooleanQuery
 							{
@@ -240,10 +240,10 @@ namespace Adxstudio.Xrm.Search.Facets
 
 				var userRoles = Roles.GetRolesForUser(currentUsername);
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "Adding user role to Lucene query");
+				ADXTrace.TraceInfo(TraceCategory.Monitoring, "Adding user role to Lucene query");
 				foreach (var role in userRoles)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("User role: {0}", role));
+					ADXTrace.TraceInfo(TraceCategory.Monitoring, string.Format("User role: {0}", role));
 					cmsQuery.Add(new TermQuery(new Term(Index.WebRoleFieldName, role)), Occur.SHOULD);
 				}
 
@@ -310,7 +310,7 @@ namespace Adxstudio.Xrm.Search.Facets
 
 			stopwatch.Stop();
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Lucene(faceted/BoboBrowse): {0} total hits ({1}ms)", browseResult.NumHits, stopwatch.ElapsedMilliseconds));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Lucene(faceted/BoboBrowse): {0} total hits ({1}ms)", browseResult.NumHits, stopwatch.ElapsedMilliseconds));
 
             PortalFeatureTrace.TraceInstance.LogSearch(FeatureTraceCategory.Search, browseResult.NumHits, stopwatch.ElapsedMilliseconds, string.Format("Lucene(faceted/BoboBrowse): {0} total hits ({1}ms)", browseResult.NumHits, stopwatch.ElapsedMilliseconds));
 
@@ -341,7 +341,7 @@ namespace Adxstudio.Xrm.Search.Facets
 
 			stopwatch.Stop();
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Lucene(faceted/BoboBrowse): {0} total hits ({1}ms)", browseResult.NumHits, stopwatch.ElapsedMilliseconds));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Lucene(faceted/BoboBrowse): {0} total hits ({1}ms)", browseResult.NumHits, stopwatch.ElapsedMilliseconds));
 
             PortalFeatureTrace.TraceInstance.LogSearch(FeatureTraceCategory.Search, browseResult.NumHits, stopwatch.ElapsedMilliseconds, string.Format("Lucene(faceted/BoboBrowse): {0} total hits ({1}ms)", browseResult.NumHits, stopwatch.ElapsedMilliseconds));
 

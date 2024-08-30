@@ -28,11 +28,11 @@ namespace Adxstudio.Xrm.Cms
 				return null;
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", snippetName));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", snippetName));
 
 			var snippetNode = ContentMapProvider.Using(contentMap => contentMap.GetSnippetNode(snippetName, Language));
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}", snippetName));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}", snippetName));
 
 			return ToSnippet(snippetNode);
 		}

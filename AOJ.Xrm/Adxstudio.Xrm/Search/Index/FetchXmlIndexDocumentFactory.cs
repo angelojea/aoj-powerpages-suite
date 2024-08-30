@@ -125,7 +125,7 @@ namespace Adxstudio.Xrm.Search.Index
 						{
 							if (entityMetadata.LogicalName == "adx_webpage")
 							{
-								ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "CMS is enabled. Adding roles for adx_webpage index");
+								ADXTrace.TraceInfo(TraceCategory.Monitoring, "CMS is enabled. Adding roles for adx_webpage index");
 
 								var ruleNames = CmsIndexHelper.GetWebPageWebRoles(_contentMapProvider, primaryKey);
 								AddWebRolesToDocument(document, ruleNames);
@@ -133,7 +133,7 @@ namespace Adxstudio.Xrm.Search.Index
 
 							if (entityMetadata.LogicalName == "adx_ideaforum")
 							{
-								ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "CMS is enabled. Adding roles for adx_ideaforum index");
+								ADXTrace.TraceInfo(TraceCategory.Monitoring, "CMS is enabled. Adding roles for adx_ideaforum index");
 
 								var ruleNames = CmsIndexHelper.GetIdeaForumWebRoles(_contentMapProvider, primaryKey);
 								AddWebRolesToDocument(document, ruleNames);
@@ -141,7 +141,7 @@ namespace Adxstudio.Xrm.Search.Index
 
 							if (entityMetadata.LogicalName == "adx_communityforum")
 							{
-								ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "CMS is enabled. Adding roles for adx_communityforum index");
+								ADXTrace.TraceInfo(TraceCategory.Monitoring, "CMS is enabled. Adding roles for adx_communityforum index");
 
 								var ruleNames = CmsIndexHelper.GetForumsWebRoles(_contentMapProvider, primaryKey);
 								AddWebRolesToDocument(document, ruleNames);
@@ -154,7 +154,7 @@ namespace Adxstudio.Xrm.Search.Index
 					{
 						if (fetchXmlField.Name == "adx_ideaforumid" && entityMetadata.LogicalName == "adx_idea")
 						{
-							ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "CMS is enabled. Adding roles for adx_idea index");
+							ADXTrace.TraceInfo(TraceCategory.Monitoring, "CMS is enabled. Adding roles for adx_idea index");
 
 							var ruleNames = CmsIndexHelper.GetIdeaForumWebRoles(
 							_contentMapProvider,
@@ -167,7 +167,7 @@ namespace Adxstudio.Xrm.Search.Index
 							|| (fetchXmlField.Name == "adx_blog_blogpost.adx_parentpageid" && entityMetadata.LogicalName == "adx_blogpost")
 							|| (fetchXmlField.Name == "adx_parentpageid" && entityMetadata.LogicalName == "adx_webfile"))
 						{
-							ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("CMS is enabled. Adding roles for {0} index", fetchXmlField.Name));
+							ADXTrace.TraceInfo(TraceCategory.Monitoring, string.Format("CMS is enabled. Adding roles for {0} index", fetchXmlField.Name));
 
 							var ruleNames = CmsIndexHelper.GetWebPageWebRoles(_contentMapProvider, new Guid(fetchXmlField.Value));
 							AddWebRolesToDocument(document, ruleNames);
@@ -176,7 +176,7 @@ namespace Adxstudio.Xrm.Search.Index
 						if ((fetchXmlField.Name == "adx_forumid" && entityMetadata.LogicalName == "adx_communityforumthread")
 						|| (fetchXmlField.Name == "adx_communityforumpost_communityforumthread.adx_forumid" && entityMetadata.LogicalName == "adx_communityforumpost"))
 						{
-							ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("CMS is enabled. Adding roles for {0} index", fetchXmlField.Name));
+							ADXTrace.TraceInfo(TraceCategory.Monitoring, string.Format("CMS is enabled. Adding roles for {0} index", fetchXmlField.Name));
 
 							var ruleNames = CmsIndexHelper.GetForumsWebRoles(
 							_contentMapProvider,
@@ -349,7 +349,7 @@ namespace Adxstudio.Xrm.Search.Index
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error: Exception when trying to create the index document. {0}", e));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Error: Exception when trying to create the index document. {0}", e));
 			}
 			return new CrmEntityIndexDocument(document, _index.Analyzer, primaryKey);
 		}
@@ -419,7 +419,7 @@ namespace Adxstudio.Xrm.Search.Index
 			{
 				foreach (var rule in roleNames)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("Adding rule: {0}", rule));
+					ADXTrace.TraceInfo(TraceCategory.Monitoring, string.Format("Adding rule: {0}", rule));
 
 					document.Add(
 						new Field(_index.WebRoleFieldName, rule, Field.Store.NO, Field.Index.NOT_ANALYZED));

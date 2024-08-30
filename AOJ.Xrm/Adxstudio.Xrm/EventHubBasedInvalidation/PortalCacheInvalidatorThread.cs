@@ -47,13 +47,13 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 		{
 			lock (mutexLockObject)
 			{
-				ADXTrace.Instance.TraceVerbose(TraceCategory.Application, "Cache Invalidation lock acquired ");
+				ADXTrace.TraceVerbose(TraceCategory.Application, "Cache Invalidation lock acquired ");
 
 				// we want to happen this in lock state since order of update is important
 				InvalidateEntityRecordCache(context, websiteId);
 				InvalidateMetadataCache();
 
-				ADXTrace.Instance.TraceVerbose(TraceCategory.Application, "Cache Invalidation lock released ");
+				ADXTrace.TraceVerbose(TraceCategory.Application, "Cache Invalidation lock released ");
 			}
 		}
 
@@ -100,7 +100,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			if (crmQueryResults == null || crmQueryResults.UpdatedEntityRecords == null || !crmQueryResults.UpdatedEntityRecords.Any())
 				return;
 
-			ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Dirty Entity Count {0} ,Processing Entity Count {1} , Changed Entity Record Count {2} ", dirty.Count, processingRecords.Count, crmQueryResults.UpdatedEntityRecords.Count));
+			ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Dirty Entity Count {0} ,Processing Entity Count {1} , Changed Entity Record Count {2} ", dirty.Count, processingRecords.Count, crmQueryResults.UpdatedEntityRecords.Count));
 
 			var timeStampTable = isSearchIndexInvalidation ? NotificationUpdateManager.Instance.TimeStampsForSearchIndex : NotificationUpdateManager.Instance.TimeStampsForCache;
 
@@ -157,7 +157,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 
 			entries.ToList().ForEach(traceEntry =>
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application,
+				ADXTrace.TraceInfo(TraceCategory.Application,
 					string.Format("Overall the '{0}' change took {1} to propagate\n\tMessage to reach portal through Azure: {2}\n\tSleep and Retreival of change from CRM: {3}",
 					traceEntry.EntityLogicalName,
 					traceEntry.OverallDelta,
@@ -206,7 +206,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 						{
 							if (changedItem.Target != null)
 							{
-								ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Posting Request for message with Entity: {0} and ChangeType: {1}", changedItem.Target.LogicalName, changedItem.MessageName));
+								ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Posting Request for message with Entity: {0} and ChangeType: {1}", changedItem.Target.LogicalName, changedItem.MessageName));
 							}
 
 							var restartMessage = new ApplicationRestartPortalBusMessage();
@@ -243,7 +243,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 						else
 						{
 							//logging
-							ADXTrace.Instance.TraceWarning(TraceCategory.Application, "ChangedItem Record is Null ");
+							ADXTrace.TraceWarning(TraceCategory.Application, "ChangedItem Record is Null ");
 						}
 					}
 					if (batchedPluginMessage.Count > 0)
@@ -258,7 +258,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 							catch (Exception e)
 							{
 								// Even if exception occurs, we still need to invalidate cache, hence cathing exception here and logging error.
-								ADXTrace.Instance.TraceError(TraceCategory.Exception, e.ToString());
+								ADXTrace.TraceError(TraceCategory.Exception, e.ToString());
 							}
 							InvalidateCache(batchedPluginMessage);
 						}
@@ -279,7 +279,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, e.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, e.ToString());
 				return entitiesWithSuccessfulInvalidation;
 			}
 		}
@@ -298,7 +298,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 				? batchedPluginMessage[0].Target.LogicalName
 				: batchedPluginMessage[0].MessageName;
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Posting Batch Cache Invalidation Request for {0}  with Count {1} ", messageName, batchedPluginMessage.Count));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Posting Batch Cache Invalidation Request for {0}  with Count {1} ", messageName, batchedPluginMessage.Count));
 
 			retryPolicy.Value.ExecuteAction(() => CacheInvalidation.ProcessMessage(cacheMessage));
 		}

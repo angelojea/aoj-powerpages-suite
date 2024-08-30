@@ -179,14 +179,14 @@ namespace Adxstudio.Xrm.AspNet.Cms
 
 			if (existingBinding != null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "A matching website binding already exists. Skip binding creation.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "A matching website binding already exists. Skip binding creation.");
 
 				return ToKey(existingBinding.Entity.Id);
 		}
 
 			// binding does not exist
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Creating new website binding.");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Creating new website binding.");
 
 			var newBinding = website.AddWebsiteBinding(environment);
 
@@ -278,7 +278,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 				{
 					await Store.UpdateAsync(tempWebsite);
 
-					ADXTrace.Instance.TraceWarning(TraceCategory.Application, "Duplicate website binding detected and deleted.");
+					ADXTrace.TraceWarning(TraceCategory.Application, "Duplicate website binding detected and deleted.");
 				}
 			}
 		}

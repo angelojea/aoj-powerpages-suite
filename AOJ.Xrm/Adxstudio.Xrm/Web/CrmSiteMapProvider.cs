@@ -244,7 +244,7 @@ namespace Adxstudio.Xrm.Web
 					}
 					catch (Exception e)
 					{
-						ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Exception creating child node for node child entity [{0}:{1}]: {2}", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id, e));
+						ADXTrace.TraceError(TraceCategory.Application, string.Format(@"Exception creating child node for node child entity [{0}:{1}]: {2}", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id, e));
 					}
 				}
 			}

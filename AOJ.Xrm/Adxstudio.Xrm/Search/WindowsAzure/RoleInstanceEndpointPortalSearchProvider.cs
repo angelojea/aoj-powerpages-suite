@@ -58,7 +58,7 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 
 		private void OnServiceChannelFactoryFaulted(object sender, EventArgs e)
 		{
-            ADXTrace.Instance.TraceError(TraceCategory.Application, "Service channel factory faulted.");
+            ADXTrace.TraceError(TraceCategory.Application, "Service channel factory faulted.");
         }
 
 		public override ICrmEntityIndexBuilder GetIndexBuilder()
@@ -134,7 +134,7 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
 
                 throw;
 			}
@@ -186,7 +186,7 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
+					ADXTrace.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
 
                     throw;
 				}
@@ -286,7 +286,7 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
+					ADXTrace.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
 
                     throw;
 				}
@@ -389,7 +389,7 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
+					ADXTrace.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
 
                     throw;
 				}
@@ -403,7 +403,7 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
+					ADXTrace.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
 
                     throw;
 				}
@@ -417,7 +417,7 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
+					ADXTrace.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
 
                     throw;
 				}
@@ -431,7 +431,7 @@ namespace Adxstudio.Xrm.Search.WindowsAzure
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
+					ADXTrace.TraceError(TraceCategory.Application, string.Format("Service exception: {0}", e));
 
                     throw;
 				}

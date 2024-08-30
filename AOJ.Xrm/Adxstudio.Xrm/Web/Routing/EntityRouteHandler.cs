@@ -77,7 +77,7 @@ namespace Adxstudio.Xrm.Web.Routing
 							{
 								if (!AssertKnowledgeArticleCalAndProductFiltering(annotation, context, contentAccessLevelProvider, productAccessProvider))
 								{
-									ADXTrace.Instance.TraceInfo(TraceCategory.Application, $"Access to {EntityNamePrivacy.GetEntityName(annotation.LogicalName)} was denied. Id:{id} RegardingId={regarding.Id} RegardingLogicalName={EntityNamePrivacy.GetEntityName(regarding.LogicalName)}");
+									ADXTrace.TraceInfo(TraceCategory.Application, $"Access to {EntityNamePrivacy.GetEntityName(annotation.LogicalName)} was denied. Id:{id} RegardingId={regarding.Id} RegardingLogicalName={EntityNamePrivacy.GetEntityName(regarding.LogicalName)}");
 									handler = null;
 									return false;
 								}
@@ -86,13 +86,13 @@ namespace Adxstudio.Xrm.Web.Routing
 							// Assert Entity Permissions on the knowledge article.
 							if (TryAssertByCrmEntityPermissionProvider(context, regarding))
 							{
-								ADXTrace.Instance.TraceInfo(TraceCategory.Application, $"Access to {EntityNamePrivacy.GetEntityName(annotation.LogicalName)} was granted. Id:{id} RegardingId={regarding.Id} RegardingLogicalName={EntityNamePrivacy.GetEntityName(regarding.LogicalName)}");
+								ADXTrace.TraceInfo(TraceCategory.Application, $"Access to {EntityNamePrivacy.GetEntityName(annotation.LogicalName)} was granted. Id:{id} RegardingId={regarding.Id} RegardingLogicalName={EntityNamePrivacy.GetEntityName(regarding.LogicalName)}");
 								handler = CreateAnnotationHandler(annotation);
 								return true;
 							}
 						}
 
-						ADXTrace.Instance.TraceInfo(TraceCategory.Application, $"Access to {EntityNamePrivacy.GetEntityName(annotation.LogicalName)} was denied. Id:{id} RegardingId={regarding.Id} RegardingLogicalName={EntityNamePrivacy.GetEntityName(regarding.LogicalName)}");
+						ADXTrace.TraceInfo(TraceCategory.Application, $"Access to {EntityNamePrivacy.GetEntityName(annotation.LogicalName)} was denied. Id:{id} RegardingId={regarding.Id} RegardingLogicalName={EntityNamePrivacy.GetEntityName(regarding.LogicalName)}");
 						handler = null;
 						return false;
 					}
@@ -100,7 +100,7 @@ namespace Adxstudio.Xrm.Web.Routing
 					// Assert CMS security on the regarding entity or assert entity permission on the annotation and the regarding entity.
 					if (TryAssertByCrmEntitySecurityProvider(context, regarding) || TryAssertByCrmEntityPermissionProvider(context, annotation, regarding))
 					{
-						ADXTrace.Instance.TraceInfo(TraceCategory.Application, $"Access to {EntityNamePrivacy.GetEntityName(annotation.LogicalName)} was granted. Id={id} RegardingId={regarding?.Id} RegardingLogicalName={EntityNamePrivacy.GetEntityName(regarding?.LogicalName)}");
+						ADXTrace.TraceInfo(TraceCategory.Application, $"Access to {EntityNamePrivacy.GetEntityName(annotation.LogicalName)} was granted. Id={id} RegardingId={regarding?.Id} RegardingLogicalName={EntityNamePrivacy.GetEntityName(regarding?.LogicalName)}");
 						handler = CreateAnnotationHandler(annotation);
 						return true;
 					}

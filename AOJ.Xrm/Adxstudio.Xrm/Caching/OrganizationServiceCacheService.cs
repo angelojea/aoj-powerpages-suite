@@ -53,20 +53,20 @@ namespace Adxstudio.Xrm.Caching
 			{
 				message.ThrowOnNull("message");
 
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("MessageName={0}, ServiceCacheName={1}, ConnectionStringName={2}", message.MessageName, message.ServiceCacheName, message.ConnectionStringName));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format("MessageName={0}, ServiceCacheName={1}, ConnectionStringName={2}", message.MessageName, message.ServiceCacheName, message.ConnectionStringName));
 
 				if (message.Target != null && message.Relationship == null)
 				{
 					var entity = message.Target.ToEntityReference();
 
-                    ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Id={0}, LogicalName={1}", entity.Id, EntityNamePrivacy.GetEntityName(entity.LogicalName)));
+                    ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Id={0}, LogicalName={1}", entity.Id, EntityNamePrivacy.GetEntityName(entity.LogicalName)));
 				}
 
 				if (message.Category != null)
 				{
 					var category = message.Category.Value;
 
-                    ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("category={0}", category));
+                    ADXTrace.TraceInfo(TraceCategory.Application, string.Format("category={0}", category));
 				}
 
 				if (message.Target != null && message.Relationship != null && message.RelatedEntities != null)
@@ -75,10 +75,10 @@ namespace Adxstudio.Xrm.Caching
 					var relationship = message.Relationship.ToRelationship();
 					var relatedEntities = message.RelatedEntities.ToEntityReferenceCollection();
 
-                    ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Target: Id={0}, LogicalName={1}", target.Id, EntityNamePrivacy.GetEntityName(target.LogicalName)));
+                    ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Target: Id={0}, LogicalName={1}", target.Id, EntityNamePrivacy.GetEntityName(target.LogicalName)));
                     foreach (var entity in relatedEntities)
 					{
-                        ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Related: Id={0}, LogicalName={1}", entity.Id, EntityNamePrivacy.GetEntityName(entity.LogicalName)));
+                        ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Related: Id={0}, LogicalName={1}", entity.Id, EntityNamePrivacy.GetEntityName(entity.LogicalName)));
                     }
 				}
 
@@ -86,7 +86,7 @@ namespace Adxstudio.Xrm.Caching
 			}
 			catch (Exception error)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, error.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, error.ToString());
 			}
 		}
 	}

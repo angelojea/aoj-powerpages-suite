@@ -54,7 +54,7 @@ namespace Adxstudio.Xrm.Forums
 
 		public IForumThread Select()
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Thread={0}: Start", ForumThread.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Thread={0}: Start", ForumThread.Id));
 
 			var serviceContext = Dependencies.GetServiceContext();
 
@@ -62,7 +62,7 @@ namespace Adxstudio.Xrm.Forums
 
 			if (entity == null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Thread={0}: Not Found", ForumThread.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Thread={0}: Not Found", ForumThread.Id));
 
 				return null;
 			}
@@ -71,7 +71,7 @@ namespace Adxstudio.Xrm.Forums
 
 			if (!securityProvider.TryAssert(serviceContext, entity, CrmEntityRight.Read))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Thread={0}: Not Found", ForumThread.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Thread={0}: Not Found", ForumThread.Id));
 
 				return null;
 			}
@@ -89,7 +89,7 @@ namespace Adxstudio.Xrm.Forums
 				// SelectPostCount will generally be used instead.
 				() => counterStrategy.GetForumThreadPostCount(serviceContext, entity));
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Thread={0}: End", ForumThread.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Thread={0}: End", ForumThread.Id));
 
 			if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.TelemetryFeatureUsage))
 			{
@@ -108,7 +108,7 @@ namespace Adxstudio.Xrm.Forums
 				throw new ArgumentException(string.Format("Value must have logical name '{0}'", user.LogicalName), "user");
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}:{1}", user.LogicalName, user.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}:{1}", user.LogicalName, user.Id));
 
 			var serviceContext = Dependencies.GetServiceContextForWrite();
 
@@ -116,7 +116,7 @@ namespace Adxstudio.Xrm.Forums
 
 			if (existingAlert != null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}, Alert Exists", user.LogicalName, user.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}, Alert Exists", user.LogicalName, user.Id));
 
 				return;
 			}
@@ -129,14 +129,14 @@ namespace Adxstudio.Xrm.Forums
 			serviceContext.AddObject(alert);
 			serviceContext.SaveChanges();
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}", user.LogicalName, user.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}", user.LogicalName, user.Id));
 		}
 
 		public IForumPost CreatePost(IForumPostSubmission forumPost, bool incrementForumThreadCount = false)
 		{
 			if (forumPost == null) throw new ArgumentNullException("forumPost");
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var serviceContext = Dependencies.GetServiceContextForWrite();
 
@@ -184,7 +184,7 @@ namespace Adxstudio.Xrm.Forums
 
 			var post = SelectPost(entityReference.Id);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+			ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.TelemetryFeatureUsage))
 			{
@@ -198,7 +198,7 @@ namespace Adxstudio.Xrm.Forums
 		{
 			if (forumPost == null) throw new ArgumentNullException("forumPost");
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var entityReference = ((IForumPostInfo)forumPost).EntityReference;
 
@@ -231,14 +231,14 @@ namespace Adxstudio.Xrm.Forums
 				PortalFeatureTrace.TraceInstance.LogFeatureUsage(FeatureTraceCategory.Forum, HttpContext.Current, "edit_forum_post", 1, entityReference, "edit");
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+			ADXTrace.TraceInfo(TraceCategory.Application, "End");
 		}
 
 		public void DeleteAlert(EntityReference user)
 		{
 			if (user == null) throw new ArgumentNullException("user");
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}:{1}", user.LogicalName, user.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}:{1}", user.LogicalName, user.Id));
 
 			var serviceContext = Dependencies.GetServiceContextForWrite();
 
@@ -246,7 +246,7 @@ namespace Adxstudio.Xrm.Forums
 
 			if (existingAlert == null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}, Alert Not Found", user.LogicalName, user.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}, Alert Not Found", user.LogicalName, user.Id));
 
 				return;
 			}
@@ -254,7 +254,7 @@ namespace Adxstudio.Xrm.Forums
 			serviceContext.DeleteObject(existingAlert);
 			serviceContext.SaveChanges();
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}", user.LogicalName, user.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}", user.LogicalName, user.Id));
 		}
 
 		public void DeletePost(EntityReference forumPost)
@@ -509,21 +509,21 @@ namespace Adxstudio.Xrm.Forums
 		{
 			if (user == null) throw new ArgumentNullException("user");
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}:{1}", user.LogicalName, user.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}:{1}", user.LogicalName, user.Id));
 
 			var serviceContext = Dependencies.GetServiceContext();
 			var existingAlert = SelectAlert(serviceContext, user);
 
 			var hasAlert = existingAlert != null;
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}, {2}", user.LogicalName, user.Id, hasAlert));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}:{1}, {2}", user.LogicalName, user.Id, hasAlert));
 
 			return hasAlert;
 		}
 
 		public int SelectPostCount()
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var serviceContext = Dependencies.GetServiceContext();
 			var entity = SelectEntity(serviceContext);
@@ -537,7 +537,7 @@ namespace Adxstudio.Xrm.Forums
 
 			var postCount = counterStrategy.GetForumThreadPostCount(serviceContext, entity);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+			ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return postCount;
 		}
@@ -559,7 +559,7 @@ namespace Adxstudio.Xrm.Forums
 
 		public IEnumerable<IForumPost> SelectPosts(bool descending, int startRowIndex, int maximumRows = -1)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("startRowIndex={0}, maximumRows={1}: Start", startRowIndex, maximumRows));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("startRowIndex={0}, maximumRows={1}: Start", startRowIndex, maximumRows));
 
 			if (startRowIndex < 0)
 			{
@@ -623,7 +623,7 @@ namespace Adxstudio.Xrm.Forums
 						&& !thread.Locked, LazyThreadSafetyMode.None));
 			}).ToArray();
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+			ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return posts;
 		}

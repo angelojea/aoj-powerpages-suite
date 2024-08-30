@@ -82,7 +82,7 @@ namespace Adxstudio.Xrm.Web
 				throw new ArgumentException(string.Format("Unable to retrieve the Id of the website. {0}", string.Empty), "website");
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "LookupPageByUrlPath ENTER URL");
+			ADXTrace.TraceInfo(TraceCategory.Monitoring, "LookupPageByUrlPath ENTER URL");
 
 			var pages = website.WebPages.Where(predicate).ToArray();
 
@@ -97,7 +97,7 @@ namespace Adxstudio.Xrm.Web
 				// maintain it here.)
 				// NOTE: requests for web files (ex: .png, .css) and bad links all come here.
 				var mappingResult = FilterResultsOnLanguage(pages, p => IsPartialUrlMatch(p, urlPath), lookupOption, languageContext);
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("LookupPageByUrlPath (1)pathMatch.Fail URL {0}", mappingResult.Node == null ? "NULL" : "Found"));
+				ADXTrace.TraceInfo(TraceCategory.Monitoring, string.Format("LookupPageByUrlPath (1)pathMatch.Fail URL {0}", mappingResult.Node == null ? "NULL" : "Found"));
 				return mappingResult;
 			}
 
@@ -112,14 +112,14 @@ namespace Adxstudio.Xrm.Web
 
 			if (fullPathMatchPageResult.Node != null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "LookupPageByUrlPath (2)fullPathMatchPage ");
+				ADXTrace.TraceInfo(TraceCategory.Monitoring, "LookupPageByUrlPath (2)fullPathMatchPage ");
 				return fullPathMatchPageResult;
 			}
 
 			// If we don't have non-empty parentPath and childPath, lookup fails.
 			if (string.IsNullOrEmpty(parentPath) || string.IsNullOrEmpty(childPath))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "LookupPageByUrlPath (3)parent/child path null ");
+				ADXTrace.TraceInfo(TraceCategory.Monitoring, "LookupPageByUrlPath (3)parent/child path null ");
 				return UrlMappingResult<WebPageNode>.MatchResult(null);
 			}
 
@@ -134,13 +134,13 @@ namespace Adxstudio.Xrm.Web
 			// Ignore IsUnique here, trying to find any possible match.
 			if (parentPageFilterResult.Node == null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "LookupPageByUrlPath (4)parent page null ");
+				ADXTrace.TraceInfo(TraceCategory.Monitoring, "LookupPageByUrlPath (4)parent page null ");
 				return parentPageFilterResult;
 			}
 
 			// Look for a partial URL match for childPath, among the children of the returned parent page.
 			var result = FilterResultsOnLanguage(parentPageFilterResult.Node.WebPages, p => predicate(p) && IsPartialUrlMatch(p, childPath), lookupOption, languageContext);
-			ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("LookupPageByUrlPath (5)searchByParent {0}", result.Node == null ? "NULL" : "Found"));
+			ADXTrace.TraceInfo(TraceCategory.Monitoring, string.Format("LookupPageByUrlPath (5)searchByParent {0}", result.Node == null ? "NULL" : "Found"));
 			return result;
 		}
 
@@ -235,13 +235,13 @@ namespace Adxstudio.Xrm.Web
 
 					if (file != null)
 					{
-						ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "LookupFILEByUrlPath Found");
+						ADXTrace.TraceInfo(TraceCategory.Monitoring, "LookupFILEByUrlPath Found");
 						return file;
 					}
 				}
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "LookupFILEByUrlPath NULL");
+			ADXTrace.TraceInfo(TraceCategory.Monitoring, "LookupFILEByUrlPath NULL");
 			return null;
 		}
 

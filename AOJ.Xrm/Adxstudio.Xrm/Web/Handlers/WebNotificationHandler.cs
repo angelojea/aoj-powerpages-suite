@@ -63,7 +63,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 
 				if (!onlineEnabled)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Web Notifications are not enabled.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "Web Notifications are not enabled.");
 
 					response.StatusCode = 404;
 					response.StatusDescription = "Not Found";
@@ -74,7 +74,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 					return;
 				}
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Web Notifications are enabled with cloud application setting 'WebNotifications.Enabled'.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Web Notifications are enabled with cloud application setting 'WebNotifications.Enabled'.");
 			}
 
 			if (context.Request.HttpMethod == "GET")
@@ -181,7 +181,7 @@ namespace Adxstudio.Xrm.Web.Handlers
 			}
 			catch (TaskCanceledException e)
 			{
-				ADXTrace.Instance.TraceWarning(TraceCategory.Application, e.Message);
+				ADXTrace.TraceWarning(TraceCategory.Application, e.Message);
 			}
 		}
 	}

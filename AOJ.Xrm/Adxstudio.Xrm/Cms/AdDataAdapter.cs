@@ -32,16 +32,16 @@ namespace Adxstudio.Xrm.Cms
 
 		public IAd SelectAd(Guid adId)
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", adId));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", adId));
 
 			var ad = SelectAd(e => e.GetAttributeValue<Guid>("adx_adid") == adId);
 
 			if (ad == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Not Found");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Not Found");
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}", adId));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}", adId));
 
 			return ad;
 		}
@@ -53,16 +53,16 @@ namespace Adxstudio.Xrm.Cms
 				return null;
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+            ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var ad = SelectAd(e => e.GetAttributeValue<string>("adx_name") == adName);
 
 			if (ad == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Not Found");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Not Found");
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+            ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return ad;
 		}
@@ -96,17 +96,17 @@ namespace Adxstudio.Xrm.Cms
 
 		public IAdPlacement SelectAdPlacement(Guid adPlacementId)
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}",
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}",
 				adPlacementId));
 
 			var adPlacement = SelectAdPlacement(e => e.GetAttributeValue<Guid>("adx_adplacementid") == adPlacementId);
 
 			if (adPlacement == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Not Found");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Not Found");
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}",
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}",
 				adPlacementId));
 
 			return adPlacement;
@@ -119,16 +119,16 @@ namespace Adxstudio.Xrm.Cms
 				return null;
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+            ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var adPlacement = SelectAdPlacement(e => e.GetAttributeValue<string>("adx_name") == adPlacementName);
 
 			if (adPlacement == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Not Found");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Not Found");
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+            ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
             return adPlacement;
 		}

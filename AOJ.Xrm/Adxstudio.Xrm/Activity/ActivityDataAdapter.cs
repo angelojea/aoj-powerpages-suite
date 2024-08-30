@@ -60,7 +60,7 @@ namespace Adxstudio.Xrm.Activity
 
 			if (pageSize > DefaultMaxPageSize)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format(
                     "pageSize={0} is greater than the allowed maximum page size of {1}. Page size has been constrained to {1}.",
 					pageSize, DefaultMaxPageSize));
 				pageSize = DefaultMaxPageSize;

@@ -44,13 +44,13 @@ namespace Adxstudio.Xrm.Forums.Security
 		{
 			forum.AssertEntityName("adx_communityforum");
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Testing right {0} on forum '{1}' ({2}).", right, forum.GetAttributeValue<string>("adx_name"), forum.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Testing right {0} on forum '{1}' ({2}).", right, forum.GetAttributeValue<string>("adx_name"), forum.Id));
 
 			AddDependencies(dependencies, forum, new[] { "adx_webrole", "adx_communityforumaccesspermission" });
 
 			if (!Roles.Enabled)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Roles are not enabled for this application. Allowing Read, but not Change.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Roles are not enabled for this application. Allowing Read, but not Change.");
 
 				// If roles are not enabled on the site, grant Read, deny Change.
 				return (right == CrmEntityRight.Read);
@@ -86,7 +86,7 @@ namespace Adxstudio.Xrm.Forums.Security
 					// ...and the rule is GrantChange...
 					if (ruleGrouping.Key.Right == RightOption.GrantChange)
 					{
-						ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("User has right Change on forum ({0}). Permission granted.", ruleGrouping.Key.ForumID));
+						ADXTrace.TraceInfo(TraceCategory.Application, string.Format("User has right Change on forum ({0}). Permission granted.", ruleGrouping.Key.ForumID));
 
 						// ...the user has all rights.
 						return true;
@@ -96,7 +96,7 @@ namespace Adxstudio.Xrm.Forums.Security
 				// is read...
 				else if (ruleGrouping.Key.Right == RightOption.RestrictRead && right == CrmEntityRight.Read)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("User does not have right Read due to read restriction on forum ({0}). Permission denied.", ruleGrouping.Key.ForumID));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("User does not have right Read due to read restriction on forum ({0}). Permission denied.", ruleGrouping.Key.ForumID));
 
 					// ...the user has no right.
 					return false;
@@ -111,12 +111,12 @@ namespace Adxstudio.Xrm.Forums.Security
 			// If there is no parent web page, grant Read by default, and deny Change.
 			if (parentWebPage == null || parentPageNode == null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "No access control rules apply to the current user and forum. Allowing Read, but not Change.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "No access control rules apply to the current user and forum. Allowing Read, but not Change.");
 
 				return (right == CrmEntityRight.Read);
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "No access control rules apply to the current user and forum. Asserting right on parent web page.");
+			ADXTrace.TraceInfo(TraceCategory.Application, "No access control rules apply to the current user and forum. Asserting right on parent web page.");
 
 			return _webPageAccessControlProvider.TryAssert(context, parentPageNode.ToEntity(), right, dependencies);
 		}

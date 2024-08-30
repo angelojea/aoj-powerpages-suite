@@ -190,7 +190,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityListView
 								}
 								else if (!string.IsNullOrEmpty(filterEntityName) && !string.IsNullOrEmpty(filterRelationshipName))
 								{
-                                    ADXTrace.Instance.TraceInfo(TraceCategory.Application,
+                                    ADXTrace.TraceInfo(TraceCategory.Application,
 	                                    $"Could not filter option list: user is not of type {filterEntityName}");
 								}
 
@@ -199,7 +199,7 @@ namespace Adxstudio.Xrm.Web.UI.CrmEntityListView
 									r => ToFilterOption(context.GetEntityMetadata(link.Name), r, labelColumn, selected));
 							}
 
-                            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format(
+                            ADXTrace.TraceInfo(TraceCategory.Application, string.Format(
 								"Could not add filter condition: dynamic filter condition is not valid", filterEntityName));
 						}
 					}

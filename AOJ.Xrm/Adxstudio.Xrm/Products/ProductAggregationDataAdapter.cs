@@ -95,7 +95,7 @@ namespace Adxstudio.Xrm.Products
 
 		public IEnumerable<IProduct> SelectProducts(string brand, int? rating, int startRowIndex, int maximumRows, string sortExpression)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("brand={0}, rating={1}, startRowIndex={2}, maximumRows={3}, sortExpression={4}: Start", brand, rating, startRowIndex, maximumRows, sortExpression));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("brand={0}, rating={1}, startRowIndex={2}, maximumRows={3}, sortExpression={4}: Start", brand, rating, startRowIndex, maximumRows, sortExpression));
 
 			if (startRowIndex < 0)
 			{
@@ -146,7 +146,7 @@ namespace Adxstudio.Xrm.Products
 
 			var products = new ProductFactory(serviceContext, user, website).Create(query);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+			ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			if (FeatureCheckHelper.IsFeatureEnabled(FeatureNames.TelemetryFeatureUsage))
 			{
@@ -178,13 +178,13 @@ namespace Adxstudio.Xrm.Products
 
 		public int SelectProductCount(string brand, int? rating)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("brand={0}, rating={1}: Start", brand, rating));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("brand={0}, rating={1}: Start", brand, rating));
 
 			var serviceContext = Dependencies.GetServiceContext();
 
 			var count = SelectCount(serviceContext, brand, rating);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+			ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return count;
 		}

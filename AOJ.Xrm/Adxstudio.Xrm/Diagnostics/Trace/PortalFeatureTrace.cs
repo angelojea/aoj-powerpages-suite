@@ -175,7 +175,7 @@ namespace Adxstudio.Xrm
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Exception, "LogFeatureUsage: received unexpected exception. Message: " + ex.Message);
+				ADXTrace.TraceError(TraceCategory.Exception, "LogFeatureUsage: received unexpected exception. Message: " + ex.Message);
 			}
 		}
 		#endregion FeatureUsage
@@ -224,7 +224,7 @@ namespace Adxstudio.Xrm
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Exception, "LogAuthentication: received unexpected exception. Message: " + ex.Message);
+				ADXTrace.TraceError(TraceCategory.Exception, "LogAuthentication: received unexpected exception. Message: " + ex.Message);
 			}
 		}
 
@@ -256,7 +256,7 @@ namespace Adxstudio.Xrm
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Exception, "LogAuthentication: received unexpected exception. Message: " + ex.Message);
+				ADXTrace.TraceError(TraceCategory.Exception, "LogAuthentication: received unexpected exception. Message: " + ex.Message);
 			}
 		}
 		#endregion Authentication
@@ -386,7 +386,7 @@ namespace Adxstudio.Xrm
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Exception, "LogSessionInfo: received unexpected exception. Message: " + ex.Message);
+				ADXTrace.TraceError(TraceCategory.Exception, "LogSessionInfo: received unexpected exception. Message: " + ex.Message);
 			}
 		}
 
@@ -441,7 +441,7 @@ namespace Adxstudio.Xrm
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Exception, "LogFeatureUsage: received unexpected exception. Message: " + ex.Message);
+				ADXTrace.TraceError(TraceCategory.Exception, "LogFeatureUsage: received unexpected exception. Message: " + ex.Message);
 			}
 		}
 
@@ -488,7 +488,7 @@ namespace Adxstudio.Xrm
 			}
 			catch (Exception ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Exception, "LogAuthentication: received unexpected exception. Message: " + ex.Message);
+				ADXTrace.TraceError(TraceCategory.Exception, "LogAuthentication: received unexpected exception. Message: " + ex.Message);
 			}
 		}
 
@@ -537,7 +537,7 @@ namespace Adxstudio.Xrm
             }
             catch (Exception ex)
             {
-                ADXTrace.Instance.TraceError(TraceCategory.Exception, "LogSearch: received an unexpected exception. Message: " + ex.Message);
+                ADXTrace.TraceError(TraceCategory.Exception, "LogSearch: received an unexpected exception. Message: " + ex.Message);
             }
         }
 	}

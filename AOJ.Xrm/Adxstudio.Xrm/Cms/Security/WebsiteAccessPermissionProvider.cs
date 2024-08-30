@@ -133,7 +133,7 @@ namespace Adxstudio.Xrm.Cms.Security
 			// If Roles are not enabled on the site, deny permission.
 			if (!Roles.Enabled)
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, "Roles are not enabled for this application.Permission denied.");
+                ADXTrace.TraceError(TraceCategory.Application, "Roles are not enabled for this application.Permission denied.");
 
                 return false;
 			}
@@ -142,7 +142,7 @@ namespace Adxstudio.Xrm.Cms.Security
 
 			if (!userRoles.Any())
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "No roles were found for the current user. Permission denied.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "No roles were found for the current user. Permission denied.");
 
 				return false;
 			}
@@ -152,7 +152,7 @@ namespace Adxstudio.Xrm.Cms.Security
 			// If no access permissions are defined for this site, deny permission.
 			if (rules == null || !rules.Any())
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "No website access permission rules were found for the current website. Permission denied.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "No website access permission rules were found for the current website. Permission denied.");
 
 				return false;
 			}
@@ -187,7 +187,7 @@ namespace Adxstudio.Xrm.Cms.Security
 			// If Roles are not enabled on the site, deny permission.
 			if (!Roles.Enabled)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "Roles are not enabled for this application. Permission denied.");
+				ADXTrace.TraceError(TraceCategory.Application, "Roles are not enabled for this application. Permission denied.");
 
 				return false;
 			}
@@ -202,7 +202,7 @@ namespace Adxstudio.Xrm.Cms.Security
 
 			if (!userRoles.Any())
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "No roles were found for the current user. Permission denied.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "No roles were found for the current user. Permission denied.");
 
 				return false;
 			}
@@ -233,7 +233,7 @@ namespace Adxstudio.Xrm.Cms.Security
 			// If no access permissions are defined for this site, deny permission.
 			if (!rules.Any())
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "No website access permission rules were found for the current website. Permission denied.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "No website access permission rules were found for the current website. Permission denied.");
 
 				return false;
 			}

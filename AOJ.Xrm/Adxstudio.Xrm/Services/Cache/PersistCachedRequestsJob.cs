@@ -89,7 +89,7 @@ namespace Adxstudio.Xrm.Services.Cache
 
 						if (expired)
 						{
-							ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Deleting: " + file.FullName);
+							ADXTrace.TraceInfo(TraceCategory.Application, "Deleting: " + file.FullName);
 
 							Settings.AppDataRetryPolicy.FileDelete(file);
 						}
@@ -136,7 +136,7 @@ namespace Adxstudio.Xrm.Services.Cache
 				var fullPath = Path.Combine(folderPath, filename);
 				var bytes = MachineKey.Protect(Encoding.UTF8.GetBytes(request), Settings.GetType().ToString());
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Writing: " + fullPath);
+				ADXTrace.TraceInfo(TraceCategory.Application, "Writing: " + fullPath);
 
 				Settings.AppDataRetryPolicy.WriteAllBytes(fullPath, bytes);
 			}

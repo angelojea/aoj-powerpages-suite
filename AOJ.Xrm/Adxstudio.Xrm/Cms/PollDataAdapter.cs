@@ -35,16 +35,16 @@ namespace Adxstudio.Xrm.Cms
 
 		public IPoll SelectPoll(Guid pollId)
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", pollId));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", pollId));
 
 			var poll = SelectPoll(e => e.GetAttributeValue<Guid>("adx_pollid") == pollId);
 
 			if (poll == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Not Found");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Not Found");
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}", pollId));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}", pollId));
 
 			return poll;
 		}
@@ -56,16 +56,16 @@ namespace Adxstudio.Xrm.Cms
 				return null;
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+            ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var poll = SelectPoll(e => e.GetAttributeValue<string>("adx_name") == pollName);
 
 			if (poll == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Not Found");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Not Found");
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+            ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return poll;
 		}
@@ -104,17 +104,17 @@ namespace Adxstudio.Xrm.Cms
 
 		public IPollPlacement SelectPollPlacement(Guid pollPlacementId)
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}",
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}",
 				pollPlacementId));
 
 			var adPlacement = SelectPollPlacement(e => e.GetAttributeValue<Guid>("adx_pollplacementid") == pollPlacementId);
 
 			if (adPlacement == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Not Found");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Not Found");
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}",
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}",
 				pollPlacementId));
 
 			return adPlacement;
@@ -127,16 +127,16 @@ namespace Adxstudio.Xrm.Cms
 				return null;
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+            ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var pollPlacement = SelectPollPlacement(e => e.GetAttributeValue<string>("adx_name") == pollPlacementName);
 
 			if (pollPlacement == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Not Found");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Not Found");
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+            ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return pollPlacement;
 		}

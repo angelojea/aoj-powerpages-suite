@@ -40,13 +40,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected override bool EvaluateIsValid()
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Validating");
+            ADXTrace.TraceInfo(TraceCategory.Application, "Validating");
 
 			var controlValue = GetControlValidationValue(ControlToValidate).Trim();
 
 			if (controlValue == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Could not find control to validate");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Could not find control to validate");
 
 				return true;
 			}

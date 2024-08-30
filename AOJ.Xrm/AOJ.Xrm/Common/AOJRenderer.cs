@@ -21,25 +21,27 @@ using Adxstudio.Xrm.Web.Mvc;
 using System.Web.Services.Description;
 using Adxstudio.Xrm.Cms;
 using AOJ.Configuration;
+using Microsoft.Xrm.Sdk.Client;
+using Microsoft.Xrm.Sdk;
 
 namespace AOJ.Xrm.Common
 {
     public class AOJRenderer
     {
-        private readonly OrganizationService _client;
+        private readonly IOrganizationService _client;
         private readonly PortalViewContext _portalViewContext;
 
-        public AOJRenderer(OrganizationService client, Guid websiteId, Guid userId)
+        public AOJRenderer(IOrganizationService client, Guid websiteId, Guid userId)
         {
             _client = client;
 
-            MockHttpContext();
-            AojConfigurationManager.Service = client;
+            AojConfigurationManager.Service = new OrganizationService(client);
             AojConfigurationManager.Website = client.Retrieve("mspp_website", websiteId, new ColumnSet(true));
             AojConfigurationManager.User = client.Retrieve("contact", userId, new ColumnSet(true));
-            
-            var name = "Xrm";
-            var portal = PortalCrmConfigurationManager.CreatePortalContext(name);
+            MockHttpContext();
+
+            var context = new OrganizationServiceContext(client);
+            var portal = new PortalContext(context, AojConfigurationManager.Website, AojConfigurationManager.User);
             AojConfigurationManager.ViewContext = Adxstudio.Xrm.AOJ.GetMockHtmlHelper(portal);
 
             _portalViewContext = new PortalViewContext(new PortalContextDataAdapterDependencies(portal));

@@ -424,7 +424,7 @@ namespace Adxstudio.Xrm.Web.UI
 					}
 					else
 					{
-						ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Root page for current content page is null, id ={0}", entityReference.Id));
+						ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Root page for current content page is null, id ={0}", entityReference.Id));
 					}
 				}
 			}

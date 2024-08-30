@@ -352,7 +352,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, e.ToString());
+					ADXTrace.TraceError(TraceCategory.Application, e.ToString());
 				}
 			}
 
@@ -389,7 +389,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, e.ToString());
+					ADXTrace.TraceError(TraceCategory.Application, e.ToString());
 				}
 
 				if (viewMetadata != null && viewMetadata.Views != null && viewMetadata.Views.Any())
@@ -500,7 +500,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (entity.LogicalName != "mspp_webpage")
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "The current entity must be of type adx_webpage. Please select the correct template for this entity type.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "The current entity must be of type adx_webpage. Please select the correct template for this entity type.");
 
 				return false;
 			}
@@ -509,7 +509,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (entitylistReference == null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Could not find an Entity List (adx_entitylist) value on Web Page (adx_webpage) where id equals {0}.", entity.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Could not find an Entity List (adx_entitylist) value on Web Page (adx_webpage) where id equals {0}.", entity.Id));
 
 				return false;
 			}
@@ -521,7 +521,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (entitylist == null)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Could not find an Entity List (adx_webpage_entitylist) value where id equals {0} on Web Page (adx_webpage) where id equals {1}.", entitylistReference.Id, entity.Id));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Could not find an Entity List (adx_webpage_entitylist) value where id equals {0} on Web Page (adx_webpage) where id equals {1}.", entitylistReference.Id, entity.Id));
 
 				return false;
 			}

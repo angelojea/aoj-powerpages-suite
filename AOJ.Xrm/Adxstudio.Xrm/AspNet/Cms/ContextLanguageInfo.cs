@@ -300,7 +300,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			}
 			catch (CultureNotFoundException)
 			{
-				ADXTrace.Instance.TraceWarning(TraceCategory.Application,
+				ADXTrace.TraceWarning(TraceCategory.Application,
 					string.Format(
 						"No language code could be determined from CRM LCID:{0}, Portal/User LCID:{1}, Code:{2}, PortalLanguage:{3}",
 						reqLanguage.CrmLcid, reqLanguage.Lcid, reqLanguage.Code, reqLanguage.PortalLanguageId));
@@ -493,7 +493,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		{
 			if (!ActiveWebsiteLanguagesLock.TryEnterReadLock(ActiveWebsiteLanguagesLockReadTimeout))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Failed to acquire READ lock on activeWebsiteLanguages. Returning newly built list of website languages.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Failed to acquire READ lock on activeWebsiteLanguages. Returning newly built list of website languages.");
 				return BuildActiveWebsiteLanguages(false, context);
 			}
 			try
@@ -518,7 +518,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 		{
 			if (!ActiveWebsiteLanguagesLock.TryEnterUpgradeableReadLock(ActiveWebsiteLanguagesLockWriteTimeout))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Failed to acquire UPGRADEABLE-READ lock on activeWebsiteLanguages. Returning newly built list of website languages.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Failed to acquire UPGRADEABLE-READ lock on activeWebsiteLanguages. Returning newly built list of website languages.");
 				return BuildActiveWebsiteLanguages(false, context);
 			}
 			try
@@ -585,7 +585,7 @@ namespace Adxstudio.Xrm.AspNet.Cms
 			if (orgLanguages != null)
 			{
 				provisionedLanguages = orgLanguages.ToList();
-				ADXTrace.Instance.TraceVerbose(TraceCategory.Application, string.Format("Retrieved {0} enabled languages for the organization", provisionedLanguages.Count));
+				ADXTrace.TraceVerbose(TraceCategory.Application, string.Format("Retrieved {0} enabled languages for the organization", provisionedLanguages.Count));
 			}
 
 			return provisionedLanguages;

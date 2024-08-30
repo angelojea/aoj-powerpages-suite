@@ -462,7 +462,7 @@ namespace Adxstudio.Xrm.EntityList
 					}
 					catch (Exception e)
 					{
-						ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("GetPackageVersions", "{0}", e));
+						ADXTrace.TraceError(TraceCategory.Application, string.Format("GetPackageVersions", "{0}", e));
                     }
 				}
 

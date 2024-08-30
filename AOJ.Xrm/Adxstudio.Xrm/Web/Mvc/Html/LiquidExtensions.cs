@@ -135,13 +135,13 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 				if (environment != null)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Reusing Liquid environment.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "Reusing Liquid environment.");
 
 					return environment;
 				}
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Creating new Liquid environment.");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Creating new Liquid environment.");
 
 			var portal = PortalCrmConfigurationManager.CreatePortalContext();
 
@@ -252,20 +252,20 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			{
 				if (fallback != null)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "No template reference provided, rendering fallback.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "No template reference provided, rendering fallback.");
 					fallback();
 				}
 				return;
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Rendering template {0}:{1}", webTemplateReference.LogicalName, webTemplateReference.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Rendering template {0}:{1}", webTemplateReference.LogicalName, webTemplateReference.Id));
 
 			var webTemplate = FetchWebTemplate(html, webTemplateReference.Id);
 			if (webTemplate == null)
 			{
 				if (fallback != null)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Template {0}:{1} not found, rendering fallback.", webTemplateReference.LogicalName, webTemplateReference.Id));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Template {0}:{1} not found, rendering fallback.", webTemplateReference.LogicalName, webTemplateReference.Id));
 					fallback();
 				}
 				return;
@@ -289,12 +289,12 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 		{
 			if (webTemplateReference == null) throw new ArgumentNullException("webTemplateReference");
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Rendering template {0}:{1}", webTemplateReference.LogicalName, webTemplateReference.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Rendering template {0}:{1}", webTemplateReference.LogicalName, webTemplateReference.Id));
 
 			var webTemplate = FetchWebTemplate(html, webTemplateReference.Id);
 			if (webTemplate == null)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Template {0}:{1} not found.", webTemplateReference.LogicalName, webTemplateReference.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Template {0}:{1} not found.", webTemplateReference.LogicalName, webTemplateReference.Id));
 				return;
 			}
 
@@ -466,12 +466,12 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 			}
 			catch (SyntaxException e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Liquid parse error{0}: {1}", sourceIdentifier, e));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Liquid parse error{0}: {1}", sourceIdentifier, e));
 				output.Write(e.Message);
 				return;
 			}
 			
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Rendering Liquid{0}", sourceIdentifier));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Rendering Liquid{0}", sourceIdentifier));
 
 			using (PerformanceProfiler.Instance.StartMarker(PerformanceMarkerName.LiquidExtension, PerformanceMarkerArea.Liquid, PerformanceMarkerTagName.RenderLiquid))
 			{
@@ -480,7 +480,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Html
 
 			foreach (var error in template.Errors)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Liquid rendering error{0}: {1}", sourceIdentifier, error));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Liquid rendering error{0}: {1}", sourceIdentifier, error));
 			}
 		}
 	}

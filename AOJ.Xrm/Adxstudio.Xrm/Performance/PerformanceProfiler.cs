@@ -49,14 +49,6 @@ namespace Adxstudio.Xrm.Performance
 
 		public void StopMarker(IPerformanceMarker marker)
 		{
-			if (marker == null)
-			{
-				// Err on the side of not having performance code throw any errors.
-				return;
-			}
-
-			marker.Stop();
-			_logger.Log(marker);
 		}
 
 		public TimeSpan UsingMarker(string name, Action<IPerformanceMarker> action, PerformanceMarkerArea area = PerformanceMarkerArea.Unknown, string tag = null)

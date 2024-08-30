@@ -62,7 +62,7 @@ namespace Adxstudio.Xrm.Services
 				{
 					// Portals (PortalApp={PortalApp}; Instance={Instance}; ActivityId={ActivityId})
 					var userAgent = $"Portals (PortalApp={PortalDetail.Instance.PortalApp}; Instance={WebAppSettings.Instance.InstanceId}; ActivityId={EventSource.CurrentThreadActivityId})";
-					ADXTrace.Instance.TraceVerbose(TraceCategory.Application, $"Set UserAgent: {userAgent}");
+					ADXTrace.TraceVerbose(TraceCategory.Application, $"Set UserAgent: {userAgent}");
 					property.Headers[HttpRequestHeader.UserAgent] = userAgent;
 				}
 			}

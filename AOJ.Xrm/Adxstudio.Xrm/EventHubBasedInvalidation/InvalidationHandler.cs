@@ -34,7 +34,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 				//logging
 				if (message != null)
 				{
-					ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Invalidate message {0} from cache ", message));
+					ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Invalidate message {0} from cache ", message));
 				}
 			}
 		}

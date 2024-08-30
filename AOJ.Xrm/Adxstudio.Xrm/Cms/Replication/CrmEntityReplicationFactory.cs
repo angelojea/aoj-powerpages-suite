@@ -48,21 +48,21 @@ namespace Adxstudio.Xrm.Cms.Replication
 
 			if (entityName == "annotation")
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Source entity is annotation, returning NoteReplication.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Source entity is annotation, returning NoteReplication.");
 
 				return new NoteReplication(entity, _context);
 			}
 
 			if (entityName == "adx_webfile")
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Source entity is adx_webfile, returning WebFileReplication.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Source entity is adx_webfile, returning WebFileReplication.");
 
 				return new WebFileReplication(entity, _context);
 			}
 
 			if (entityName == "adx_webpage")
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Source entity is adx_webpage, returning WebPageReplication.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Source entity is adx_webpage, returning WebPageReplication.");
 
 				return new WebPageReplication(entity, _context);
 			}

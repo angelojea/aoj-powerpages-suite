@@ -18,7 +18,12 @@ namespace AOJ.ConsoleApp
             using (var client = new CrmServiceClient(
                 $@"AuthenticationType=ClientSecret; url={url}; ClientId={clientId}; ClientSecret={clientSecret};"))
             {
-                var rendered = new AOJRenderer(new OrganizationService(client), Guid.Parse("ce496a9b-0b4b-4d8f-8f0e-7e08c21c5715"), Guid.Parse("2ba29921-1b5c-ef11-bfe2-000d3a56777a"))
+                while (!client.IsReady)
+                {
+                    
+                }
+
+                var rendered = new AOJRenderer(client, Guid.Parse("ce496a9b-0b4b-4d8f-8f0e-7e08c21c5715"), Guid.Parse("2ba29921-1b5c-ef11-bfe2-000d3a56777a"))
                         .RenderLiquid(@"
 {%- fetchxml fetchXml -%}
 <fetch version=""1.0"" output-format=""xml-platform"" mapping=""logical"" distinct=""false"">

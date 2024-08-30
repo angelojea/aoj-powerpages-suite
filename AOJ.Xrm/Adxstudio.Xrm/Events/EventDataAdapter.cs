@@ -46,16 +46,16 @@ namespace Adxstudio.Xrm.Events
 
 		public IEvent Select(Guid eventId)
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", eventId));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: {0}", eventId));
 
 			var myevent = Select(e => e.GetAttributeValue<Guid>("adx_eventid") == eventId);
 
 			if (myevent == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Not Found");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Not Found");
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: {0}", eventId));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: {0}", eventId));
 
 			return myevent;
 		}
@@ -67,16 +67,16 @@ namespace Adxstudio.Xrm.Events
 				return null;
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var @event = Select(e => e.GetAttributeValue<string>("adx_name") == eventName);
 
 			if (@event == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Not Found");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Not Found");
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+            ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return @event;
 		}
@@ -107,7 +107,7 @@ namespace Adxstudio.Xrm.Events
 
 			if (!securityProvider.TryAssert(serviceContext, entity, CrmEntityRight.Read))
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Not Found", entity.Id));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Forum={0}: Not Found", entity.Id));
 
 				return null;
 			}

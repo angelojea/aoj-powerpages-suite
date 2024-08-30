@@ -73,7 +73,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Error parsing entity list filter definition: {0}", e));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Error parsing entity list filter definition: {0}", e));
 
                 return Enumerable.Empty<FilterOptionGroupDrop>();
 			}
@@ -94,7 +94,7 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 			}
 			catch (FaultException<OrganizationServiceFault> e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Error retrieving metadata for entity ""{0}"": {1}", EntityNamePrivacy.GetEntityName(entityList.EntityLogicalName), e));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format(@"Error retrieving metadata for entity ""{0}"": {1}", EntityNamePrivacy.GetEntityName(entityList.EntityLogicalName), e));
 
                 return Enumerable.Empty<FilterOptionGroupDrop>();
 			}

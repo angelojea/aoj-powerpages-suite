@@ -27,7 +27,7 @@ namespace Adxstudio.Xrm.Events.Security
 		{
 			currentEvent.AssertEntityName("adx_event");
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Testing right {0} on event ({1}).", right, currentEvent.Id));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Testing right {0} on event ({1}).", right, currentEvent.Id));
 
 			dependencies.AddEntityDependency(currentEvent);
 			dependencies.AddEntitySetDependency("adx_webrole");
@@ -35,7 +35,7 @@ namespace Adxstudio.Xrm.Events.Security
 
 			if (!Roles.Enabled)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Roles are not enabled for this application. Allowing Read, but not Change.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Roles are not enabled for this application. Allowing Read, but not Change.");
 
                 // If roles are not enabled on the site, grant Read, deny Change.
                 return (right == CrmEntityRight.Read);
@@ -76,7 +76,7 @@ namespace Adxstudio.Xrm.Events.Security
 				{
 					if (ruleGrouping.Key.Right != RestrictRead)
 					{
-                        ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("User has right Change on forum ({0}). Permission granted.", ruleGrouping.Key.EventID));
+                        ADXTrace.TraceInfo(TraceCategory.Application, string.Format("User has right Change on forum ({0}). Permission granted.", ruleGrouping.Key.EventID));
 
 						// ...the user has all rights.
 						return true;
@@ -86,7 +86,7 @@ namespace Adxstudio.Xrm.Events.Security
 				// is read...
 				else if (ruleGrouping.Key.Right == RestrictRead && right == CrmEntityRight.Read)
 				{
-                    ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("User does not have right Read due to read restriction on event ({0}). Permission denied.", ruleGrouping.Key.EventID));
+                    ADXTrace.TraceInfo(TraceCategory.Application, string.Format("User does not have right Read due to read restriction on event ({0}). Permission denied.", ruleGrouping.Key.EventID));
 
 					// ...the user has no right.
 					return false;
@@ -121,12 +121,12 @@ namespace Adxstudio.Xrm.Events.Security
 			// If there is no parent web page, grant Read by default, and deny Change.
 			if (parentWebPage == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "No access control rules apply to the current user and event. Allowing Read, but not Change.");
+                ADXTrace.TraceInfo(TraceCategory.Application, "No access control rules apply to the current user and event. Allowing Read, but not Change.");
 
 				return (right == CrmEntityRight.Read);
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "No access control rules apply to the current user and event. Asserting right on parent web page.");
+            ADXTrace.TraceInfo(TraceCategory.Application, "No access control rules apply to the current user and event. Asserting right on parent web page.");
 
 			return _webPageAccessControlProvider.TryAssert(context, parentWebPage, right, dependencies);
 		}

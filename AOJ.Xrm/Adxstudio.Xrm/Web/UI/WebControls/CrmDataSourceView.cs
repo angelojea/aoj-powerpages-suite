@@ -266,7 +266,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 					delegate
 					{
 						string serializedQuery = Serialize(query);
-						ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("QueryByAttribute : {0}", serializedQuery.GetHashCode().ToString(CultureInfo.InvariantCulture)));
+						ADXTrace.TraceInfo(TraceCategory.Application, string.Format("QueryByAttribute : {0}", serializedQuery.GetHashCode().ToString(CultureInfo.InvariantCulture)));
 						return "Adxstudio:Type={0}:ID={1}:Hash={2}".FormatWith(Owner.GetType().FullName, Owner.ID, serializedQuery.GetHashCode()).ToLower();
 					});
 			}
@@ -321,7 +321,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			AsyncCallback asyncCallback,
 			object asyncState)
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Begin");
+            ADXTrace.TraceInfo(TraceCategory.Application, "Begin");
 
 			if (CanSort)
 			{
@@ -356,7 +356,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (selectingArgs.Cancel)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Cancel");
+                ADXTrace.TraceInfo(TraceCategory.Application, "Cancel");
 				return new SynchronousAsyncSelectResult(selectResult, asyncCallback, asyncState);
 			}
 
@@ -366,7 +366,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 			if (CancelSelectOnNullParameter && string.IsNullOrEmpty(fetchXml) && query == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "CancelSelectOnNullParameter");
+                ADXTrace.TraceInfo(TraceCategory.Application, "CancelSelectOnNullParameter");
 				return new SynchronousAsyncSelectResult(selectResult, asyncCallback, asyncState);
 			}
 
@@ -379,37 +379,37 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 					var fetch = ToFetch(arguments, fetchXml);
 
-                    ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+                    ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 					return ExecuteSelect(_client, null, fetch, asyncCallback, asyncState);
 				}
 
 				if (query != null)
 				{
-                    ADXTrace.Instance.TraceInfo(TraceCategory.Application, "QueryByAttribute");
+                    ADXTrace.TraceInfo(TraceCategory.Application, "QueryByAttribute");
 
 					// the SortExpression has high priority, apply it to the query
 					AppendSortExpressionToQuery(arguments.SortExpression, order => query.Orders.Add(order));
 
-                    ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+                    ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 					return ExecuteSelect(_client, query, null, asyncCallback, asyncState);
 				}
 			}
 			catch (System.Web.Services.Protocols.SoapException ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("{0}\n\n{1}", ex.Detail.InnerXml, ex));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("{0}\n\n{1}", ex.Detail.InnerXml, ex));
             }
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception: {0}", e));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Exception: {0}", e));
 
                 _client = null;
 
 				return new SynchronousAsyncSelectResult(e, asyncCallback, asyncState);
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+            ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return new SynchronousAsyncSelectResult(selectResult, asyncCallback, asyncState);
 		}
@@ -465,8 +465,8 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (selectResult != null)
 				{
-                    ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Found in cache: {0}", cacheKey));
-                    ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+                    ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Found in cache: {0}", cacheKey));
+                    ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 					return new SynchronousAsyncSelectResult(selectResult, asyncCallback, asyncState);
 				}
@@ -498,11 +498,11 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected override IEnumerable EndExecuteSelect(IAsyncResult asyncResult)
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Begin");
+            ADXTrace.TraceInfo(TraceCategory.Application, "Begin");
 
 			if (_client == null)
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End: _client=null");
+                ADXTrace.TraceInfo(TraceCategory.Application, "End: _client=null");
 
 				return null;
 			}
@@ -516,13 +516,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 				if (syncResult != null)
 				{
-                    ADXTrace.Instance.TraceInfo(TraceCategory.Application, "syncResult");
+                    ADXTrace.TraceInfo(TraceCategory.Application, "syncResult");
 
 					selectResult = syncResult.SelectResult;
 				}
 				else
 				{
-                    ADXTrace.Instance.TraceInfo(TraceCategory.Application, "EndExecute");
+                    ADXTrace.TraceInfo(TraceCategory.Application, "EndExecute");
 
 					if (!Owner.IsSingleSource)
 					{
@@ -574,11 +574,11 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (System.Web.Services.Protocols.SoapException ex)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("{0}\n\n{1}", ex.Detail.InnerXml, ex));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("{0}\n\n{1}", ex.Detail.InnerXml, ex));
             }
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception: {0}", e));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Exception: {0}", e));
 
                 // raise post-event with exception
                 CrmDataSourceStatusEventArgs selectedExceptionArgs = new CrmDataSourceStatusEventArgs(0, e);
@@ -600,7 +600,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			CrmDataSourceStatusEventArgs selectedArgs = new CrmDataSourceStatusEventArgs(rowsAffected, null);
 			OnSelected(selectedArgs);
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+            ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			return string.IsNullOrEmpty(Owner.StaticEntityWrapperTypeName) ? selectResult : CreateEntities(selectResult);
 		}
@@ -644,7 +644,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected override int ExecuteDelete(IDictionary keys, IDictionary oldValues)
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Begin");
+            ADXTrace.TraceInfo(TraceCategory.Application, "Begin");
 
 			if (!CanDelete) throw new NotSupportedException("Delete not supported.");
 
@@ -672,13 +672,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (Exception e)
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, e.ToString());
+                ADXTrace.TraceError(TraceCategory.Application, e.ToString());
 
                 deletedEventArgs.Exception = e;
 				deletedEventArgs.ExceptionHandled = true;
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "End");
+            ADXTrace.TraceInfo(TraceCategory.Application, "End");
 
 			OnDeleted(deletedEventArgs);
 
@@ -719,7 +719,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected override int ExecuteInsert(IDictionary values)
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Begin");
+            ADXTrace.TraceInfo(TraceCategory.Application, "Begin");
 
 			if (!CanInsert) throw new NotSupportedException("Insert not supported.");
 
@@ -745,13 +745,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, e.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, e.ToString());
 
                 insertedEventArgs.Exception = e;
 				insertedEventArgs.ExceptionHandled = true;
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: rowsAffected={0}", rowsAffected));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: rowsAffected={0}", rowsAffected));
 
 			OnInserted(insertedEventArgs);
 
@@ -790,7 +790,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 					if (attribute == null) // ignore subgrid, iframe or web resources 
 					{
-                        ADXTrace.Instance.TraceInfo(TraceCategory.Application, "No value set. Key '{0}' is not a name of an attribute on entity type {1}. This is likely a subgrid, iframe, or web resource.", attributeName, entity.LogicalName);
+                        ADXTrace.TraceInfo(TraceCategory.Application, "No value set. Key '{0}' is not a name of an attribute on entity type {1}. This is likely a subgrid, iframe, or web resource.", attributeName, entity.LogicalName);
 						continue;
 					}
 
@@ -874,7 +874,7 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 
 		protected override int ExecuteUpdate(IDictionary keys, IDictionary values, IDictionary oldValues)
 		{
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Begin");
+            ADXTrace.TraceInfo(TraceCategory.Application, "Begin");
 
 			if (!CanUpdate) throw new NotSupportedException("Update not supported.");
 
@@ -910,13 +910,13 @@ namespace Adxstudio.Xrm.Web.UI.WebControls
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, e.ToString());
+				ADXTrace.TraceError(TraceCategory.Application, e.ToString());
 
                 updatedEventArgs.Exception = e;
 				updatedEventArgs.ExceptionHandled = true;
 			}
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: rowsAffected={0}", rowsAffected));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: rowsAffected={0}", rowsAffected));
 
 			OnUpdated(updatedEventArgs);
 

@@ -61,7 +61,7 @@ namespace Adxstudio.Xrm.Web.Routing
 				routeUrl = route.Url;
 			}
 			catch { }
-			ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("GetHttpHandler route=[{0}] ", routeUrl));
+			ADXTrace.TraceInfo(TraceCategory.Monitoring, string.Format("GetHttpHandler route=[{0}] ", routeUrl));
 
 			// apply the current SiteMapNode to the OWIN environment
 
@@ -79,7 +79,7 @@ namespace Adxstudio.Xrm.Web.Routing
 			// there's nothing else we can really do--we'll exit with a bare-bones 404.
 			if (isInvalidNode)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "FindSiteMapNode failed to find a non-null CrmSiteMapNode. Responding with a basic 404.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "FindSiteMapNode failed to find a non-null CrmSiteMapNode. Responding with a basic 404.");
 
 				RenderNotFound(requestContext);
 
@@ -116,16 +116,16 @@ namespace Adxstudio.Xrm.Web.Routing
 				path = WebTemplateWithoutValidation;
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Current path: {0}", path));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Current path: {0}", path));
 
 			if (TryGetDisplayModeInfoForPath(path, requestContext.HttpContext, out displayInfo))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Found displayModeInfo={0} for path", displayInfo.DisplayMode.DisplayModeId));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Found displayModeInfo={0} for path", displayInfo.DisplayMode.DisplayModeId));
 
 				return displayInfo.FilePath == null ? null : CreateHandlerFromVirtualPath(displayInfo.FilePath);
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Unable to get DisplayModeInfo for adx_pagetemplate with rewrite path");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Unable to get DisplayModeInfo for adx_pagetemplate with rewrite path");
 
 			return path == null ? null : CreateHandlerFromVirtualPath(path);
 		}
@@ -152,7 +152,7 @@ namespace Adxstudio.Xrm.Web.Routing
 					if (needRedirect)
 					{
 						string redirectPath = contextLanguageInfo.FormatUrlWithLanguage();
-						ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "OnPortalLoaded redirecting(1)");
+						ADXTrace.TraceInfo(TraceCategory.Monitoring, "OnPortalLoaded redirecting(1)");
 						requestContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.Redirect;
 						requestContext.HttpContext.Response.RedirectLocation = redirectPath;
 						requestContext.HttpContext.Response.End();
@@ -176,7 +176,7 @@ namespace Adxstudio.Xrm.Web.Routing
 				// If we have a successful match, redirect.
 				if (redirectMatch.Success)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, "OnPortalLoaded redirecting(2)");
+					ADXTrace.TraceInfo(TraceCategory.Monitoring, "OnPortalLoaded redirecting(2)");
 					context.Trace.Write(GetType().FullName, @"Redirecting path ""{0}"" to ""{1}""".FormatWith(clientUrl.Path, redirectMatch.Location));
 
 					context.Response.StatusCode = (int)redirectMatch.StatusCode;
@@ -224,7 +224,7 @@ namespace Adxstudio.Xrm.Web.Routing
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Exception while checking existence of virtual path: {0}", e));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format(@"Exception while checking existence of virtual path: {0}", e));
 
 				return false;
 			}
@@ -237,7 +237,7 @@ namespace Adxstudio.Xrm.Web.Routing
 			var path = request.RouteData.Values["path"] as string;
 			path = FormatPath(path);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Monitoring, string.Format("path={0}", path));
+			ADXTrace.TraceInfo(TraceCategory.Monitoring, string.Format("path={0}", path));
 
 			var node = SiteMap.Provider.FindSiteMapNode(path) as CrmSiteMapNode;
 			return node;

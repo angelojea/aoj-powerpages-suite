@@ -98,7 +98,7 @@ namespace Adxstudio.Xrm.Cms
 
 		private ContentMap GetContentMap(CrmDbContext context)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("LockTimeout={0}", LockTimeout));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("LockTimeout={0}", LockTimeout));
 
 			var sw = Stopwatch.StartNew();
 
@@ -111,7 +111,7 @@ namespace Adxstudio.Xrm.Cms
 
 			sw.Stop();
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Duration: {0} ms", sw.ElapsedMilliseconds));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Duration: {0} ms", sw.ElapsedMilliseconds));
 
 			return map;
 		}
@@ -126,7 +126,7 @@ namespace Adxstudio.Xrm.Cms
 
 			sw.Stop();
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Duration: {0} ms", sw.ElapsedMilliseconds));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Duration: {0} ms", sw.ElapsedMilliseconds));
 		}
 
 		protected virtual IEnumerable<Entity> GetEntities(CrmDbContext context, SolutionDefinition solution, IDictionary<string, object> parameters)
@@ -138,7 +138,7 @@ namespace Adxstudio.Xrm.Cms
 			{
 				// Add content map entities explicitly to the Portalused entities list. 
 				// Since we are skipping cache for content map entities and hence these entities won't be added in this list via Dependency calucaltion.
-				ADXTrace.Instance.TraceVerbose(TraceCategory.Application, $"Entity {query.Entity.Name} is added to Enabled Entity List for Portal Cache ");
+				ADXTrace.TraceVerbose(TraceCategory.Application, $"Entity {query.Entity.Name} is added to Enabled Entity List for Portal Cache ");
 				WebAppConfigurationProvider.PortalUsedEntities.TryAdd(query.Entity.Name, true);
 				Fetch(context.Service, query, result);
 			});
@@ -182,7 +182,7 @@ namespace Adxstudio.Xrm.Cms
 			}
 			catch (Exception e)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("Exception {0} occured in one of the queries in content map Load", e.Message));
+				ADXTrace.TraceError(TraceCategory.Application, string.Format("Exception {0} occured in one of the queries in content map Load", e.Message));
 				throw;
 			}
 		}
@@ -204,7 +204,7 @@ namespace Adxstudio.Xrm.Cms
 		{
 			reference.ThrowOnNull("reference");
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(reference.LogicalName), reference.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(reference.LogicalName), reference.Id));
 
 			EntityDefinition ed;
 
@@ -282,7 +282,7 @@ namespace Adxstudio.Xrm.Cms
 				return node;
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Unknown: logicalName={0}", EntityNamePrivacy.GetEntityName(reference.LogicalName)));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Unknown: logicalName={0}", EntityNamePrivacy.GetEntityName(reference.LogicalName)));
 
 			return null;
 		}
@@ -311,7 +311,7 @@ namespace Adxstudio.Xrm.Cms
 					{
 						reference.ThrowOnNull("reference");
 						guids.Add(reference.Id);
-						ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(reference.LogicalName), reference.Id));
+						ADXTrace.TraceInfo(TraceCategory.Application, string.Format("LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(reference.LogicalName), reference.Id));
 					}
 					try
 					{
@@ -323,7 +323,7 @@ namespace Adxstudio.Xrm.Cms
 							mapEntities.Add(entity.Id, entity);
 						}
 
-						ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Retrieve Multiple Response for Entity {0} has Record Count {1} , Refrence Count {2} ", references[0].LogicalName, entities.Count, references.Count));
+						ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Retrieve Multiple Response for Entity {0} has Record Count {1} , Refrence Count {2} ", references[0].LogicalName, entities.Count, references.Count));
 
 						// check if the entity is inactive according to the definition
 						foreach (var reference in references)
@@ -349,12 +349,12 @@ namespace Adxstudio.Xrm.Cms
 					catch (FaultException<OrganizationServiceFault>)
 					{
 						// an exception occurs when trying to retrieve a non-existing entity
-						ADXTrace.Instance.TraceInfo(TraceCategory.Application, "An exception occurs when trying to retrieve a non-existing entity");
+						ADXTrace.TraceInfo(TraceCategory.Application, "An exception occurs when trying to retrieve a non-existing entity");
 					}
 				}
 				else
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Unknown: logicalName={0}", EntityNamePrivacy.GetEntityName(references[0].LogicalName)));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Unknown: logicalName={0}", EntityNamePrivacy.GetEntityName(references[0].LogicalName)));
 				}
 			}
 		}
@@ -389,11 +389,11 @@ namespace Adxstudio.Xrm.Cms
 			}
 
 			// retrieve a fresh entity which also acts as a backend validation
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Calling Retrieve Multiple Request for Entity {0} ", EntityNamePrivacy.GetEntityName(reference.LogicalName)));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Calling Retrieve Multiple Request for Entity {0} ", EntityNamePrivacy.GetEntityName(reference.LogicalName)));
 			RetrieveMultipleResponse responses = (RetrieveMultipleResponse)context.Service.Execute(fetch.ToRetrieveMultipleRequest());
 			var entities = responses.EntityCollection.Entities;
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Retrieve Multiple Response for Entity {0} has Record Count {1}  ", EntityNamePrivacy.GetEntityName(reference.LogicalName), responses.EntityCollection.Entities.Count));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Retrieve Multiple Response for Entity {0} has Record Count {1}  ", EntityNamePrivacy.GetEntityName(reference.LogicalName), responses.EntityCollection.Entities.Count));
 			return entities;
 		}
 
@@ -411,12 +411,12 @@ namespace Adxstudio.Xrm.Cms
 			relationship.ThrowOnNull("relationship");
 			relatedEntities.ThrowOnNull("relatedEntities");
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Target: LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(target.LogicalName), target.Id));
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Relationship: SchemaName={0}, PrimaryEntityRole={1}", relationship.SchemaName, relationship.PrimaryEntityRole));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Target: LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(target.LogicalName), target.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Relationship: SchemaName={0}, PrimaryEntityRole={1}", relationship.SchemaName, relationship.PrimaryEntityRole));
 
 			foreach (var entity in relatedEntities)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Related: LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Related: LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id));
 			}
 
 			// validate that the relationships do in fact exist by querying for the intersects
@@ -431,7 +431,7 @@ namespace Adxstudio.Xrm.Cms
 
 				foreach (var added in entities)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Added: LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(added.LogicalName), added.Id));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Added: LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(added.LogicalName), added.Id));
 				}
 			}
 		}
@@ -450,12 +450,12 @@ namespace Adxstudio.Xrm.Cms
 			relationship.ThrowOnNull("relationship");
 			relatedEntities.ThrowOnNull("relatedEntities");
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Target: LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(target.LogicalName), target.Id));
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Relationship: SchemaName={0}, PrimaryEntityRole={1}", relationship.SchemaName, relationship.PrimaryEntityRole));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Target: LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(target.LogicalName), target.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Relationship: SchemaName={0}, PrimaryEntityRole={1}", relationship.SchemaName, relationship.PrimaryEntityRole));
 
 			foreach (var entity in relatedEntities)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Related: LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Related: LogicalName={0}, Id={1}", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id));
 			}
 
 			var entities = new List<EntityReference>();

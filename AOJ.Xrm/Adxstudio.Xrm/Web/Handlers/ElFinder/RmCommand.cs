@@ -166,7 +166,7 @@ namespace Adxstudio.Xrm.Web.Handlers.ElFinder
 				}
 				catch (Exception e)
 				{
-					ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format("{0} {1}", ResourceManager.GetString("Deleting_File_Exception"), e));
+					ADXTrace.TraceError(TraceCategory.Application, string.Format("{0} {1}", ResourceManager.GetString("Deleting_File_Exception"), e));
 					errors.Add(new Tuple<string, string>(GetDisplayName(target), e.Message));
 				}
 			}

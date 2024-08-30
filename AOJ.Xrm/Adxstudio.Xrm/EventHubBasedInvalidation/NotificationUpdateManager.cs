@@ -47,7 +47,7 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 				timestamp = string.Empty;
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Timestamp for entity {0} {1}", entityName, timestamp));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Timestamp for entity {0} {1}", entityName, timestamp));
 
 			return timestamp;
 		}
@@ -174,14 +174,14 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 			//Filter's out Entities Not Used in Portal
 			if (message != null && portalUsedEntities.ContainsKey(message.EntityName))
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Pushing MessageId: {0} CRMSubscriptionMessage with entity: {1} and message name: {2} into the Cache.", message.MessageId, message.EntityName, message.MessageName));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Pushing MessageId: {0} CRMSubscriptionMessage with entity: {1} and message name: {2} into the Cache.", message.MessageId, message.EntityName, message.MessageName));
 				var entityKey = string.Format(EntityKey, message.EntityName,
 						isSearchIndexInvalidationMessage ? FromSearchSubscription : FromCacheSubscription);
 				if (!DirtyTable.TryAdd(entityKey, new EntityInvalidationMessageAndType(message, isSearchIndexInvalidationMessage)))
 				{
 					EntityInvalidationMessageAndType val = null;
 					var success = DirtyTable.TryGetValue(message.EntityName, out val);
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Dirty Table already contains entity: {0} and message name: {1} in the Cache with MessageId: {2}. Dropping MessageId: {3} ", message.EntityName, message.MessageName, success ? val.Message.MessageId : Guid.Empty, message.MessageId));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Dirty Table already contains entity: {0} and message name: {1} in the Cache with MessageId: {2}. Dropping MessageId: {3} ", message.EntityName, message.MessageName, success ? val.Message.MessageId : Guid.Empty, message.MessageId));
 				}
 			}
 
@@ -267,13 +267,13 @@ namespace Adxstudio.Xrm.EventHubBasedInvalidation
 					// remove from the processing table
 					EntityRecordMessage record;
 					ProcessingTable.TryRemove(updatedEntity.Key, out record);
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Updated Entity: {0} at Timestamp: {1} and cleared the MessageId:{2} from the Processing table.", updatedEntity.Key, updatedEntity.Value, record.MessageId));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Updated Entity: {0} at Timestamp: {1} and cleared the MessageId:{2} from the Processing table.", updatedEntity.Key, updatedEntity.Value, record.MessageId));
 				}
 
 				// If an entity fails to get updated we should add it back to the dirty table
 				foreach (var keyValuePair in ProcessingTable)
 				{
-					ADXTrace.Instance.TraceWarning(TraceCategory.Application, string.Format("Failed to update the Entity: {0}. So adding MessageId: {1} back to the Dirty table.", keyValuePair.Key, keyValuePair.Value.MessageId));
+					ADXTrace.TraceWarning(TraceCategory.Application, string.Format("Failed to update the Entity: {0}. So adding MessageId: {1} back to the Dirty table.", keyValuePair.Key, keyValuePair.Value.MessageId));
 					// Any items left in processing table add back into Dirty table
 					var entityKey = string.Format(EntityKey, keyValuePair.Key,
 						isSearchIndexInvalidation ? FromSearchSubscription : FromCacheSubscription);

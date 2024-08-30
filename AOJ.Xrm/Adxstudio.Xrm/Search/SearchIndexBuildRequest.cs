@@ -49,14 +49,14 @@ namespace Adxstudio.Xrm.Search
 		{
 			if (!SearchManager.Enabled)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Search isn't enabled for the current application.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Search isn't enabled for the current application.");
 
 				return;
 			}
 
 			if (message == null)
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "Search Index build failure. Plugin Message is null.");
+				ADXTrace.TraceError(TraceCategory.Application, "Search Index build failure. Plugin Message is null.");
 
 				return;
 			}
@@ -66,7 +66,7 @@ namespace Adxstudio.Xrm.Search
 
 			if (!TryGetSearchProvider(out provider))
 			{
-				ADXTrace.Instance.TraceError(TraceCategory.Application, "Search Index build failure. Search Provider could not be found.");
+				ADXTrace.TraceError(TraceCategory.Application, "Search Index build failure. Search Provider could not be found.");
 
 				return;
 			}
@@ -75,7 +75,7 @@ namespace Adxstudio.Xrm.Search
 			{
 				PerformBuild(provider);
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Search Index was successfully built.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Search Index was successfully built.");
 
 				return;
 			}
@@ -248,14 +248,14 @@ namespace Adxstudio.Xrm.Search
 
 						if (response.Entity == null)
 						{
-							ADXTrace.Instance.TraceError(TraceCategory.Application, $"Retrieve of annotation entity failed for annotationId : {message.Target.Id}");
+							ADXTrace.TraceError(TraceCategory.Application, $"Retrieve of annotation entity failed for annotationId : {message.Target.Id}");
 							throw new TransientNullReferenceException($"Retrieve of annotation entity failed for annotationId : {message.Target.Id}");
 						}
 
 						var knowledgeArticle = response.Entity?.GetAttributeValue<EntityReference>("objectid");
 						if (knowledgeArticle == null)
 						{
-							ADXTrace.Instance.TraceError(TraceCategory.Application, $"Could not find objectId in the retrieved annotation with annotationId : {message.Target.Id}");
+							ADXTrace.TraceError(TraceCategory.Application, $"Could not find objectId in the retrieved annotation with annotationId : {message.Target.Id}");
 							throw new TransientNullReferenceException($"Could not find objectId in the retrieved annotation with annotationId : {message.Target.Id}");
 						}
 
@@ -295,7 +295,7 @@ namespace Adxstudio.Xrm.Search
 
                 PerformUpdate(provider, updater => updater.UpdateEntity(message.Target.LogicalName, message.Target.Id));
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Search Index was successfully updated. ({0}, {1}:{2})", message.MessageName, EntityNamePrivacy.GetEntityName(message.Target.LogicalName), message.Target.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Search Index was successfully updated. ({0}, {1}:{2})", message.MessageName, EntityNamePrivacy.GetEntityName(message.Target.LogicalName), message.Target.Id));
 
 				return;
 			}
@@ -371,7 +371,7 @@ namespace Adxstudio.Xrm.Search
 						PerformUpdate(provider, updater => updater.UpdateEntity(message.Target.LogicalName, message.Target.Id));
 					}
 
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Search Index was successfully updated. ({0}, {1}:{2})", message.MessageName, EntityNamePrivacy.GetEntityName(message.Target.LogicalName), message.Target.Id));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Search Index was successfully updated. ({0}, {1}:{2})", message.MessageName, EntityNamePrivacy.GetEntityName(message.Target.LogicalName), message.Target.Id));
 
                     return;
                 }
@@ -451,14 +451,14 @@ namespace Adxstudio.Xrm.Search
 
 				PerformUpdate(provider, updater => updater.DeleteEntity(message.Target.LogicalName, message.Target.Id));
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Search Index was successfully updated. ({0}, {1}:{2})", message.MessageName, EntityNamePrivacy.GetEntityName(message.Target.LogicalName), message.Target.Id));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Search Index was successfully updated. ({0}, {1}:{2})", message.MessageName, EntityNamePrivacy.GetEntityName(message.Target.LogicalName), message.Target.Id));
 
 				return;
 			}
 
 			var supportedMessages = DeleteMessages.Union(BuildMessages.Union(UpdateMessages, MessageComparer), MessageComparer);
 
-			ADXTrace.Instance.TraceError(TraceCategory.Application, string.Format(@"Search Index Build Failed. Message ""{0}"" is not supported. Valid messages are {1}.", message.MessageName, string.Join(", ", supportedMessages.ToArray())));
+			ADXTrace.TraceError(TraceCategory.Application, string.Format(@"Search Index Build Failed. Message ""{0}"" is not supported. Valid messages are {1}.", message.MessageName, string.Join(", ", supportedMessages.ToArray())));
 		}
 
         private static bool HasRelatedEntityType(OrganizationServiceCachePluginMessage message, string relatedEntityLogicalName) 
@@ -486,11 +486,11 @@ namespace Adxstudio.Xrm.Search
 			{
 				PerformBuild(provider);
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Search Index was successfully built.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Search Index was successfully built.");
 			}
 			else
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Search Index build failure. Search Provider could not be found.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Search Index build failure. Search Provider could not be found.");
 			}
 		}
 
@@ -504,7 +504,7 @@ namespace Adxstudio.Xrm.Search
 			{
 				provider = null;
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Search Index build terminated. Search is disabled.");
+				ADXTrace.TraceInfo(TraceCategory.Application, "Search Index build terminated. Search is disabled.");
 
 				return false;
 			}

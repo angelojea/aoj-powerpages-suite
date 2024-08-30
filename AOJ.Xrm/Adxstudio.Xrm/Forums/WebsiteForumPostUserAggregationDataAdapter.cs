@@ -101,7 +101,7 @@ namespace Adxstudio.Xrm.Forums
 
 			if (!securityProvider.TryAssert(serviceContext, entity, CrmEntityRight.Read))
 			{
-                ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Thread={0}: Not Found", threadId));
+                ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Thread={0}: Not Found", threadId));
 
 				return null;
 			}
@@ -118,7 +118,7 @@ namespace Adxstudio.Xrm.Forums
 				() => counterStrategy.GetForumThreadPostCount(serviceContext, entity),
 				Dependencies.GetUrlProvider().GetUrl(serviceContext, entity));
 
-            ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Thread={0}: End", threadId));
+            ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Thread={0}: End", threadId));
 
 			return thread;
 		}

@@ -491,11 +491,11 @@ namespace Adxstudio.Xrm.Security
 		/// <returns>True if <see cref="CrmEntityPermissionRight"/> is granted, otherwise false.</returns>
 		public virtual bool TryAssert(OrganizationServiceContext serviceContext, CrmEntityPermissionRight right, string entityName, EntityReference regarding = null)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: entityName={0} right={1}", EntityNamePrivacy.GetEntityName(entityName), right.ToString()));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: entityName={0} right={1}", EntityNamePrivacy.GetEntityName(entityName), right.ToString()));
 
 			var assert = Assert(serviceContext, right, entityName, regarding);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: entityName={0} right={1}", EntityNamePrivacy.GetEntityName(entityName), right.ToString()));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: entityName={0} right={1}", EntityNamePrivacy.GetEntityName(entityName), right.ToString()));
 
 			return assert;
 		}
@@ -516,21 +516,21 @@ namespace Adxstudio.Xrm.Security
 
 				if (!PermissionsExist)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission denied. There are no entity permission records defined in the system associated to valid web roles.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "Permission denied. There are no entity permission records defined in the system associated to valid web roles.");
 
 					return false;
 				}
 
 				if (!CurrentUserHasRole)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission denied. The current user does not belong to any web roles.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "Permission denied. The current user does not belong to any web roles.");
 
 					return false;
 				}
 
 				if (!CurrentUserHasPermissions)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission denied. No entity permissions apply to the current user.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "Permission denied. No entity permissions apply to the current user.");
 
 					return false;
 				}
@@ -539,7 +539,7 @@ namespace Adxstudio.Xrm.Security
 
 				if (!entitySpecificPermissionNodes.Any())
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission denied. There are no entity permission records defined in the system associated to web roles for the current user where entity name is '{0}'.", EntityNamePrivacy.GetEntityName(entityName)));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission denied. There are no entity permission records defined in the system associated to web roles for the current user where entity name is '{0}'.", EntityNamePrivacy.GetEntityName(entityName)));
 
 					return false;
 				}
@@ -581,21 +581,21 @@ namespace Adxstudio.Xrm.Security
 
 				if (globalPermissionGranted)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission granted on entity set '{0}' for '{1}' right.", EntityNamePrivacy.GetEntityName(entityName), right));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission granted on entity set '{0}' for '{1}' right.", EntityNamePrivacy.GetEntityName(entityName), right));
 
 					return true;
 				}
 
 				if (!rightSpecificPermissions.Any())
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission denied on '{0}' entity for '{1}' right. There are no entity permissions for entity type {0} where '{1}' right is true.", EntityNamePrivacy.GetEntityName(entityName), right));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission denied on '{0}' entity for '{1}' right. There are no entity permissions for entity type {0} where '{1}' right is true.", EntityNamePrivacy.GetEntityName(entityName), right));
 
 					return false;
 				}
 
 				// note: record level filters must be applied to the fetch in order to assert privileges at the row level.
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission granted on entity set '{0}' for '{1}' right. note: record level filters must be applied to the fetch in order to assert privileges at the row level.", EntityNamePrivacy.GetEntityName(entityName), right));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission granted on entity set '{0}' for '{1}' right. note: record level filters must be applied to the fetch in order to assert privileges at the row level.", EntityNamePrivacy.GetEntityName(entityName), right));
 			}
 
 			return true;
@@ -611,11 +611,11 @@ namespace Adxstudio.Xrm.Security
 		/// <returns>Result of permission test indicating if privilege is granted. <see cref="EntityPermissionRightResult"/></returns>
 		public virtual EntityPermissionRightResult TryApplyRecordLevelFiltersToFetch(OrganizationServiceContext serviceContext, CrmEntityPermissionRight right, Fetch fetchIn, EntityReference regarding = null)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: right={0}", right.ToString()));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: right={0}", right.ToString()));
 
 			var result = ApplyRecordLevelFiltersToFetch(serviceContext, right, fetchIn, regarding);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: right={0}", right.ToString()));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: right={0}", right.ToString()));
 
 			return result;
 		}
@@ -643,21 +643,21 @@ namespace Adxstudio.Xrm.Security
 
 				if (!PermissionsExist)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission denied. There are no entity permission records defined in the system associated to valid web roles.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "Permission denied. There are no entity permission records defined in the system associated to valid web roles.");
 
 					return new EntityPermissionRightResult();
 				}
 
 				if (!CurrentUserHasRole)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission denied. The current user does not belong to any web roles.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "Permission denied. The current user does not belong to any web roles.");
 
 					return new EntityPermissionRightResult(false, false, true);
 				}
 
 				if (!CurrentUserHasPermissions)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission denied. No entity permissions apply to the current user.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "Permission denied. No entity permissions apply to the current user.");
 
 					return new EntityPermissionRightResult(false, false, true);
 				}
@@ -666,7 +666,7 @@ namespace Adxstudio.Xrm.Security
 
 				if (!entitySpecificPermissionNodes.Any())
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission denied. There are no entity permission records defined in the system associated to web roles for the current user where entity name is '{0}'.", EntityNamePrivacy.GetEntityName(entityName)));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission denied. There are no entity permission records defined in the system associated to web roles for the current user where entity name is '{0}'.", EntityNamePrivacy.GetEntityName(entityName)));
 
 					return new EntityPermissionRightResult(false, false, true);
 				}
@@ -708,21 +708,21 @@ namespace Adxstudio.Xrm.Security
 
 				if (globalPermissionGranted)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Global permission granted on entity set '{0}' for '{1}' right. Fetch not altered.", EntityNamePrivacy.GetEntityName(entityName), right));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Global permission granted on entity set '{0}' for '{1}' right. Fetch not altered.", EntityNamePrivacy.GetEntityName(entityName), right));
 
 					return new EntityPermissionRightResult(true, true, true);
 				}
 
 				if (!rightSpecificPermissionNodes.Any())
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission denied on '{0}' entity for '{1}' right. There are no entity permissions for entity type {0} where '{1}' right is true.", EntityNamePrivacy.GetEntityName(entityName), right));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission denied on '{0}' entity for '{1}' right. There are no entity permissions for entity type {0} where '{1}' right is true.", EntityNamePrivacy.GetEntityName(entityName), right));
 
 					return new EntityPermissionRightResult(false, false, true);
 				}
 
 				if (right == CrmEntityPermissionRight.Create)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission granted on entity set '{0}' for '{1}' right.", EntityNamePrivacy.GetEntityName(entityName), right));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission granted on entity set '{0}' for '{1}' right.", EntityNamePrivacy.GetEntityName(entityName), right));
 
 					return new EntityPermissionRightResult(true, false, true);
 				}
@@ -744,7 +744,7 @@ namespace Adxstudio.Xrm.Security
 				}
 				AddFilterToFetch(fetchIn, filter);
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permissions applicable on '{0}' for '{1}' right.", EntityNamePrivacy.GetEntityName(entityName), right));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permissions applicable on '{0}' for '{1}' right.", EntityNamePrivacy.GetEntityName(entityName), right));
 			}
 
 			return new EntityPermissionRightResult(true, false, true);
@@ -773,21 +773,21 @@ namespace Adxstudio.Xrm.Security
 
 				if (!PermissionsExist)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission denied. There are no entity permission records defined in the system associated to valid web roles.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "Permission denied. There are no entity permission records defined in the system associated to valid web roles.");
 
 					return new Tuple<EntityPermissionRightResult, IEnumerable<Fetch>>(new EntityPermissionRightResult(), new[] { fetchIn });
 				}
 
 				if (!CurrentUserHasRole)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission denied. The current user does not belong to any web roles.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "Permission denied. The current user does not belong to any web roles.");
 
 					return new Tuple<EntityPermissionRightResult, IEnumerable<Fetch>>(new EntityPermissionRightResult(false, false, true), new[] { fetchIn });
 				}
 
 				if (!CurrentUserHasPermissions)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission denied. No entity permissions apply to the current user.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "Permission denied. No entity permissions apply to the current user.");
 
 					return new Tuple<EntityPermissionRightResult, IEnumerable<Fetch>>(new EntityPermissionRightResult(false, false, true), new[] { fetchIn });
 				}
@@ -796,7 +796,7 @@ namespace Adxstudio.Xrm.Security
 
 				if (!entitySpecificPermissionNodes.Any())
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission denied. There are no entity permission records defined in the system associated to web roles for the current user where entity name is '{0}'.", EntityNamePrivacy.GetEntityName(entityName)));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission denied. There are no entity permission records defined in the system associated to web roles for the current user where entity name is '{0}'.", EntityNamePrivacy.GetEntityName(entityName)));
 
 					return new Tuple<EntityPermissionRightResult, IEnumerable<Fetch>>(new EntityPermissionRightResult(false, false, true), new[] { fetchIn });
 				}
@@ -838,21 +838,21 @@ namespace Adxstudio.Xrm.Security
 
 				if (globalPermissionGranted)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Global permission granted on entity set '{0}' for '{1}' right. Fetch not altered.", EntityNamePrivacy.GetEntityName(entityName), right));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Global permission granted on entity set '{0}' for '{1}' right. Fetch not altered.", EntityNamePrivacy.GetEntityName(entityName), right));
 
 					return new Tuple<EntityPermissionRightResult, IEnumerable<Fetch>>(new EntityPermissionRightResult(true, true, true), new[] { fetchIn });
 				}
 
 				if (!rightSpecificPermissionNodes.Any())
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission denied on '{0}' entity for '{1}' right. There are no entity permissions for entity type {0} where '{1}' right is true.", EntityNamePrivacy.GetEntityName(entityName), right));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission denied on '{0}' entity for '{1}' right. There are no entity permissions for entity type {0} where '{1}' right is true.", EntityNamePrivacy.GetEntityName(entityName), right));
 
 					return new Tuple<EntityPermissionRightResult, IEnumerable<Fetch>>(new EntityPermissionRightResult(false, false, true), new[] { fetchIn });
 				}
 
 				if (right == CrmEntityPermissionRight.Create)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission granted on entity set '{0}' for '{1}' right.", EntityNamePrivacy.GetEntityName(entityName), right));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission granted on entity set '{0}' for '{1}' right.", EntityNamePrivacy.GetEntityName(entityName), right));
 
 					return new Tuple<EntityPermissionRightResult, IEnumerable<Fetch>>(new EntityPermissionRightResult(true, false, true), new[] { fetchIn });
 				}
@@ -879,7 +879,7 @@ namespace Adxstudio.Xrm.Security
 					return fetch;
 				}).ToArray();
 				
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permissions applicable on '{0}' for '{1}' right. Fetch modified.", EntityNamePrivacy.GetEntityName(entityName), right));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permissions applicable on '{0}' for '{1}' right. Fetch modified.", EntityNamePrivacy.GetEntityName(entityName), right));
 
 				return new Tuple<EntityPermissionRightResult, IEnumerable<Fetch>>(new EntityPermissionRightResult(true, false, true), queries);
 			}
@@ -970,7 +970,7 @@ namespace Adxstudio.Xrm.Security
 		/// <returns>True if <see cref="CrmEntityPermissionRight"/> is granted, otherwise false.</returns>
 		public virtual bool TryAssert(OrganizationServiceContext serviceContext, CrmEntityPermissionRight right, EntityReference entityReference, EntityMetadata entityMetadata = null, bool readGranted = false, EntityReference regarding = null)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: entityName={0} right={1}", entityReference != null ? EntityNamePrivacy.GetEntityName(entityReference.LogicalName) : "unknown", right.ToString()));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: entityName={0} right={1}", entityReference != null ? EntityNamePrivacy.GetEntityName(entityReference.LogicalName) : "unknown", right.ToString()));
 
 			if (entityReference == null)
 			{
@@ -992,7 +992,7 @@ namespace Adxstudio.Xrm.Security
 
 			var assert = TryAssert(serviceContext, right, entity, entityMetadata, readGranted, regarding);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: entityName={0} right={1}", EntityNamePrivacy.GetEntityName(entityReference.LogicalName), right.ToString()));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: entityName={0} right={1}", EntityNamePrivacy.GetEntityName(entityReference.LogicalName), right.ToString()));
 
 			return assert;
 		}
@@ -1008,11 +1008,11 @@ namespace Adxstudio.Xrm.Security
 		/// <returns>True if <see cref="CrmEntityPermissionRight"/> is granted, otherwise false.</returns>
 		public virtual bool TryAssert(OrganizationServiceContext serviceContext, CrmEntityPermissionRight right, Entity entity, EntityMetadata entityMetadata = null, bool readGranted = false, EntityReference regarding = null)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: entityName={0} right={1}", entity != null ? EntityNamePrivacy.GetEntityName(entity.LogicalName) : "unknown", right.ToString()));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: entityName={0} right={1}", entity != null ? EntityNamePrivacy.GetEntityName(entity.LogicalName) : "unknown", right.ToString()));
 
 			var assert = Assert(serviceContext, right, entity, entityMetadata, readGranted, regarding);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: entityName={0} right={1}", entity != null ? EntityNamePrivacy.GetEntityName(entity.LogicalName) : "unknown", right.ToString()));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: entityName={0} right={1}", entity != null ? EntityNamePrivacy.GetEntityName(entity.LogicalName) : "unknown", right.ToString()));
 
 			return assert;
 		}
@@ -1036,21 +1036,21 @@ namespace Adxstudio.Xrm.Security
 
 				if (!PermissionsExist)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission denied. There are no entity permission records defined in the system associated to valid web roles.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "Permission denied. There are no entity permission records defined in the system associated to valid web roles.");
 
 					return false;
 				}
 
 				if (!CurrentUserHasRole)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission denied. The current user does not belong to any web roles.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "Permission denied. The current user does not belong to any web roles.");
 
 					return false;
 				}
 
 				if (!CurrentUserHasPermissions)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission denied. No entity permissions apply to the current user.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "Permission denied. No entity permissions apply to the current user.");
 
 					return false;
 				}
@@ -1059,7 +1059,7 @@ namespace Adxstudio.Xrm.Security
 
 				if (!entitySpecificPermissionNodes.Any())
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission denied. There are no entity permission records defined in the system associated to web roles for the current user where entity name is '{0}'.", EntityNamePrivacy.GetEntityName(entityName)));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission denied. There are no entity permission records defined in the system associated to web roles for the current user where entity name is '{0}'.", EntityNamePrivacy.GetEntityName(entityName)));
 
 					return false;
 				}
@@ -1102,21 +1102,21 @@ namespace Adxstudio.Xrm.Security
 
 				if (globalPermissionGranted)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Global permission granted on entity set '{0}' for '{1}' right. Fetch not altered.", EntityNamePrivacy.GetEntityName(entityName), right));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Global permission granted on entity set '{0}' for '{1}' right. Fetch not altered.", EntityNamePrivacy.GetEntityName(entityName), right));
 
 					return true;
 				}
 
 				if (!rightSpecificPermissionNodes.Any())
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission denied on '{0}' entity for '{1}' right. There are no entity permissions for entity type {0} where '{1}' right is true.", EntityNamePrivacy.GetEntityName(entityName), right));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission denied on '{0}' entity for '{1}' right. There are no entity permissions for entity type {0} where '{1}' right is true.", EntityNamePrivacy.GetEntityName(entityName), right));
 
 					return false;
 				}
 
 				if (right == CrmEntityPermissionRight.Create)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission granted on entity set '{0}' for '{1}' right.", EntityNamePrivacy.GetEntityName(entityName), right));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission granted on entity set '{0}' for '{1}' right.", EntityNamePrivacy.GetEntityName(entityName), right));
 
 					return true;
 				}
@@ -1143,7 +1143,7 @@ namespace Adxstudio.Xrm.Security
 
 				AddFilterToFetch(fetch, filter);
 
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permissions applicable on '{0}' for '{1}' right.", EntityNamePrivacy.GetEntityName(entityName), right));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permissions applicable on '{0}' for '{1}' right.", EntityNamePrivacy.GetEntityName(entityName), right));
 
 				var response = serviceContext.RetrieveSingle(fetch);
 
@@ -1161,7 +1161,7 @@ namespace Adxstudio.Xrm.Security
 		/// <returns>Result of permission test indicating if user can read, write, create, delete, append, appendTo. <see cref="EntityPermissionResult"/></returns>
 		public virtual EntityPermissionResult TryAssert(OrganizationServiceContext serviceContext, EntityReference entityReference, EntityMetadata entityMetadata = null, bool readGranted = false, EntityReference regarding = null)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: entityName={0}", entityReference != null ? EntityNamePrivacy.GetEntityName(entityReference.LogicalName) : "unknown"));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: entityName={0}", entityReference != null ? EntityNamePrivacy.GetEntityName(entityReference.LogicalName) : "unknown"));
 
 			if (entityReference == null)
 			{
@@ -1183,7 +1183,7 @@ namespace Adxstudio.Xrm.Security
 
 			var result = TryAssert(serviceContext, entity, entityMetadata, readGranted, regarding);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: entityName={0}", EntityNamePrivacy.GetEntityName(entityReference.LogicalName)));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: entityName={0}", EntityNamePrivacy.GetEntityName(entityReference.LogicalName)));
 
 			return result;
 		}
@@ -1198,11 +1198,11 @@ namespace Adxstudio.Xrm.Security
 		/// <returns>Result of permission test indicating if user can read, write, create, delete, append, appendTo. <see cref="EntityPermissionResult"/></returns>
 		public virtual EntityPermissionResult TryAssert(OrganizationServiceContext serviceContext, Entity entity, EntityMetadata entityMetadata = null, bool readGranted = false, EntityReference regarding = null)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: entityName={0}", entity != null ? EntityNamePrivacy.GetEntityName(entity.LogicalName) : "unknown"));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: entityName={0}", entity != null ? EntityNamePrivacy.GetEntityName(entity.LogicalName) : "unknown"));
 
 			var result = Assert(serviceContext, entity, entityMetadata, readGranted, regarding);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: entityName={0}", entity != null ? EntityNamePrivacy.GetEntityName(entity.LogicalName) : "unknown"));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: entityName={0}", entity != null ? EntityNamePrivacy.GetEntityName(entity.LogicalName) : "unknown"));
 
 			return result;
 		}
@@ -1223,21 +1223,21 @@ namespace Adxstudio.Xrm.Security
 			{
 				if (!PermissionsExist)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission denied. There are no entity permission records defined in the system associated to valid web roles.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "Permission denied. There are no entity permission records defined in the system associated to valid web roles.");
 
 					return new EntityPermissionResult(false);
 				}
 
 				if (!CurrentUserHasRole)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission denied. The current user does not belong to any web roles.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "Permission denied. The current user does not belong to any web roles.");
 
 					return new EntityPermissionResult();
 				}
 
 				if (!CurrentUserHasPermissions)
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Permission denied. No entity permissions apply to the current user.");
+					ADXTrace.TraceInfo(TraceCategory.Application, "Permission denied. No entity permissions apply to the current user.");
 
 					return new EntityPermissionResult();
 				}
@@ -1246,7 +1246,7 @@ namespace Adxstudio.Xrm.Security
 
 				if (!entitySpecificPermissions.Any())
 				{
-					ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission denied. There are no entity permission records defined in the system associated to web roles for the current user where entity name is '{0}'.", EntityNamePrivacy.GetEntityName(entity.LogicalName)));
+					ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission denied. There are no entity permission records defined in the system associated to web roles for the current user where entity name is '{0}'.", EntityNamePrivacy.GetEntityName(entity.LogicalName)));
 
 					return new EntityPermissionResult();
 				}
@@ -1393,28 +1393,28 @@ namespace Adxstudio.Xrm.Security
 
 			if (globalPermissionGranted)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Global permission granted on entity set '{0}' for '{1}' right. Fetch not altered.", EntityNamePrivacy.GetEntityName(entity.LogicalName), right));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Global permission granted on entity set '{0}' for '{1}' right. Fetch not altered.", EntityNamePrivacy.GetEntityName(entity.LogicalName), right));
 
 				return true;
 			}
 
 			if (!rightSpecificPermissions.Any())
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission denied on '{0}' entity for '{1}' right. There are no entity permissions for entity type {0} where '{1}' right is true.", EntityNamePrivacy.GetEntityName(entity.LogicalName), right));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission denied on '{0}' entity for '{1}' right. There are no entity permissions for entity type {0} where '{1}' right is true.", EntityNamePrivacy.GetEntityName(entity.LogicalName), right));
 
 				return false;
 			}
 
 			if (right == CrmEntityPermissionRight.Create)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission granted on entity set '{0}' for '{1}' right.", EntityNamePrivacy.GetEntityName(entity.LogicalName), right));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission granted on entity set '{0}' for '{1}' right.", EntityNamePrivacy.GetEntityName(entity.LogicalName), right));
 
 				return true;
 			}
 
 			var result = TryAssert(serviceContext, right, entity, entityMetadata, regarding: regarding);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application,
+			ADXTrace.TraceInfo(TraceCategory.Application,
 				result
 					? string.Format("Permission granted on '{0}' entity with id ({1}) for '{2}' right.", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id,
 						right)
@@ -1539,11 +1539,11 @@ namespace Adxstudio.Xrm.Security
 		/// <returns>True if permission is granted, otherwise false.</returns>
 		public virtual bool TryAssertAssociation(OrganizationServiceContext serviceContext, Entity target, Relationship relationship, Entity entity, EntityMetadata entityMetadata = null)
 		{
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, "Start");
+			ADXTrace.TraceInfo(TraceCategory.Application, "Start");
 
 			var result = AssertAssociation(serviceContext, target, relationship, entity, entityMetadata);
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("End: result={0}", result));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("End: result={0}", result));
 
 			return result;
 		}
@@ -1563,13 +1563,13 @@ namespace Adxstudio.Xrm.Security
 			relationship.ThrowOnNull("relationship");
 			entity.ThrowOnNull("entity");
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Start: SchemaName={0}, PrimaryEntityRole={1}, LogicalName={2}, Id={3}", relationship.SchemaName, relationship.PrimaryEntityRole, EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Start: SchemaName={0}, PrimaryEntityRole={1}, LogicalName={2}, Id={3}", relationship.SchemaName, relationship.PrimaryEntityRole, EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id));
 
 			var parentTest = TryAssert(serviceContext, CrmEntityPermissionRight.AppendTo, target, targetEntityMetadata);
 
 			if (!parentTest)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission denied on '{0}' entity with id ({1}) for '{2}' right.", EntityNamePrivacy.GetEntityName(target.LogicalName), target.Id, CrmEntityPermissionRight.Append));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission denied on '{0}' entity with id ({1}) for '{2}' right.", EntityNamePrivacy.GetEntityName(target.LogicalName), target.Id, CrmEntityPermissionRight.Append));
 
 				return false;
 			}
@@ -1578,12 +1578,12 @@ namespace Adxstudio.Xrm.Security
 
 			if (entityTest)
 			{
-				ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission granted on '{0}' entity with id ({1}) for '{2}' right.", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id, CrmEntityPermissionRight.AppendTo));
+				ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission granted on '{0}' entity with id ({1}) for '{2}' right.", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id, CrmEntityPermissionRight.AppendTo));
 
 				return true;
 			}
 
-			ADXTrace.Instance.TraceInfo(TraceCategory.Application, string.Format("Permission denied on '{0}' entity with id ({1}) for '{2}' right.", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id, CrmEntityPermissionRight.AppendTo));
+			ADXTrace.TraceInfo(TraceCategory.Application, string.Format("Permission denied on '{0}' entity with id ({1}) for '{2}' right.", EntityNamePrivacy.GetEntityName(entity.LogicalName), entity.Id, CrmEntityPermissionRight.AppendTo));
 
 			return false;
 		}

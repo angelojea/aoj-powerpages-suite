@@ -40,7 +40,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 				var webform = Parent.Parent as WebForm;
 				if (webform == null)
 				{
-                    ADXTrace.Instance.TraceError(TraceCategory.Application, "Parent WebForm could not be resolved.");
+                    ADXTrace.TraceError(TraceCategory.Application, "Parent WebForm could not be resolved.");
                     return null;
 				}
 				return webform;
@@ -53,7 +53,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 			var webform = Parent.Parent as WebForm;
 			if (webform == null)
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, "Parent WebForm could not be resolved.");
+                ADXTrace.TraceError(TraceCategory.Application, "Parent WebForm could not be resolved.");
                 return;
 			}
 			webform.SetAttributeValuesAndSave(context, entity);
@@ -64,7 +64,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 			var webform = Parent.Parent as WebForm;
 			if (webform == null)
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, "Parent WebForm could not be resolved.");
+                ADXTrace.TraceError(TraceCategory.Application, "Parent WebForm could not be resolved.");
                 return false;
 			}
 			return webform.TrySetAttributeValuesFromMetadata(context, ref entity);
@@ -75,7 +75,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 			var webform = Parent.Parent as WebForm;
 			if (webform == null)
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, "Parent WebForm could not be resolved.");
+                ADXTrace.TraceError(TraceCategory.Application, "Parent WebForm could not be resolved.");
                 return;
 			}
 			webform.MoveToPreviousStep();
@@ -91,7 +91,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 			var webform = Parent.Parent as WebForm;
 			if (webform == null)
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, "Parent WebForm could not be resolved.");
+                ADXTrace.TraceError(TraceCategory.Application, "Parent WebForm could not be resolved.");
                 return;
 			}
 			webform.MoveToNextStep(entityID);
@@ -102,7 +102,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 			var webform = Parent.Parent as WebForm;
 			if (webform == null)
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, "Parent WebForm could not be resolved.");
+                ADXTrace.TraceError(TraceCategory.Application, "Parent WebForm could not be resolved.");
                 return;
 			}
 			webform.MoveToNextStep(entityDefinition);
@@ -113,7 +113,7 @@ namespace Adxstudio.Xrm.Web.UI.WebForms
 			var webform = Parent.Parent as WebForm;
 			if (webform == null)
 			{
-                ADXTrace.Instance.TraceError(TraceCategory.Application, "Parent WebForm could not be resolved.");
+                ADXTrace.TraceError(TraceCategory.Application, "Parent WebForm could not be resolved.");
                 return;
 			}
 			webform.UpdateEntityDefinition(entityDefinition);

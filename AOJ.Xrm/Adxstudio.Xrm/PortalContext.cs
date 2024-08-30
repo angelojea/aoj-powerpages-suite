@@ -62,6 +62,15 @@ namespace Adxstudio.Xrm
             Website = svc.Retrieve("mspp_website", portalId, new ColumnSet(true));
         }
 
+        public PortalContext(OrganizationServiceContext request, Entity website, Entity user)
+            : base(request)
+        {
+            User = user;
+            _node = null;
+            Entity = null;
+            Website = website;
+        }
+
         public PortalContext(string contextName, RequestContext request)
             : base(contextName, request)
         {
