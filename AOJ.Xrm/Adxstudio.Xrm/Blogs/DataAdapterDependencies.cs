@@ -33,15 +33,15 @@ namespace Adxstudio.Xrm.Blogs
 				throw new ArgumentNullException("serviceContext");
 			}
 
-			if (securityProvider == null)
-			{
-				throw new ArgumentNullException("securityProvider");
-			}
+			//if (securityProvider == null)
+			//{
+			//	throw new ArgumentNullException("securityProvider");
+			//}
 
-			if (urlProvider == null)
-			{
-				throw new ArgumentNullException("urlProvider");
-			}
+			//if (urlProvider == null)
+			//{
+			//	throw new ArgumentNullException("urlProvider");
+			//}
 
 			if (website == null)
 			{
@@ -49,7 +49,7 @@ namespace Adxstudio.Xrm.Blogs
 			}
 
 			_serviceContext = serviceContext;
-			_securityProvider = securityProvider;
+			//_securityProvider = securityProvider;
 			_urlProvider = urlProvider;
 			_website = website;
 			_portalUser = portalUser;

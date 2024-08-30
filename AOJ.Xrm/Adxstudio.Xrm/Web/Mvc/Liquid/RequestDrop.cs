@@ -89,12 +89,12 @@ namespace Adxstudio.Xrm.Web.Mvc.Liquid
 				}
 			}
 			
-			if (Html.ViewContext != null && Html.ViewContext.ViewData != null)
+			if (Html != null && Html.ViewContext != null && Html.ViewContext.ViewData != null)
 			{
 				@params.Merge(Html.ViewContext.ViewData);
 			}
 
-			if (Html.ViewData != null)
+			if (Html != null && Html.ViewData != null)
 			{
 				@params.Merge(Html.ViewData);
 			}

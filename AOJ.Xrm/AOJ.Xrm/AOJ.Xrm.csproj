@@ -190,7 +190,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AOJ.Xrm.snk" />
-    <None Include="app.ttt" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

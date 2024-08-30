@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Routing;
+using AOJ.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Client.Configuration;
@@ -79,14 +80,12 @@ namespace Microsoft.Xrm.Portal
 			get { return _entity.Value; }
 		}
 
-		private readonly Lazy<CrmSiteMapNode> _node;
-
 		/// <summary>
 		/// The current status code determined by the <see cref="CrmSiteMapProvider"/>.
 		/// </summary>
 		public virtual HttpStatusCode StatusCode
 		{
-			get { return _node.Value != null ? _node.Value.StatusCode : HttpStatusCode.OK; }
+			get { return HttpStatusCode.OK; }
 		}
 
 		/// <summary>
@@ -94,7 +93,7 @@ namespace Microsoft.Xrm.Portal
 		/// </summary>
 		public virtual string Path
 		{
-			get { return _node.Value != null ? _node.Value.RewriteUrl : null; }
+			get { return "/"; }
 		}
 
 		/// <summary>
@@ -138,10 +137,9 @@ namespace Microsoft.Xrm.Portal
 			ServiceContext = context;
 			_websiteSelector = websiteSelector;
 
-			_website = new Lazy<Entity>(() => GetWebsite(ServiceContext, Request, _websiteSelector));
-			_user = new Lazy<Entity>(() => GetUser(ServiceContext, Request));
-			_node = new Lazy<CrmSiteMapNode>(() => GetNode(Request));
-			_entity = new Lazy<Entity>(() => GetEntity(ServiceContext, _node.Value));
+			_website = new Lazy<Entity>(() => AojConfigurationManager.Website);
+			_user = new Lazy<Entity>(() => AojConfigurationManager.User);
+			_entity = new Lazy<Entity>(() => AojConfigurationManager.Website);
 		}
 
         private class FakeHttpContext : HttpContextBase

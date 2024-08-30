@@ -7,8 +7,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Microsoft.Xrm.Client;
-using Microsoft.Xrm.Portal.Configuration;
 using Adxstudio.Xrm.Web.Mvc.Liquid;
 using static Adxstudio.Xrm.Web.Mvc.Html.LiquidExtensions;
 using Hash = DotLiquid.Hash;
@@ -16,39 +14,35 @@ using Context = DotLiquid.Context;
 using Adxstudio.Xrm.Web.UI.WebControls;
 using Adxstudio.Xrm;
 using System.Linq;
-using Microsoft.Xrm.Client.Services;
 using Adxstudio.Xrm.Web.Mvc;
-using System.Web.Services.Description;
 using Adxstudio.Xrm.Cms;
 using AOJ.Configuration;
 using Microsoft.Xrm.Sdk.Client;
 using Microsoft.Xrm.Sdk;
+using System.Collections.Specialized;
 
 namespace AOJ.Xrm.Common
 {
     public class AOJRenderer
     {
         private readonly IOrganizationService _client;
-        private readonly PortalViewContext _portalViewContext;
+        private readonly Guid _websiteId;
+        private readonly Guid _userId;
 
         public AOJRenderer(IOrganizationService client, Guid websiteId, Guid userId)
         {
             _client = client;
-
-            AojConfigurationManager.Service = client;
-            AojConfigurationManager.Website = client.Retrieve("mspp_website", websiteId, new ColumnSet(true));
-            AojConfigurationManager.User = client.Retrieve("contact", userId, new ColumnSet(true));
+            _websiteId = websiteId;
+            _userId = userId;
             MockHttpContext();
-
-            var context = new OrganizationServiceContext(client);
-            var portal = new PortalContext(context, AojConfigurationManager.Website, AojConfigurationManager.User);
-            AojConfigurationManager.ViewContext = Adxstudio.Xrm.AOJ.GetMockHtmlHelper(portal);
-
-            _portalViewContext = new PortalViewContext(new PortalContextDataAdapterDependencies(portal));
         }
 
         public string RenderEntityList(Guid id)
         {
+            AojConfigurationManager.Service = _client;
+            AojConfigurationManager.Website = _client.Retrieve("mspp_website", _websiteId, new ColumnSet(true));
+            AojConfigurationManager.User = _client.Retrieve("contact", _userId, new ColumnSet(true));
+
             var page = new MockPage();
 
             var list = new EntityList(_client.Retrieve("mspp_entitylist", id, new ColumnSet(true)).ToEntityReference());
@@ -71,6 +65,10 @@ namespace AOJ.Xrm.Common
 
         public string RenderEntityForm(Guid id)
         {
+            AojConfigurationManager.Service = _client;
+            AojConfigurationManager.Website = _client.Retrieve("mspp_website", _websiteId, new ColumnSet(true));
+            AojConfigurationManager.User = _client.Retrieve("contact", _userId, new ColumnSet(true));
+
             var control = new LiquidServerControl();
             var page = new MockPage();
 
@@ -92,39 +90,59 @@ namespace AOJ.Xrm.Common
             }
         }
 
-        public string RenderLiquid(string liquid)
+        public string RenderLiquid(string liquid, Entity contextEntity = null)
         {
-            var portalLiquidContext = new PortalLiquidContext(_client, _portalViewContext);
+            AojConfigurationManager.Service = _client;
+            AojConfigurationManager.Website = _client.Retrieve("mspp_website", _websiteId, new ColumnSet(true));
+            AojConfigurationManager.User = _client.Retrieve("contact", _userId, new ColumnSet(true));
+
+            var context = new OrganizationServiceContext(_client);
+            var portalContext = new PortalContext(context,
+                AojConfigurationManager.Website,
+                AojConfigurationManager.User,
+                //Context Entity
+                contextEntity != null ? contextEntity : AojConfigurationManager.User
+             );
+            AojConfigurationManager.ViewContext = Adxstudio.Xrm.AOJ.GetMockHtmlHelper(portalContext);
+
+            var portalViewContext = new PortalViewContext(new PortalContextDataAdapterDependencies(portalContext));
+
+            var portalLiquidContext = new PortalLiquidContext(_client, portalViewContext);
 
 
-            //var blogDependencies = new Adxstudio.Xrm.Blogs.PortalConfigurationDataAdapterDependencies(svc, portalContext);
-            //var knowledgeDependencies = new Adxstudio.Xrm.KnowledgeArticles.PortalConfigurationDataAdapterDependencies();
-            //var contextDrop = new PortalViewContextDrop(portalLiquidContext);
-            //var requestDrop = RequestDrop.FromHtmlHelper(portalLiquidContext, null);
+            var blogDependencies = new Adxstudio.Xrm.Blogs.PortalConfigurationDataAdapterDependencies(portalContext);
+            var knowledgeDependencies = new Adxstudio.Xrm.KnowledgeArticles.PortalConfigurationDataAdapterDependencies();
+            var contextDrop = new PortalViewContextDrop(portalLiquidContext);
+
+            //TODO: implement
+            var requestDrop = new RequestDrop(
+                portalLiquidContext,
+                new MockHttpRequest()
+            );
 
             var globals = new Hash
             {
-                //{ "context", contextDrop },
+                { "context", contextDrop },
                 { "entities", new EntitiesDrop(portalLiquidContext) },
                 { "now", DateTime.UtcNow },
-				//{ "params", requestDrop == null ? null : requestDrop.Params },
-				//{ "request", requestDrop },
-				//{ "settings", new SettingsDrop(portalViewContext.Settings) },
-				{ "sharepoint", new SharePointDrop(portalLiquidContext) },
+                { "params",  requestDrop == null ? null : requestDrop.Params },
+                { "request", requestDrop },
+                { "settings", new SettingsDrop(portalViewContext.Settings) },
+                { "sharepoint", new SharePointDrop(portalLiquidContext) },
 				//{ "sitemap", siteMapDrop },
 				//{ "sitemarkers", new SiteMarkersDrop(portalLiquidContext, portalViewContext.SiteMarkers) },
-				//{ "snippets", new SnippetsDrop(portalLiquidContext, portalViewContext.Snippets) },
-				//{ "user", contextDrop.User },
-				//{ "weblinks", new WebLinkSetsDrop(portalLiquidContext, portalViewContext.WebLinks) },
+				{ "snippets", new SnippetsDrop(portalLiquidContext, portalViewContext.Snippets) },
+                { "user", contextDrop.User },
+                { "weblinks", new WebLinkSetsDrop(portalLiquidContext, portalViewContext.WebLinks) },
 				//{ "ads", new AdsDrop(portalLiquidContext, portalViewContext.Ads) },
 				//{ "polls", new PollsDrop(portalLiquidContext, portalViewContext.Polls) },
 				//{ "forums", new ForumsDrop(portalLiquidContext, forumDependencies) },
 				//{ "events", new EventsDrop(portalLiquidContext, forumDependencies) },
-				//{ "blogs", new BlogsDrop(portalLiquidContext, blogDependencies) },
-				//{ "website", contextDrop.Website },
-				{ "resx", new ResourceManagerDrop(portalLiquidContext) },
-				//{ "knowledge", new KnowledgeDrop(portalLiquidContext, knowledgeDependencies) },
-				{ "uniqueId", new UniqueDrop() }
+				{ "blogs", new BlogsDrop(portalLiquidContext, blogDependencies) },
+                { "website", contextDrop.Website },
+                { "resx", new ResourceManagerDrop(portalLiquidContext) },
+                { "knowledge", new KnowledgeDrop(portalLiquidContext, knowledgeDependencies) },
+                { "uniqueId", new UniqueDrop() }
             };
 
             var environment = new LiquidEnvironment(globals, new Hash
@@ -133,8 +151,8 @@ namespace AOJ.Xrm.Common
                 });
             var localVariables = Hash.FromDictionary(environment.Globals);
             var registers = Hash.FromDictionary(environment.Registers);
-            var context = new Context(new List<Hash> { localVariables }, new Hash(), registers, false);
-            return LiquidRenderer.Liquid(liquid, context);
+            var dotContext = new Context(new List<Hash> { localVariables }, new Hash(), registers, false);
+            return LiquidRenderer.Liquid(liquid, dotContext);
         }
 
         public void MockHttpContext()
@@ -248,5 +266,17 @@ namespace AOJ.Xrm.Common
             get => false;
             set { }
         }
+    }
+
+    internal class MockHttpRequest : HttpRequestBase
+    {
+        private Uri _url;
+        public MockHttpRequest() : base()
+        {
+            _url = new Uri("http://aoj-powerpages.com?test=Biiiiirl");
+        }
+        public override Uri Url => _url;
+        public override string RawUrl => _url.Host;
+        public override NameValueCollection Params => new NameValueCollection() { { "test", "Biiirl" } };
     }
 }

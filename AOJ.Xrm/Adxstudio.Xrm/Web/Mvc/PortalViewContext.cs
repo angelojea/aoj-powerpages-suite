@@ -47,8 +47,12 @@ namespace Adxstudio.Xrm.Web.Mvc
 
 		}
 
-		public PortalViewContext(IDataAdapterDependencies dependencies, SiteMapProvider siteMapProvider = null, string portalName = null, 
-            RequestContext requestContext = null)
+		public PortalViewContext(IDataAdapterDependencies dependencies,
+            SiteMapProvider siteMapProvider = null,
+			string portalName = null, 
+            RequestContext requestContext = null,
+            PortalContext portalContext = null
+		)
 			: this(
 				GetSettingDataAdapter(dependencies),
 				GetSiteMarkerDataAdapter(dependencies), 
@@ -59,11 +63,23 @@ namespace Adxstudio.Xrm.Web.Mvc
 				dependencies.GetUrlProvider(),
 				siteMapProvider, 
 				portalName,
-				requestContext) { }
+				requestContext,
+				portalContext
+            ) { }
 
-		public PortalViewContext(ISettingDataAdapter settings, ISiteMarkerDataAdapter siteMarkers, ISnippetDataAdapter snippets,
-			IWebLinkSetDataAdapter webLinks, IAdDataAdapter ads, IPollDataAdapter polls, IEntityUrlProvider urlProvider, 
-			SiteMapProvider siteMapProvider = null, string portalName = null, RequestContext requestContext = null)
+		public PortalViewContext(
+			ISettingDataAdapter settings,
+			ISiteMarkerDataAdapter siteMarkers,
+			ISnippetDataAdapter snippets,
+			IWebLinkSetDataAdapter webLinks,
+			IAdDataAdapter ads,
+			IPollDataAdapter polls,
+			IEntityUrlProvider urlProvider, 
+			SiteMapProvider siteMapProvider = null,
+			string portalName = null,
+			RequestContext requestContext = null,
+            PortalContext portalContext = null
+        )
 		{
 			if (settings == null)
 			{
@@ -114,9 +130,16 @@ namespace Adxstudio.Xrm.Web.Mvc
 			
 			Polls = polls;
 
-			_currentSiteMapNode = new Lazy<SiteMapNode>(GetCurrentSiteMapNode, LazyThreadSafetyMode.None);
-			_currentSiteMapNodeAncestors = new Lazy<SiteMapNode[]>(GetCurrentSiteMapNodeAncestors, LazyThreadSafetyMode.None);
-			_entity = new Lazy<IPortalViewEntity>(GetEntity, LazyThreadSafetyMode.None);
+            //_currentSiteMapNode = new Lazy<SiteMapNode>(GetCurrentSiteMapNode, LazyThreadSafetyMode.None);
+            //_currentSiteMapNodeAncestors = new Lazy<SiteMapNode[]>(GetCurrentSiteMapNodeAncestors, LazyThreadSafetyMode.None);
+            if (portalContext != null)
+            {
+                _entity = new Lazy<IPortalViewEntity>(() => GetEntity(portalContext.ServiceContext, portalContext.Entity), LazyThreadSafetyMode.None);
+            }
+			else
+            {
+                _entity = new Lazy<IPortalViewEntity>(GetEntity, LazyThreadSafetyMode.None);
+            }
 			_user = new Lazy<IPortalViewEntity>(GetUser, LazyThreadSafetyMode.None);
 			_website = new Lazy<IPortalViewEntity>(GetWebsite, LazyThreadSafetyMode.None);
 			_websiteAccessPermissionProvider = new Lazy<IWebsiteAccessPermissionProvider>(GetWebsiteAccessPermissionProvider, LazyThreadSafetyMode.None);
@@ -373,10 +396,7 @@ namespace Adxstudio.Xrm.Web.Mvc
 				return null;
 			}
 
-			var securityProvider = PortalCrmConfigurationManager.CreateCrmEntitySecurityProvider(PortalName);
-			var urlProvider = PortalCrmConfigurationManager.CreateDependencyProvider(PortalName).GetDependency<IEntityUrlProvider>();
-
-			return new PortalViewEntity(serviceContext, entity, securityProvider, urlProvider);
+			return new PortalViewEntity(serviceContext, entity);
 		}
 
 		public void AddEntity(string key, OrganizationServiceContext serviceContext, Entity entity)

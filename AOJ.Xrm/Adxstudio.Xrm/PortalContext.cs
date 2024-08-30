@@ -15,6 +15,7 @@ using Microsoft.Xrm.Sdk.Client;
 using Microsoft.Xrm.Sdk.Query;
 using Adxstudio.Xrm.Web;
 using Adxstudio.Xrm.Web.Routing;
+using AOJ.Configuration;
 
 namespace Adxstudio.Xrm
 {
@@ -62,12 +63,12 @@ namespace Adxstudio.Xrm
             Website = svc.Retrieve("mspp_website", portalId, new ColumnSet(true));
         }
 
-        public PortalContext(OrganizationServiceContext request, Entity website, Entity user)
+        public PortalContext(OrganizationServiceContext request, Entity website, Entity user, Entity contextEntity)
             : base(request)
         {
             User = user;
             _node = null;
-            Entity = null;
+            Entity = contextEntity;
             Website = website;
         }
 

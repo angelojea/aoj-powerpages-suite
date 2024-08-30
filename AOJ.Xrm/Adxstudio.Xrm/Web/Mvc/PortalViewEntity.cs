@@ -19,39 +19,58 @@ namespace Adxstudio.Xrm.Web.Mvc
 		private readonly Lazy<bool> _editable;
 		private readonly OrganizationServiceContext _serviceContext;
 		private readonly Lazy<string> _url;
-		
-		public PortalViewEntity(OrganizationServiceContext serviceContext, Entity entity, ICrmEntitySecurityProvider securityProvider, IEntityUrlProvider urlProvider)
-		{
-			if (serviceContext == null)
-			{
-				throw new ArgumentNullException("serviceContext");
-			}
 
-			if (entity == null)
-			{
-				throw new ArgumentNullException("entity");
-			}
+        public PortalViewEntity(OrganizationServiceContext serviceContext, Entity entity, ICrmEntitySecurityProvider securityProvider, IEntityUrlProvider urlProvider)
+        {
+            if (serviceContext == null)
+            {
+                throw new ArgumentNullException("serviceContext");
+            }
 
-			if (securityProvider == null)
-			{
-				throw new ArgumentNullException("securityProvider");
-			}
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
 
-			if (urlProvider == null)
-			{
-				throw new ArgumentNullException("urlProvider");
-			}
+            if (securityProvider == null)
+            {
+                throw new ArgumentNullException("securityProvider");
+            }
 
-			Entity = entity;
-			EntityReference = entity.ToEntityReference();
+            if (urlProvider == null)
+            {
+                throw new ArgumentNullException("urlProvider");
+            }
 
-			_description = new Lazy<string>(GetDescription, LazyThreadSafetyMode.None);
-			_editable = new Lazy<bool>(() => TryAssertEditable(serviceContext, entity, securityProvider), LazyThreadSafetyMode.None);
-			_serviceContext = serviceContext;
-			_url = new Lazy<string>(() => urlProvider.GetUrl(serviceContext, entity));
-		}
+            Entity = entity;
+            EntityReference = entity.ToEntityReference();
 
-		public string Description
+            _description = new Lazy<string>(GetDescription, LazyThreadSafetyMode.None);
+            _editable = new Lazy<bool>(() => TryAssertEditable(serviceContext, entity, securityProvider), LazyThreadSafetyMode.None);
+            _serviceContext = serviceContext;
+            _url = new Lazy<string>(() => urlProvider.GetUrl(serviceContext, entity));
+        }
+
+        public PortalViewEntity(OrganizationServiceContext serviceContext, Entity entity)
+        {
+            if (serviceContext == null)
+            {
+                throw new ArgumentNullException("serviceContext");
+            }
+
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
+
+            Entity = entity;
+            EntityReference = entity.ToEntityReference();
+
+            _description = new Lazy<string>(GetDescription, LazyThreadSafetyMode.None);
+            _serviceContext = serviceContext;
+        }
+
+        public string Description
 		{
 			get { return _description.Value; }
 		}
