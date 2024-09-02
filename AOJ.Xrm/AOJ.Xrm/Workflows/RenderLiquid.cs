@@ -20,8 +20,11 @@ namespace AOJ.Xrm.Workflows
         [Input("Liquid")]
         public InArgument<string> Liquid { get; set; }
 
-        [Output("Rendered Html")]
-        public OutArgument<string> RenderedHtml { get; set; }
+        [Output("Output")]
+        public OutArgument<string> Output { get; set; }
+
+        [Output("Success")]
+        public OutArgument<bool> Success { get; set; }
 
 
         protected override void Execute(CodeActivityContext executionContext)
@@ -33,15 +36,42 @@ namespace AOJ.Xrm.Workflows
             IOrganizationServiceFactory serviceFactory = executionContext.GetExtension<IOrganizationServiceFactory>();
             IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
 
-            var renderer = new AOJRenderer(
-                new OrganizationService(service),
-                Guid.Parse(WebsiteId.Get(executionContext)),
-                Guid.Parse("2ba29921-1b5c-ef11-bfe2-000d3a56777a")
-            );
-            RenderedHtml.Set(
-                executionContext,
-                renderer.RenderLiquid(Liquid.Get(executionContext))
-            );
+            try
+            {
+                var renderer = new AOJRenderer(
+                    new OrganizationService(service),
+                    Guid.Parse(WebsiteId.Get(executionContext)),
+                    Guid.Parse("2ba29921-1b5c-ef11-bfe2-000d3a56777a")
+                );
+                Output.Set(
+                    executionContext,
+                    renderer.RenderLiquid(Liquid.Get(executionContext))
+                );
+                Success.Set(executionContext, true);
+            }
+            catch (Exception ex)
+            {
+                Output.Set(
+                    executionContext,
+                    ex.Message + "\n\n\n" + ex.StackTrace
+                );
+                Success.Set(executionContext, false);
+            }
+
+
+            //Entity note = new Entity("annotation");
+            //note["subject"] = "Plugin Exception Log";
+            //note["notetext"] = $"Exception Message: {ex.Message}\n" +
+            //                   $"Stack Trace: {ex.StackTrace}\n" +
+            //                   $"Entity: {context.PrimaryEntityName}\n" +
+            //                   $"Entity ID: {context.PrimaryEntityId}\n" +
+            //                   $"User: {context.InitiatingUserId}";
+            //if (context.PrimaryEntityId != Guid.Empty)
+            //{
+            //    note["objectid"] = new EntityReference(context.PrimaryEntityName, context.PrimaryEntityId);
+            //    note["objecttypecode"] = context.PrimaryEntityName;
+            //}
+            //service.Create(note);
         }
     }
 

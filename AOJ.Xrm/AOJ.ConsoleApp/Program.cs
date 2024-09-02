@@ -1,9 +1,10 @@
-﻿using AOJ.Xrm.Common;
-using Microsoft.Xrm.Client.Services;
+﻿using Microsoft.Xrm.Client.Services;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Tooling.Connector;
 using System;
+using AOJ.Xrm.Common;
+
 
 namespace AOJ.ConsoleApp
 {

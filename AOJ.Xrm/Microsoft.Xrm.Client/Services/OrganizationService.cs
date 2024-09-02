@@ -14,13 +14,11 @@ using System.ServiceModel.Security;
 using System.Threading;
 using Microsoft.Xrm.Client.Configuration;
 using Microsoft.Xrm.Client.Runtime;
-using Microsoft.Xrm.Client.Services.Samples;
 using Microsoft.Xrm.Client.Threading;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Tooling.Connector;
-using DeviceIdManager = Microsoft.Xrm.Client.Services.Samples.DeviceIdManager;
 
 namespace Microsoft.Xrm.Client.Services
 {
@@ -229,79 +227,12 @@ namespace Microsoft.Xrm.Client.Services
 
 		protected virtual SecurityTokenResponse CreateUserTokenResponse(CrmConnection connection, IServiceConfiguration<IOrganizationService> config)
 		{
-			var homeRealmUri = connection.HomeRealmUri;
-			var clientCredentials = connection.ClientCredentials;
-			var deviceCredentials = connection.DeviceCredentials;
-
-			if (clientCredentials == null) throw new ConfigurationErrorsException("The connection's user credentials must be specified.");
-
-			SecurityTokenResponse userTokenResponse;
-
-			if (config.AuthenticationType == AuthenticationProviderType.LiveId)
-			{
-				if (deviceCredentials == null || deviceCredentials.UserName == null)
-				{
-					throw new ConfigurationErrorsException("The connection's device credentials must be specified.");
-				}
-
-				var deviceUserName = deviceCredentials.UserName.UserName;
-				var devicePassword = deviceCredentials.UserName.Password;
-
-				if (string.IsNullOrWhiteSpace(deviceUserName)) throw new ConfigurationErrorsException("The connection's device Id must be specified.");
-				if (string.IsNullOrWhiteSpace(devicePassword)) throw new ConfigurationErrorsException("The connection's device password must be specified.");
-				if (devicePassword.Length < 6) throw new ConfigurationErrorsException("The connection's device password must be at least 6 characters.");
-
-				// prepend the DevicePrefix to the device Id
-
-				var extendedDeviceCredentials = new ClientCredentials();
-				extendedDeviceCredentials.UserName.UserName = DeviceIdManager.DevicePrefix + deviceCredentials.UserName.UserName;
-				extendedDeviceCredentials.UserName.Password = deviceCredentials.UserName.Password;
-
-				SecurityTokenResponse deviceTokenResponse;
-
-				try
-				{
-					deviceTokenResponse = config.AuthenticateDevice(extendedDeviceCredentials);
-				}
-				catch (MessageSecurityException)
-				{
-					// try register the device credentials
-
-					deviceTokenResponse = RegisterDeviceCredentials(deviceCredentials)
-						// try re-authenticate
-						? config.AuthenticateDevice(extendedDeviceCredentials)
-						: null;
-				}
-
-				Assert(deviceTokenResponse != null && deviceTokenResponse.Token != null, "The device authentication failed!");
-
-				userTokenResponse = config.Authenticate(clientCredentials, deviceTokenResponse);
-			}
-			else
-			{
-				if (homeRealmUri != null)
-				{
-					var appliesTo = config.PolicyConfiguration.SecureTokenServiceIdentifier;
-					var homeRealmSecurityTokenResponse = config.AuthenticateCrossRealm(clientCredentials, appliesTo, homeRealmUri);
-
-					Assert(homeRealmSecurityTokenResponse != null && homeRealmSecurityTokenResponse.Token != null, "The user authentication failed!");
-
-					userTokenResponse = config.Authenticate(homeRealmSecurityTokenResponse.Token);
-				}
-				else
-				{
-					userTokenResponse = config.Authenticate(clientCredentials);
-				}
-			}
-
-			return userTokenResponse;
+			return null;
 		}
 
 		protected bool RegisterDeviceCredentials(ClientCredentials deviceCredentials)
 		{
-			var response = DeviceIdManager.RegisterDevice(deviceCredentials);
-
-			return response.IsSuccess;
+			return false;
 		}
 
 		#region IOrganizationService Members

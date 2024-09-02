@@ -42,7 +42,6 @@ namespace Microsoft.Xrm.Portal.Web.UI.WebControls
 	[DefaultEvent("ViewChanged")]
 	[Bindable(false)]
 	[Themeable(true)]
-	[Designer(typeof(EntityRightsViewDesigner))]
 	public sealed class EntityRightsView : WebControl, INamingContainer
 	{
 		private int _templateIndex;
